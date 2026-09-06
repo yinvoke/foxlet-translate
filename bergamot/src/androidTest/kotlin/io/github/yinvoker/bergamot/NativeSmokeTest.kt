@@ -75,7 +75,7 @@ class NativeSmokeTest {
         assertNotEquals(0L, service)
 
         assertThrows(RuntimeException::class.java) {
-            NativeBridge.loadModel(service, "models:\n  - /nonexistent/model.bin\n")
+            NativeBridge.loadModel(service, "models:\n  - /nonexistent/model.bin\n", null)
         }
 
         NativeBridge.destroyService(service)
@@ -144,7 +144,8 @@ class NativeSmokeTest {
         val corpus = corpusFile.readLines().dropLastWhile { it.isEmpty() }
         Assume.assumeTrue("expected $CORPUS_LINES lines, got ${corpus.size}", corpus.size == CORPUS_LINES)
 
-        // mbw512 = 设备默认,也是 device/200 正典表所用的配置。
+        // 前缀表开着(默认):device/200 的正典自 2026-09-06 起是「带 en 前缀表」
+        // 的值,200 行切成 212 句而不是 226 句;关掉表会回到旧值 f8a315e6571cc957。
         BergamotEngine(EngineConfig(threads = 1, miniBatchWords = 512)).use { engine ->
             val model = ModelFiles.fromDirectory(dir)
             // first_ms includes service creation and the lazy model load;
@@ -192,8 +193,8 @@ class NativeSmokeTest {
 
         const val CORPUS_LINES = 200
 
-        /** tools/regress-hash.sh, device/200 en→zh. */
-        const val CANONICAL_DEVICE_HASH_200 = "f8a315e6571cc957"
+        /** tools/regress-hash.sh, device/200 en→zh, nonbreaking-prefix table on (Mi 12, 2026-09-06). */
+        const val CANONICAL_DEVICE_HASH_200 = "88295d89303c20bd"
 
         const val FNV_OFFSET_BASIS = 1469598103934665603L
         const val FNV_PRIME = 1099511628211L

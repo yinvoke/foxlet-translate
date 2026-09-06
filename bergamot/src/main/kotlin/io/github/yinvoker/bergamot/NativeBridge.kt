@@ -37,7 +37,14 @@ internal object NativeBridge {
      */
     external fun createService(workers: Int, cacheSize: Int): Long
     external fun destroyService(service: Long)
-    external fun loadModel(service: Long, configYaml: String): Long
+    /**
+     * Load a model into [service]. Everything the engine needs comes from
+     * [configYaml] as file paths, except [ssplitPrefix]: the sentence-splitter
+     * prefix table travels as bytes because it ships inside the AAR rather than
+     * on the filesystem. null (or empty) means no table, and the splitter falls
+     * back to its regex.
+     */
+    external fun loadModel(service: Long, configYaml: String, ssplitPrefix: ByteArray?): Long
 
     /**
      * Hand a model back to [service] and reclaim what it holds on the model's

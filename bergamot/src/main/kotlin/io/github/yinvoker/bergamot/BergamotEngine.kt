@@ -16,6 +16,16 @@ data class ModelFiles(
     val srcVocab: File,
     val trgVocab: File,
     val shortlist: File,
+    /**
+     * Language the source text is in, used to pick the sentence-splitter prefix
+     * table ([NonbreakingPrefixes]). [fromDirectory] reads it off the model file
+     * name; set it by hand to override that, or to null to split with the bare
+     * regex. A language with no table behaves like null.
+     *
+     * It says nothing about what the model can translate -- the engine never
+     * sees this value, only the bytes it selects.
+     */
+    val sourceLanguage: String? = null,
 ) {
     companion object {
         /**
@@ -35,8 +45,28 @@ data class ModelFiles(
             val srcVocab = pick("vocab") { it.contains("vocab") && it.endsWith(".spm") && !it.startsWith("trg") }
             val trgVocab = dir.listFiles()?.firstOrNull { it.name.startsWith("trgvocab") && it.name.endsWith(".spm") }
                 ?: srcVocab // single shared vocab
-            return ModelFiles(model, srcVocab, trgVocab, shortlist)
+            return ModelFiles(model, srcVocab, trgVocab, shortlist, sourceLanguageOf(model.name))
         }
+
+        /**
+         * Source language of a Mozilla model file name, or null when the name
+         * does not follow the convention.
+         *
+         * Mozilla names every direction `model.<src><trg>.<...>.bin` with two
+         * ISO 639-1 letters a side: `model.enzh.intgemm.alphas.bin` is en->zh,
+         * `model.jaen.intgemm.alphas.bin` is ja->en. Script variants collapse in
+         * the file name (zh-Hans and zh-Hant are both `zh`), which is what the
+         * prefix tables want anyway.
+         *
+         * Four lowercase letters after `model.` is all this has to go on, so a
+         * name that merely looks like the convention yields a two-letter tag that
+         * is not a real language. Harmless: an unknown tag has no table and the
+         * splitter falls back to the regex.
+         */
+        fun sourceLanguageOf(modelFileName: String): String? =
+            MODEL_NAME.matchEntire(modelFileName)?.groupValues?.get(1)
+
+        private val MODEL_NAME = Regex("""model\.([a-z]{2})([a-z]{2})\..+\.bin""")
     }
 
     internal fun toConfigYaml(workspaceMb: Int, miniBatchWords: Int = 512): String = """
@@ -102,6 +132,20 @@ class EngineConfig(
      */
     val cacheSize: Int = 0,
     /**
+     * Give the sentence splitter the prefix table for the model's
+     * [ModelFiles.sourceLanguage] (on by default).
+     *
+     * Without it the splitter is a bare regex that ends a sentence at every
+     * `.`, so `Dr. Smith arrived.` is translated as two fragments instead of
+     * one sentence. The table costs a few hundred microseconds at model load
+     * and nothing per translation.
+     *
+     * Set it to false to reproduce output from before this existed, or when the
+     * host has already split its input into single sentences. A model whose
+     * source language has no table is unaffected either way.
+     */
+    val nonbreakingPrefixes: Boolean = true,
+    /**
      * Why [threads] is what it is, when it came from [forDevice]. null for a
      * hand-written config — nothing in the engine reads this field; it exists
      * so hosts and benchmarks can record (and second-guess) the tiering.
@@ -138,6 +182,7 @@ class EngineConfig(
             idleUnloadMillis: Long = 60_000,
             miniBatchWords: Int = 512,
             cacheSize: Int = 0,
+            nonbreakingPrefixes: Boolean = true,
         ): EngineConfig {
             val decision = ThreadTuning.forDevice(context, workload)
             return EngineConfig(
@@ -146,6 +191,7 @@ class EngineConfig(
                 idleUnloadMillis = idleUnloadMillis,
                 miniBatchWords = miniBatchWords,
                 cacheSize = cacheSize,
+                nonbreakingPrefixes = nonbreakingPrefixes,
                 tuning = decision,
             )
         }
@@ -261,6 +307,7 @@ class BergamotEngine(private val config: EngineConfig = EngineConfig()) : Closea
                 NativeBridge.loadModel(
                     serviceHandle(),
                     model.toConfigYaml(config.workspaceMb, config.miniBatchWords),
+                    if (config.nonbreakingPrefixes) NonbreakingPrefixes.bytesFor(model.sourceLanguage) else null,
                 ),
                 System.nanoTime(),
             )

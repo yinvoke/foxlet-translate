@@ -24,6 +24,7 @@
 #include <string>
 #include <vector>
 
+#include "translator/byte_array_util.h"
 #include "translator/parser.h"
 #include "translator/response.h"
 #include "translator/response_options.h"
@@ -33,6 +34,7 @@ namespace {
 
 using marian::bergamot::AsyncService;
 using marian::bergamot::BlockingService;
+using marian::bergamot::MemoryBundle;
 using marian::bergamot::Response;
 using marian::bergamot::ResponseOptions;
 using marian::bergamot::TranslationModel;
@@ -71,6 +73,18 @@ std::vector<std::string> toStdStrings(JNIEnv *env, jobjectArray array) {
     env->DeleteLocalRef(element);
   }
   return result;
+}
+
+/// Copies a (nullable) Java byte[] into the 64-byte-aligned buffer MemoryBundle
+/// wants. A null or empty array yields an empty AlignedMemory, which the engine
+/// reads as "not supplied" and falls back to the option path for.
+marian::bergamot::AlignedMemory toAlignedMemory(JNIEnv *env, jbyteArray bytes) {
+  if (bytes == nullptr) return marian::bergamot::AlignedMemory();
+  const jsize length = env->GetArrayLength(bytes);
+  if (length <= 0) return marian::bergamot::AlignedMemory();
+  marian::bergamot::AlignedMemory memory(static_cast<size_t>(length), 64);
+  env->GetByteArrayRegion(bytes, 0, length, reinterpret_cast<jbyte *>(memory.begin()));
+  return memory;
 }
 
 jobjectArray toJavaStrings(JNIEnv *env, const std::vector<Response> &responses) {
@@ -177,17 +191,29 @@ Java_io_github_yinvoker_bergamot_NativeBridge_fastCoreCount(JNIEnv *, jobject) {
 }
 
 JNIEXPORT jlong JNICALL
-Java_io_github_yinvoker_bergamot_NativeBridge_loadModel(JNIEnv *env, jobject, jlong service, jstring configYaml) {
+Java_io_github_yinvoker_bergamot_NativeBridge_loadModel(JNIEnv *env, jobject, jlong service, jstring configYaml,
+                                                        jbyteArray ssplitPrefix) {
   try {
     auto *svc = reinterpret_cast<ServiceHandle *>(service);
     auto options = marian::bergamot::parseOptionsFromString(toStdString(env, configYaml), /*validate=*/false);
+    // Same bundle the path-only constructor builds for itself (model, shortlist
+    // and vocab bytes read from the YAML paths -- the loading path every memory
+    // figure was measured on; a missing file fails here, before any engine
+    // object exists), with just the sentence-splitter prefixes replaced by the
+    // bytes the Kotlin side looked up. Handing the engine an otherwise-empty
+    // bundle would switch model loading to marian's own per-replica file
+    // readers, and a bad config would reach Vocabs' ABORT (std::abort, not an
+    // exception) instead of the file loader.
+    MemoryBundle bundle = marian::bergamot::getMemoryBundleFromConfig(options);
+    if (ssplitPrefix != nullptr) bundle.ssplitPrefixFile = toAlignedMemory(env, ssplitPrefix);
     // Replicas are backends, one per thread that may translate with the model.
     // createCompatibleModel sizes them per worker; a bare TranslationModel has
     // one and crashes (SIGBUS) as soon as worker id > 0 touches it. Blocking
     // has no workers -- deviceId is always 0 -- so one replica is both correct
     // and the cheapest.
-    ModelHandle model = svc->isBlocking() ? marian::New<TranslationModel>(options, /*replicas=*/1)
-                                          : svc->async->createCompatibleModel(options);
+    ModelHandle model = svc->isBlocking()
+                            ? marian::New<TranslationModel>(options, std::move(bundle), /*replicas=*/1)
+                            : svc->async->createCompatibleModel(options, std::move(bundle));
     return reinterpret_cast<jlong>(new ModelHandle(std::move(model)));
   } catch (const std::exception &e) {
     throwJava(env, std::string("loadModel failed: ") + e.what());

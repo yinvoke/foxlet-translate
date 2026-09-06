@@ -674,14 +674,13 @@ int main(int argc, char *argv[]) {
     emit("load_ms", msSince(loadStart));
     emitMem("after_load");
 
+    // Same batch entry points the AAR takes (bergamot_jni.cpp translate/translatePivot): the whole corpus is
+    // submitted in one step, so the hash below is comparable with the blocking one above.
     runPasses([&](std::vector<std::string> &&sources, const std::vector<ResponseOptions> &options) {
-      return collectAll(std::move(sources), [&](size_t i, std::string &&text, auto callback) {
-        if (second) {
-          service.pivot(model, second, std::move(text), std::move(callback), options[i]);
-        } else {
-          service.translate(model, std::move(text), std::move(callback), options[i]);
-        }
-      });
+      // The options here are uniform (all default); the batch API takes one for the whole array.
+      const ResponseOptions responseOptions = options.empty() ? ResponseOptions() : options.front();
+      return second ? service.pivotMultiple(model, second, std::move(sources), responseOptions)
+                    : service.translateMultiple(model, std::move(sources), responseOptions);
     });
     if (cacheStatsWanted) cacheStats = service.cacheStats();
     emitMem("steady");

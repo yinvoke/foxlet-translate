@@ -18,9 +18,7 @@
 
 #include "affinity.h"
 
-#include <condition_variable>
 #include <memory>
-#include <mutex>
 #include <string>
 #include <vector>
 
@@ -104,27 +102,6 @@ std::vector<ResponseOptions> perTextOptions(size_t n, bool html) {
   ResponseOptions options;
   options.HTML = html;
   return std::vector<ResponseOptions>(n, options);
-}
-
-/// Fans texts out to the AsyncService and blocks until every callback fired.
-/// submit(i, text, callback) issues request i.
-template <typename Submit>
-std::vector<Response> collectAll(std::vector<std::string> &&sources, Submit submit) {
-  const size_t n = sources.size();
-  std::vector<Response> responses(n);
-  std::mutex mutex;
-  std::condition_variable done;
-  size_t pending = n;
-  for (size_t i = 0; i < n; ++i) {
-    submit(i, std::move(sources[i]), [&, i](Response &&response) {
-      std::lock_guard<std::mutex> lock(mutex);
-      responses[i] = std::move(response);
-      if (--pending == 0) done.notify_all();
-    });
-  }
-  std::unique_lock<std::mutex> lock(mutex);
-  done.wait(lock, [&] { return pending == 0; });
-  return responses;
 }
 
 }  // namespace
@@ -260,9 +237,9 @@ Java_io_github_yinvoker_bergamot_NativeBridge_translate(JNIEnv *env, jobject, jl
     } else {
       ResponseOptions responseOptions;
       responseOptions.HTML = html;
-      responses = collectAll(std::move(sources), [&](size_t, std::string &&text, auto callback) {
-        svc->async->translate(handle, std::move(text), std::move(callback), responseOptions);
-      });
+      // The batch API, not translate() per text: it submits the whole array in one step, which is what makes the
+      // output bytes the same as the blocking path's regardless of how many workers are running.
+      responses = svc->async->translateMultiple(handle, std::move(sources), responseOptions);
     }
     return toJavaStrings(env, responses);
   } catch (const std::exception &e) {
@@ -286,9 +263,7 @@ Java_io_github_yinvoker_bergamot_NativeBridge_translatePivot(JNIEnv *env, jobjec
     } else {
       ResponseOptions responseOptions;
       responseOptions.HTML = html;
-      responses = collectAll(std::move(sources), [&](size_t, std::string &&text, auto callback) {
-        svc->async->pivot(firstHandle, secondHandle, std::move(text), std::move(callback), responseOptions);
-      });
+      responses = svc->async->pivotMultiple(firstHandle, secondHandle, std::move(sources), responseOptions);
     }
     return toJavaStrings(env, responses);
   } catch (const std::exception &e) {

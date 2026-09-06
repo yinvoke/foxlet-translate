@@ -28,6 +28,7 @@ namespace bergamot {
 /// Requires BatchingPoolType to implement the following:
 ///
 /// * produce: `size_t enqueueRequest(...)` (returns number elements produced)
+/// * produce (batched): `size_t enqueueRequests(...)` (same, for a whole set at once)
 /// * consume: `size_t generateBatch(...)` (returns number of elements available to be consumed)
 
 template <class BatchingPoolType>
@@ -39,6 +40,17 @@ class ThreadsafeBatchingPool {
 
   template <class... Args>
   void enqueueRequest(Args &&...args);
+
+  /// F5: produce several requests under a single lock and a single notify.
+  /// Consumers therefore never observe a half-submitted set, so the batches
+  /// they generate depend only on what was submitted -- not on how far the
+  /// producer had got when a worker happened to wake up. The trailing
+  /// worker-count argument travels through to the backend, which uses it to
+  /// cap the sentences per batch for this submission (BatchingPool).
+  ///
+  /// Requires BatchingPoolType to implement `size_t enqueueRequests(...)`.
+  template <class... Args>
+  void enqueueRequests(Args &&...args);
 
   /// Consumer side. Blocks until there is a batch, a shutdown, or a
   /// maintenance request (D0).

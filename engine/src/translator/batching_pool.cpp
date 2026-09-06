@@ -1,5 +1,6 @@
 #include "batching_pool.h"
 
+#include <algorithm>
 #include <cassert>
 
 #include "batch.h"
@@ -27,6 +28,17 @@ BatchingPool::BatchingPool(Ptr<Options> options)
 }
 
 size_t BatchingPool::generateBatch(Batch &batch) {
+  size_t sentencesInBatch = fillBatch(batch);
+  assert(sentencesInBatch <= pending_);
+  pending_ -= sentencesInBatch;
+  // A sentence cap describes one submission (see enqueueRequests). Once the pool has drained there is no submission
+  // left to describe, so put the pool back to unbounded batches -- which is what the incremental enqueueRequest()
+  // path expects to find.
+  if (pending_ == 0) maxSentencesPerBatch_ = kUnboundedSentencesPerBatch;
+  return sentencesInBatch;
+}
+
+size_t BatchingPool::fillBatch(Batch &batch) {
   // For now simply iterates on buckets and converts batches greedily.  This
   // has to be enhanced with optimizing over priority. The baseline
   // implementation should at least be as fast as marian's maxi-batch with full
@@ -42,6 +54,11 @@ size_t BatchingPool::generateBatch(Batch &batch) {
         auto q = p++;
         batch.add(*q);
         bucket_[length].erase(q);
+        // Cap reached: end the batch here. The traversal order is untouched, so this only ever cuts a batch short at
+        // a point that is itself a function of the submission -- the next batch resumes exactly where this one left.
+        if (batch.size() >= maxSentencesPerBatch_) {
+          return batch.size();
+        }
       } else {
         // Check if elements exist
         assert(batch.size() > 0);
@@ -76,6 +93,47 @@ size_t BatchingPool::enqueueRequest(Ptr<Request> request) {
     }
   }
 
+  pending_ += toBeFreshlyTranslated;
+  return toBeFreshlyTranslated;
+}
+
+size_t BatchingPool::countBatches() const {
+  // Walks the buckets exactly as fillBatch() does, without consuming them. Cheap: one pass over the pool.
+  size_t batches = 0;
+  size_t sentencesInBatch = 0;
+  for (size_t length = 0; length <= maxActiveBucketLength_ && length < bucket_.size(); length++) {
+    for (size_t i = 0; i < bucket_[length].size(); i++) {
+      if ((sentencesInBatch + 1) * length > miniBatchWords_) {
+        // fillBatch() would have returned here; the next call resumes at this very sentence, because every bucket
+        // below this one is empty by then.
+        batches += 1;
+        sentencesInBatch = 0;
+      }
+      sentencesInBatch += 1;
+    }
+  }
+  if (sentencesInBatch > 0) batches += 1;
+  return batches;
+}
+
+size_t BatchingPool::enqueueRequests(const std::vector<Ptr<Request>> &requests, size_t numWorkers) {
+  size_t toBeFreshlyTranslated = 0;
+  for (const Ptr<Request> &request : requests) {
+    toBeFreshlyTranslated += enqueueRequest(request);
+  }
+
+  // Only step in when the submission would otherwise leave workers with nothing to do. Anything that already fills
+  // every worker is left exactly as it was -- which is what keeps a page or a document byte-identical to what
+  // BlockingService produces, at any worker count. An all-cache-hit submission enqueues nothing and must not set a
+  // cap of 0.
+  //
+  // Ceiling division: S sentences over W workers gives at least W batches whenever S >= W, and never a cap below 1,
+  // so the pool can always make progress.
+  const size_t workers = std::max<size_t>(numWorkers, 1);
+  if (toBeFreshlyTranslated > 0 && countBatches() < workers) {
+    maxSentencesPerBatch_ = (toBeFreshlyTranslated + workers - 1) / workers;
+  }
+
   return toBeFreshlyTranslated;
 }
 
@@ -83,6 +141,8 @@ void BatchingPool::clear() {
   for (size_t length = 0; length < bucket_.size(); length++) {
     bucket_[length].clear();
   }
+  pending_ = 0;
+  maxSentencesPerBatch_ = kUnboundedSentencesPerBatch;
 }
 
 }  // namespace bergamot

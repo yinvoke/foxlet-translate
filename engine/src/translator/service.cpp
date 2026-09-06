@@ -1,5 +1,7 @@
 #include "service.h"
 
+#include <condition_variable>
+#include <mutex>
 #include <string>
 #include <utility>
 
@@ -41,6 +43,38 @@ Response combine(Response &&first, Response &&second) {
 std::optional<TranslationCache> makeOptionalCache(size_t size, size_t mutexBuckets) {
   return size > 0 ? std::make_optional<TranslationCache>(size, mutexBuckets) : std::nullopt;
 }
+
+/// F5: gathers N responses by index and parks the calling thread until every one has arrived. The callbacks run on
+/// worker threads; the mutex both guards the slots and publishes the workers' writes to the waiter.
+///
+/// Lives on the caller's stack, and the callbacks capture it by pointer: they outlive the wait (a Request is only
+/// dropped once the worker is done with the batch holding it), but a callback that has already fired is never called
+/// again, so nothing dereferences the collector after wait() returns. notify_all() happens under the lock, which is
+/// what keeps the condition variable alive until the last waiter is through with it.
+class ResponseCollector {
+ public:
+  explicit ResponseCollector(size_t size) : responses_(size), pending_(size) {}
+
+  CallbackType callbackFor(size_t index) {
+    return [this, index](Response &&response) {
+      std::lock_guard<std::mutex> lock(mutex_);
+      responses_[index] = std::move(response);
+      if (--pending_ == 0) done_.notify_all();
+    };
+  }
+
+  std::vector<Response> wait() {
+    std::unique_lock<std::mutex> lock(mutex_);
+    done_.wait(lock, [this]() { return pending_ == 0; });
+    return std::move(responses_);
+  }
+
+ private:
+  std::vector<Response> responses_;
+  size_t pending_;
+  std::mutex mutex_;
+  std::condition_variable done_;
+};
 
 // D0: hand freed pages back to the OS. Freeing to the allocator is not the
 // same as shrinking RSS -- bionic's scudo and macOS libmalloc both keep
@@ -285,6 +319,82 @@ void AsyncService::pivot(std::shared_ptr<TranslationModel> first, std::shared_pt
 
   // First call.
   translateRaw(first, std::move(source), internalCallback, responseOptions);
+}
+
+std::vector<Response> AsyncService::translateMultiple(std::shared_ptr<TranslationModel> translationModel,
+                                                     std::vector<std::string> &&sources,
+                                                     const ResponseOptions &responseOptions) {
+  std::vector<HTML> htmls;
+  for (size_t i = 0; i < sources.size(); i++) {
+    htmls.emplace_back(std::move(sources[i]), responseOptions.HTML);
+  }
+  std::vector<Response> responses = translateMultipleRaw(translationModel, std::move(sources), responseOptions);
+  for (size_t i = 0; i < responses.size(); i++) {
+    htmls[i].restore(responses[i]);
+  }
+
+  return responses;
+}
+
+std::vector<Response> AsyncService::translateMultipleRaw(std::shared_ptr<TranslationModel> translationModel,
+                                                         std::vector<std::string> &&sources,
+                                                         const ResponseOptions &responseOptions) {
+  // Every request is built here, on the producer thread, before any of them is visible to a worker: the pool is handed
+  // the whole set in one step below. That is the entire trick -- ids run in input order and the batches the workers
+  // form no longer depend on how far this loop had got when one of them woke up.
+  ResponseCollector collector(sources.size());
+  std::vector<Ptr<Request>> requests;
+  requests.reserve(sources.size());
+  for (size_t i = 0; i < sources.size(); i++) {
+    requests.push_back(translationModel->makeRequest(requestId_++, std::move(sources[i]), collector.callbackFor(i),
+                                                     responseOptions, cache_));
+  }
+  // numWorkers goes with the submission: the pool caps a batch at ceil(sentences / numWorkers) so that a small set
+  // -- one that a single greedy batch would swallow whole -- still reaches every worker instead of one.
+  safeBatchingPool_.enqueueRequests(translationModel, requests, config_.numWorkers);
+
+  return collector.wait();
+}
+
+std::vector<Response> AsyncService::pivotMultiple(std::shared_ptr<TranslationModel> first,
+                                                 std::shared_ptr<TranslationModel> second,
+                                                 std::vector<std::string> &&sources,
+                                                 const ResponseOptions &responseOptions) {
+  std::vector<HTML> htmls;
+  for (size_t i = 0; i < sources.size(); i++) {
+    htmls.emplace_back(std::move(sources[i]), responseOptions.HTML);
+  }
+
+  // Translate source to pivots. This is same as calling translateMultiple.
+  std::vector<Response> sourcesToPivots = translateMultipleRaw(first, std::move(sources), responseOptions);
+
+  // Translate pivots to targets, after we have outputs at pivot from first round. The barrier is what makes this
+  // reproducible: the second leg is built on this thread in index order, so neither the ids nor the batches depend on
+  // the order in which the first leg happened to complete.
+  ResponseCollector collector(sourcesToPivots.size());
+  std::vector<Ptr<Request>> requests;
+  requests.reserve(sourcesToPivots.size());
+  for (size_t i = 0; i < sourcesToPivots.size(); i++) {
+    AnnotatedText intermediate =
+        sourcesToPivots[i].target;  // We cannot eliminate this copy, as we need two versions of intermediate. Holding
+                                    // it in allows further use in makePivotRequest
+    requests.push_back(second->makePivotRequest(requestId_++, std::move(intermediate), collector.callbackFor(i),
+                                                responseOptions, cache_));
+  }
+  safeBatchingPool_.enqueueRequests(second, requests, config_.numWorkers);
+  std::vector<Response> pivotsToTargets = collector.wait();
+
+  // Combine both sides. They're associated by indices.
+  std::vector<Response> finalResponses;
+  for (size_t i = 0; i < sourcesToPivots.size(); i++) {
+    finalResponses.push_back(combine(std::move(sourcesToPivots[i]), std::move(pivotsToTargets[i])));
+  }
+
+  for (size_t i = 0; i < finalResponses.size(); i++) {
+    htmls[i].restore(finalResponses[i]);
+  }
+
+  return finalResponses;
 }
 
 void AsyncService::translate(std::shared_ptr<TranslationModel> translationModel, std::string &&source,

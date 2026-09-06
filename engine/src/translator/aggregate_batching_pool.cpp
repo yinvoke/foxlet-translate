@@ -14,6 +14,15 @@ size_t AggregateBatchingPool::enqueueRequest(Ptr<TranslationModel> model, Ptr<Re
   return sentencesEnqueued;
 }
 
+size_t AggregateBatchingPool::enqueueRequests(Ptr<TranslationModel> model, const std::vector<Ptr<Request>>& requests,
+                                             size_t numWorkers) {
+  size_t sentencesEnqueued = model->enqueueRequests(requests, numWorkers);
+  // Insert once, and only if there is something to find: an all-cache-hit set of requests adds no sentences, and the
+  // aggregate queue must not be left holding a model whose pool is empty.
+  if (sentencesEnqueued > 0) aggregateQueue_.insert(model);
+  return sentencesEnqueued;
+}
+
 size_t AggregateBatchingPool::generateBatch(Ptr<TranslationModel>& model, Batch& batch) {
   while (!aggregateQueue_.empty()) {
     auto candidateItr = aggregateQueue_.begin();

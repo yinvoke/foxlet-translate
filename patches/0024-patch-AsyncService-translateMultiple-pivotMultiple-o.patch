@@ -1,0 +1,546 @@
+From 561b9f420188e2936798dd58bb45dc279bcdbe2c Mon Sep 17 00:00:00 2001
+From: yinvoker <yinvoker@outlook.com>
+Date: Mon, 7 Sep 2026 00:23:11 +0800
+Subject: [PATCH] =?UTF-8?q?patch:=20AsyncService::translateMultiple=20/=20?=
+ =?UTF-8?q?pivotMultiple=20=E2=80=94=20one-step=20submission,=20batches=20?=
+ =?UTF-8?q?a=20pure=20function=20of=20input=20and=20config,=20per-submissi?=
+ =?UTF-8?q?on=20sentence=20cap;=20atomic=20requestId=20(patch=200024)?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Async output used to drift with worker timing (en->zh 3-21 lines, pivot
+16-30 lines per 150-200 differ from blocking). Requests are now built on the
+calling thread and enqueued under one lock; pivot's second leg waits for the
+whole first leg. A submission too small to give every worker a batch is split
+by a deterministic sentence cap so it still runs in parallel; anything larger
+is byte-identical to BlockingService at every worker count. requestId_ was a
+plain size_t written from worker threads in pivot callbacks.
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+---
+ .../translator/aggregate_batching_pool.cpp    |   9 ++
+ .../src/translator/aggregate_batching_pool.h  |  14 +++
+ engine/src/translator/batching_pool.cpp       |  60 ++++++++++
+ engine/src/translator/batching_pool.h         |  38 ++++++
+ engine/src/translator/service.cpp             | 110 ++++++++++++++++++
+ engine/src/translator/service.h               |  65 ++++++++++-
+ .../translator/threadsafe_batching_pool.cpp   |   9 ++
+ .../src/translator/threadsafe_batching_pool.h |  12 ++
+ engine/src/translator/translation_model.h     |   9 ++
+ 9 files changed, 325 insertions(+), 1 deletion(-)
+
+diff --git a/engine/src/translator/aggregate_batching_pool.cpp b/engine/src/translator/aggregate_batching_pool.cpp
+index 5f40511..2a86b6c 100644
+--- a/engine/src/translator/aggregate_batching_pool.cpp
++++ b/engine/src/translator/aggregate_batching_pool.cpp
+@@ -14,6 +14,15 @@ size_t AggregateBatchingPool::enqueueRequest(Ptr<TranslationModel> model, Ptr<Re
+   return sentencesEnqueued;
+ }
+ 
++size_t AggregateBatchingPool::enqueueRequests(Ptr<TranslationModel> model, const std::vector<Ptr<Request>>& requests,
++                                             size_t numWorkers) {
++  size_t sentencesEnqueued = model->enqueueRequests(requests, numWorkers);
++  // Insert once, and only if there is something to find: an all-cache-hit set of requests adds no sentences, and the
++  // aggregate queue must not be left holding a model whose pool is empty.
++  if (sentencesEnqueued > 0) aggregateQueue_.insert(model);
++  return sentencesEnqueued;
++}
++
+ size_t AggregateBatchingPool::generateBatch(Ptr<TranslationModel>& model, Batch& batch) {
+   while (!aggregateQueue_.empty()) {
+     auto candidateItr = aggregateQueue_.begin();
+diff --git a/engine/src/translator/aggregate_batching_pool.h b/engine/src/translator/aggregate_batching_pool.h
+index 6775591..b192bb6 100644
+--- a/engine/src/translator/aggregate_batching_pool.h
++++ b/engine/src/translator/aggregate_batching_pool.h
+@@ -51,6 +51,20 @@ class AggregateBatchingPool {
+   /// @returns number of sentences added for translation.
+   size_t enqueueRequest(Ptr<TranslationModel> model, Ptr<Request> request);
+ 
++  /// Enqueue several requests for the same model at once. Same as calling enqueueRequest() in a loop, except the
++  /// caller can wrap the whole insertion in one critical section (see ThreadsafeBatchingPool::enqueueRequests), which
++  /// is what makes batch composition -- and therefore the output bytes -- independent of when consumers wake up.
++  ///
++  /// The per-submission sentence cap lands on the model's own BatchingPool (this class only aggregates), so with
++  /// several models in play each one is capped by the submission that was made to it.
++  ///
++  /// @param [in] model: Model to use in translation. A shared ownership to this model is accepted by this object to
++  /// keep the model alive until translation is complete.
++  /// @param [in] requests: Requests to be enqueued to model, in the order given.
++  /// @param [in] numWorkers: How many consumers will draw batches. See BatchingPool::enqueueRequests.
++  /// @returns number of sentences added for translation.
++  size_t enqueueRequests(Ptr<TranslationModel> model, const std::vector<Ptr<Request>> &requests, size_t numWorkers);
++
+   /// Generate a batch from pending requests, obtained from available TranslationModels.
+   ///
+   /// @param [out] model: TranslationModel
+diff --git a/engine/src/translator/batching_pool.cpp b/engine/src/translator/batching_pool.cpp
+index 61dd192..b146938 100644
+--- a/engine/src/translator/batching_pool.cpp
++++ b/engine/src/translator/batching_pool.cpp
+@@ -1,5 +1,6 @@
+ #include "batching_pool.h"
+ 
++#include <algorithm>
+ #include <cassert>
+ 
+ #include "batch.h"
+@@ -27,6 +28,17 @@ BatchingPool::BatchingPool(Ptr<Options> options)
+ }
+ 
+ size_t BatchingPool::generateBatch(Batch &batch) {
++  size_t sentencesInBatch = fillBatch(batch);
++  assert(sentencesInBatch <= pending_);
++  pending_ -= sentencesInBatch;
++  // A sentence cap describes one submission (see enqueueRequests). Once the pool has drained there is no submission
++  // left to describe, so put the pool back to unbounded batches -- which is what the incremental enqueueRequest()
++  // path expects to find.
++  if (pending_ == 0) maxSentencesPerBatch_ = kUnboundedSentencesPerBatch;
++  return sentencesInBatch;
++}
++
++size_t BatchingPool::fillBatch(Batch &batch) {
+   // For now simply iterates on buckets and converts batches greedily.  This
+   // has to be enhanced with optimizing over priority. The baseline
+   // implementation should at least be as fast as marian's maxi-batch with full
+@@ -42,6 +54,11 @@ size_t BatchingPool::generateBatch(Batch &batch) {
+         auto q = p++;
+         batch.add(*q);
+         bucket_[length].erase(q);
++        // Cap reached: end the batch here. The traversal order is untouched, so this only ever cuts a batch short at
++        // a point that is itself a function of the submission -- the next batch resumes exactly where this one left.
++        if (batch.size() >= maxSentencesPerBatch_) {
++          return batch.size();
++        }
+       } else {
+         // Check if elements exist
+         assert(batch.size() > 0);
+@@ -76,6 +93,47 @@ size_t BatchingPool::enqueueRequest(Ptr<Request> request) {
+     }
+   }
+ 
++  pending_ += toBeFreshlyTranslated;
++  return toBeFreshlyTranslated;
++}
++
++size_t BatchingPool::countBatches() const {
++  // Walks the buckets exactly as fillBatch() does, without consuming them. Cheap: one pass over the pool.
++  size_t batches = 0;
++  size_t sentencesInBatch = 0;
++  for (size_t length = 0; length <= maxActiveBucketLength_ && length < bucket_.size(); length++) {
++    for (size_t i = 0; i < bucket_[length].size(); i++) {
++      if ((sentencesInBatch + 1) * length > miniBatchWords_) {
++        // fillBatch() would have returned here; the next call resumes at this very sentence, because every bucket
++        // below this one is empty by then.
++        batches += 1;
++        sentencesInBatch = 0;
++      }
++      sentencesInBatch += 1;
++    }
++  }
++  if (sentencesInBatch > 0) batches += 1;
++  return batches;
++}
++
++size_t BatchingPool::enqueueRequests(const std::vector<Ptr<Request>> &requests, size_t numWorkers) {
++  size_t toBeFreshlyTranslated = 0;
++  for (const Ptr<Request> &request : requests) {
++    toBeFreshlyTranslated += enqueueRequest(request);
++  }
++
++  // Only step in when the submission would otherwise leave workers with nothing to do. Anything that already fills
++  // every worker is left exactly as it was -- which is what keeps a page or a document byte-identical to what
++  // BlockingService produces, at any worker count. An all-cache-hit submission enqueues nothing and must not set a
++  // cap of 0.
++  //
++  // Ceiling division: S sentences over W workers gives at least W batches whenever S >= W, and never a cap below 1,
++  // so the pool can always make progress.
++  const size_t workers = std::max<size_t>(numWorkers, 1);
++  if (toBeFreshlyTranslated > 0 && countBatches() < workers) {
++    maxSentencesPerBatch_ = (toBeFreshlyTranslated + workers - 1) / workers;
++  }
++
+   return toBeFreshlyTranslated;
+ }
+ 
+@@ -83,6 +141,8 @@ void BatchingPool::clear() {
+   for (size_t length = 0; length < bucket_.size(); length++) {
+     bucket_[length].clear();
+   }
++  pending_ = 0;
++  maxSentencesPerBatch_ = kUnboundedSentencesPerBatch;
+ }
+ 
+ }  // namespace bergamot
+diff --git a/engine/src/translator/batching_pool.h b/engine/src/translator/batching_pool.h
+index 58cd2ca..d3aa447 100644
+--- a/engine/src/translator/batching_pool.h
++++ b/engine/src/translator/batching_pool.h
+@@ -1,6 +1,7 @@
+ #ifndef SRC_BERGAMOT_BATCHING_POOL_H_
+ #define SRC_BERGAMOT_BATCHING_POOL_H_
+ 
++#include <limits>
+ #include <set>
+ #include <vector>
+ 
+@@ -22,6 +23,29 @@ class BatchingPool {
+   // which maintains priority among sentences from multiple concurrent requests.
+   size_t enqueueRequest(Ptr<Request> request);
+ 
++  /// Enqueue a whole submission at once, and -- only if the submission would otherwise yield fewer batches than
++  /// there are workers -- bound how many sentences any one batch drawn from it may hold, so that it is spread over
++  /// `numWorkers` batches instead of being handed to a single worker.
++  ///
++  /// The bound is ceil(S / numWorkers) over the S sentences this call actually enqueues (cache hits do not count).
++  /// It is a function of the submission and the worker count alone, which is what keeps the output bytes
++  /// reproducible: the greedy fill below still walks the buckets in exactly the same order, it just stops earlier.
++  ///
++  /// A submission that already fills every worker is left completely untouched, so its batches -- and its bytes --
++  /// stay identical to what the same texts produce with one worker, or through BlockingService.
++  ///
++  /// Sentences, not words: a word bound would have to be at least bucket_.size() - 1 for a single long sentence to
++  /// still fit, which is far more than a handful of short lines add up to and so would never bind where it is needed.
++  /// One sentence always fits in a batch, so no bound can stall the pool.
++  ///
++  /// The bound applies to this submission only -- it is dropped again as soon as the pool has drained -- and is never
++  /// set by enqueueRequest(), whose batches stay unbounded as they have always been.
++  ///
++  /// @param [in] requests: Requests to enqueue, in the order given.
++  /// @param [in] numWorkers: How many consumers will draw batches from this pool. Treated as 1 if 0.
++  /// @returns number of sentences added for translation.
++  size_t enqueueRequests(const std::vector<Ptr<Request>> &requests, size_t numWorkers);
++
+   // Loads sentences with sentences compiled from (tentatively) multiple
+   // requests optimizing for both padding and priority.
+   size_t generateBatch(Batch &batch);
+@@ -30,10 +54,24 @@ class BatchingPool {
+   void clear();
+ 
+  private:
++  /// The greedy fill itself. generateBatch() wraps it with the bookkeeping that retires a drained submission.
++  size_t fillBatch(Batch &batch);
++
++  /// How many batches the pool's current contents would yield, uncapped. Dry run of fillBatch().
++  size_t countBatches() const;
++
++  static constexpr size_t kUnboundedSentencesPerBatch = std::numeric_limits<size_t>::max();
++
+   size_t miniBatchWords_;
+   std::vector<std::set<RequestSentence>> bucket_;
+   size_t batchNumber_{0};
+   size_t maxActiveBucketLength_;
++
++  /// Sentences sitting in bucket_, i.e. enqueued and not yet handed out in a batch.
++  size_t pending_{0};
++
++  /// Ceiling on the sentences a single generated batch may hold. See enqueueRequests().
++  size_t maxSentencesPerBatch_{kUnboundedSentencesPerBatch};
+ };
+ 
+ }  // namespace bergamot
+diff --git a/engine/src/translator/service.cpp b/engine/src/translator/service.cpp
+index d84930a..1e527c7 100644
+--- a/engine/src/translator/service.cpp
++++ b/engine/src/translator/service.cpp
+@@ -1,5 +1,7 @@
+ #include "service.h"
+ 
++#include <condition_variable>
++#include <mutex>
+ #include <string>
+ #include <utility>
+ 
+@@ -42,6 +44,38 @@ std::optional<TranslationCache> makeOptionalCache(size_t size, size_t mutexBucke
+   return size > 0 ? std::make_optional<TranslationCache>(size, mutexBuckets) : std::nullopt;
+ }
+ 
++/// F5: gathers N responses by index and parks the calling thread until every one has arrived. The callbacks run on
++/// worker threads; the mutex both guards the slots and publishes the workers' writes to the waiter.
++///
++/// Lives on the caller's stack, and the callbacks capture it by pointer: they outlive the wait (a Request is only
++/// dropped once the worker is done with the batch holding it), but a callback that has already fired is never called
++/// again, so nothing dereferences the collector after wait() returns. notify_all() happens under the lock, which is
++/// what keeps the condition variable alive until the last waiter is through with it.
++class ResponseCollector {
++ public:
++  explicit ResponseCollector(size_t size) : responses_(size), pending_(size) {}
++
++  CallbackType callbackFor(size_t index) {
++    return [this, index](Response &&response) {
++      std::lock_guard<std::mutex> lock(mutex_);
++      responses_[index] = std::move(response);
++      if (--pending_ == 0) done_.notify_all();
++    };
++  }
++
++  std::vector<Response> wait() {
++    std::unique_lock<std::mutex> lock(mutex_);
++    done_.wait(lock, [this]() { return pending_ == 0; });
++    return std::move(responses_);
++  }
++
++ private:
++  std::vector<Response> responses_;
++  size_t pending_;
++  std::mutex mutex_;
++  std::condition_variable done_;
++};
++
+ // D0: hand freed pages back to the OS. Freeing to the allocator is not the
+ // same as shrinking RSS -- bionic's scudo and macOS libmalloc both keep
+ // per-thread magazines that otherwise only drain when the thread exits, so a
+@@ -287,6 +321,82 @@ void AsyncService::pivot(std::shared_ptr<TranslationModel> first, std::shared_pt
+   translateRaw(first, std::move(source), internalCallback, responseOptions);
+ }
+ 
++std::vector<Response> AsyncService::translateMultiple(std::shared_ptr<TranslationModel> translationModel,
++                                                     std::vector<std::string> &&sources,
++                                                     const ResponseOptions &responseOptions) {
++  std::vector<HTML> htmls;
++  for (size_t i = 0; i < sources.size(); i++) {
++    htmls.emplace_back(std::move(sources[i]), responseOptions.HTML);
++  }
++  std::vector<Response> responses = translateMultipleRaw(translationModel, std::move(sources), responseOptions);
++  for (size_t i = 0; i < responses.size(); i++) {
++    htmls[i].restore(responses[i]);
++  }
++
++  return responses;
++}
++
++std::vector<Response> AsyncService::translateMultipleRaw(std::shared_ptr<TranslationModel> translationModel,
++                                                         std::vector<std::string> &&sources,
++                                                         const ResponseOptions &responseOptions) {
++  // Every request is built here, on the producer thread, before any of them is visible to a worker: the pool is handed
++  // the whole set in one step below. That is the entire trick -- ids run in input order and the batches the workers
++  // form no longer depend on how far this loop had got when one of them woke up.
++  ResponseCollector collector(sources.size());
++  std::vector<Ptr<Request>> requests;
++  requests.reserve(sources.size());
++  for (size_t i = 0; i < sources.size(); i++) {
++    requests.push_back(translationModel->makeRequest(requestId_++, std::move(sources[i]), collector.callbackFor(i),
++                                                     responseOptions, cache_));
++  }
++  // numWorkers goes with the submission: the pool caps a batch at ceil(sentences / numWorkers) so that a small set
++  // -- one that a single greedy batch would swallow whole -- still reaches every worker instead of one.
++  safeBatchingPool_.enqueueRequests(translationModel, requests, config_.numWorkers);
++
++  return collector.wait();
++}
++
++std::vector<Response> AsyncService::pivotMultiple(std::shared_ptr<TranslationModel> first,
++                                                 std::shared_ptr<TranslationModel> second,
++                                                 std::vector<std::string> &&sources,
++                                                 const ResponseOptions &responseOptions) {
++  std::vector<HTML> htmls;
++  for (size_t i = 0; i < sources.size(); i++) {
++    htmls.emplace_back(std::move(sources[i]), responseOptions.HTML);
++  }
++
++  // Translate source to pivots. This is same as calling translateMultiple.
++  std::vector<Response> sourcesToPivots = translateMultipleRaw(first, std::move(sources), responseOptions);
++
++  // Translate pivots to targets, after we have outputs at pivot from first round. The barrier is what makes this
++  // reproducible: the second leg is built on this thread in index order, so neither the ids nor the batches depend on
++  // the order in which the first leg happened to complete.
++  ResponseCollector collector(sourcesToPivots.size());
++  std::vector<Ptr<Request>> requests;
++  requests.reserve(sourcesToPivots.size());
++  for (size_t i = 0; i < sourcesToPivots.size(); i++) {
++    AnnotatedText intermediate =
++        sourcesToPivots[i].target;  // We cannot eliminate this copy, as we need two versions of intermediate. Holding
++                                    // it in allows further use in makePivotRequest
++    requests.push_back(second->makePivotRequest(requestId_++, std::move(intermediate), collector.callbackFor(i),
++                                                responseOptions, cache_));
++  }
++  safeBatchingPool_.enqueueRequests(second, requests, config_.numWorkers);
++  std::vector<Response> pivotsToTargets = collector.wait();
++
++  // Combine both sides. They're associated by indices.
++  std::vector<Response> finalResponses;
++  for (size_t i = 0; i < sourcesToPivots.size(); i++) {
++    finalResponses.push_back(combine(std::move(sourcesToPivots[i]), std::move(pivotsToTargets[i])));
++  }
++
++  for (size_t i = 0; i < finalResponses.size(); i++) {
++    htmls[i].restore(finalResponses[i]);
++  }
++
++  return finalResponses;
++}
++
+ void AsyncService::translate(std::shared_ptr<TranslationModel> translationModel, std::string &&source,
+                              CallbackType callback, const ResponseOptions &responseOptions) {
+   // Producer thread, a call to this function adds new work items. If batches are available, notifies workers waiting.
+diff --git a/engine/src/translator/service.h b/engine/src/translator/service.h
+index 5abff03..053f0b8 100644
+--- a/engine/src/translator/service.h
++++ b/engine/src/translator/service.h
+@@ -1,6 +1,7 @@
+ #ifndef SRC_BERGAMOT_SERVICE_H_
+ #define SRC_BERGAMOT_SERVICE_H_
+ 
++#include <atomic>
+ #include <queue>
+ #include <thread>
+ #include <vector>
+@@ -174,6 +175,59 @@ class AsyncService {
+   void pivot(std::shared_ptr<TranslationModel> first, std::shared_ptr<TranslationModel> second, std::string &&source,
+              CallbackType clientCallback, const ResponseOptions &options = ResponseOptions());
+ 
++  /// F5: the batch counterpart of translate(), shaped like
++  /// BlockingService::translateMultiple but executed on the worker pool. Every
++  /// request is built on the calling thread and the whole set enters the pool
++  /// in one step, so the batches the workers form -- and therefore the output
++  /// bytes -- are a function of the sources and the configuration alone, with
++  /// nothing left that depends on when a worker happened to wake up. The same
++  /// texts translate to the same bytes across calls and processes.
++  ///
++  /// The worker count is part of that configuration. A submission that would
++  /// otherwise form fewer batches than there are workers -- in the limit, a
++  /// handful of lines that fit in a single greedy batch, translated by one
++  /// worker while the rest idle -- is instead capped at
++  /// ceil(sentences / numWorkers) sentences per batch. Submissions that
++  /// already reach every worker are left untouched, so a page or a document
++  /// translates to the same bytes at any worker count and to the same bytes
++  /// BlockingService produces. Only a submission too small to go round can
++  /// differ between worker counts (still identically for a given count).
++  ///
++  /// Blocks until every response is in. Use translate() instead when responses
++  /// are wanted as they arrive, at the cost of that guarantee.
++  ///
++  /// MUST NOT be called from a translation callback: those run on worker
++  /// threads, and a worker parked here is a worker not translating -- with one
++  /// worker that is a deadlock.
++  ///
++  /// @param [in] translationModel: TranslationModel to use for the requests.
++  /// @param [move] sources: the source texts to be translated.
++  /// @param [in] options: applies to every source text.
++  /// @returns responses, one per source text, in input order.
++  std::vector<Response> translateMultiple(std::shared_ptr<TranslationModel> translationModel,
++                                          std::vector<std::string> &&sources,
++                                          const ResponseOptions &options = ResponseOptions());
++
++  /// F5: the batch counterpart of pivot(), with the same guarantee (including
++  /// the sentence cap and its caveat) and the same shape as
++  /// BlockingService::pivotMultiple. The second leg is a hard
++  /// barrier: it is built only after the first leg has completed in full, on
++  /// the calling thread and in index order, which is what makes a pivot
++  /// reproducible (pivot() instead builds each second-leg request on whichever
++  /// worker finished the first leg for that text).
++  ///
++  /// Costs the memory of holding every intermediate at once. Same threading
++  /// contract as translateMultiple().
++  ///
++  /// @param[in] first: TranslationModel from source language to pivot language.
++  /// @param[in] second: TranslationModel from pivot language to target language.
++  /// @param[move] sources: the source texts to be translated.
++  /// @param[in] options: applies to every source text.
++  /// @returns responses, one per source text, in input order, as if translated with translateMultiple.
++  std::vector<Response> pivotMultiple(std::shared_ptr<TranslationModel> first,
++                                      std::shared_ptr<TranslationModel> second, std::vector<std::string> &&sources,
++                                      const ResponseOptions &options = ResponseOptions());
++
+   /// Clears all pending requests.
+   void clear();
+ 
+@@ -208,6 +262,10 @@ class AsyncService {
+   void translateRaw(std::shared_ptr<TranslationModel> translationModel, std::string &&source, CallbackType callback,
+                     const ResponseOptions &options = ResponseOptions());
+ 
++  /// translateMultiple() without the HTML round-trip, so pivotMultiple() can use it for its first leg.
++  std::vector<Response> translateMultipleRaw(std::shared_ptr<TranslationModel> translationModel,
++                                             std::vector<std::string> &&sources, const ResponseOptions &options);
++
+   AsyncService::Config config_;
+ 
+   std::vector<std::thread> workers_;
+@@ -217,7 +275,12 @@ class AsyncService {
+ 
+   /// Numbering requests processed through this instance. Used to keep account of arrival times of the request. This
+   /// allows for using this quantity in priority based ordering.
+-  size_t requestId_;
++  ///
++  /// Atomic because pivot()'s chained callback allocates the second leg's id on whichever worker thread finished the
++  /// first leg, concurrently with the calling thread's own submissions. Losing an update there would hand two requests
++  /// the same id, which makes them equivalent under the batching pool's set ordering and silently drops one -- and the
++  /// caller then waits forever for a response that can never come.
++  std::atomic<size_t> requestId_;
+ 
+   /// An aggregate batching pool associated with an async translating instance, which maintains an aggregate queue of
+   /// requests compiled from  batching-pools of multiple translation models. The batching pool is wrapped around one
+diff --git a/engine/src/translator/threadsafe_batching_pool.cpp b/engine/src/translator/threadsafe_batching_pool.cpp
+index 0752674..2e3a400 100644
+--- a/engine/src/translator/threadsafe_batching_pool.cpp
++++ b/engine/src/translator/threadsafe_batching_pool.cpp
+@@ -27,6 +27,15 @@ void ThreadsafeBatchingPool<BatchingPoolType>::enqueueRequest(Args &&...args) {
+   work_.notify_all();
+ }
+ 
++template <class BatchingPoolType>
++template <class... Args>
++void ThreadsafeBatchingPool<BatchingPoolType>::enqueueRequests(Args &&...args) {
++  std::unique_lock<std::mutex> lock(mutex_);
++  assert(!shutdown_);
++  enqueued_ += backend_.enqueueRequests(std::forward<Args>(args)...);
++  work_.notify_all();
++}
++
+ template <class BatchingPoolType>
+ void ThreadsafeBatchingPool<BatchingPoolType>::clear() {
+   std::unique_lock<std::mutex> lock(mutex_);
+diff --git a/engine/src/translator/threadsafe_batching_pool.h b/engine/src/translator/threadsafe_batching_pool.h
+index 05c6619..33d0083 100644
+--- a/engine/src/translator/threadsafe_batching_pool.h
++++ b/engine/src/translator/threadsafe_batching_pool.h
+@@ -28,6 +28,7 @@ namespace bergamot {
+ /// Requires BatchingPoolType to implement the following:
+ ///
+ /// * produce: `size_t enqueueRequest(...)` (returns number elements produced)
++/// * produce (batched): `size_t enqueueRequests(...)` (same, for a whole set at once)
+ /// * consume: `size_t generateBatch(...)` (returns number of elements available to be consumed)
+ 
+ template <class BatchingPoolType>
+@@ -40,6 +41,17 @@ class ThreadsafeBatchingPool {
+   template <class... Args>
+   void enqueueRequest(Args &&...args);
+ 
++  /// F5: produce several requests under a single lock and a single notify.
++  /// Consumers therefore never observe a half-submitted set, so the batches
++  /// they generate depend only on what was submitted -- not on how far the
++  /// producer had got when a worker happened to wake up. The trailing
++  /// worker-count argument travels through to the backend, which uses it to
++  /// cap the sentences per batch for this submission (BatchingPool).
++  ///
++  /// Requires BatchingPoolType to implement `size_t enqueueRequests(...)`.
++  template <class... Args>
++  void enqueueRequests(Args &&...args);
++
+   /// Consumer side. Blocks until there is a batch, a shutdown, or a
+   /// maintenance request (D0).
+   ///
+diff --git a/engine/src/translator/translation_model.h b/engine/src/translator/translation_model.h
+index 510a042..4e18227 100644
+--- a/engine/src/translator/translation_model.h
++++ b/engine/src/translator/translation_model.h
+@@ -86,6 +86,15 @@ class TranslationModel {
+   /// @param [in] request: Request constructed through makeRequest
+   size_t enqueueRequest(Ptr<Request> request) { return batchingPool_.enqueueRequest(request); };
+ 
++  /// Relays a whole submission to the batching-pool specific to this translation model, capping the sentences per
++  /// batch so it spreads over the workers. See BatchingPool::enqueueRequests.
++  ///
++  /// @param [in] requests: Requests constructed through makeRequest/makePivotRequest, in the order given.
++  /// @param [in] numWorkers: How many consumers will draw batches from this pool.
++  size_t enqueueRequests(const std::vector<Ptr<Request>>& requests, size_t numWorkers) {
++    return batchingPool_.enqueueRequests(requests, numWorkers);
++  };
++
+   /// Generates a batch from the batching-pool for this translation model, compiling from several active requests. Note
+   /// that it is possible that calls to this method can give empty-batches.
+   ///
+-- 
+2.54.0
+

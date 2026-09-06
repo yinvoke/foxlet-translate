@@ -51,6 +51,20 @@ class AggregateBatchingPool {
   /// @returns number of sentences added for translation.
   size_t enqueueRequest(Ptr<TranslationModel> model, Ptr<Request> request);
 
+  /// Enqueue several requests for the same model at once. Same as calling enqueueRequest() in a loop, except the
+  /// caller can wrap the whole insertion in one critical section (see ThreadsafeBatchingPool::enqueueRequests), which
+  /// is what makes batch composition -- and therefore the output bytes -- independent of when consumers wake up.
+  ///
+  /// The per-submission sentence cap lands on the model's own BatchingPool (this class only aggregates), so with
+  /// several models in play each one is capped by the submission that was made to it.
+  ///
+  /// @param [in] model: Model to use in translation. A shared ownership to this model is accepted by this object to
+  /// keep the model alive until translation is complete.
+  /// @param [in] requests: Requests to be enqueued to model, in the order given.
+  /// @param [in] numWorkers: How many consumers will draw batches. See BatchingPool::enqueueRequests.
+  /// @returns number of sentences added for translation.
+  size_t enqueueRequests(Ptr<TranslationModel> model, const std::vector<Ptr<Request>> &requests, size_t numWorkers);
+
   /// Generate a batch from pending requests, obtained from available TranslationModels.
   ///
   /// @param [out] model: TranslationModel

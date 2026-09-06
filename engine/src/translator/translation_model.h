@@ -86,6 +86,15 @@ class TranslationModel {
   /// @param [in] request: Request constructed through makeRequest
   size_t enqueueRequest(Ptr<Request> request) { return batchingPool_.enqueueRequest(request); };
 
+  /// Relays a whole submission to the batching-pool specific to this translation model, capping the sentences per
+  /// batch so it spreads over the workers. See BatchingPool::enqueueRequests.
+  ///
+  /// @param [in] requests: Requests constructed through makeRequest/makePivotRequest, in the order given.
+  /// @param [in] numWorkers: How many consumers will draw batches from this pool.
+  size_t enqueueRequests(const std::vector<Ptr<Request>>& requests, size_t numWorkers) {
+    return batchingPool_.enqueueRequests(requests, numWorkers);
+  };
+
   /// Generates a batch from the batching-pool for this translation model, compiling from several active requests. Note
   /// that it is possible that calls to this method can give empty-batches.
   ///

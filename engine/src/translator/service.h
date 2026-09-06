@@ -1,6 +1,7 @@
 #ifndef SRC_BERGAMOT_SERVICE_H_
 #define SRC_BERGAMOT_SERVICE_H_
 
+#include <atomic>
 #include <queue>
 #include <thread>
 #include <vector>
@@ -174,6 +175,59 @@ class AsyncService {
   void pivot(std::shared_ptr<TranslationModel> first, std::shared_ptr<TranslationModel> second, std::string &&source,
              CallbackType clientCallback, const ResponseOptions &options = ResponseOptions());
 
+  /// F5: the batch counterpart of translate(), shaped like
+  /// BlockingService::translateMultiple but executed on the worker pool. Every
+  /// request is built on the calling thread and the whole set enters the pool
+  /// in one step, so the batches the workers form -- and therefore the output
+  /// bytes -- are a function of the sources and the configuration alone, with
+  /// nothing left that depends on when a worker happened to wake up. The same
+  /// texts translate to the same bytes across calls and processes.
+  ///
+  /// The worker count is part of that configuration. A submission that would
+  /// otherwise form fewer batches than there are workers -- in the limit, a
+  /// handful of lines that fit in a single greedy batch, translated by one
+  /// worker while the rest idle -- is instead capped at
+  /// ceil(sentences / numWorkers) sentences per batch. Submissions that
+  /// already reach every worker are left untouched, so a page or a document
+  /// translates to the same bytes at any worker count and to the same bytes
+  /// BlockingService produces. Only a submission too small to go round can
+  /// differ between worker counts (still identically for a given count).
+  ///
+  /// Blocks until every response is in. Use translate() instead when responses
+  /// are wanted as they arrive, at the cost of that guarantee.
+  ///
+  /// MUST NOT be called from a translation callback: those run on worker
+  /// threads, and a worker parked here is a worker not translating -- with one
+  /// worker that is a deadlock.
+  ///
+  /// @param [in] translationModel: TranslationModel to use for the requests.
+  /// @param [move] sources: the source texts to be translated.
+  /// @param [in] options: applies to every source text.
+  /// @returns responses, one per source text, in input order.
+  std::vector<Response> translateMultiple(std::shared_ptr<TranslationModel> translationModel,
+                                          std::vector<std::string> &&sources,
+                                          const ResponseOptions &options = ResponseOptions());
+
+  /// F5: the batch counterpart of pivot(), with the same guarantee (including
+  /// the sentence cap and its caveat) and the same shape as
+  /// BlockingService::pivotMultiple. The second leg is a hard
+  /// barrier: it is built only after the first leg has completed in full, on
+  /// the calling thread and in index order, which is what makes a pivot
+  /// reproducible (pivot() instead builds each second-leg request on whichever
+  /// worker finished the first leg for that text).
+  ///
+  /// Costs the memory of holding every intermediate at once. Same threading
+  /// contract as translateMultiple().
+  ///
+  /// @param[in] first: TranslationModel from source language to pivot language.
+  /// @param[in] second: TranslationModel from pivot language to target language.
+  /// @param[move] sources: the source texts to be translated.
+  /// @param[in] options: applies to every source text.
+  /// @returns responses, one per source text, in input order, as if translated with translateMultiple.
+  std::vector<Response> pivotMultiple(std::shared_ptr<TranslationModel> first,
+                                      std::shared_ptr<TranslationModel> second, std::vector<std::string> &&sources,
+                                      const ResponseOptions &options = ResponseOptions());
+
   /// Clears all pending requests.
   void clear();
 
@@ -208,6 +262,10 @@ class AsyncService {
   void translateRaw(std::shared_ptr<TranslationModel> translationModel, std::string &&source, CallbackType callback,
                     const ResponseOptions &options = ResponseOptions());
 
+  /// translateMultiple() without the HTML round-trip, so pivotMultiple() can use it for its first leg.
+  std::vector<Response> translateMultipleRaw(std::shared_ptr<TranslationModel> translationModel,
+                                             std::vector<std::string> &&sources, const ResponseOptions &options);
+
   AsyncService::Config config_;
 
   std::vector<std::thread> workers_;
@@ -217,7 +275,12 @@ class AsyncService {
 
   /// Numbering requests processed through this instance. Used to keep account of arrival times of the request. This
   /// allows for using this quantity in priority based ordering.
-  size_t requestId_;
+  ///
+  /// Atomic because pivot()'s chained callback allocates the second leg's id on whichever worker thread finished the
+  /// first leg, concurrently with the calling thread's own submissions. Losing an update there would hand two requests
+  /// the same id, which makes them equivalent under the batching pool's set ordering and silently drops one -- and the
+  /// caller then waits forever for a response that can never come.
+  std::atomic<size_t> requestId_;
 
   /// An aggregate batching pool associated with an async translating instance, which maintains an aggregate queue of
   /// requests compiled from  batching-pools of multiple translation models. The batching pool is wrapped around one

@@ -1,0 +1,55 @@
+From cb285dbff26729651ccaec9f3ef11676d1586313 Mon Sep 17 00:00:00 2001
+From: yinvoker <yinvoker@outlook.com>
+Date: Sun, 6 Sep 2026 23:03:10 +0800
+Subject: [PATCH] patch: ssplit prefix bytes reach the splitter;
+ AsyncService::createCompatibleModel(config, MemoryBundle) (patch 0023)
+
+text_processor.cpp tested memory.begin() == nullptr && memory.size(), which no
+AlignedMemory satisfies, so the byte-array route for ssplit-prefix-file was dead
+and every caller fell back to the file path. Upstream bug.
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+---
+ engine/src/translator/service.h          | 7 +++++++
+ engine/src/translator/text_processor.cpp | 6 +++++-
+ 2 files changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/engine/src/translator/service.h b/engine/src/translator/service.h
+index cd58140..5abff03 100644
+--- a/engine/src/translator/service.h
++++ b/engine/src/translator/service.h
+@@ -140,6 +140,13 @@ class AsyncService {
+     return New<TranslationModel>(config, /*replicas=*/config_.numWorkers);
+   }
+ 
++  /// Same, with parts of the model supplied as bytes instead of paths. Members of `memory` left empty fall back to the
++  /// corresponding file path in `config`, so a caller that only has, say, the sentence-splitter prefixes in memory can
++  /// pass just those.
++  Ptr<TranslationModel> createCompatibleModel(const TranslationModel::Config &config, MemoryBundle &&memory) {
++    return New<TranslationModel>(config, std::move(memory), /*replicas=*/config_.numWorkers);
++  }
++
+   /// With the supplied TranslationModel, translate an input. A Response is constructed with optional items set/unset
+   /// indicated via ResponseOptions. Upon completion translation of the input, the client supplied callback is
+   /// triggered with the constructed Response. Concurrent-calls to this function are safe.
+diff --git a/engine/src/translator/text_processor.cpp b/engine/src/translator/text_processor.cpp
+index 0dab275..79a9e82 100644
+--- a/engine/src/translator/text_processor.cpp
++++ b/engine/src/translator/text_processor.cpp
+@@ -70,8 +70,12 @@ TextProcessor::TextProcessor(Ptr<Options> options, const Vocabs &vocabs, const A
+   // ssplit-prefix-file where-in the purely regular expression based splitter is activated.
+   //
+   // For now, we allow not supplying an ssplit-prefix-file.
++  //
++  // The test below used to read `memory.begin() == nullptr && memory.size()`, which no AlignedMemory can satisfy: a
++  // non-empty allocation always has a non-null base. The byte-array branch was therefore dead and every caller silently
++  // fell back to the file path (or, with no path either, to the bare regex splitter).
+ 
+-  if (memory.begin() == nullptr && memory.size()) {
++  if (memory.begin() != nullptr && memory.size()) {
+     ssplit_ = loadSplitter(memory);
+   } else {
+     ssplit_ = loadSplitter(options->get<std::string>("ssplit-prefix-file", ""));
+-- 
+2.54.0
+

@@ -70,8 +70,12 @@ TextProcessor::TextProcessor(Ptr<Options> options, const Vocabs &vocabs, const A
   // ssplit-prefix-file where-in the purely regular expression based splitter is activated.
   //
   // For now, we allow not supplying an ssplit-prefix-file.
+  //
+  // The test below used to read `memory.begin() == nullptr && memory.size()`, which no AlignedMemory can satisfy: a
+  // non-empty allocation always has a non-null base. The byte-array branch was therefore dead and every caller silently
+  // fell back to the file path (or, with no path either, to the bare regex splitter).
 
-  if (memory.begin() == nullptr && memory.size()) {
+  if (memory.begin() != nullptr && memory.size()) {
     ssplit_ = loadSplitter(memory);
   } else {
     ssplit_ = loadSplitter(options->get<std::string>("ssplit-prefix-file", ""));

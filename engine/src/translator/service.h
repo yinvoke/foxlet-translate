@@ -140,6 +140,13 @@ class AsyncService {
     return New<TranslationModel>(config, /*replicas=*/config_.numWorkers);
   }
 
+  /// Same, with parts of the model supplied as bytes instead of paths. Members of `memory` left empty fall back to the
+  /// corresponding file path in `config`, so a caller that only has, say, the sentence-splitter prefixes in memory can
+  /// pass just those.
+  Ptr<TranslationModel> createCompatibleModel(const TranslationModel::Config &config, MemoryBundle &&memory) {
+    return New<TranslationModel>(config, std::move(memory), /*replicas=*/config_.numWorkers);
+  }
+
   /// With the supplied TranslationModel, translate an input. A Response is constructed with optional items set/unset
   /// indicated via ResponseOptions. Upon completion translation of the input, the client supplied callback is
   /// triggered with the constructed Response. Concurrent-calls to this function are safe.

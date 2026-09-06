@@ -15,6 +15,13 @@ data class ModelFiles(
     val shortlist: File,
 ) {
     companion object {
+        /**
+         * Hard-wired in the config YAML below. The engine SIGABRTs (no Java
+         * exception) when mini-batch-words < 2x this value, so [EngineConfig]
+         * validates against it.
+         */
+        const val MAX_LENGTH_BREAK = 128
+
         /** Directory holding model.*.bin, *vocab*.spm, lex.*.bin for one direction. */
         fun fromDirectory(dir: File): ModelFiles {
             fun pick(what: String, predicate: (String) -> Boolean): File =
@@ -29,7 +36,7 @@ data class ModelFiles(
         }
     }
 
-    internal fun toConfigYaml(workspaceMb: Int): String = """
+    internal fun toConfigYaml(workspaceMb: Int, miniBatchWords: Int = 512): String = """
         models:
           - ${model.absolutePath}
         vocabs:
@@ -41,8 +48,8 @@ data class ModelFiles(
         beam-size: 1
         normalize: 1.0
         word-penalty: 0
-        max-length-break: 128
-        mini-batch-words: 1024
+        max-length-break: $MAX_LENGTH_BREAK
+        mini-batch-words: $miniBatchWords
         workspace: $workspaceMb
         max-length-factor: 2.0
         skip-cost: true
@@ -61,7 +68,37 @@ class EngineConfig(
     val workspaceMb: Int = 128,
     /** Unload a model after this long without use. */
     val idleUnloadMillis: Long = 60_000,
-)
+    /**
+     * Pin worker threads to the fastest CPU cores (big.LITTLE SoCs schedule
+     * translation onto mid cores surprisingly often; the prime core is ~1.5x
+     * faster at equal clocks). Silent no-op on uniform topologies or when the
+     * OS refuses; affinity is re-applied on every batch, so it heals itself
+     * after background/foreground cpuset moves.
+     */
+    val pinToFastCores: Boolean = true,
+    /**
+     * Marian mini-batch-words. 512 beats 1024 across every worker tier
+     * (device-controlled A/B: never slower, up to -23% at 4 workers, slightly
+     * less RAM) because a smaller batch keeps the shortlist union — and with
+     * it the output layer — narrow.
+     */
+    val miniBatchWords: Int = 512,
+    /**
+     * Translation cache entries, 0 = off. Zero-cost on miss; repeated texts
+     * hit at ~40x. Off by default: a hit can legitimately differ from a fresh
+     * translation by a line (batch-context dependence), so enable only where
+     * repeated inputs dominate (suggested 4096-16384).
+     */
+    val cacheSize: Int = 0,
+) {
+    init {
+        require(miniBatchWords >= 2 * ModelFiles.MAX_LENGTH_BREAK) {
+            "miniBatchWords ($miniBatchWords) must be >= ${2 * ModelFiles.MAX_LENGTH_BREAK}: " +
+                "below 2x max-length-break the engine aborts the process"
+        }
+        require(cacheSize >= 0) { "cacheSize must be >= 0" }
+    }
+}
 
 /**
  * Bergamot engine with lazy model loading and idle-based unloading.
@@ -139,7 +176,9 @@ class BergamotEngine(private val config: EngineConfig = EngineConfig()) : Closea
     // ---- All below runs on the engine thread. ----
 
     private fun serviceHandle(): Long {
-        if (service == 0L) service = NativeBridge.createService(config.threads)
+        if (service == 0L) {
+            service = NativeBridge.createService(config.threads, config.pinToFastCores, config.cacheSize)
+        }
         return service
     }
 
@@ -148,7 +187,13 @@ class BergamotEngine(private val config: EngineConfig = EngineConfig()) : Closea
     private fun acquire(model: ModelFiles): Long {
         serviceHandle()
         val loaded = models.getOrPut(keyOf(model)) {
-            LoadedModel(NativeBridge.loadModel(serviceHandle(), model.toConfigYaml(config.workspaceMb)), System.nanoTime())
+            LoadedModel(
+                NativeBridge.loadModel(
+                    serviceHandle(),
+                    model.toConfigYaml(config.workspaceMb, config.miniBatchWords),
+                ),
+                System.nanoTime(),
+            )
         }
         loaded.lastUsedAt = System.nanoTime()
         return loaded.handle

@@ -3,6 +3,7 @@ package io.github.yinvoker.bergamot
 import java.io.File
 import kotlin.io.path.createTempDirectory
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertThrows
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -59,5 +60,35 @@ class ModelFilesTest {
         assertTrue(yaml.contains("workspace: 96"))
         assertTrue(yaml.contains("gemm-precision: int8shiftAlphaAll"))
         assertTrue(yaml.lines().none { it.startsWith(" ") && it.contains("\t") })
+    }
+
+    @Test
+    fun `config yaml defaults to mini-batch-words 512`() {
+        val d = dir(
+            "model.enzh.intgemm.alphas.bin",
+            "srcvocab.enzh.spm",
+            "trgvocab.enzh.spm",
+            "lex.50.50.enzh.s2t.bin",
+        )
+        val files = ModelFiles.fromDirectory(d)
+        assertTrue(files.toConfigYaml(workspaceMb = 128).contains("mini-batch-words: 512"))
+        assertTrue(files.toConfigYaml(workspaceMb = 128, miniBatchWords = 1024).contains("mini-batch-words: 1024"))
+    }
+
+    @Test
+    fun `engine config rejects mini-batch-words below 2x max-length-break`() {
+        // 2 * MAX_LENGTH_BREAK is the documented floor: below it the engine
+        // SIGABRTs the whole process instead of throwing.
+        EngineConfig(miniBatchWords = 2 * ModelFiles.MAX_LENGTH_BREAK) // boundary OK
+        assertThrows(IllegalArgumentException::class.java) {
+            EngineConfig(miniBatchWords = 2 * ModelFiles.MAX_LENGTH_BREAK - 1)
+        }
+    }
+
+    @Test
+    fun `engine config rejects negative cache size`() {
+        EngineConfig(cacheSize = 0)
+        EngineConfig(cacheSize = 4096)
+        assertThrows(IllegalArgumentException::class.java) { EngineConfig(cacheSize = -1) }
     }
 }

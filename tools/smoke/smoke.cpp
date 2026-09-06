@@ -51,6 +51,7 @@
 #include "ruy/context.h"
 #include "ruy/cpuinfo.h"
 #ifdef __ANDROID__
+#include "../../jni/affinity.h"
 #endif
 #include "translator/parser.h"
 #include "translator/response.h"
@@ -641,6 +642,13 @@ int main(int argc, char *argv[]) {
     AsyncService::Config config;
     config.numWorkers = workers;
     config.cacheSize = cacheSize;
+#ifdef __ANDROID__
+    // BERGAMOT_PIN=1 pins workers to the fastest cores (mirrors the AAR default).
+    if (const char *pin = getenv("BERGAMOT_PIN"); pin != nullptr && pin[0] == '1') {
+      size_t fastCores = workers;
+      config.onWorkerStart = [fastCores](size_t) { bergamot_android::pinCurrentThread(fastCores); };
+    }
+#endif
     AsyncService service{config};
     emitMem("baseline");
 

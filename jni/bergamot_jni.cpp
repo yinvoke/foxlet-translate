@@ -9,6 +9,8 @@
 #include "ruy/cpuinfo.h"
 #include "tensors/cpu/smmla_gemm.h"
 
+#include "affinity.h"
+
 #include <condition_variable>
 #include <memory>
 #include <mutex>
@@ -90,21 +92,36 @@ std::vector<Response> collectAll(std::vector<std::string> &&sources, Submit subm
 extern "C" {
 
 JNIEXPORT jlong JNICALL
-Java_io_github_yinvoker_bergamot_NativeBridge_createService(JNIEnv *env, jobject, jint workers) {
+Java_io_github_yinvoker_bergamot_NativeBridge_createService(JNIEnv *env, jobject, jint workers,
+                                                            jboolean pinToFastCores, jint cacheSize) {
   try {
     {
       ruy::Context probe;
       ruy::CpuInfo cpuInfo;
+      // cache_local/cache_llc equal to 32768/524288 mean cpuinfo failed inside
+      // the app sandbox and ruy fell back to dummy cache params (block_map then
+      // tiles for a 512KB last-level cache). The adb-shell context reads real
+      // values; whether the app context does is an open question — this log
+      // line answers it.
       // smmla=1 means the app-sandbox HWCAP read saw i8mm and the SMMLA GEMM
       // path is live in this process (0 = ruy SDOT fallback).
       __android_log_print(ANDROID_LOG_INFO, "bergamot",
-                          "ruy runtime paths=0x%x dotprod=%d smmla=%d",
+                          "ruy runtime paths=0x%x dotprod=%d cache_local=%d cache_llc=%d smmla=%d",
                           static_cast<int>(probe.get_runtime_enabled_paths()),
                           cpuInfo.NeonDotprod() ? 1 : 0,
+                          cpuInfo.CacheParams().local_cache_size,
+                          cpuInfo.CacheParams().last_level_cache_size,
                           marian::cpu::integer::smmla::available() ? 1 : 0);
     }
     AsyncService::Config config;
     config.numWorkers = workers < 1 ? 1 : static_cast<size_t>(workers);
+    config.cacheSize = cacheSize < 0 ? 0 : static_cast<size_t>(cacheSize);
+    if (pinToFastCores) {
+      // Each worker pins itself to the N fastest cores (N = worker count);
+      // no-op on uniform topologies or when the cpuset refuses.
+      size_t fastCores = config.numWorkers;
+      config.onWorkerStart = [fastCores](size_t) { bergamot_android::pinCurrentThread(fastCores); };
+    }
     return reinterpret_cast<jlong>(new AsyncService(config));
   } catch (const std::exception &e) {
     throwJava(env, std::string("createService failed: ") + e.what());
@@ -156,6 +173,7 @@ JNIEXPORT jobjectArray JNICALL
 Java_io_github_yinvoker_bergamot_NativeBridge_translate(JNIEnv *env, jobject, jlong service, jlong model,
                                                         jobjectArray texts, jboolean html) {
   try {
+    bergamot_android::reapplyAffinity();
     auto *svc = reinterpret_cast<AsyncService *>(service);
     auto &handle = *reinterpret_cast<ModelHandle *>(model);
     ResponseOptions responseOptions;
@@ -174,6 +192,7 @@ JNIEXPORT jobjectArray JNICALL
 Java_io_github_yinvoker_bergamot_NativeBridge_translatePivot(JNIEnv *env, jobject, jlong service, jlong first,
                                                              jlong second, jobjectArray texts, jboolean html) {
   try {
+    bergamot_android::reapplyAffinity();
     auto *svc = reinterpret_cast<AsyncService *>(service);
     auto &firstHandle = *reinterpret_cast<ModelHandle *>(first);
     auto &secondHandle = *reinterpret_cast<ModelHandle *>(second);

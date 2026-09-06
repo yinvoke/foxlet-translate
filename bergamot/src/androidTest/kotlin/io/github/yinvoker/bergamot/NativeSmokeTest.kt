@@ -20,7 +20,8 @@ class NativeSmokeTest {
 
     @Test
     fun serviceLifecycleAndBadModelRejection() {
-        val service = NativeBridge.createService(1)
+        // cacheSize > 0 exercises TranslationCache construction in-process.
+        val service = NativeBridge.createService(1, true, 16)
         assertNotEquals(0L, service)
 
         assertThrows(RuntimeException::class.java) {

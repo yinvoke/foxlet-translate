@@ -115,7 +115,10 @@ class BenchRunner(
             // One engine per process run: marian keeps process-global state and a
             // second AsyncService in the same process fails (known engine limit).
             val t = bergamotThreads
-            val engine = BergamotEngine(EngineConfig(threads = t, workspaceMb = workspaceMb, idleUnloadMillis = Long.MAX_VALUE / 2))
+            // idleUnloadMillis < 0: no automatic unloading. The phases below
+            // decide themselves when a model goes away, and a timer firing
+            // mid-phase would land in the memory curve.
+            val engine = BergamotEngine(EngineConfig(threads = t, workspaceMb = workspaceMb, idleUnloadMillis = -1))
             try {
                 phases.put(bergamotPhase("bergamot-enzh-${t}t", engine) {
                     it.translate(eng, ModelFiles.fromDirectory(enzh))

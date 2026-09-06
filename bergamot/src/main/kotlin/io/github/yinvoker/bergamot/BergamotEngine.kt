@@ -4,9 +4,10 @@ import android.content.Context
 import java.io.Closeable
 import java.io.File
 import java.util.concurrent.ExecutionException
-import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import java.util.concurrent.RejectedExecutionException
+import java.util.concurrent.ScheduledThreadPoolExecutor
+import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.withContext
 
@@ -115,7 +116,23 @@ class EngineConfig(
      * at [threads] = 1. Smaller = less RAM, may cost speed.
      */
     val workspaceMb: Int = 128,
-    /** Unload a model after this long without use. */
+    /**
+     * Unload a model after this long without use.
+     *
+     * A timer on the engine thread does it, so the model goes away on its own
+     * once translation stops — no further call is needed to trigger the
+     * reclaim, and the sweep can never interleave with a batch. The next
+     * [BergamotEngine.translate] reloads transparently; the reload costs
+     * roughly 140 ms plus ~110 ms of extra latency on the sentence that
+     * triggers it (en->zh, Mi 12), against ~103 MB of RSS held while resident.
+     *
+     * Zero keeps its old meaning: the model is dropped right after the batch
+     * that used it (for a RAM-capped sequential pivot, say). A negative value
+     * switches automatic unloading off: models then stay resident until
+     * [BergamotEngine.releaseAllModels] or [BergamotEngine.close] — the right
+     * setting for a benchmark, and the wrong one for an app that translates in
+     * bursts.
+     */
     val idleUnloadMillis: Long = 60_000,
     /**
      * Marian mini-batch-words. 512 beats 1024 across every worker tier
@@ -208,16 +225,41 @@ class EngineConfig(
  * waits for the workers. Cancellation is cooperative at batch granularity: a
  * single native batch cannot be interrupted (mirror of the engine's own
  * contract).
+ *
+ * Models load on first use and are dropped again by a timer once they have
+ * gone [EngineConfig.idleUnloadMillis] without one — the sweep is posted to
+ * the same engine thread, which is what keeps it from ever landing in the
+ * middle of a batch. Reloading is invisible to the caller; [loadedModelCount]
+ * is there for anyone who wants to watch it happen.
  */
 class BergamotEngine(private val config: EngineConfig = EngineConfig()) : Closeable {
 
-    private val executor = Executors.newSingleThreadExecutor { r -> Thread(r, "bergamot") }
+    private val executor = ScheduledThreadPoolExecutor(1) { r -> Thread(r, "bergamot") }.apply {
+        // A sweep left in the queue by close() would call into a destroyed
+        // service. close() cancels it, this is the belt to that pair of braces.
+        executeExistingDelayedTasksAfterShutdownPolicy = false
+        // Every translation cancels the previous sweep; without this the dead
+        // bookings would sit in the queue until their original deadline.
+        removeOnCancelPolicy = true
+    }
     private val dispatcher = executor.asCoroutineDispatcher()
 
     private var service: Long = 0
-    private val models = HashMap<String, LoadedModel>()
 
-    private class LoadedModel(val handle: Long, var lastUsedAt: Long)
+    /** Model key -> native handle. Read and written on the engine thread only. */
+    private val models = HashMap<String, Long>()
+
+    private val sweeper = IdleSweeper(
+        idleMillis = config.idleUnloadMillis,
+        nowNanos = System::nanoTime,
+        scheduler = { delayMillis, task ->
+            val scheduled = executor.schedule(task, delayMillis, TimeUnit.MILLISECONDS)
+            // false: a sweep already running is on the engine thread and owns
+            // the models; interrupting it mid-release is never what we want.
+            IdleSweeper.Pending { scheduled.cancel(false) }
+        },
+        onIdle = ::unload,
+    )
 
     /** Translate [texts] with the direction in [model]. */
     suspend fun translate(texts: List<String>, model: ModelFiles, html: Boolean = false): List<String> =
@@ -226,8 +268,8 @@ class BergamotEngine(private val config: EngineConfig = EngineConfig()) : Closea
             try {
                 NativeBridge.translate(serviceHandle(), handle, texts.toTypedArray(), html).toList()
             } finally {
-                touch(model)
-                unloadIdle()
+                sweeper.touch(keyOf(model))
+                sweeper.rearm()
             }
         }
 
@@ -248,9 +290,9 @@ class BergamotEngine(private val config: EngineConfig = EngineConfig()) : Closea
             NativeBridge.translatePivot(serviceHandle(), firstHandle, secondHandle, texts.toTypedArray(), html)
                 .toList()
         } finally {
-            touch(first)
-            touch(second)
-            unloadIdle()
+            sweeper.touch(keyOf(first))
+            sweeper.touch(keyOf(second))
+            sweeper.rearm()
         }
     }
 
@@ -266,9 +308,21 @@ class BergamotEngine(private val config: EngineConfig = EngineConfig()) : Closea
     fun releaseAllModels(): Future<Boolean> = executor.submit<Boolean> { releaseAll() }
 
     /**
-     * Release every model, destroy the native service and stop the engine
-     * thread. Blocks until the native side is actually gone (bounded by one
-     * in-flight batch), so a caller may create the next engine right after —
+     * How many models are resident right now.
+     *
+     * Counted on the engine thread, so the future queues behind any batch in
+     * flight — waiting on it from the main thread can block for the length of
+     * a translation. Mostly a way to observe idle unloading from outside: it
+     * drops to 0 on its own [EngineConfig.idleUnloadMillis] after the last
+     * translation, and the next [translate] silently loads the model again.
+     */
+    fun loadedModelCount(): Future<Int> = executor.submit<Int> { models.size }
+
+    /**
+     * Release every model, cancel the pending idle sweep, destroy the native
+     * service and stop the engine thread. Blocks until the native side is
+     * actually gone (bounded by one in-flight batch), so a caller may create
+     * the next engine right after —
      * marian keeps process-global state (its logger registry among it) and a
      * second service created while the first is still being torn down fails.
      * Call it off the main thread when a batch may still be running.
@@ -300,45 +354,34 @@ class BergamotEngine(private val config: EngineConfig = EngineConfig()) : Closea
 
     private fun keyOf(model: ModelFiles) = model.model.absolutePath
 
+    /** Load [model] if it is not resident, and mark it used. */
     private fun acquire(model: ModelFiles): Long {
-        serviceHandle()
-        val loaded = models.getOrPut(keyOf(model)) {
-            LoadedModel(
-                NativeBridge.loadModel(
-                    serviceHandle(),
-                    model.toConfigYaml(config.workspaceMb, config.miniBatchWords),
-                    if (config.nonbreakingPrefixes) NonbreakingPrefixes.bytesFor(model.sourceLanguage) else null,
-                ),
-                System.nanoTime(),
+        val key = keyOf(model)
+        val handle = models.getOrPut(key) {
+            NativeBridge.loadModel(
+                serviceHandle(),
+                model.toConfigYaml(config.workspaceMb, config.miniBatchWords),
+                if (config.nonbreakingPrefixes) NonbreakingPrefixes.bytesFor(model.sourceLanguage) else null,
             )
         }
-        loaded.lastUsedAt = System.nanoTime()
-        return loaded.handle
-    }
-
-    private fun touch(model: ModelFiles) {
-        models[keyOf(model)]?.lastUsedAt = System.nanoTime()
+        sweeper.touch(key)
+        return handle
     }
 
     /** Returns true when every model was actually destroyed. */
     private fun releaseAll(): Boolean {
         var allDestroyed = true
-        models.values.forEach { allDestroyed = NativeBridge.releaseModel(service, it.handle) && allDestroyed }
+        models.values.forEach { allDestroyed = NativeBridge.releaseModel(service, it) && allDestroyed }
         models.clear()
+        sweeper.forgetAll()
         return allDestroyed
     }
 
-    private fun unloadIdle() {
-        val deadline = System.nanoTime() - config.idleUnloadMillis * 1_000_000
-        val iterator = models.entries.iterator()
-        while (iterator.hasNext()) {
-            val entry = iterator.next()
-            if (entry.value.lastUsedAt < deadline) {
-                // Safe here: this runs on the engine thread, never on an engine
-                // worker, and the batch that just finished is the last one.
-                NativeBridge.releaseModel(service, entry.value.handle)
-                iterator.remove()
-            }
-        }
+    /** One model has been idle long enough. Called from a sweep. */
+    private fun unload(key: String) {
+        val handle = models.remove(key) ?: return
+        // Safe here: a sweep runs on the engine thread, never on an engine
+        // worker, and the thread is single — no batch can be in flight.
+        NativeBridge.releaseModel(service, handle)
     }
 }

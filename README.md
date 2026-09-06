@@ -30,6 +30,7 @@ Firefox 内置整页翻译所使用的 [Bergamot](https://browser.mt/) 引擎,
 - **移动端适配**:i8mm / NEON 内核加速,不支持 i8mm 的设备自动回退 ruy
 - **性能优化**:相较 v0.1.0,峰值内存约 −44%、首次翻译耗时约 −34%(小米 10 英→中,默认单 worker)
 - **内存管理**:int8 embedding、模型按需加载与释放确认,可挂 `onTrimMemory`
+- **线程与调度**:翻译线程钉在快核;单句走同步路径,批量按机型内存与快核数自动定档(`EngineConfig.forDevice`)
 
 ## 📊 基准测试
 
@@ -210,7 +211,7 @@ marian 持有进程级全局状态,不同线程数须分进程各跑一次),产�
 ```
 engine/        Bergamot 引擎,vendor 自 mozilla/translations(来源与升级手顺见 engine/UPSTREAM.md)
 patches/       对上游的全部本地改动,git 补丁形式存档
-jni/           C++ 胶水层:批量进出,走 AsyncService
+jni/           C++ 胶水层:批量进出;1 线程在调用线程同步翻译(BlockingService),≥2 线程走 AsyncService worker
 bergamot/      Android 库(Kotlin suspend API)→ AAR
 tools/         测试工具(不随库发布):smoke CLI(主机 / adb shell 基准)、regress-hash.sh 哈希回归、smmla-test(SMMLA 内核测试集与形状级 A/B)、i8mm 微基准
 sample/        基准测试 app:ML Kit vs Bergamot,内存/CPU 曲线,JSON 导出
@@ -272,8 +273,52 @@ engine.releaseAllModels()   // 异步释放,可挂在 onTrimMemory;返回 Future
 `releaseAllModels()` 的 Future 完成后可确认释放结果;如需等待,请在后台线程调用
 `get()`,不要阻塞主线程。从 v0.1.0 升级需重新编译调用方。
 
-**每个进程只能创建一个 `BergamotEngine`**(底层 marian 运行时持有
-进程级全局状态)。
+**同一时刻只能有一个 `BergamotEngine`**(底层 marian 运行时持有进程级
+全局状态)。`close()` 等原生侧释放完毕才返回,之后可以再建一个。
+
+### 选择线程数
+
+默认 `EngineConfig()` 是 1 线程:翻译在引擎线程上同步执行,不经 worker
+派发,内存最低,输出跨进程逐字节可复现。交互式「一次一句」只应用 1 线程:
+单句在 4 线程下实测比 1 线程**慢 2.35 倍**,派发开销压过了并行收益。
+
+只有**批量**翻译才值得多线程。让库按设备自动定档:
+
+```kotlin
+val config = EngineConfig.forDevice(context, Workload.BATCH)   // 双模型中转用 Workload.PIVOT
+BergamotEngine(config).use { engine -> /* … */ }
+```
+
+`forDevice` 读取总内存、当前可用内存、`isLowRamDevice` 和快核数(不在最慢
+CPU 簇里的核),在 1 / 2 / 4 / 6 里挑一档。推荐上限按名义内存分级:
+< 8 GB → 1,8 GB → 2,10 GB → 4,≥ 12 GB → 6(6 线程还要有 6 个快核);
+再与内存预算(默认总内存的 8%,256–1536 MB)取最小。`Workload.SINGLE`、
+低内存机、快核少于 2 个恒为 1。判断依据记在 `config.tuning`,可直接打日志:
+
+```
+threads=2 workload=BATCH bigCores=4 totalRamMb=7185 lowRam=false budgetMb=574 estRssMb=230
+```
+
+宿主 app 自己占用较多内存时请显式给预算,库看不见 app 的其余部分:
+
+```kotlin
+EngineConfig.forDevice(context, Workload.BATCH, hostBudgetBytes = 300L * 1024 * 1024)
+```
+
+这是推荐档,不是锁:`EngineConfig(threads = 4)` 这样的显式值永远优先。
+
+参考开销(稳态 RSS 含进程底,1/2/4 线程为小米 12 实测,6 线程为小米 14 实测;
+耗时为小米 14 同一限频状态下 200 句相对 1 线程):
+
+| 线程 | 单模型 | 双模型 pivot | 200 句耗时 |
+|---|---|---|---|
+| 1 | 145 MB | 250 MB | 1.00× |
+| 2 | 230 MB | 421 MB | 0.55× |
+| 4 | 401 MB | 758 MB | 0.35× |
+| 6 | 604 MB | 1115 MB | 0.29× |
+
+持续大批量会让 SoC 降频,热态下多线程仍快于少线程,库不做热调度;
+长批之后的单句延迟会变差数分钟,这是温度的结果,与线程数无关。
 
 ## 🔨 构建
 
@@ -309,7 +354,7 @@ adb shell am start -n io.github.yinvoker.bergamot.bench/.MainActivity \
 - [x] GEMM 内核优化
 - [x] Attention 小矩阵计算优化
 - [x] 内存占用与模型释放优化
-- [ ] 多线程与调度优化
+- [x] 多线程与调度优化
 - [ ] 参数与批处理调优
 - [ ] HTML 模式验证
 - [ ] SME2 指令集支持

@@ -88,15 +88,6 @@ class EngineConfig(
     /** Unload a model after this long without use. */
     val idleUnloadMillis: Long = 60_000,
     /**
-     * Pin the translating threads to the fastest CPU cores — the engine thread
-     * itself at [threads] = 1, the workers above that (big.LITTLE SoCs schedule
-     * translation onto mid cores surprisingly often; the prime core is ~1.5x
-     * faster at equal clocks). Silent no-op on uniform topologies or when the
-     * OS refuses; affinity is re-applied on every batch, so it heals itself
-     * after background/foreground cpuset moves.
-     */
-    val pinToFastCores: Boolean = true,
-    /**
      * Marian mini-batch-words. 512 beats 1024 across every worker tier
      * (device-controlled A/B: never slower, up to -23% at 4 workers, slightly
      * less RAM) because a smaller batch keeps the shortlist union — and with
@@ -155,7 +146,6 @@ class EngineConfig(
             hostBudgetBytes: Long? = null,
             workspaceMb: Int = 128,
             idleUnloadMillis: Long = 60_000,
-            pinToFastCores: Boolean = true,
             miniBatchWords: Int = 512,
             cacheSize: Int = 0,
         ): EngineConfig {
@@ -164,7 +154,6 @@ class EngineConfig(
                 threads = decision.threads,
                 workspaceMb = workspaceMb,
                 idleUnloadMillis = idleUnloadMillis,
-                pinToFastCores = pinToFastCores,
                 miniBatchWords = miniBatchWords,
                 cacheSize = cacheSize,
                 tuning = decision,
@@ -268,7 +257,7 @@ class BergamotEngine(private val config: EngineConfig = EngineConfig()) : Closea
 
     private fun serviceHandle(): Long {
         if (service == 0L) {
-            service = NativeBridge.createService(config.threads, config.pinToFastCores, config.cacheSize)
+            service = NativeBridge.createService(config.threads, config.cacheSize)
         }
         return service
     }

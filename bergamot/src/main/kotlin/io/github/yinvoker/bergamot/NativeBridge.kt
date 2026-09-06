@@ -35,7 +35,7 @@ internal object NativeBridge {
      * worker threads. The mode is fixed for the handle's lifetime; there is no
      * second service and no second set of models.
      */
-    external fun createService(workers: Int, pinToFastCores: Boolean, cacheSize: Int): Long
+    external fun createService(workers: Int, cacheSize: Int): Long
     external fun destroyService(service: Long)
     external fun loadModel(service: Long, configYaml: String): Long
 

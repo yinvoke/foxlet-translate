@@ -1,7 +1,6 @@
 #ifndef SRC_BERGAMOT_SERVICE_H_
 #define SRC_BERGAMOT_SERVICE_H_
 
-#include <functional>
 #include <queue>
 #include <thread>
 #include <vector>
@@ -121,10 +120,6 @@ class AsyncService {
     size_t numWorkers{1};   ///< How many worker translation threads to spawn.
     size_t cacheSize{0};    ///< Size in History items to be stored in the cache. Loosely corresponds to sentences to
                             /// cache in the real world. A value of 0 means no caching.
-    /// Optional hook run first thing on each worker thread, with the worker id in [0, numWorkers). Intended for
-    /// platform-specific thread setup (CPU affinity, priority). Exceptions are swallowed so a failing hook can never
-    /// take a worker down.
-    std::function<void(size_t)> onWorkerStart{nullptr};
     Logger::Config logger;  // Configurations for logging
 
     template <class App>

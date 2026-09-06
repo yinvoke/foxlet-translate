@@ -74,7 +74,7 @@ class NativeSmokeTest {
     fun serviceLifecycleAndBadModelRejection() {
         // workers=1 现在是 BlockingService;cacheSize > 0 顺带验证它的
         // TranslationCache 能在进程里构造出来。
-        val service = NativeBridge.createService(1, true, 16)
+        val service = NativeBridge.createService(1, 16)
         assertNotEquals(0L, service)
 
         assertThrows(RuntimeException::class.java) {

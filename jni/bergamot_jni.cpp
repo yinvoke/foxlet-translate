@@ -118,8 +118,7 @@ std::vector<Response> collectAll(std::vector<std::string> &&sources, Submit subm
 extern "C" {
 
 JNIEXPORT jlong JNICALL
-Java_io_github_yinvoker_bergamot_NativeBridge_createService(JNIEnv *env, jobject, jint workers,
-                                                            jboolean pinToFastCores, jint cacheSize) {
+Java_io_github_yinvoker_bergamot_NativeBridge_createService(JNIEnv *env, jobject, jint workers, jint cacheSize) {
   try {
     const size_t numWorkers = workers < 1 ? 1 : static_cast<size_t>(workers);
     const bool blocking = numWorkers <= 1;
@@ -148,11 +147,6 @@ Java_io_github_yinvoker_bergamot_NativeBridge_createService(JNIEnv *env, jobject
     auto handle = std::make_unique<ServiceHandle>();
     handle->workers = numWorkers;
     if (blocking) {
-      // No worker to hook: the translation runs right here, so the thread that
-      // creates the service is the one to pin. It stays the translating thread
-      // for the engine's whole life (Kotlin runs every native call on it), and
-      // reapplyAffinity() re-pins it before every batch.
-      if (pinToFastCores) bergamot_android::pinCurrentThread(1);
       BlockingService::Config config;
       config.cacheSize = cacheSize < 0 ? 0 : static_cast<size_t>(cacheSize);
       handle->blocking = std::make_unique<BlockingService>(config);
@@ -160,12 +154,6 @@ Java_io_github_yinvoker_bergamot_NativeBridge_createService(JNIEnv *env, jobject
       AsyncService::Config config;
       config.numWorkers = numWorkers;
       config.cacheSize = cacheSize < 0 ? 0 : static_cast<size_t>(cacheSize);
-      if (pinToFastCores) {
-        // Each worker pins itself to the N fastest cores (N = worker count);
-        // no-op on uniform topologies or when the cpuset refuses.
-        size_t fastCores = config.numWorkers;
-        config.onWorkerStart = [fastCores](size_t) { bergamot_android::pinCurrentThread(fastCores); };
-      }
       handle->async = std::make_unique<AsyncService>(config);
     }
     return reinterpret_cast<jlong>(handle.release());
@@ -236,7 +224,6 @@ JNIEXPORT jobjectArray JNICALL
 Java_io_github_yinvoker_bergamot_NativeBridge_translate(JNIEnv *env, jobject, jlong service, jlong model,
                                                         jobjectArray texts, jboolean html) {
   try {
-    bergamot_android::reapplyAffinity();
     auto *svc = reinterpret_cast<ServiceHandle *>(service);
     auto &handle = *reinterpret_cast<ModelHandle *>(model);
     auto sources = toStdStrings(env, texts);
@@ -262,7 +249,6 @@ JNIEXPORT jobjectArray JNICALL
 Java_io_github_yinvoker_bergamot_NativeBridge_translatePivot(JNIEnv *env, jobject, jlong service, jlong first,
                                                              jlong second, jobjectArray texts, jboolean html) {
   try {
-    bergamot_android::reapplyAffinity();
     auto *svc = reinterpret_cast<ServiceHandle *>(service);
     auto &firstHandle = *reinterpret_cast<ModelHandle *>(first);
     auto &secondHandle = *reinterpret_cast<ModelHandle *>(second);

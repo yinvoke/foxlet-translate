@@ -22,11 +22,6 @@
 //   --release-mode M  how the scenarios hand a model back: "release" (default,
 //                   the service's release() closure) or "reset" (drop the
 //                   shared_ptr only -- the pre-D0 behaviour, for A/B).
-//
-// Env (Android builds): BERGAMOT_PIN=1 pins the translating threads to the
-// fastest cores, mirroring the AAR default -- the workers under --workers N,
-// and this process's main thread under --workers 0 (blocking translates on the
-// calling thread).
 #include <chrono>
 #include <condition_variable>
 #include <cstdio>
@@ -55,9 +50,6 @@
 #include "common/lifecycle.h"
 #include "ruy/context.h"
 #include "ruy/cpuinfo.h"
-#ifdef __ANDROID__
-#include "../../jni/affinity.h"
-#endif
 #include "translator/parser.h"
 #include "translator/response.h"
 #include "translator/response_options.h"
@@ -231,18 +223,6 @@ void sleepSeconds(double seconds) {
   std::this_thread::sleep_for(std::chrono::duration<double>(seconds));
 }
 
-/// BERGAMOT_PIN=1 mirrors the AAR default. AsyncService pins its workers via
-/// onWorkerStart; BlockingService has none and translates on the calling
-/// thread, so that thread is what gets pinned -- before the service exists,
-/// exactly like the JNI layer does at createService(). No-op off Android.
-void pinBlockingCallerIfRequested() {
-#ifdef __ANDROID__
-  if (const char *pin = getenv("BERGAMOT_PIN"); pin != nullptr && pin[0] == '1') {
-    bergamot_android::pinCurrentThread(1);
-  }
-#endif
-}
-
 size_t countWords(const std::vector<std::string> &lines) {
   size_t words = 0;
   for (const auto &line : lines) {
@@ -355,7 +335,6 @@ int runLifecycleScenario(const std::string &scenario, const std::vector<std::str
 
   if (blocking) {
     BlockingService::Config config;
-    pinBlockingCallerIfRequested();
     BlockingService service{config};
     // give(handle) is "hand the model back" in whichever mode is selected.
     auto give = [&](std::shared_ptr<TranslationModel> &handle) {
@@ -635,7 +614,6 @@ int main(int argc, char *argv[]) {
   if (workers == 0) {
     BlockingService::Config config;
     config.cacheSize = cacheSize;
-    pinBlockingCallerIfRequested();
     BlockingService service{config};
     emitMem("baseline");
 
@@ -661,13 +639,6 @@ int main(int argc, char *argv[]) {
     AsyncService::Config config;
     config.numWorkers = workers;
     config.cacheSize = cacheSize;
-#ifdef __ANDROID__
-    // BERGAMOT_PIN=1 pins workers to the fastest cores (mirrors the AAR default).
-    if (const char *pin = getenv("BERGAMOT_PIN"); pin != nullptr && pin[0] == '1') {
-      size_t fastCores = workers;
-      config.onWorkerStart = [fastCores](size_t) { bergamot_android::pinCurrentThread(fastCores); };
-    }
-#endif
     AsyncService service{config};
     emitMem("baseline");
 

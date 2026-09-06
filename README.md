@@ -30,7 +30,7 @@ Firefox 内置整页翻译所使用的 [Bergamot](https://browser.mt/) 引擎,
 - **移动端适配**:i8mm / NEON 内核加速,不支持 i8mm 的设备自动回退 ruy
 - **性能优化**:相较 v0.1.0,峰值内存约 −44%、首次翻译耗时约 −34%(小米 10 英→中,默认单 worker)
 - **内存管理**:int8 embedding、模型按需加载与释放确认,可挂 `onTrimMemory`
-- **线程与调度**:翻译线程钉在快核;单句走同步路径,批量按机型内存与快核数自动定档(`EngineConfig.forDevice`)
+- **线程与调度**:单句走同步路径,批量按机型内存与快核数自动定档(`EngineConfig.forDevice`)
 
 ## 📊 基准测试
 

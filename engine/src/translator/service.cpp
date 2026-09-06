@@ -184,6 +184,13 @@ AsyncService::AsyncService(const AsyncService::Config &config)
   safeBatchingPool_.setConsumerCount(config_.numWorkers);
   for (size_t cpuId = 0; cpuId < config_.numWorkers; cpuId++) {
     workers_.emplace_back([cpuId, this] {
+      if (config_.onWorkerStart) {
+        try {
+          config_.onWorkerStart(cpuId);
+        } catch (...) {
+          // Thread-setup hooks are best-effort; never take a worker down.
+        }
+      }
       // Consumer thread main-loop. Note that this is an infinite-loop unless the monitor is explicitly told to
       // shutdown, which happens in the destructor for this class.
       Batch batch;

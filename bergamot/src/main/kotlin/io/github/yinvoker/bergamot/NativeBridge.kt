@@ -14,6 +14,20 @@ internal object NativeBridge {
     }
 
     /**
+     * Cores that are *not* in the slowest CPU cluster — the "big core" count
+     * [ThreadTuning.recommend] wants. 0 means the topology gave no usable
+     * answer (single cluster, near-uniform clusters, sysfs unreadable), not
+     * "no fast cores": callers fall back to their own estimate.
+     *
+     * Static topology, probed once and cached natively. It does not shrink
+     * when the app is pushed into a background cpuset, so it is an upper bound
+     * on what is actually schedulable at any given moment.
+     *
+     * Free of any service handle and callable from any thread.
+     */
+    external fun fastCoreCount(): Int
+
+    /**
      * Create the one service this engine will use. [workers] <= 1 selects a
      * BlockingService: every later call on this handle translates on the
      * *calling* thread, so all of them — including this one — must come from

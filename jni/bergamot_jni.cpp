@@ -1,7 +1,7 @@
 // JNI glue for io.github.yinvoker.bergamot.NativeBridge.
 // Thin by design: batch in, batch out, blocking from the caller's view.
 //
-// E4: two execution modes behind one handle, chosen once at createService().
+// Two execution modes behind one handle, chosen once at createService():
 //   workers <= 1 -> BlockingService. The batch is translated on the *calling*
 //     thread, which is the Kotlin engine thread and the only thread allowed to
 //     touch this handle. No dispatch, no worker replicas, byte-identical output
@@ -178,6 +178,14 @@ Java_io_github_yinvoker_bergamot_NativeBridge_createService(JNIEnv *env, jobject
 JNIEXPORT void JNICALL
 Java_io_github_yinvoker_bergamot_NativeBridge_destroyService(JNIEnv *, jobject, jlong service) {
   delete reinterpret_cast<ServiceHandle *>(service);
+}
+
+// The CPU half of the thread-tier input. Cores outside the slowest cluster,
+// or 0 when the topology gives no usable answer (see affinity.h). Free of any
+// service handle on purpose — the tier is picked before the engine exists.
+JNIEXPORT jint JNICALL
+Java_io_github_yinvoker_bergamot_NativeBridge_fastCoreCount(JNIEnv *, jobject) {
+  return static_cast<jint>(bergamot_android::fastCoreCount());
 }
 
 JNIEXPORT jlong JNICALL

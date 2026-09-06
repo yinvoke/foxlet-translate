@@ -27,11 +27,17 @@ struct PinnedThread {
 std::mutex gMutex;
 std::vector<PinnedThread> gPinned;
 
-// Cores ordered fastest-cluster-first. Empty when detection failed, there is
-// only one cluster, or the clusters are near-uniform (all-big SoCs).
-const std::vector<int> &fastCoreOrder() {
-  static const std::vector<int> order = [] {
-    std::vector<int> result;
+// One probe of /sys/devices/system/cpu/cpufreq, shared by the pinning path and
+// by fastCoreCount(). Both fields are empty/0 on exactly the same topologies:
+// probing failed, a single cluster, or near-uniform clusters (all-big SoCs).
+struct Topology {
+  std::vector<int> order;     ///< cores, fastest cluster first
+  std::size_t fastCount = 0;  ///< cores outside the slowest cluster(s)
+};
+
+const Topology &topology() {
+  static const Topology probed = [] {
+    Topology result;
     std::vector<std::pair<long, std::vector<int>>> clusters;  // (maxFreq, cpus)
     DIR *dir = opendir("/sys/devices/system/cpu/cpufreq");
     if (dir == nullptr) return result;
@@ -56,12 +62,21 @@ const std::vector<int> &fastCoreOrder() {
     std::sort(clusters.begin(), clusters.end(),
               [](const auto &a, const auto &b) { return a.first > b.first; });
     if (clusters.back().first * 100 >= clusters.front().first * 95) return result;
-    for (auto &cluster : clusters)
-      for (int cpu : cluster.second) result.push_back(cpu);
+    // Ties at the bottom are all "slow": some SoCs split the little cluster
+    // across two policies at the same cpuinfo_max_freq.
+    const long slowestFreq = clusters.back().first;
+    for (auto &cluster : clusters) {
+      if (cluster.first > slowestFreq) result.fastCount += cluster.second.size();
+      for (int cpu : cluster.second) result.order.push_back(cpu);
+    }
     return result;
   }();
-  return order;
+  return probed;
 }
+
+// Cores ordered fastest-cluster-first. Empty when detection failed, there is
+// only one cluster, or the clusters are near-uniform (all-big SoCs).
+const std::vector<int> &fastCoreOrder() { return topology().order; }
 
 // 0 on success, -1 when there is nothing to pin to, errno otherwise.
 int applyMask(pid_t tid, std::size_t count) {
@@ -100,6 +115,8 @@ void reapplyAffinity() {
   }
 }
 
+std::size_t fastCoreCount() { return topology().fastCount; }
+
 }  // namespace bergamot_android
 
 #else  // !defined(__linux__)
@@ -107,6 +124,7 @@ void reapplyAffinity() {
 namespace bergamot_android {
 void pinCurrentThread(std::size_t) {}
 void reapplyAffinity() {}
+std::size_t fastCoreCount() { return 0; }
 }  // namespace bergamot_android
 
 #endif

@@ -21,4 +21,17 @@ void pinCurrentThread(std::size_t count);
 // no longer exist are forgotten.
 void reapplyAffinity();
 
+// How many cores are *not* in the slowest cluster — the "big core" count the
+// Kotlin thread-tier picker needs (8 Gen 1 -> 4, 8 Gen 3 -> 6, 865 -> 4).
+// Clusters that tie for the lowest cpuinfo_max_freq all count as slow.
+//
+// Returns 0 on exactly the topologies where fastCoreOrder() gives up: probing
+// failed, there is a single cluster, or the clusters are near-uniform. 0 means
+// "no opinion" — the caller falls back to its own estimate; it never means
+// "zero fast cores". Non-Linux builds always return 0.
+//
+// This is *topology*, not availability: it does not shrink when the app is
+// moved into a background cpuset (see sched_getaffinity for that).
+std::size_t fastCoreCount();
+
 }  // namespace bergamot_android

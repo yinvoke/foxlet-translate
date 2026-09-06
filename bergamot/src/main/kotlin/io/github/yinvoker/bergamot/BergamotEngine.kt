@@ -141,9 +141,27 @@ class EngineConfig(
      */
     val threads: Int = 1,
     /**
-     * Marian workspace per replica, MB — one replica per worker, so exactly one
-     * at [threads] = 1. Smaller = less RAM, may cost speed.
+     * No effect. Kept so existing callers keep compiling.
+     *
+     * Nothing reads it. The value reaches marian's config as nothing at all
+     * (the `workspace` key was dropped from [ModelFiles.toConfigYaml]), and
+     * even before that it was ignored: the workspace reservation on this path
+     * is the hard-coded `reserveWorkspaceMB(5)` at
+     * `engine/src/translator/translation_model.cpp:118`, which
+     * `TensorAllocator`'s 128 MiB `GROW` rounds up to one 128 MiB chunk per
+     * worker regardless (`marian-fork/src/tensors/tensor_allocator.h:14,21`).
+     * 32 through 512 measured identical, in both time and RSS.
+     *
+     * The knob that would actually move that reservation is that `CHUNK`, not
+     * this parameter. Slated for removal in the next major version.
      */
+    @Deprecated(
+        "No effect: the engine never reads it. Marian reserves a hard-coded 5 MB " +
+            "(translation_model.cpp) which TensorAllocator rounds up to 128 MiB per " +
+            "worker, so 32 and 512 behave alike. Kept for source compatibility; " +
+            "drop the argument.",
+        level = DeprecationLevel.WARNING,
+    )
     val workspaceMb: Int = 128,
     /**
      * Unload a model after this long without use.
@@ -238,7 +256,12 @@ class EngineConfig(
          *
          * To override the tier, ignore this and construct [EngineConfig]
          * directly: an explicit [threads] always wins.
+         *
+         * @param workspaceMb no effect, see [EngineConfig.workspaceMb]. Kept
+         *   only so existing calls keep compiling; Kotlin cannot deprecate a
+         *   single function parameter, hence the doc instead of an annotation.
          */
+        @Suppress("DEPRECATION")
         fun forDevice(
             context: Context,
             workload: Workload,
@@ -414,6 +437,10 @@ class BergamotEngine(private val config: EngineConfig = EngineConfig()) : Closea
     private fun keyOf(model: ModelFiles) = model.model.absolutePath
 
     /** Load [model] if it is not resident, and mark it used. */
+    // config.workspaceMb is deprecated and no longer reaches the YAML; the
+    // argument is still passed so the internal signature stays put for a
+    // release. Drop both together.
+    @Suppress("DEPRECATION")
     private fun acquire(model: ModelFiles): Long {
         val key = keyOf(model)
         val handle = models.getOrPut(key) {

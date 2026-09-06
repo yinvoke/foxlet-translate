@@ -66,6 +66,13 @@ class NativeSmokeTest {
             )
             assertEquals(decision, pure)
         }
+
+        // 源码兼容门:已发布调用方写的就是这一行。workspaceMb 已 @Deprecated
+        // 且完全无效(见 EngineConfig.workspaceMb),但必须继续编译 —— 警告可以,
+        // 报错不行 —— 直到下个大版本移除。
+        @Suppress("DEPRECATION")
+        val legacy = EngineConfig.forDevice(context, Workload.SINGLE, workspaceMb = 64)
+        assertEquals(1, legacy.threads)
     }
 
     @Test

@@ -118,6 +118,10 @@ class BenchRunner(
             // idleUnloadMillis < 0: no automatic unloading. The phases below
             // decide themselves when a model goes away, and a timer firing
             // mid-phase would land in the memory curve.
+            // workspaceMb is deprecated and inert; the bench still threads it
+            // through so the `--ei workspace` switch and the result-file suffix
+            // keep working against older result sets.
+            @Suppress("DEPRECATION")
             val engine = BergamotEngine(EngineConfig(threads = t, workspaceMb = workspaceMb, idleUnloadMillis = -1))
             try {
                 phases.put(bergamotPhase("bergamot-enzh-${t}t", engine) {

@@ -174,6 +174,28 @@ class ModelFilesTest {
     }
 
     @Test
+    @Suppress("DEPRECATION")
+    fun `the deprecated workspaceMb argument still compiles and is inert`() {
+        // Source compatibility gate: this call is what an already-published
+        // caller writes. It must keep compiling (a warning is fine, an error is
+        // not) until the parameter is removed in a major version.
+        // EngineConfig.forDevice(context, workload, workspaceMb = 64) is the
+        // other published form; it needs a Context, so it is exercised by
+        // androidTest rather than here.
+        val config = EngineConfig(workspaceMb = 64)
+        assertEquals(64, config.workspaceMb)
+        // Inert: the value reaches no config key.
+        val d = dir(
+            "model.enzh.intgemm.alphas.bin",
+            "srcvocab.enzh.spm",
+            "trgvocab.enzh.spm",
+            "lex.50.50.enzh.s2t.bin",
+        )
+        val files = ModelFiles.fromDirectory(d)
+        assertEquals(files.toConfigYaml(workspaceMb = 32), files.toConfigYaml(workspaceMb = 512))
+    }
+
+    @Test
     fun `nonbreaking prefixes are on by default and can be turned off`() {
         assertTrue(EngineConfig().nonbreakingPrefixes)
         assertFalse(EngineConfig(nonbreakingPrefixes = false).nonbreakingPrefixes)

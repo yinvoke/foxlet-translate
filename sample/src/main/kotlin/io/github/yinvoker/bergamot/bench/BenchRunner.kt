@@ -57,8 +57,7 @@ class BenchRunner(
      * Recorded only. The benchmark keeps running the thread count the caller
      * asked for ([bergamotThreads]), because the whole point of the sweep is to
      * measure every tier — this is the column that lets host-side scoring say
-     * which of those tiers the picker would have chosen, and reconcile the
-     * measured RSS against the cost table it used.
+     * which of those tiers the picker would have chosen.
      */
     private fun tuningInfo(): JSONObject {
         val tuning = JSONObject()
@@ -68,8 +67,6 @@ class BenchRunner(
                 workload.name.lowercase(),
                 JSONObject()
                     .put("threads", d.threads)
-                    .put("budgetMb", d.budgetBytes / 1024 / 1024)
-                    .put("estimatedRssMb", d.estimatedRssBytes / 1024 / 1024)
                     .put("bigCoreCount", d.bigCoreCount)
                     .put("totalRamMb", d.totalRamBytes / 1024 / 1024)
                     .put("isLowRam", d.isLowRam),

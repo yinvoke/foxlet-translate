@@ -122,20 +122,11 @@ class EngineConfig(
          * `EngineConfig()` on its own is still `threads = 1` and reads
          * nothing; auto-tiering only happens when you call this.
          *
-         * Reads `ActivityManager.getMemoryInfo()` (totalMem / availMem /
-         * threshold), `isLowRamDevice` and [NativeBridge.fastCoreCount], then
-         * defers to [ThreadTuning.recommend]. The resulting [Decision] is kept
-         * in [tuning].
-         *
-         * Evaluated once, here. The engine fixes its worker count when the
-         * service is created, so a later change in free memory or in the app's
-         * cpuset does not re-tier anything — build a new engine for that.
-         *
-         * @param hostBudgetBytes RSS the host is willing to give the engine.
-         *   Used verbatim when present; otherwise derived from live memory
-         *   (see [ThreadTuning.deviceBudgetBytes]). Pass it if the host app
-         *   holds a large amount of memory of its own — the engine cannot see
-         *   that, and every other input here is device-wide.
+         * Reads `ActivityManager.getMemoryInfo().totalMem`, `isLowRamDevice`
+         * and [NativeBridge.fastCoreCount], then defers to
+         * [ThreadTuning.recommend]. The resulting [Decision] is kept in
+         * [tuning]. The engine fixes its worker count when the service is
+         * created, so build a new engine to re-tier.
          *
          * To override the tier, ignore this and construct [EngineConfig]
          * directly: an explicit [threads] always wins.
@@ -143,13 +134,12 @@ class EngineConfig(
         fun forDevice(
             context: Context,
             workload: Workload,
-            hostBudgetBytes: Long? = null,
             workspaceMb: Int = 128,
             idleUnloadMillis: Long = 60_000,
             miniBatchWords: Int = 512,
             cacheSize: Int = 0,
         ): EngineConfig {
-            val decision = ThreadTuning.forDevice(context, workload, hostBudgetBytes)
+            val decision = ThreadTuning.forDevice(context, workload)
             return EngineConfig(
                 threads = decision.threads,
                 workspaceMb = workspaceMb,

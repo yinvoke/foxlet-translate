@@ -289,23 +289,18 @@ val config = EngineConfig.forDevice(context, Workload.BATCH)   // 双模型中�
 BergamotEngine(config).use { engine -> /* … */ }
 ```
 
-`forDevice` 读取总内存、当前可用内存、`isLowRamDevice` 和快核数(不在最慢
-CPU 簇里的核),在 1 / 2 / 4 / 6 里挑一档。推荐上限按名义内存分级:
-< 8 GB → 1,8 GB → 2,10 GB → 4,≥ 12 GB → 6(6 线程还要有 6 个快核);
-再与内存预算(默认总内存的 8%,256–1536 MB)取最小。`Workload.SINGLE`、
-低内存机、快核少于 2 个恒为 1。判断依据记在 `config.tuning`,可直接打日志:
+`forDevice` 读取总内存、`isLowRamDevice` 和快核数(不在最慢 CPU 簇里的核),
+在 1 / 2 / 4 / 6 里挑一档。推荐上限按名义内存分级:< 8 GB → 1,8 GB → 2,
+10 GB → 4,≥ 12 GB → 6(6 线程还要有 6 个快核;双模型 pivot 的 6 线程档要
+≥ 16 GB)。`Workload.SINGLE`、低内存机、快核少于 2 个恒为 1。判断依据记在
+`config.tuning`,可直接打日志:
 
 ```
-threads=2 workload=BATCH bigCores=4 totalRamMb=7185 lowRam=false budgetMb=574 estRssMb=230
+threads=2 workload=BATCH bigCores=4 totalRamMb=7185 lowRam=false
 ```
 
-宿主 app 自己占用较多内存时请显式给预算,库看不见 app 的其余部分:
-
-```kotlin
-EngineConfig.forDevice(context, Workload.BATCH, hostBudgetBytes = 300L * 1024 * 1024)
-```
-
-这是推荐档,不是锁:`EngineConfig(threads = 4)` 这样的显式值永远优先。
+这是推荐档,不是锁:`EngineConfig(threads = 4)` 这样的显式值永远优先;
+宿主自己占内存多的话,按下表自行选低一档。
 
 参考开销(稳态 RSS 含进程底,1/2/4 线程为小米 12 实测,6 线程为小米 14 实测;
 耗时为小米 14 同一限频状态下 200 句相对 1 线程):

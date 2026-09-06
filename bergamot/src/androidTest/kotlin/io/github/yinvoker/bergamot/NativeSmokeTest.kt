@@ -28,11 +28,10 @@ class NativeSmokeTest {
      * 自动定档在真机上的自洽性检查,不需要模型也不建 service。
      *
      * 断言三条:档位只在 {1,2,4,6} 里;SINGLE 恒 1;以及 `forDevice` 的结果与
-     * 「拿它自己记下的那组输入直接调纯函数」逐字段相同 —— Decision 带着
-     * budgetBytes,所以这条不受 availMem 抖动影响,是真正的不动点检查。
+     * 「拿它自己记下的那组输入直接调纯函数」逐字段相同(不动点)。
      *
      * 实际档位、fastCoreCount 与 MemoryInfo 四字段打到 logcat(tag
-     * `bergamot-test`),供与成本表对账。
+     * `bergamot-test`)备查。
      */
     @Test
     fun deviceTuningDecisionIsConsistent() {
@@ -57,14 +56,12 @@ class NativeSmokeTest {
             assertTrue("threads=${decision.threads} has no baseline", decision.threads in setOf(1, 2, 4, 6))
             if (workload == Workload.SINGLE) assertEquals(1, decision.threads)
 
-            // 同样的输入 -> 同样的结果。budgetBytes 回灌成 hostBudgetBytes,
-            // 绕开 availMem 的时变性。
+            // 同样的输入 -> 同样的结果。
             val pure = ThreadTuning.recommend(
                 totalRamBytes = decision.totalRamBytes,
                 isLowRam = decision.isLowRam,
                 bigCoreCount = decision.bigCoreCount,
                 workload = workload,
-                hostBudgetBytes = decision.budgetBytes,
             )
             assertEquals(decision, pure)
         }

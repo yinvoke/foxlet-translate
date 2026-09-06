@@ -20,7 +20,7 @@ import org.junit.runner.RunWith
 /**
  * 设备端最小冒烟:验证 .so 装载、JNI 绑定与引擎生命周期,不依赖模型文件。
  * 注意 marian 的进程级全局态:每个用例只创建一个 service,并在用例结束前销毁,
- * 全程只有 threads=2 那个用例会建 AsyncService(threads=1 走 BlockingService)。
+ * 建 AsyncService 的只有 threads=2 的那两个用例(threads=1 走 BlockingService)。
  */
 @RunWith(AndroidJUnit4::class)
 class NativeSmokeTest {
@@ -168,6 +168,41 @@ class NativeSmokeTest {
             assertEquals(CANONICAL_DEVICE_HASH_200, hash)
             assertEquals(first, second)
             assertEquals(first, third)
+        }
+    }
+
+    /**
+     * 同一道语料哈希门,这次走 AsyncService(threads = 2)。
+     *
+     * F5 之后 async 的批量入口(translateMultiple)与 blocking 一样是「整批一次入池」,
+     * 批次构成因而只是输入的函数,输出必须逐字节等于同一张 device/200 正典表 —— 也就是说
+     * 多线程档从这里起才第一次被逐字节门禁覆盖。再翻一次仍须逐句相同。
+     * 主机侧实测:eng200/jpn200 在 workers ∈ {1,2,4,6,8} 上的哈希与 blocking 正典全同。
+     */
+    @Test
+    fun corpusHashMatchesDeviceCanonicalWithWorkersWhenModelsPresent() = runBlocking {
+        val dir = modelDirOrSkip()
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        val corpusFile = File(context.filesDir, "bench/eng200.txt")
+        Assume.assumeTrue("no corpus at ${corpusFile.absolutePath}", corpusFile.isFile)
+        val corpus = corpusFile.readLines().dropLastWhile { it.isEmpty() }
+        Assume.assumeTrue("expected $CORPUS_LINES lines, got ${corpus.size}", corpus.size == CORPUS_LINES)
+
+        BergamotEngine(EngineConfig(threads = 2, miniBatchWords = 512)).use { engine ->
+            val model = ModelFiles.fromDirectory(dir)
+            val t0 = System.nanoTime()
+            val first = engine.translate(corpus, model)
+            val t1 = System.nanoTime()
+            val second = engine.translate(corpus, model)
+            val t2 = System.nanoTime()
+            val hash = fnv1a64(first)
+            Log.i(
+                TAG,
+                "corpus threads=2 first_ms=${(t1 - t0) / 1_000_000} second_ms=${(t2 - t1) / 1_000_000} hash=$hash",
+            )
+            assertEquals(corpus.size, first.size)
+            assertEquals(CANONICAL_DEVICE_HASH_200, hash)
+            assertEquals(first, second)
         }
     }
 

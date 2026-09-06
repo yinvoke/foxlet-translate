@@ -16,6 +16,10 @@
 //   --mem           print "[mem] <stage> footprint_mb=... peak_rss_mb=..." for
 //                   baseline / after_load / steady / after_unload
 //   --dump-prefix P write each pass's output to P.passN.txt (determinism diffs)
+//   --sentence-stats print "[ssplit] ..." to stderr: how many sentences the
+//                   splitter made of each input line, and the total. Pair it
+//                   with an `ssplit-prefix-file:` entry in the config YAML to
+//                   A/B the nonbreaking-prefix table.
 //   --lifecycle S   run release-lifecycle scenario S instead of a plain pass;
 //                   see kScenarioHelp below. Pair it with BERGAMOT_LIFECYCLE=1
 //                   to get the engine's own event trace interleaved.
@@ -496,6 +500,7 @@ int main(int argc, char *argv[]) {
   bool bench = false;
   bool cacheStatsWanted = false;
   bool memWanted = false;
+  bool sentenceStatsWanted = false;
   const char *dumpPrefix = nullptr;
   const char *lifecycleScenario = nullptr;
   const char *releaseModeFlag = "release";
@@ -529,6 +534,8 @@ int main(int argc, char *argv[]) {
       cacheStatsWanted = true;
     } else if (std::strcmp(argv[i], "--mem") == 0) {
       memWanted = true;
+    } else if (std::strcmp(argv[i], "--sentence-stats") == 0) {
+      sentenceStatsWanted = true;
     } else if (std::strcmp(argv[i], "--dump-prefix") == 0) {
       if (i + 1 >= argc) { std::cerr << "--dump-prefix needs a value\n"; exit(2); }
       dumpPrefix = argv[++i];
@@ -537,7 +544,8 @@ int main(int argc, char *argv[]) {
     }
   }
   if (configs.empty() || configs.size() > 2) {
-    std::cerr << "usage: smoke [--workers N] [--cache-size N] [--repeat R] [--bench] [--lifecycle S] "
+    std::cerr << "usage: smoke [--workers N] [--cache-size N] [--repeat R] [--bench] [--sentence-stats] "
+                 "[--lifecycle S] "
                  "<model-config.yml> [<second-config.yml>] < text-lines\n"
               << kScenarioHelp;
     return 2;
@@ -585,6 +593,20 @@ int main(int argc, char *argv[]) {
             cpuInfo.CacheParams().local_cache_size, cpuInfo.CacheParams().last_level_cache_size);
   }
 
+  // How the splitter cut each line, for A/B-ing an ssplit-prefix-file. Response
+  // carries the source annotation the model actually translated, so this counts
+  // sentences as the engine saw them rather than re-splitting here.
+  auto emitSentenceStats = [&](const std::vector<Response> &passResponses) {
+    if (!sentenceStatsWanted) return;
+    size_t total = 0;
+    for (size_t i = 0; i < passResponses.size(); ++i) {
+      const size_t n = passResponses[i].source.numSentences();
+      total += n;
+      fprintf(stderr, "[ssplit] line=%zu sentences=%zu\n", i, n);
+    }
+    fprintf(stderr, "[ssplit] total lines=%zu sentences=%zu\n", passResponses.size(), total);
+  };
+
   std::vector<Response> responses;
   auto runPasses = [&](auto translateOnce) {
     for (size_t pass = 0; pass < repeat; ++pass) {
@@ -607,6 +629,7 @@ int main(int argc, char *argv[]) {
         std::ofstream out(std::string(dumpPrefix) + ".pass" + std::to_string(pass) + ".txt");
         for (auto &r : responses) out << r.target.text << "\n";
       }
+      if (pass == 0) emitSentenceStats(responses);
     }
   };
 

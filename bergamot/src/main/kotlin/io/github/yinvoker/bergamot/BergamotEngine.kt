@@ -142,10 +142,28 @@ class EngineConfig(
      */
     val miniBatchWords: Int = 512,
     /**
-     * Translation cache entries, 0 = off. Zero-cost on miss; repeated texts
-     * hit at ~40x. Off by default: a hit can legitimately differ from a fresh
-     * translation by a line (batch-context dependence), so enable only where
-     * repeated inputs dominate (suggested 4096-16384).
+     * Translation cache slots, 0 = off. Zero-cost on miss; a repeated sentence
+     * hits at ~40-50x (a fully cached 200-line pass takes ~60 ms on a Mi 10
+     * against ~4 s cold). Off by default, for two reasons.
+     *
+     * A hit is not always byte-identical to a cold translation. The cache is a
+     * direct-mapped table keyed by the sentence's tokens: when two sentences
+     * land in the same slot the later one evicts the earlier, and the evicted
+     * sentence is re-translated on its own the next time — in a different
+     * batch, whose shortlist and length shape the output. Measured on 200
+     * FLORES lines (212 sentences): 1 line differs at 20000 slots, 3 at 2048,
+     * 5 at 512, none at 100000+; identical across host and devices. Both
+     * versions are valid translations, so it only matters to a host that
+     * expects re-translating the same text to give the same bytes. That
+     * guarantee holds with the cache off (see [BergamotEngine.translate]).
+     *
+     * The cache lives on the native service and is keyed by a per-load model
+     * id, so every idle unload ([idleUnloadMillis]) orphans the entries of the
+     * reloaded model: they stop hitting but keep their memory until
+     * overwritten. Enable the cache where repeats recur within the idle window
+     * or with idleUnloadMillis < 0; suggested 4096-16384 slots. This is a
+     * cache, not deduplication — every input line gets its own output either
+     * way.
      */
     val cacheSize: Int = 0,
     /**
@@ -261,7 +279,18 @@ class BergamotEngine(private val config: EngineConfig = EngineConfig()) : Closea
         onIdle = ::unload,
     )
 
-    /** Translate [texts] with the direction in [model]. */
+    /**
+     * Translate [texts] with the direction in [model].
+     *
+     * One output per input, in order; a line that was translated before is
+     * translated again — the engine keeps no "already seen" state (a document
+     * host that wants to skip unchanged nodes tracks that itself, see the
+     * README). Given the same list, the same model files and the same config,
+     * the result is byte-identical across calls and processes at
+     * [EngineConfig.threads] = 1 with [EngineConfig.cacheSize] = 0. The list is
+     * what fixes the batches: the same line in a different list can come out
+     * differently.
+     */
     suspend fun translate(texts: List<String>, model: ModelFiles, html: Boolean = false): List<String> =
         withContext(dispatcher) {
             val handle = acquire(model)
@@ -277,6 +306,7 @@ class BergamotEngine(private val config: EngineConfig = EngineConfig()) : Closea
      * Pivot translation (e.g. ja->en->zh) with both models resident — fastest,
      * but peak memory is the sum of both. For a RAM-capped sequential pivot,
      * call [translate] twice and let idle-unload reclaim the first model.
+     * Same output contract as [translate].
      */
     suspend fun translatePivot(
         texts: List<String>,

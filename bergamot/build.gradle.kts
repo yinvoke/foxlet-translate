@@ -29,6 +29,22 @@ android {
         }
     }
 
+    buildTypes {
+        debug {
+            // The engine is only useful optimised: a Debug CMake build compiles
+            // marian at -O0 -g, which is ~20x slower on device and, because the
+            // float loops are no longer vectorised, produces different output
+            // bytes than the release .so. The debug *variant* (debuggable
+            // Kotlin, debug signing, androidTest) therefore still builds the
+            // native library as Release, so instrumentation tests measure and
+            // hash the same engine the AAR ships. AGP passes its own
+            // -DCMAKE_BUILD_TYPE=Debug first; CMake keeps the last definition.
+            externalNativeBuild {
+                cmake { arguments += "-DCMAKE_BUILD_TYPE=Release" }
+            }
+        }
+    }
+
     externalNativeBuild {
         cmake {
             path = file("../CMakeLists.txt")

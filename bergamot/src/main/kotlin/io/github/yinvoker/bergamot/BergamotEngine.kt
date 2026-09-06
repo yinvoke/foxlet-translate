@@ -3,8 +3,10 @@ package io.github.yinvoker.bergamot
 import android.content.Context
 import java.io.Closeable
 import java.io.File
+import java.util.concurrent.ExecutionException
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
+import java.util.concurrent.RejectedExecutionException
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.withContext
 
@@ -125,9 +127,9 @@ class EngineConfig(
 
     companion object {
         /**
-         * Config with [threads] chosen for this device and [workload] — the
-         * opt-in half of E3. `EngineConfig()` on its own is still `threads = 1`
-         * and reads nothing; auto-tiering only happens when you call this.
+         * Config with [threads] chosen for this device and [workload].
+         * `EngineConfig()` on its own is still `threads = 1` and reads
+         * nothing; auto-tiering only happens when you call this.
          *
          * Reads `ActivityManager.getMemoryInfo()` (totalMem / availMem /
          * threshold), `isLowRamDevice` and [NativeBridge.fastCoreCount], then
@@ -238,13 +240,28 @@ class BergamotEngine(private val config: EngineConfig = EngineConfig()) : Closea
      */
     fun releaseAllModels(): Future<Boolean> = executor.submit<Boolean> { releaseAll() }
 
+    /**
+     * Release every model, destroy the native service and stop the engine
+     * thread. Blocks until the native side is actually gone (bounded by one
+     * in-flight batch), so a caller may create the next engine right after —
+     * marian keeps process-global state (its logger registry among it) and a
+     * second service created while the first is still being torn down fails.
+     * Call it off the main thread when a batch may still be running.
+     */
     override fun close() {
-        executor.execute {
-            releaseAll()
-            if (service != 0L) NativeBridge.destroyService(service)
-            service = 0
+        try {
+            executor.submit {
+                releaseAll()
+                if (service != 0L) NativeBridge.destroyService(service)
+                service = 0
+            }.get()
+        } catch (e: RejectedExecutionException) {
+            // Already closed.
+        } catch (e: ExecutionException) {
+            throw e.cause ?: e
+        } finally {
+            executor.shutdown()
         }
-        executor.shutdown()
     }
 
     // ---- All below runs on the engine thread. ----

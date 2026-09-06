@@ -7,6 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import java.io.File
 import java.util.Locale
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
@@ -170,6 +171,65 @@ class NativeSmokeTest {
         }
     }
 
+    /**
+     * 分句前缀表在 app 路径上真的接上了引擎,且不改变批次的输入输出契约。
+     *
+     * 不断言任何具体译文:只要求(1)开/关两条路都能把整批翻完、每行一条输出、
+     * 没有空行;(2)两批结果至少有一行不同 —— 这就是「字节确实喂给了 ssplit」的
+     * 证据。语料里每行都带缩写/小数/编号,关掉前缀表时正则会在 `Dr.`、`U.S.`、
+     * `No. 5` 这些地方切断句子,开着时不会。
+     *
+     * 顺带压一遍 close() 的同步语义:两个 engine 先后建同一个 service。
+     */
+    @Test
+    fun abbreviationsTranslateWithAndWithoutPrefixTable() = runBlocking {
+        val dir = modelDirOrSkip()
+        val model = ModelFiles.fromDirectory(dir)
+        assertEquals("en", model.sourceLanguage)
+
+        val withTable = BergamotEngine(EngineConfig(threads = 1)).use { engine ->
+            engine.translate(ABBREVIATION_LINES, model)
+        }
+        val withoutTable = BergamotEngine(EngineConfig(threads = 1, nonbreakingPrefixes = false)).use { engine ->
+            engine.translate(ABBREVIATION_LINES, model)
+        }
+        Log.i(TAG, "ssplit with=$withTable")
+        Log.i(TAG, "ssplit without=$withoutTable")
+
+        assertEquals(ABBREVIATION_LINES.size, withTable.size)
+        assertEquals(ABBREVIATION_LINES.size, withoutTable.size)
+        assertTrue("blank output with the prefix table", withTable.none { it.isBlank() })
+        assertTrue("blank output without the prefix table", withoutTable.none { it.isBlank() })
+        assertNotEquals("the prefix table changed nothing -- did the bytes reach ssplit?", withoutTable, withTable)
+    }
+
+    /**
+     * 空闲回收在真机上真的会自己发生:保温期设成 1.5 s,翻一句,然后什么都不做
+     * 地等 3 s,常驻模型数必须自己回到 0(定时清扫跑过了,原生侧已析构)。
+     * 之后再翻同一句仍要译对 —— 重载对调用方透明 —— 重载那一句的耗时打到
+     * logcat(tag `bergamot-test`),用来对账「保温多久才划算」。
+     * 需要模型,没有则跳过(Assume),不算失败。
+     */
+    @Test
+    fun idleUnloadReclaimsTheModelAndReloadsOnDemand() = runBlocking {
+        val dir = modelDirOrSkip()
+        BergamotEngine(EngineConfig(threads = 1, idleUnloadMillis = IDLE_MILLIS)).use { engine ->
+            val model = ModelFiles.fromDirectory(dir)
+            assertEquals(CANONICAL_ZH, engine.translate(listOf(CANONICAL_SOURCE), model).single())
+            assertEquals("model should be resident right after a translation", 1, engine.loadedModelCount().get())
+
+            delay(2 * IDLE_MILLIS)
+            assertEquals("idle sweep did not reclaim the model", 0, engine.loadedModelCount().get())
+
+            val t0 = System.nanoTime()
+            val again = engine.translate(listOf(CANONICAL_SOURCE), model)
+            val reloadMs = (System.nanoTime() - t0) / 1_000_000
+            Log.i(TAG, "idle-unload idleMs=$IDLE_MILLIS reload_plus_sentence_ms=$reloadMs")
+            assertEquals(CANONICAL_ZH, again.single())
+            assertEquals(1, engine.loadedModelCount().get())
+        }
+    }
+
     private fun modelDirOrSkip(): File {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         val dir = File(context.filesDir, "models/enzh")
@@ -191,7 +251,19 @@ class NativeSmokeTest {
         // Mi 14 (8 Gen 3) and Mi 10 (865), SMMLA and ruy paths: identical bytes.
         const val CANONICAL_ZH = "他补充道:“我们现在有4个月大的小鼠,它们是非糖尿病,曾经患有糖尿病。”"
 
+        /** 空闲回收用例的保温期。够短能等得起,又远长于一次翻译。 */
+        const val IDLE_MILLIS = 1_500L
+
         const val CORPUS_LINES = 200
+
+        /** 每行都含一个「句号不结束句子」的缩写、小数或编号。 */
+        val ABBREVIATION_LINES = listOf(
+            "Dr. Smith examined the patient and sent the results to Mr. Jones the next morning.",
+            "U.S. President George W. Bush welcomed the announcement.",
+            "Please read No. 5 and No. 12 before you sign the contract.",
+            "Several agencies, e.g. the FAA and the FCC, published new rules last week.",
+            "Inflation reached 3.5 percent, the highest level since 2011.",
+        )
 
         /** tools/regress-hash.sh, device/200 en→zh, nonbreaking-prefix table on (Mi 12, 2026-09-06). */
         const val CANONICAL_DEVICE_HASH_200 = "88295d89303c20bd"

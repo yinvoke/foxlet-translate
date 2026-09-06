@@ -23,6 +23,40 @@ add_compile_definitions(ARM FMA SSE COMPILE_CPU=1 USE_PTHREADS USE_SENTENCEPIECE
 add_compile_options(-flax-vector-conversions -fno-strict-aliasing)
 
 if(ANDROID)
+  # The NDK puts -ffunction-sections -fdata-sections into CMAKE_CXX_FLAGS
+  # (android-legacy.toolchain.cmake:463-464), but engine/marian-fork/CMakeLists.txt:367
+  # and :377 *set* that variable rather than appending to it, so the whole
+  # marian subtree -- marian itself plus ruy, sentencepiece, protobuf, yaml-cpp,
+  # CLI11, spdlog, zlib, cpuinfo, ~275 of the 294 translation units -- loses
+  # them. Without per-function sections the --gc-sections on the link line can
+  # only drop whole object files.
+  #
+  # add_compile_options here is the one place that survives: CMake appends it
+  # after CMAKE_CXX_FLAGS on the command line, so it outlives the overwrite.
+  # Android only -- the host CLI is the reference platform for the canonical
+  # hashes and its code generation is left exactly as it was.
+  add_compile_options(-ffunction-sections -fdata-sections)
+
+  # Hidden by default. --exclude-libs already demoted everything that arrives
+  # from an archive; this covers what is compiled straight into the .so
+  # (jni/bergamot_jni.cpp, jni/affinity.cpp and the templates, vtables and
+  # type_infos they emit) and lets the compiler stop routing intra-library
+  # calls through the PLT. The seven Java_* stay exported: jni.h defines
+  # JNIEXPORT as visibility("default"), which wins over the default here.
+  #
+  # -fvisibility-inlines-hidden is C++-only and would draw
+  # -Wunused-command-line-argument on the C sources; 78 marian TUs compile with
+  # -Werror, so the generator expression is load-bearing, not tidiness.
+  #
+  # This is the one step of the three that changes code generation: without
+  # interposition clang can inline and devirtualise across TUs more freely,
+  # which -- at the default -ffp-contract=on -- could create FMA contractions
+  # that were not there before. Hence Android only, and hence the device hash
+  # gate is what decides whether it lands.
+  add_compile_options(
+    -fvisibility=hidden
+    $<$<COMPILE_LANGUAGE:CXX>:-fvisibility-inlines-hidden>)
+
   # bionic ships pthreads inside libc; the ancient FindThreads invocations in
   # vendored subprojects (ruy/cpuinfo) fail to detect that. Pre-seed the result.
   set(CMAKE_THREAD_LIBS_INIT "")

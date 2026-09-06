@@ -70,6 +70,39 @@ data class ModelFiles(
         private val MODEL_NAME = Regex("""model\.([a-z]{2})([a-z]{2})\..+\.bin""")
     }
 
+    /**
+     * The engine config marian parses (`parseOptionsFromString`, validate=false).
+     *
+     * Every key here is one the linked engine actually reads. Unknown keys are
+     * accepted in silence (`marian-fork/src/common/options.cpp:27-34` has no
+     * white list) and missing ones fall back to the `defineOption` default, so
+     * a dead key costs nothing at runtime but reads as a working knob. Four
+     * used to sit here and did nothing:
+     *
+     *  - `workspace`: the only reader on this path is
+     *    `engine/src/translator/translation_model.cpp:118`, which hard-codes
+     *    `reserveWorkspaceMB(5)` and never looks at the option; that 5 MB is
+     *    then rounded up to 128 MiB per worker by `GROW` in
+     *    `marian-fork/src/tensors/tensor_allocator.h:14,21`.
+     *  - `cpu-threads`: read only by `Config::getDevices`
+     *    (`marian-fork/src/common/config.cpp:244`), which bergamot never calls.
+     *    Worker count comes from `numWorkers` (`engine/src/translator/service.cpp:181`),
+     *    set from the JNI argument.
+     *  - `quiet` / `quiet-translation`: silence comes from `level{"off"}` in
+     *    `engine/src/translator/logging.h:11`; bergamot calls the no-arg
+     *    `createLoggers()`, which short-circuits the `quiet` lookup, and the
+     *    TUs reading `quiet-translation` are not linked here.
+     *
+     * `mini-batch-words` is the one key that cannot be dropped: marian defines
+     * no default, so it would come back 0 and trip the `ABORT_IF` in
+     * `engine/src/translator/batching_pool.cpp:24`.
+     *
+     * The second `shortlist` entry is `0`, not `false`: its only reader,
+     * `marian-fork/src/data/shortlist.cpp:238`, does `std::stoi(vals[1])` and
+     * is unreachable today (the in-memory bundle wins at
+     * `translation_model.cpp:43`), but `std::stoi("false")` would throw the day
+     * that changes.
+     */
     internal fun toConfigYaml(workspaceMb: Int, miniBatchWords: Int = 512): String = """
         models:
           - ${model.absolutePath}
@@ -78,18 +111,14 @@ data class ModelFiles(
           - ${trgVocab.absolutePath}
         shortlist:
           - ${shortlist.absolutePath}
-          - false
+          - 0
         beam-size: 1
         normalize: 1.0
         word-penalty: 0
         max-length-break: $MAX_LENGTH_BREAK
         mini-batch-words: $miniBatchWords
-        workspace: $workspaceMb
         max-length-factor: 2.0
         skip-cost: true
-        cpu-threads: 0
-        quiet: true
-        quiet-translation: true
         gemm-precision: int8shiftAlphaAll
         alignment: soft
     """.trimIndent()

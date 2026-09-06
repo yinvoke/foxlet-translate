@@ -54,7 +54,7 @@ class ModelFilesTest {
     }
 
     @Test
-    fun `config yaml carries absolute paths and workspace`() {
+    fun `config yaml carries absolute paths and no dead keys`() {
         val d = dir(
             "model.enzh.intgemm.alphas.bin",
             "srcvocab.enzh.spm",
@@ -63,9 +63,16 @@ class ModelFilesTest {
         )
         val yaml = ModelFiles.fromDirectory(d).toConfigYaml(workspaceMb = 96)
         assertTrue(yaml.contains(File(d, "model.enzh.intgemm.alphas.bin").absolutePath))
-        assertTrue(yaml.contains("workspace: 96"))
         assertTrue(yaml.contains("gemm-precision: int8shiftAlphaAll"))
         assertTrue(yaml.lines().none { it.startsWith(" ") && it.contains("\t") })
+        // Keys nothing on this link path reads; see toConfigYaml's doc comment.
+        assertFalse(yaml.contains("workspace"))
+        assertFalse(yaml.contains("cpu-threads"))
+        assertFalse(yaml.contains("quiet"))
+        // The engine aborts without this one -- marian defines no default.
+        assertTrue(yaml.contains("mini-batch-words: 512"))
+        // shortlist[1] reaches std::stoi, so it has to parse as an int.
+        assertTrue(yaml.contains("\n  - 0"))
     }
 
     @Test

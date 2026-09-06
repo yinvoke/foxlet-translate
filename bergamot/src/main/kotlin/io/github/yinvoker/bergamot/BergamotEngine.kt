@@ -338,10 +338,14 @@ class BergamotEngine(private val config: EngineConfig = EngineConfig()) : Closea
      * translated again — the engine keeps no "already seen" state (a document
      * host that wants to skip unchanged nodes tracks that itself, see the
      * README). Given the same list, the same model files and the same config,
-     * the result is byte-identical across calls and processes at
-     * [EngineConfig.threads] = 1 with [EngineConfig.cacheSize] = 0. The list is
-     * what fixes the batches: the same line in a different list can come out
-     * differently.
+     * the result is byte-identical across calls, processes and thread counts
+     * with [EngineConfig.cacheSize] = 0: batches are a function of the list,
+     * not of worker timing. The one exception is a list too short to give
+     * every worker a batch (at the default mini-batch of 512 words, roughly
+     * 15 lines per worker): it is split across the workers instead, so its
+     * output can differ from the 1-thread output, while staying fixed for that
+     * thread count. The list is what fixes the batches: the same line in a
+     * different list can come out differently.
      */
     suspend fun translate(texts: List<String>, model: ModelFiles, html: Boolean = false): List<String> =
         withContext(dispatcher) {

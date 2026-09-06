@@ -29,7 +29,8 @@ Firefox 内置整页翻译所使用的 [Bergamot](https://browser.mt/) 引擎,
 - **Kotlin suspend API**:批量翻译、pivot 中转、HTML 感知翻译
 - **移动端适配**:i8mm / NEON 内核加速,不支持 i8mm 的设备自动回退 ruy
 - **性能优化**:相较 v0.1.0,峰值内存约 −44%、首次翻译耗时约 −34%(小米 10 英→中,默认单 worker)
-- **内存管理**:int8 embedding、模型按需加载与释放确认,可挂 `onTrimMemory`
+- **智能分句**:按源语言自带 Moses 前缀表(25 种语言),`Dr.`、`U.S.`、`No. 5` 的句号不再被当成句尾
+- **内存管理**:int8 embedding、模型按需加载、空闲自动卸载与释放确认,可挂 `onTrimMemory`
 - **线程与调度**:单句走同步路径,批量按机型内存与快核数自动定档(`EngineConfig.forDevice`)
 
 ## 📊 基准测试
@@ -276,6 +277,28 @@ engine.releaseAllModels()   // 异步释放,可挂在 onTrimMemory;返回 Future
 **同一时刻只能有一个 `BergamotEngine`**(底层 marian 运行时持有进程级
 全局状态)。`close()` 等原生侧释放完毕才返回,之后可以再建一个。
 
+### 分句与前缀表
+
+引擎先按 `.`、`?`、`!` 把段落切成句子再翻译。`ModelFiles.fromDirectory`
+从模型文件名推断源语言(`model.enzh.*.bin` → `en`),加载时自动带上该语言的
+Moses 前缀表,`Dr. Smith`、`U.S.`、`No. 5` 里的句号不再结束句子:FLORES 200 句
+英文从 226 句合成 212 句,「博士。 …」这类碎片译文消失,真机吞吐不变。
+`EngineConfig(nonbreakingPrefixes = false)` 可关掉(复现旧输出,或宿主已按句切好);
+没有表的语言(日、韩、泰等)行为不变。25 张表随 AAR 打包,约 120 KB。
+
+### 空闲卸载
+
+模型在首次使用时加载,空闲超过 `idleUnloadMillis`(默认 60 s)后由引擎线程上的
+定时任务自动卸载,下一次 `translate` 透明重载(重载加首句约 220 ms,小米 12 / 10 实测)。
+`0` 表示翻完一批立刻卸,负数表示不自动卸(基准或自行管理释放时用);
+`loadedModelCount()` 返回当前常驻模型数。退到后台不必等计时器,直接释放:
+
+```kotlin
+override fun onTrimMemory(level: Int) {
+    if (level >= ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN) engine.releaseAllModels()
+}
+```
+
 ### 选择线程数
 
 默认 `EngineConfig()` 是 1 线程:翻译在引擎线程上同步执行,不经 worker
@@ -340,6 +363,8 @@ adb shell am start -n io.github.yinvoker.bergamot.bench/.MainActivity \
 - 仅 arm64-v8a,minSdk 28,支持 16 KB page size。
 - int8 矩阵乘按 CPU 能力选择 i8mm SMMLA 或 ruy(含 SDOT)内核。
   已验证设备见 [兼容性清单](docs/smmla-compatibility.md)。
+- 分句前缀表取自 ssplit-cpp 上游,覆盖 25 种源语言;`etc.`、`Approx.`、`Jan. 4`
+  这类不在表里的缩写仍会被切句。
 
 ## 🗺️ Roadmap
 
@@ -350,7 +375,7 @@ adb shell am start -n io.github.yinvoker.bergamot.bench/.MainActivity \
 - [x] Attention 小矩阵计算优化
 - [x] 内存占用与模型释放优化
 - [x] 多线程与调度优化
-- [ ] 参数与批处理调优
+- [x] 参数与批处理调优
 - [ ] HTML 模式验证
 - [ ] SME2 指令集支持
 - [ ] 构建优化

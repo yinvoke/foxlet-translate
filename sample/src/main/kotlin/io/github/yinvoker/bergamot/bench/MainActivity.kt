@@ -85,7 +85,10 @@ class MainActivity : Activity() {
         val radios = RadioGroup(this).apply { orientation = RadioGroup.HORIZONTAL }
         val ids = HashMap<Int, Int>()
         for (t in listOf(1, 2, 4)) {
-            val rb = RadioButton(this@MainActivity).apply { text = "${t}线程"; id = View.generateViewId() }
+            // threads=1 has no engine workers at all: the batch is translated on
+            // the engine thread itself (BlockingService). 2/4 are worker pools.
+            val label = if (t == 1) "1线程 · 同步" else "${t}线程 · worker"
+            val rb = RadioButton(this@MainActivity).apply { text = label; id = View.generateViewId() }
             ids[rb.id] = t
             radios.addView(rb)
             if (t == 1) radios.check(rb.id)
@@ -131,7 +134,7 @@ class MainActivity : Activity() {
         val col = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             addView(TextView(this@MainActivity).apply {
-                text = "跑分中 · ${threads}线程 · 请勿切后台(worker 会落小核)"
+                text = "跑分中 · ${threads}线程 · 请勿切后台(翻译线程会落小核)"
                 textSize = 14f
                 setPadding(dp(12), dp(10), dp(12), 0)
             })

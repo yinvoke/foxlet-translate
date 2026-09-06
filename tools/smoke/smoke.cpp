@@ -22,6 +22,11 @@
 //   --release-mode M  how the scenarios hand a model back: "release" (default,
 //                   the service's release() closure) or "reset" (drop the
 //                   shared_ptr only -- the pre-D0 behaviour, for A/B).
+//
+// Env (Android builds): BERGAMOT_PIN=1 pins the translating threads to the
+// fastest cores, mirroring the AAR default -- the workers under --workers N,
+// and this process's main thread under --workers 0 (blocking translates on the
+// calling thread).
 #include <chrono>
 #include <condition_variable>
 #include <cstdio>
@@ -226,6 +231,18 @@ void sleepSeconds(double seconds) {
   std::this_thread::sleep_for(std::chrono::duration<double>(seconds));
 }
 
+/// BERGAMOT_PIN=1 mirrors the AAR default. AsyncService pins its workers via
+/// onWorkerStart; BlockingService has none and translates on the calling
+/// thread, so that thread is what gets pinned -- before the service exists,
+/// exactly like the JNI layer does at createService(). No-op off Android.
+void pinBlockingCallerIfRequested() {
+#ifdef __ANDROID__
+  if (const char *pin = getenv("BERGAMOT_PIN"); pin != nullptr && pin[0] == '1') {
+    bergamot_android::pinCurrentThread(1);
+  }
+#endif
+}
+
 size_t countWords(const std::vector<std::string> &lines) {
   size_t words = 0;
   for (const auto &line : lines) {
@@ -338,6 +355,7 @@ int runLifecycleScenario(const std::string &scenario, const std::vector<std::str
 
   if (blocking) {
     BlockingService::Config config;
+    pinBlockingCallerIfRequested();
     BlockingService service{config};
     // give(handle) is "hand the model back" in whichever mode is selected.
     auto give = [&](std::shared_ptr<TranslationModel> &handle) {
@@ -617,6 +635,7 @@ int main(int argc, char *argv[]) {
   if (workers == 0) {
     BlockingService::Config config;
     config.cacheSize = cacheSize;
+    pinBlockingCallerIfRequested();
     BlockingService service{config};
     emitMem("baseline");
 

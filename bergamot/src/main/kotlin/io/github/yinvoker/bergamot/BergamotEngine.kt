@@ -62,14 +62,31 @@ data class ModelFiles(
 }
 
 class EngineConfig(
-    /** Worker translation threads inside the engine (>=1). */
+    /**
+     * Translation threads inside the engine (>=1).
+     *
+     * 1 (the default) runs the translation synchronously on the engine thread
+     * — a BlockingService, no dispatch to workers at all. Cheapest and the only
+     * reproducible setting: output is byte-identical across processes, memory
+     * is the lowest of any thread count, and the per-batch dispatch cost is
+     * gone. The right choice for interactive, sentence-at-a-time translation.
+     *
+     * >=2 spawns that many AsyncService workers, which translate one batch in
+     * parallel. Worth it for bulk batches; the cost is that batch composition
+     * now depends on worker timing, so the output of a given sentence can
+     * differ between runs of the same input.
+     */
     val threads: Int = 1,
-    /** Marian workspace per worker, MB. Smaller = less RAM, may cost speed. */
+    /**
+     * Marian workspace per replica, MB — one replica per worker, so exactly one
+     * at [threads] = 1. Smaller = less RAM, may cost speed.
+     */
     val workspaceMb: Int = 128,
     /** Unload a model after this long without use. */
     val idleUnloadMillis: Long = 60_000,
     /**
-     * Pin worker threads to the fastest CPU cores (big.LITTLE SoCs schedule
+     * Pin the translating threads to the fastest CPU cores — the engine thread
+     * itself at [threads] = 1, the workers above that (big.LITTLE SoCs schedule
      * translation onto mid cores surprisingly often; the prime core is ~1.5x
      * faster at equal clocks). Silent no-op on uniform topologies or when the
      * OS refuses; affinity is re-applied on every batch, so it heals itself
@@ -104,9 +121,12 @@ class EngineConfig(
  * Bergamot engine with lazy model loading and idle-based unloading.
  *
  * All native work runs on one dedicated thread; [translate] and
- * [translatePivot] suspend until their batch completes. Cancellation is
- * cooperative at batch granularity: a single native batch cannot be
- * interrupted (mirror of the engine's own contract).
+ * [translatePivot] suspend until their batch completes. At
+ * [EngineConfig.threads] = 1 the translation itself runs on that same thread
+ * (no engine workers exist); above that the thread only submits the batch and
+ * waits for the workers. Cancellation is cooperative at batch granularity: a
+ * single native batch cannot be interrupted (mirror of the engine's own
+ * contract).
  */
 class BergamotEngine(private val config: EngineConfig = EngineConfig()) : Closeable {
 

@@ -11,6 +11,8 @@ import com.google.mlkit.nl.translate.TranslatorOptions
 import io.github.yinvoker.bergamot.BergamotEngine
 import io.github.yinvoker.bergamot.EngineConfig
 import io.github.yinvoker.bergamot.ModelFiles
+import io.github.yinvoker.bergamot.ThreadTuning
+import io.github.yinvoker.bergamot.Workload
 import java.io.File
 import java.util.concurrent.TimeUnit
 import org.json.JSONArray
@@ -46,6 +48,34 @@ class BenchRunner(
             .put("totalRamMb", mem.totalMem / 1024 / 1024)
             .put("androidVersion", Build.VERSION.RELEASE)
             .put("sdk", Build.VERSION.SDK_INT)
+            .put("tuning", tuningInfo())
+    }
+
+    /**
+     * What E3 auto-tiering *would* pick on this device, per workload.
+     *
+     * Recorded only. The benchmark keeps running the thread count the caller
+     * asked for ([bergamotThreads]), because the whole point of the sweep is to
+     * measure every tier — this is the column that lets host-side scoring say
+     * which of those tiers the picker would have chosen, and reconcile the
+     * measured RSS against the cost table it used.
+     */
+    private fun tuningInfo(): JSONObject {
+        val tuning = JSONObject()
+        for (workload in Workload.entries) {
+            val d = ThreadTuning.forDevice(context, workload)
+            tuning.put(
+                workload.name.lowercase(),
+                JSONObject()
+                    .put("threads", d.threads)
+                    .put("budgetMb", d.budgetBytes / 1024 / 1024)
+                    .put("estimatedRssMb", d.estimatedRssBytes / 1024 / 1024)
+                    .put("bigCoreCount", d.bigCoreCount)
+                    .put("totalRamMb", d.totalRamBytes / 1024 / 1024)
+                    .put("isLowRam", d.isLowRam),
+            )
+        }
+        return tuning
     }
 
     /** Idle baseline (app + UI, no engine): what phase metrics subtract. */

@@ -57,6 +57,27 @@ if(ANDROID)
     -fvisibility=hidden
     $<$<COMPILE_LANGUAGE:CXX>:-fvisibility-inlines-hidden>)
 
+  # Same overwrite as above, second casualty: CMAKE_CXX_FLAGS_RELEASE is set to
+  # "-O3 ${BUILD_WIDTH} -funroll-loops" at marian-fork/CMakeLists.txt:368 (and
+  # :378 for C), dropping the -DNDEBUG the NDK had put there. So the marian
+  # subtree builds Release with asserts live -- including ruy, where
+  # 3rd_party/ruy/ruy/check_macros.h:123 turns that into
+  # RUY_DCHECK_IS_ENABLED = true right inside the GEMM path.
+  #
+  # This is a speed change, not a size one, and it is not free of risk: NDEBUG
+  # removes assert() everywhere in that subtree, so anything relying on an
+  # assert's side effect changes behaviour. Land it only behind a device hash
+  # gate plus a three-phone A/B.
+  #
+  # The 19 TUs that kept the NDK flags already have -DNDEBUG in Release; a
+  # second identical -D is a no-op, so this is applied to the whole Android
+  # tree rather than being surgically aimed at the marian subtree.
+  #
+  # Deliberately NOT restored here: -D_FORTIFY_SOURCE=2 and
+  # -fstack-protector-strong, the other two casualties of the same overwrite.
+  # They are a hardening question with their own cost, not a performance one.
+  add_compile_definitions($<$<CONFIG:Release>:NDEBUG>)
+
   # bionic ships pthreads inside libc; the ancient FindThreads invocations in
   # vendored subprojects (ruy/cpuinfo) fail to detect that. Pre-seed the result.
   set(CMAKE_THREAD_LIBS_INIT "")

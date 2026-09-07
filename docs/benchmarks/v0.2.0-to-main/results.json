@@ -1,0 +1,2681 @@
+{
+  "measured_at": "2026-09-07T12:32:50+0800",
+  "device": {
+    "model": "Mi 10",
+    "android": "13",
+    "soc": "Snapdragon 865",
+    "i8mm": false
+  },
+  "versions": {
+    "v0.2.0": "db1ccfd9a3104f38ac8c4709cab88570fc48bb4f",
+    "main": "a1ae1785e544efa3d8b00eb317a57b9f57eededb"
+  },
+  "binary_sha256": {
+    "v0.2.0": "bccb049bcee654c904d87fefc6c67eda52ef4334b8363db8a08f7c5389dc18c8",
+    "main": "0ece42d4cc032f5998162ac7862ef008c35039f46e4326897b4a5b8d2ec4f61d"
+  },
+  "harness_sha256": "298e8116a32fb1ed46846ba533c8dacf6051ebd3d8e68e0a4bc15a77673b4a9d",
+  "config_yaml": {
+    "enzh1024": "models:\n  - /sdcard/Android/data/io.github.yinvoker.bergamot.bench/files/models/enzh/model.enzh.intgemm.alphas.bin\nvocabs:\n  - /sdcard/Android/data/io.github.yinvoker.bergamot.bench/files/models/enzh/srcvocab.enzh.spm\n  - /sdcard/Android/data/io.github.yinvoker.bergamot.bench/files/models/enzh/trgvocab.enzh.spm\nshortlist:\n  - /sdcard/Android/data/io.github.yinvoker.bergamot.bench/files/models/enzh/lex.50.50.enzh.s2t.bin\n  - false\nbeam-size: 1\nnormalize: 1.0\nword-penalty: 0\nmax-length-break: 128\nmini-batch-words: 1024\nworkspace: 128\nmax-length-factor: 2.0\nskip-cost: true\ncpu-threads: 0\nquiet: true\nquiet-translation: true\ngemm-precision: int8shiftAlphaAll\nalignment: soft\n",
+    "jaen1024": "models:\n  - /sdcard/Android/data/io.github.yinvoker.bergamot.bench/files/models/jaen/model.jaen.intgemm.alphas.bin\nvocabs:\n  - /sdcard/Android/data/io.github.yinvoker.bergamot.bench/files/models/jaen/vocab.jaen.spm\n  - /sdcard/Android/data/io.github.yinvoker.bergamot.bench/files/models/jaen/vocab.jaen.spm\nshortlist:\n  - /sdcard/Android/data/io.github.yinvoker.bergamot.bench/files/models/jaen/lex.50.50.jaen.s2t.bin\n  - false\nbeam-size: 1\nnormalize: 1.0\nword-penalty: 0\nmax-length-break: 128\nmini-batch-words: 1024\nworkspace: 128\nmax-length-factor: 2.0\nskip-cost: true\ncpu-threads: 0\nquiet: true\nquiet-translation: true\ngemm-precision: int8shiftAlphaAll\nalignment: soft\n",
+    "enzh512p": "models:\n  - /sdcard/Android/data/io.github.yinvoker.bergamot.bench/files/models/enzh/model.enzh.intgemm.alphas.bin\nvocabs:\n  - /sdcard/Android/data/io.github.yinvoker.bergamot.bench/files/models/enzh/srcvocab.enzh.spm\n  - /sdcard/Android/data/io.github.yinvoker.bergamot.bench/files/models/enzh/trgvocab.enzh.spm\nshortlist:\n  - /sdcard/Android/data/io.github.yinvoker.bergamot.bench/files/models/enzh/lex.50.50.enzh.s2t.bin\n  - false\nbeam-size: 1\nnormalize: 1.0\nword-penalty: 0\nmax-length-break: 128\nmini-batch-words: 512\nworkspace: 128\nmax-length-factor: 2.0\nskip-cost: true\ncpu-threads: 0\nquiet: true\nquiet-translation: true\ngemm-precision: int8shiftAlphaAll\nalignment: soft\nssplit-prefix-file: /data/local/tmp/bg/nonbreaking_prefix.en\n",
+    "jaen512": "models:\n  - /sdcard/Android/data/io.github.yinvoker.bergamot.bench/files/models/jaen/model.jaen.intgemm.alphas.bin\nvocabs:\n  - /sdcard/Android/data/io.github.yinvoker.bergamot.bench/files/models/jaen/vocab.jaen.spm\n  - /sdcard/Android/data/io.github.yinvoker.bergamot.bench/files/models/jaen/vocab.jaen.spm\nshortlist:\n  - /sdcard/Android/data/io.github.yinvoker.bergamot.bench/files/models/jaen/lex.50.50.jaen.s2t.bin\n  - false\nbeam-size: 1\nnormalize: 1.0\nword-penalty: 0\nmax-length-break: 128\nmini-batch-words: 512\nworkspace: 128\nmax-length-factor: 2.0\nskip-cost: true\ncpu-threads: 0\nquiet: true\nquiet-translation: true\ngemm-precision: int8shiftAlphaAll\nalignment: soft\n"
+  },
+  "protocol": {
+    "affinity": "f0",
+    "rounds": 3,
+    "version_order": [
+      "AB",
+      "BA",
+      "AB"
+    ],
+    "passes_per_process": 3,
+    "cache_size": 0,
+    "cooldown_seconds": 4,
+    "cold_ms": "service + model creation + first translation",
+    "peak_rss_mib": "VmHWM after first translation",
+    "warm_ms": "passes 1 and 2"
+  },
+  "runs": [
+    {
+      "round": 1,
+      "scenario": "enzh_w1",
+      "version": "v0.2.0",
+      "command": "taskset f0 /data/local/tmp/bg/vb/v0.2.0 1 /data/local/tmp/bg/vb/enzh1024.yml < /data/local/tmp/bg/vb/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 25.2,
+        "board_temp": "29412"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 25.2,
+        "board_temp": "29861"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 4785.025,
+          "peak_rss_mib": 185.496,
+          "rss_mib": 168.238,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 4492.461,
+          "peak_rss_mib": 185.496,
+          "rss_mib": 168.648,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 4495.295,
+          "peak_rss_mib": 185.496,
+          "rss_mib": 168.449,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w1",
+      "version": "main",
+      "command": "taskset f0 /data/local/tmp/bg/vb/main 1 /data/local/tmp/bg/vb/enzh1024.yml < /data/local/tmp/bg/vb/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 25.5,
+        "board_temp": "30199"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 25.5,
+        "board_temp": "30589"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 4688.535,
+          "peak_rss_mib": 184.438,
+          "rss_mib": 167.145,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 4487.231,
+          "peak_rss_mib": 184.438,
+          "rss_mib": 167.559,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 4486.85,
+          "peak_rss_mib": 184.438,
+          "rss_mib": 167.359,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w2",
+      "version": "v0.2.0",
+      "command": "taskset f0 /data/local/tmp/bg/vb/v0.2.0 2 /data/local/tmp/bg/vb/enzh1024.yml < /data/local/tmp/bg/vb/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 25.5,
+        "board_temp": "30589"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 25.5,
+        "board_temp": "30563"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2802.903,
+          "peak_rss_mib": 276.238,
+          "rss_mib": 275.66,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2581.217,
+          "peak_rss_mib": 276.754,
+          "rss_mib": 275.965,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2589.065,
+          "peak_rss_mib": 277.852,
+          "rss_mib": 276.973,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w2",
+      "version": "main",
+      "command": "taskset f0 /data/local/tmp/bg/vb/main 2 /data/local/tmp/bg/vb/enzh1024.yml < /data/local/tmp/bg/vb/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 25.5,
+        "board_temp": "31008"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 25.7,
+        "board_temp": "31008"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2799.212,
+          "peak_rss_mib": 275.312,
+          "rss_mib": 274.633,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2551.487,
+          "peak_rss_mib": 275.746,
+          "rss_mib": 274.961,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2604.17,
+          "peak_rss_mib": 276.668,
+          "rss_mib": 275.883,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w4",
+      "version": "v0.2.0",
+      "command": "taskset f0 /data/local/tmp/bg/vb/v0.2.0 4 /data/local/tmp/bg/vb/enzh1024.yml < /data/local/tmp/bg/vb/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 25.7,
+        "board_temp": "31347"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 25.7,
+        "board_temp": "31721"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 2049.994,
+          "peak_rss_mib": 482.449,
+          "rss_mib": 481.918,
+          "output_bytes": 22620,
+          "output_hash": "c22610d2b134b2cc"
+        },
+        {
+          "pass": 1,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1702.414,
+          "peak_rss_mib": 485.859,
+          "rss_mib": 485.305,
+          "output_bytes": 22623,
+          "output_hash": "931f8182b3aa9aaf"
+        },
+        {
+          "pass": 2,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1740.669,
+          "peak_rss_mib": 490.457,
+          "rss_mib": 489.973,
+          "output_bytes": 22603,
+          "output_hash": "8b395ba3a86138ad"
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w4",
+      "version": "main",
+      "command": "taskset f0 /data/local/tmp/bg/vb/main 4 /data/local/tmp/bg/vb/enzh1024.yml < /data/local/tmp/bg/vb/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 25.7,
+        "board_temp": "31721"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 26.0,
+        "board_temp": "31976"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 2101.566,
+          "peak_rss_mib": 485.184,
+          "rss_mib": 484.797,
+          "output_bytes": 22616,
+          "output_hash": "68df4e6b2fbd2218"
+        },
+        {
+          "pass": 1,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1659.34,
+          "peak_rss_mib": 488.945,
+          "rss_mib": 488.453,
+          "output_bytes": 22609,
+          "output_hash": "55ec2eff3db7f0f0"
+        },
+        {
+          "pass": 2,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1649.789,
+          "peak_rss_mib": 492.723,
+          "rss_mib": 491.551,
+          "output_bytes": 22615,
+          "output_hash": "feb7f31ea6e30920"
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "scenario": "pivot_w1",
+      "version": "v0.2.0",
+      "command": "taskset f0 /data/local/tmp/bg/vb/v0.2.0 1 /data/local/tmp/bg/vb/jaen1024.yml /data/local/tmp/bg/vb/enzh1024.yml < /data/local/tmp/bg/vb/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 26.0,
+        "board_temp": "31976"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 26.5,
+        "board_temp": "32068"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 10247.757,
+          "peak_rss_mib": 289.957,
+          "rss_mib": 289.23,
+          "output_bytes": 22689,
+          "output_hash": "546c8c0aa885b852"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 9710.854,
+          "peak_rss_mib": 290.062,
+          "rss_mib": 289.117,
+          "output_bytes": 22689,
+          "output_hash": "546c8c0aa885b852"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 9623.149,
+          "peak_rss_mib": 290.062,
+          "rss_mib": 289.074,
+          "output_bytes": 22686,
+          "output_hash": "f9077e4684862ab4"
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "scenario": "pivot_w1",
+      "version": "main",
+      "command": "taskset f0 /data/local/tmp/bg/vb/main 1 /data/local/tmp/bg/vb/jaen1024.yml /data/local/tmp/bg/vb/enzh1024.yml < /data/local/tmp/bg/vb/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 26.5,
+        "board_temp": "32068"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 26.7,
+        "board_temp": "32382"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 10082.107,
+          "peak_rss_mib": 289.414,
+          "rss_mib": 288.672,
+          "output_bytes": 22689,
+          "output_hash": "546c8c0aa885b852"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 9650.828,
+          "peak_rss_mib": 289.508,
+          "rss_mib": 288.57,
+          "output_bytes": 22689,
+          "output_hash": "546c8c0aa885b852"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 9666.813,
+          "peak_rss_mib": 289.508,
+          "rss_mib": 288.5,
+          "output_bytes": 22689,
+          "output_hash": "546c8c0aa885b852"
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_b512p",
+      "version": "v0.2.0",
+      "command": "taskset f0 /data/local/tmp/bg/vb/v0.2.0 0 /data/local/tmp/bg/vb/enzh512p.yml < /data/local/tmp/bg/vb/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 27.0,
+        "board_temp": "32598"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 27.0,
+        "board_temp": "32449"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 4273.813,
+          "peak_rss_mib": 185.395,
+          "rss_mib": 145.781,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 4074.244,
+          "peak_rss_mib": 185.395,
+          "rss_mib": 145.859,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 4068.061,
+          "peak_rss_mib": 185.395,
+          "rss_mib": 145.832,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_b512p",
+      "version": "main",
+      "command": "taskset f0 /data/local/tmp/bg/vb/main 0 /data/local/tmp/bg/vb/enzh512p.yml < /data/local/tmp/bg/vb/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 27.2,
+        "board_temp": "32469"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 27.2,
+        "board_temp": "32630"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 4247.333,
+          "peak_rss_mib": 184.613,
+          "rss_mib": 144.992,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 4050.974,
+          "peak_rss_mib": 184.613,
+          "rss_mib": 145.039,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 4057.204,
+          "peak_rss_mib": 184.613,
+          "rss_mib": 145.047,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "scenario": "pivot_b512p",
+      "version": "v0.2.0",
+      "command": "taskset f0 /data/local/tmp/bg/vb/v0.2.0 0 /data/local/tmp/bg/vb/jaen512.yml /data/local/tmp/bg/vb/enzh512p.yml < /data/local/tmp/bg/vb/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 27.5,
+        "board_temp": "32630"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 27.7,
+        "board_temp": "33155"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 8724.928,
+          "peak_rss_mib": 289.742,
+          "rss_mib": 245.648,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 8344.254,
+          "peak_rss_mib": 289.742,
+          "rss_mib": 245.699,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 8334.058,
+          "peak_rss_mib": 289.742,
+          "rss_mib": 245.695,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "scenario": "pivot_b512p",
+      "version": "main",
+      "command": "taskset f0 /data/local/tmp/bg/vb/main 0 /data/local/tmp/bg/vb/jaen512.yml /data/local/tmp/bg/vb/enzh512p.yml < /data/local/tmp/bg/vb/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 27.7,
+        "board_temp": "33155"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 28.0,
+        "board_temp": "33345"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 8651.283,
+          "peak_rss_mib": 289.148,
+          "rss_mib": 245.059,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 8265.155,
+          "peak_rss_mib": 289.148,
+          "rss_mib": 245.121,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 8268.921,
+          "peak_rss_mib": 289.148,
+          "rss_mib": 245.133,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w2_512p",
+      "version": "v0.2.0",
+      "command": "taskset f0 /data/local/tmp/bg/vb/v0.2.0 2 /data/local/tmp/bg/vb/enzh512p.yml < /data/local/tmp/bg/vb/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 28.0,
+        "board_temp": "33345"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 28.0,
+        "board_temp": "33190"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2662.721,
+          "peak_rss_mib": 264.676,
+          "rss_mib": 231.355,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2427.355,
+          "peak_rss_mib": 264.676,
+          "rss_mib": 231.637,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2431.12,
+          "peak_rss_mib": 264.676,
+          "rss_mib": 231.301,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w2_512p",
+      "version": "main",
+      "command": "taskset f0 /data/local/tmp/bg/vb/main 2 /data/local/tmp/bg/vb/enzh512p.yml < /data/local/tmp/bg/vb/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 28.2,
+        "board_temp": "33190"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 28.2,
+        "board_temp": "33404"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2614.139,
+          "peak_rss_mib": 262.879,
+          "rss_mib": 229.398,
+          "output_bytes": 22556,
+          "output_hash": "342aeb3f22c3e1db"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2370.819,
+          "peak_rss_mib": 262.879,
+          "rss_mib": 231.207,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2419.96,
+          "peak_rss_mib": 262.879,
+          "rss_mib": 231.391,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "scenario": "pivot_w2_512p",
+      "version": "v0.2.0",
+      "command": "taskset f0 /data/local/tmp/bg/vb/v0.2.0 2 /data/local/tmp/bg/vb/jaen512.yml /data/local/tmp/bg/vb/enzh512p.yml < /data/local/tmp/bg/vb/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 28.2,
+        "board_temp": "33700"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 28.5,
+        "board_temp": "33916"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 5767.214,
+          "peak_rss_mib": 411.203,
+          "rss_mib": 410.605,
+          "output_bytes": 22646,
+          "output_hash": "78ff3af1bf493714"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 5144.909,
+          "peak_rss_mib": 411.461,
+          "rss_mib": 410.84,
+          "output_bytes": 22642,
+          "output_hash": "c1121a11be9d1c99"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 5094.396,
+          "peak_rss_mib": 411.672,
+          "rss_mib": 410.961,
+          "output_bytes": 22642,
+          "output_hash": "cbda61438a1f3e26"
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "scenario": "pivot_w2_512p",
+      "version": "main",
+      "command": "taskset f0 /data/local/tmp/bg/vb/main 2 /data/local/tmp/bg/vb/jaen512.yml /data/local/tmp/bg/vb/enzh512p.yml < /data/local/tmp/bg/vb/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 28.5,
+        "board_temp": "34172"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 28.7,
+        "board_temp": "34247"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 5519.658,
+          "peak_rss_mib": 410.496,
+          "rss_mib": 410.172,
+          "output_bytes": 22639,
+          "output_hash": "5d7103a69c0763de"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 5075.716,
+          "peak_rss_mib": 411.332,
+          "rss_mib": 410.699,
+          "output_bytes": 22636,
+          "output_hash": "f8434f6d0de916b8"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 5082.589,
+          "peak_rss_mib": 411.332,
+          "rss_mib": 410.285,
+          "output_bytes": 22633,
+          "output_hash": "f39ad41f530b3af8"
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "scenario": "enzh_w1",
+      "version": "main",
+      "command": "taskset f0 /data/local/tmp/bg/vb/main 1 /data/local/tmp/bg/vb/enzh1024.yml < /data/local/tmp/bg/vb/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 28.7,
+        "board_temp": "34498"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 29.0,
+        "board_temp": "34274"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 4706.293,
+          "peak_rss_mib": 184.562,
+          "rss_mib": 167.062,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 4487.357,
+          "peak_rss_mib": 184.562,
+          "rss_mib": 167.461,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 4501.114,
+          "peak_rss_mib": 184.562,
+          "rss_mib": 167.277,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "scenario": "enzh_w1",
+      "version": "v0.2.0",
+      "command": "taskset f0 /data/local/tmp/bg/vb/v0.2.0 1 /data/local/tmp/bg/vb/enzh1024.yml < /data/local/tmp/bg/vb/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 29.0,
+        "board_temp": "34288"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 29.0,
+        "board_temp": "34281"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 4721.226,
+          "peak_rss_mib": 185.273,
+          "rss_mib": 167.895,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 4508.511,
+          "peak_rss_mib": 185.273,
+          "rss_mib": 168.297,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 4524.287,
+          "peak_rss_mib": 185.273,
+          "rss_mib": 168.113,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "scenario": "enzh_w2",
+      "version": "main",
+      "command": "taskset f0 /data/local/tmp/bg/vb/main 2 /data/local/tmp/bg/vb/enzh1024.yml < /data/local/tmp/bg/vb/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 29.2,
+        "board_temp": "34281"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 29.2,
+        "board_temp": "34247"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2831.579,
+          "peak_rss_mib": 275.137,
+          "rss_mib": 274.539,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2570.233,
+          "peak_rss_mib": 276.961,
+          "rss_mib": 276.078,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2561.732,
+          "peak_rss_mib": 276.961,
+          "rss_mib": 275.719,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "scenario": "enzh_w2",
+      "version": "v0.2.0",
+      "command": "taskset f0 /data/local/tmp/bg/vb/v0.2.0 2 /data/local/tmp/bg/vb/enzh1024.yml < /data/local/tmp/bg/vb/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 29.2,
+        "board_temp": "34567"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 29.2,
+        "board_temp": "34783"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2813.478,
+          "peak_rss_mib": 276.113,
+          "rss_mib": 275.438,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2594.31,
+          "peak_rss_mib": 276.629,
+          "rss_mib": 275.855,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2598.811,
+          "peak_rss_mib": 277.805,
+          "rss_mib": 276.859,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "scenario": "enzh_w4",
+      "version": "main",
+      "command": "taskset f0 /data/local/tmp/bg/vb/main 4 /data/local/tmp/bg/vb/enzh1024.yml < /data/local/tmp/bg/vb/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 29.5,
+        "board_temp": "34783"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 29.5,
+        "board_temp": "34971"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1981.236,
+          "peak_rss_mib": 490.051,
+          "rss_mib": 489.262,
+          "output_bytes": 22594,
+          "output_hash": "822313783f3ac1c5"
+        },
+        {
+          "pass": 1,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1683.899,
+          "peak_rss_mib": 491.676,
+          "rss_mib": 490.859,
+          "output_bytes": 22619,
+          "output_hash": "62ebc49c2d6afd9"
+        },
+        {
+          "pass": 2,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1700.53,
+          "peak_rss_mib": 492.473,
+          "rss_mib": 491.621,
+          "output_bytes": 22640,
+          "output_hash": "c8a13e6ed730d131"
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "scenario": "enzh_w4",
+      "version": "v0.2.0",
+      "command": "taskset f0 /data/local/tmp/bg/vb/v0.2.0 4 /data/local/tmp/bg/vb/enzh1024.yml < /data/local/tmp/bg/vb/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 29.5,
+        "board_temp": "34971"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 29.5,
+        "board_temp": "35220"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 2008.238,
+          "peak_rss_mib": 485.492,
+          "rss_mib": 485.008,
+          "output_bytes": 22600,
+          "output_hash": "54cac98062863e18"
+        },
+        {
+          "pass": 1,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1636.541,
+          "peak_rss_mib": 489.988,
+          "rss_mib": 489.48,
+          "output_bytes": 22606,
+          "output_hash": "57bb3c8e97b37fe9"
+        },
+        {
+          "pass": 2,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1666.614,
+          "peak_rss_mib": 490.789,
+          "rss_mib": 489.906,
+          "output_bytes": 22634,
+          "output_hash": "8d98fe08a2e467ff"
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "scenario": "pivot_w1",
+      "version": "main",
+      "command": "taskset f0 /data/local/tmp/bg/vb/main 1 /data/local/tmp/bg/vb/jaen1024.yml /data/local/tmp/bg/vb/enzh1024.yml < /data/local/tmp/bg/vb/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 29.7,
+        "board_temp": "35220"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 30.0,
+        "board_temp": "35201"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 10186.69,
+          "peak_rss_mib": 288.988,
+          "rss_mib": 288.258,
+          "output_bytes": 22689,
+          "output_hash": "546c8c0aa885b852"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 9744.76,
+          "peak_rss_mib": 289.09,
+          "rss_mib": 288.133,
+          "output_bytes": 22689,
+          "output_hash": "546c8c0aa885b852"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 9651.75,
+          "peak_rss_mib": 289.09,
+          "rss_mib": 288.098,
+          "output_bytes": 22686,
+          "output_hash": "f9077e4684862ab4"
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "scenario": "pivot_w1",
+      "version": "v0.2.0",
+      "command": "taskset f0 /data/local/tmp/bg/vb/v0.2.0 1 /data/local/tmp/bg/vb/jaen1024.yml /data/local/tmp/bg/vb/enzh1024.yml < /data/local/tmp/bg/vb/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 30.0,
+        "board_temp": "35201"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 30.2,
+        "board_temp": "35324"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 10202.737,
+          "peak_rss_mib": 289.531,
+          "rss_mib": 288.809,
+          "output_bytes": 22689,
+          "output_hash": "546c8c0aa885b852"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 9771.364,
+          "peak_rss_mib": 289.637,
+          "rss_mib": 288.691,
+          "output_bytes": 22689,
+          "output_hash": "546c8c0aa885b852"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 9671.921,
+          "peak_rss_mib": 289.637,
+          "rss_mib": 288.641,
+          "output_bytes": 22686,
+          "output_hash": "f9077e4684862ab4"
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "scenario": "enzh_b512p",
+      "version": "main",
+      "command": "taskset f0 /data/local/tmp/bg/vb/main 0 /data/local/tmp/bg/vb/enzh512p.yml < /data/local/tmp/bg/vb/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 30.2,
+        "board_temp": "35392"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 30.2,
+        "board_temp": "35219"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 4238.436,
+          "peak_rss_mib": 184.238,
+          "rss_mib": 144.562,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 4039.154,
+          "peak_rss_mib": 184.238,
+          "rss_mib": 144.617,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 4034.152,
+          "peak_rss_mib": 184.238,
+          "rss_mib": 144.621,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "scenario": "enzh_b512p",
+      "version": "v0.2.0",
+      "command": "taskset f0 /data/local/tmp/bg/vb/v0.2.0 0 /data/local/tmp/bg/vb/enzh512p.yml < /data/local/tmp/bg/vb/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 30.5,
+        "board_temp": "35272"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 30.5,
+        "board_temp": "35440"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 4337.638,
+          "peak_rss_mib": 185.301,
+          "rss_mib": 145.688,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 4078.377,
+          "peak_rss_mib": 185.301,
+          "rss_mib": 145.77,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 4078.319,
+          "peak_rss_mib": 185.301,
+          "rss_mib": 145.742,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "scenario": "pivot_b512p",
+      "version": "main",
+      "command": "taskset f0 /data/local/tmp/bg/vb/main 0 /data/local/tmp/bg/vb/jaen512.yml /data/local/tmp/bg/vb/enzh512p.yml < /data/local/tmp/bg/vb/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 30.5,
+        "board_temp": "35440"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "35635"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 8674.252,
+          "peak_rss_mib": 288.961,
+          "rss_mib": 244.875,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 8284.401,
+          "peak_rss_mib": 288.961,
+          "rss_mib": 244.938,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 8289.593,
+          "peak_rss_mib": 288.961,
+          "rss_mib": 244.934,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "scenario": "pivot_b512p",
+      "version": "v0.2.0",
+      "command": "taskset f0 /data/local/tmp/bg/vb/v0.2.0 0 /data/local/tmp/bg/vb/jaen512.yml /data/local/tmp/bg/vb/enzh512p.yml < /data/local/tmp/bg/vb/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "35635"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 31.0,
+        "board_temp": "35854"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 8673.73,
+          "peak_rss_mib": 289.922,
+          "rss_mib": 245.824,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 8293.426,
+          "peak_rss_mib": 289.922,
+          "rss_mib": 245.879,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 8288.294,
+          "peak_rss_mib": 289.922,
+          "rss_mib": 245.887,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "scenario": "enzh_w2_512p",
+      "version": "main",
+      "command": "taskset f0 /data/local/tmp/bg/vb/main 2 /data/local/tmp/bg/vb/enzh512p.yml < /data/local/tmp/bg/vb/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 31.0,
+        "board_temp": "35854"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 31.0,
+        "board_temp": "35694"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2603.268,
+          "peak_rss_mib": 263.617,
+          "rss_mib": 230.711,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2408.068,
+          "peak_rss_mib": 263.617,
+          "rss_mib": 231.137,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2392.314,
+          "peak_rss_mib": 263.617,
+          "rss_mib": 231.09,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "scenario": "enzh_w2_512p",
+      "version": "v0.2.0",
+      "command": "taskset f0 /data/local/tmp/bg/vb/v0.2.0 2 /data/local/tmp/bg/vb/enzh512p.yml < /data/local/tmp/bg/vb/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 31.0,
+        "board_temp": "35897"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 31.0,
+        "board_temp": "35897"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2614.211,
+          "peak_rss_mib": 262.82,
+          "rss_mib": 231.551,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2425.796,
+          "peak_rss_mib": 262.82,
+          "rss_mib": 232.227,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2393.325,
+          "peak_rss_mib": 262.82,
+          "rss_mib": 232.004,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "scenario": "pivot_w2_512p",
+      "version": "main",
+      "command": "taskset f0 /data/local/tmp/bg/vb/main 2 /data/local/tmp/bg/vb/jaen512.yml /data/local/tmp/bg/vb/enzh512p.yml < /data/local/tmp/bg/vb/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 31.0,
+        "board_temp": "36105"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 31.2,
+        "board_temp": "36274"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 5490.662,
+          "peak_rss_mib": 410.215,
+          "rss_mib": 409.727,
+          "output_bytes": 22639,
+          "output_hash": "5d7103a69c0763de"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 5092.847,
+          "peak_rss_mib": 410.312,
+          "rss_mib": 409.848,
+          "output_bytes": 22633,
+          "output_hash": "f39ad41f530b3af8"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 5249.679,
+          "peak_rss_mib": 410.441,
+          "rss_mib": 409.727,
+          "output_bytes": 22654,
+          "output_hash": "1abb8dc0d81b34d8"
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "scenario": "pivot_w2_512p",
+      "version": "v0.2.0",
+      "command": "taskset f0 /data/local/tmp/bg/vb/v0.2.0 2 /data/local/tmp/bg/vb/jaen512.yml /data/local/tmp/bg/vb/enzh512p.yml < /data/local/tmp/bg/vb/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 31.2,
+        "board_temp": "36614"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 31.2,
+        "board_temp": "36454"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 5780.189,
+          "peak_rss_mib": 411.484,
+          "rss_mib": 410.801,
+          "output_bytes": 22654,
+          "output_hash": "1abb8dc0d81b34d8"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 5170.745,
+          "peak_rss_mib": 411.965,
+          "rss_mib": 411.082,
+          "output_bytes": 22623,
+          "output_hash": "46e66f5a52881181"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 5310.369,
+          "peak_rss_mib": 411.965,
+          "rss_mib": 411.238,
+          "output_bytes": 22651,
+          "output_hash": "ddf9717c089ad07f"
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "scenario": "enzh_w1",
+      "version": "v0.2.0",
+      "command": "taskset f0 /data/local/tmp/bg/vb/v0.2.0 1 /data/local/tmp/bg/vb/enzh1024.yml < /data/local/tmp/bg/vb/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 31.5,
+        "board_temp": "36859"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 31.5,
+        "board_temp": "36522"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 4709.371,
+          "peak_rss_mib": 185.277,
+          "rss_mib": 167.961,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 4514.007,
+          "peak_rss_mib": 185.277,
+          "rss_mib": 168.375,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 4491.153,
+          "peak_rss_mib": 185.277,
+          "rss_mib": 168.168,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "scenario": "enzh_w1",
+      "version": "main",
+      "command": "taskset f0 /data/local/tmp/bg/vb/main 1 /data/local/tmp/bg/vb/enzh1024.yml < /data/local/tmp/bg/vb/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 31.5,
+        "board_temp": "36554"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 31.7,
+        "board_temp": "36446"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 4724.473,
+          "peak_rss_mib": 184.926,
+          "rss_mib": 167.488,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 4520.987,
+          "peak_rss_mib": 184.926,
+          "rss_mib": 167.953,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 4506.001,
+          "peak_rss_mib": 184.926,
+          "rss_mib": 167.637,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "scenario": "enzh_w2",
+      "version": "v0.2.0",
+      "command": "taskset f0 /data/local/tmp/bg/vb/v0.2.0 2 /data/local/tmp/bg/vb/enzh1024.yml < /data/local/tmp/bg/vb/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 31.7,
+        "board_temp": "36414"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 31.7,
+        "board_temp": "36414"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2837.81,
+          "peak_rss_mib": 276.031,
+          "rss_mib": 275.402,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2559.498,
+          "peak_rss_mib": 277.879,
+          "rss_mib": 276.977,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2624.471,
+          "peak_rss_mib": 277.879,
+          "rss_mib": 276.711,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "scenario": "enzh_w2",
+      "version": "main",
+      "command": "taskset f0 /data/local/tmp/bg/vb/main 2 /data/local/tmp/bg/vb/enzh1024.yml < /data/local/tmp/bg/vb/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 31.7,
+        "board_temp": "36727"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 31.7,
+        "board_temp": "36757"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2834.834,
+          "peak_rss_mib": 275.309,
+          "rss_mib": 274.656,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2560.503,
+          "peak_rss_mib": 277.117,
+          "rss_mib": 276.227,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2562.821,
+          "peak_rss_mib": 277.117,
+          "rss_mib": 275.887,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "scenario": "enzh_w4",
+      "version": "v0.2.0",
+      "command": "taskset f0 /data/local/tmp/bg/vb/v0.2.0 4 /data/local/tmp/bg/vb/enzh1024.yml < /data/local/tmp/bg/vb/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 31.7,
+        "board_temp": "36757"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 32.0,
+        "board_temp": "36898"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 2095.493,
+          "peak_rss_mib": 489.117,
+          "rss_mib": 488.734,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 1,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1845.026,
+          "peak_rss_mib": 491.219,
+          "rss_mib": 490.137,
+          "output_bytes": 22611,
+          "output_hash": "c6b0d49fc4947ea1"
+        },
+        {
+          "pass": 2,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1686.828,
+          "peak_rss_mib": 493.188,
+          "rss_mib": 492.098,
+          "output_bytes": 22593,
+          "output_hash": "6afbf3bfc92a4f9c"
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "scenario": "enzh_w4",
+      "version": "main",
+      "command": "taskset f0 /data/local/tmp/bg/vb/main 4 /data/local/tmp/bg/vb/enzh1024.yml < /data/local/tmp/bg/vb/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 32.0,
+        "board_temp": "36898"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 32.0,
+        "board_temp": "37006"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1910.404,
+          "peak_rss_mib": 487.117,
+          "rss_mib": 486.562,
+          "output_bytes": 22627,
+          "output_hash": "65a5f3f516c74678"
+        },
+        {
+          "pass": 1,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1729.976,
+          "peak_rss_mib": 489.758,
+          "rss_mib": 489.172,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 2,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1706.241,
+          "peak_rss_mib": 492.176,
+          "rss_mib": 490.965,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "scenario": "pivot_w1",
+      "version": "v0.2.0",
+      "command": "taskset f0 /data/local/tmp/bg/vb/v0.2.0 1 /data/local/tmp/bg/vb/jaen1024.yml /data/local/tmp/bg/vb/enzh1024.yml < /data/local/tmp/bg/vb/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 32.0,
+        "board_temp": "37006"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 32.2,
+        "board_temp": "37146"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 10209.182,
+          "peak_rss_mib": 289.695,
+          "rss_mib": 288.961,
+          "output_bytes": 22689,
+          "output_hash": "546c8c0aa885b852"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 9684.119,
+          "peak_rss_mib": 289.746,
+          "rss_mib": 288.828,
+          "output_bytes": 22686,
+          "output_hash": "f9077e4684862ab4"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 9687.96,
+          "peak_rss_mib": 289.746,
+          "rss_mib": 288.797,
+          "output_bytes": 22686,
+          "output_hash": "f9077e4684862ab4"
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "scenario": "pivot_w1",
+      "version": "main",
+      "command": "taskset f0 /data/local/tmp/bg/vb/main 1 /data/local/tmp/bg/vb/jaen1024.yml /data/local/tmp/bg/vb/enzh1024.yml < /data/local/tmp/bg/vb/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 32.2,
+        "board_temp": "37041"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 32.5,
+        "board_temp": "37300"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 10166.443,
+          "peak_rss_mib": 289.012,
+          "rss_mib": 288.277,
+          "output_bytes": 22689,
+          "output_hash": "546c8c0aa885b852"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 9628.853,
+          "peak_rss_mib": 289.062,
+          "rss_mib": 288.148,
+          "output_bytes": 22686,
+          "output_hash": "f9077e4684862ab4"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 9727.79,
+          "peak_rss_mib": 289.07,
+          "rss_mib": 288.137,
+          "output_bytes": 22689,
+          "output_hash": "546c8c0aa885b852"
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "scenario": "enzh_b512p",
+      "version": "v0.2.0",
+      "command": "taskset f0 /data/local/tmp/bg/vb/v0.2.0 0 /data/local/tmp/bg/vb/enzh512p.yml < /data/local/tmp/bg/vb/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 32.5,
+        "board_temp": "37300"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 32.5,
+        "board_temp": "37058"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 4255.144,
+          "peak_rss_mib": 185.141,
+          "rss_mib": 145.516,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 4057.774,
+          "peak_rss_mib": 185.141,
+          "rss_mib": 145.594,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 4062.831,
+          "peak_rss_mib": 185.141,
+          "rss_mib": 145.566,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "scenario": "enzh_b512p",
+      "version": "main",
+      "command": "taskset f0 /data/local/tmp/bg/vb/main 0 /data/local/tmp/bg/vb/enzh512p.yml < /data/local/tmp/bg/vb/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 32.5,
+        "board_temp": "37165"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 32.7,
+        "board_temp": "37061"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 4248.85,
+          "peak_rss_mib": 184.43,
+          "rss_mib": 144.691,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 4064.936,
+          "peak_rss_mib": 184.43,
+          "rss_mib": 144.746,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 4063.948,
+          "peak_rss_mib": 184.43,
+          "rss_mib": 144.758,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "scenario": "pivot_b512p",
+      "version": "v0.2.0",
+      "command": "taskset f0 /data/local/tmp/bg/vb/v0.2.0 0 /data/local/tmp/bg/vb/jaen512.yml /data/local/tmp/bg/vb/enzh512p.yml < /data/local/tmp/bg/vb/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 32.7,
+        "board_temp": "37061"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 32.7,
+        "board_temp": "37338"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 8723.78,
+          "peak_rss_mib": 289.961,
+          "rss_mib": 245.863,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 8310.369,
+          "peak_rss_mib": 289.961,
+          "rss_mib": 245.922,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 8308.956,
+          "peak_rss_mib": 289.961,
+          "rss_mib": 245.918,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "scenario": "pivot_b512p",
+      "version": "main",
+      "command": "taskset f0 /data/local/tmp/bg/vb/main 0 /data/local/tmp/bg/vb/jaen512.yml /data/local/tmp/bg/vb/enzh512p.yml < /data/local/tmp/bg/vb/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 32.7,
+        "board_temp": "37338"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 32.7,
+        "board_temp": "37448"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 8660.776,
+          "peak_rss_mib": 288.965,
+          "rss_mib": 244.887,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 8289.938,
+          "peak_rss_mib": 288.965,
+          "rss_mib": 244.945,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 8275.797,
+          "peak_rss_mib": 288.965,
+          "rss_mib": 244.949,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "scenario": "enzh_w2_512p",
+      "version": "v0.2.0",
+      "command": "taskset f0 /data/local/tmp/bg/vb/v0.2.0 2 /data/local/tmp/bg/vb/enzh512p.yml < /data/local/tmp/bg/vb/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 32.7,
+        "board_temp": "37448"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 33.0,
+        "board_temp": "37247"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2636.031,
+          "peak_rss_mib": 264.488,
+          "rss_mib": 231.168,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2413.571,
+          "peak_rss_mib": 264.488,
+          "rss_mib": 231.648,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2426.958,
+          "peak_rss_mib": 264.488,
+          "rss_mib": 231.531,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "scenario": "enzh_w2_512p",
+      "version": "main",
+      "command": "taskset f0 /data/local/tmp/bg/vb/main 2 /data/local/tmp/bg/vb/enzh512p.yml < /data/local/tmp/bg/vb/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 33.0,
+        "board_temp": "37568"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 33.0,
+        "board_temp": "37568"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2604.127,
+          "peak_rss_mib": 260.684,
+          "rss_mib": 230.535,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2412.023,
+          "peak_rss_mib": 260.684,
+          "rss_mib": 231.082,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2429.378,
+          "peak_rss_mib": 260.684,
+          "rss_mib": 230.719,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "scenario": "pivot_w2_512p",
+      "version": "v0.2.0",
+      "command": "taskset f0 /data/local/tmp/bg/vb/v0.2.0 2 /data/local/tmp/bg/vb/jaen512.yml /data/local/tmp/bg/vb/enzh512p.yml < /data/local/tmp/bg/vb/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 33.0,
+        "board_temp": "37731"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 33.0,
+        "board_temp": "38088"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 5594.709,
+          "peak_rss_mib": 410.863,
+          "rss_mib": 410.547,
+          "output_bytes": 22639,
+          "output_hash": "5d7103a69c0763de"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 5146.47,
+          "peak_rss_mib": 411.664,
+          "rss_mib": 411.016,
+          "output_bytes": 22642,
+          "output_hash": "c1121a11be9d1c99"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 5105.242,
+          "peak_rss_mib": 411.926,
+          "rss_mib": 411.137,
+          "output_bytes": 22633,
+          "output_hash": "c6609236b5e1d29f"
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "scenario": "pivot_w2_512p",
+      "version": "main",
+      "command": "taskset f0 /data/local/tmp/bg/vb/main 2 /data/local/tmp/bg/vb/jaen512.yml /data/local/tmp/bg/vb/enzh512p.yml < /data/local/tmp/bg/vb/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 33.0,
+        "board_temp": "38088"
+      },
+      "after": {
+        "max_freq_khz": {
+          "4": "2246400",
+          "7": "2745600"
+        },
+        "battery_temp_c": 33.0,
+        "board_temp": "38387"
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 5723.821,
+          "peak_rss_mib": 410.465,
+          "rss_mib": 409.773,
+          "output_bytes": 22654,
+          "output_hash": "1abb8dc0d81b34d8"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 5216.615,
+          "peak_rss_mib": 411.152,
+          "rss_mib": 410.477,
+          "output_bytes": 22654,
+          "output_hash": "bdc4fed56c121ea6"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 5281.577,
+          "peak_rss_mib": 411.609,
+          "rss_mib": 410.695,
+          "output_bytes": 22648,
+          "output_hash": "b525fdb98a9c3fff"
+        }
+      ]
+    }
+  ]
+}

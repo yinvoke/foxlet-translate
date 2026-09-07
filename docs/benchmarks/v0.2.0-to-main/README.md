@@ -1,6 +1,6 @@
 # v0.2.0 → 当前 main 整体验收(2026-09-07)
 
-沿用 [v0.1.0 → v0.2.0](../v0.2.0/README.md) 的协议:同一份[测量程序](../../../tools/version-bench/main.cpp)分别编进两版引擎树,同一台小米 10(骁龙 865,无 i8mm,两版都走 ruy),每场景每版本 3 个独立进程、版本顺序 AB / BA / AB、每进程 3 遍。首次翻译含建服务、模型创建、懒加载与第一遍翻译;峰值为首遍后的 VmHWM。原始数据 [results.json](results.json),中位数 [summary.json](summary.json)。
+沿用 [v0.1.0 → v0.2.0](../v0.2.0/README.md) 的协议:同一份[测量程序](../../../tools/version-bench/main.cpp)分别编进两版引擎树,每场景每版本 3 个独立进程、版本顺序 AB / BA / AB、每进程 3 遍。首次翻译含建服务、模型创建、懒加载与第一遍翻译;峰值为首遍后的 VmHWM。第 1–3 节是小米 10(骁龙 865,无 i8mm,两版都走 ruy),原始数据 [results.json](results.json),中位数 [summary.json](summary.json);第 4 节是同日在小米 14(骁龙 8 Gen 3,两版都走 SMMLA)的复测,[results-mi14.json](results-mi14.json) / [summary-mi14.json](summary-mi14.json)。
 
 版本:v0.2.0 `db1ccfd`,main `a1ae178`(C/E/F/G 四簇合入后)。板温 29–33°C,A77 / prime 频率上限全程 2,246,400 / 2,745,600 kHz。
 
@@ -39,6 +39,29 @@ v0.2.0 的库默认走 AsyncService 1 worker、mini-batch-words 1024、无分句
 - **质量**:分句前缀表(C5)修掉缩写切句;缓存冷热契约、纯函数语义写进 KDoc 与 README(F4 / F6);`workspaceMb` 废弃但保留兼容(G2)。
 - **本轮没有重算 COMET**;分句变化的 33/200 行已人工审阅(c-params.md §4)。
 
+## 4. 小米 14 复测
+
+同一份两版二进制、同一协议,`taskset 7c`(A720 ×3 + X4)。这台机的频率上限随持续负载下调、空闲后回升,所以每格起跑前等 cpu2 / cpu7 的 scaling_max_freq 回到 2,630,400 kHz(最长等了 139 秒),格后上限常掉到 2,169,600–2,553,600,两版在配对里承受同样的掉档;板温 30.9–32.1°C。main 为 `77fbdb0`(与 a1ae178 只差文档与测量工具)。
+
+引擎对引擎(mini-batch-words 1024,AsyncService,逐条提交):
+
+| 场景 | 首次翻译 v0.2.0 → main | 比值 | 热态 v0.2.0 → main | 峰值 RSS v0.2.0 → main |
+|---|---|---|---|---|
+| 英→中 · 1 worker | 3.13 → 3.13 秒 | 1.002 | 2.91 → 2.90 | 208 → 208 MiB |
+| 英→中 · 2 workers | 1.79 → 1.79 秒 | 0.999 | 1.56 → 1.56 | 305 → 304 MiB |
+| 英→中 · 4 workers | 1.26 → 1.23 秒 | 0.978 | 0.97 → 0.94 | 522 → 518 MiB |
+| 日→中 · 1 worker | 6.95 → 6.96 秒 | 1.001 | 6.42 → 6.42 | 314 → 313 MiB |
+
+各自 AAR 默认参数:
+
+| 场景 | v0.2.0 默认 | main 默认 | 比值 | 峰值 RSS |
+|---|---|---|---|---|
+| 英→中 · 单线程 | 3.13 秒 | 3.05 秒 | 0.975(噪声内) | 208 → 208 MiB |
+| 日→中 · 单线程 | 6.95 秒 | 6.29 秒 | **0.90** | 314 → 309 MiB |
+| 热态 | 2.91 / 6.42 | 2.83 / 5.86 | 0.976 / 0.912 | |
+
+**结论与小米 10 一致,幅度不同**:引擎同配置持平(0.978–1.002,峰值同值);v0.2.0 的引擎按 main 的默认参数跑也得到同样的 3.06 / 6.29 秒。产品口径的收益在这台 SMMLA 机上英→中只有 2.5%(在噪声门内),日→中 10%。这与参数矩阵(M4)的结论相符:mini-batch-words 1024 → 512 在有 i8mm 的机型 blocking 档没有收益,收益主要来自 865 这类走 ruy SDOT 的机型;日→中的 10% 主要来自 pivot 两段改走 blocking 路径(E4 在 harness 上量到的 pivot 收益 7–9%)。2 workers(mbw 512 + 前缀表)两版持平:英→中 1.75 → 1.75 秒(1.002),日→中 3.94 → 3.93 秒(0.998),峰值 288 / 436 MiB。
+
 ## 复现
 
 ```bash
@@ -49,4 +72,6 @@ cmake -S /tmp/vb/v0.2.0 -B /tmp/vb/v0.2.0/build -DCMAKE_TOOLCHAIN_FILE=$NDK/buil
   -DSSPLIT_USE_INTERNAL_PCRE2=ON -DCOMPILE_TESTS=OFF -DBUILD_ARCH=armv8-a -DBUILD_SMOKE=ON && cmake --build /tmp/vb/v0.2.0/build --target smoke
 # 设备上需有 /data/local/tmp/bg/ 下的 config-mbw1024.yml、config-jaen.yml、config-mbw512on.yml(带 ssplit-prefix-file)、config-jaen512.yml、eng200.txt、jpn200.txt
 python3 tools/version-bench/run-pair.py mi10 /tmp/vb/results.json /tmp/vb   # /tmp/vb 里放 smoke-v0.2.0 与 smoke-main
+# 小米 14:文件放 /data/local/tmp/bergamot/,脚本会在每格前等频率上限回到 2,630,400;多台设备时用 ANDROID_SERIAL 选机
+ANDROID_SERIAL=<serial> python3 tools/version-bench/run-pair.py mi14 /tmp/vb/results-mi14.json /tmp/vb
 ```

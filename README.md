@@ -47,9 +47,10 @@ Firefox 内置整页翻译所使用的 [Bergamot](https://browser.mt/) 引擎,
 
 ### v0.2.0 → 当前 main
 
-同一协议在小米 10 上复测:引擎在相同配置下速度与内存持平;按各自 AAR 默认参数,
-英→中单线程首次翻译 **4.72 → 4.25 秒(−10%)**、日→中 **10.21 → 8.66 秒(−15%)**,
-收益来自默认改走同步路径、mini-batch-words 512 与分句前缀表;库体积 −25.6%。
+同一协议在小米 10 与小米 14 上复测:引擎在相同配置下速度与内存持平;按各自 AAR 默认参数,
+小米 10 英→中单线程首次翻译 **4.72 → 4.25 秒(−10%)**、日→中 **10.21 → 8.66 秒(−15%)**,
+小米 14 英→中 3.13 → 3.05 秒(噪声内)、日→中 **6.95 → 6.29 秒(−10%)**,
+收益来自默认改走同步路径、mini-batch-words 512 与分句前缀表,在没有 i8mm 的机型上更明显;库体积 −25.6%。
 详见 [验收记录](docs/benchmarks/v0.2.0-to-main/README.md)。
 
 ### 与 ML Kit 对比(历史基线)
@@ -221,7 +222,7 @@ engine/        Bergamot 引擎,vendor 自 mozilla/translations(来源与升级�
 patches/       对上游的全部本地改动,git 补丁形式存档
 jni/           C++ 胶水层:批量进出;1 线程在调用线程同步翻译(BlockingService),≥2 线程走 AsyncService worker
 bergamot/      Android 库(Kotlin suspend API)→ AAR
-tools/         测试工具(不随库发布):smoke CLI(主机 / adb shell 基准)、regress-hash.sh 哈希回归、smmla-test(SMMLA 内核测试集与形状级 A/B)、i8mm 微基准
+tools/         测试工具(不随库发布):smoke CLI(主机 / adb shell 基准)、regress-hash.sh 哈希回归、smmla-test(SMMLA 内核测试集与形状级 A/B)、i8mm 微基准、version-bench 版本配对基准、float-bench / wemb-check 内核与权重对拍
 sample/        基准测试 app:ML Kit vs Bergamot,内存/CPU 曲线,JSON 导出
 registry.json  Mozilla 模型下载索引(每个方向的 URL / sha256 / 大小)
 ```

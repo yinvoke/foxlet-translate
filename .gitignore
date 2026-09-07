@@ -12,6 +12,7 @@ engine/marian-fork/src/common/project_version.h
 # downloaded models and local bench output (never committed)
 models/
 bench-*.txt
+bench-a3-*/
 
 # gradle / IDE / local machine
 .claude/
@@ -21,6 +22,7 @@ local.properties
 *.iml
 .DS_Store
 build-android/
+build-host-*/
 build-*.log
 
 # research notes stay local; only the two benchmark charts the README embeds are tracked

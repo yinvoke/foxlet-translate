@@ -6,6 +6,18 @@ on:
   pull_request:
 
 jobs:
+  benchmark-tools:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Benchmark checker tests (no device timings on shared CI runners)
+        run: python3 -B -m unittest discover -s tools/version-bench -p 'test_*.py' -v
+      - name: App benchmark evidence checks (synthetic data only)
+        run: python3 -B -m unittest discover -s tools/app-bench -p 'test_*.py' -v
+
   # NDK 交叉编译在 x86 宿主上合法(目标是 arm64);ARM-only 门禁检查的是目标架构。
   android:
     runs-on: ubuntu-latest
@@ -27,19 +39,49 @@ jobs:
 
   # 主机冒烟工具须在 ARM 宿主构建(与设备同走 ruy/NEON 路径)。
   host-smoke:
-    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # 标准 macOS runner 可能是 M1，不能假定支持 i8mm。
+          - os: macos-latest
+            require-i8mm: '0'
+          # Linux ARM runner 必须实际执行 i8mm 测试，禁止静默跳过。
+          - os: ubuntu-24.04-arm
+            require-i8mm: '1'
+    runs-on: ${{ matrix.os }}
+    env:
+      CC: clang
+      CXX: clang++
     steps:
       - uses: actions/checkout@v4
+      - name: Install Linux host tools
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang llvm
       - name: Build smoke CLI
         run: |
           cmake -B build-host -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_ARCH=armv8-a \
             -DSSPLIT_USE_INTERNAL_PCRE2=ON -DCOMPILE_TESTS=OFF -DBUILD_SMMLA_TEST=ON
           cmake --build build-host -j 3 --target smoke --target smmla_test
-      - name: SMMLA GEMM test set (Apple Silicon runner has i8mm; coverage is required)
+      - name: SMMLA GEMM test set and disabled-backend probe
+        env:
+          SMMLA_TEST_REQUIRE_I8MM: ${{ matrix.require-i8mm }}
         run: |
-          SMMLA_TEST_REQUIRE_I8MM=1 ctest --test-dir build-host --output-on-failure
+          ctest --test-dir build-host --output-on-failure
           BERGAMOT_NO_I8MM=1 ./build-host/tools/smmla-test/smmla_test --killswitch-probe
-          tools/smmla-test/check-opcodes.sh build-host/tools/smoke/smoke "$(xcrun -f llvm-objdump)"
+      - name: Verify i8mm opcodes stay in isolated kernels
+        run: |
+          if [[ "$RUNNER_OS" == "macOS" ]]; then
+            objdump="$(xcrun -f llvm-objdump)"
+            export MATTR=+v9.2a
+          else
+            objdump="$(command -v llvm-objdump)"
+            export MATTR=+i8mm
+          fi
+          tools/smmla-test/check-opcodes.sh build-host/tools/smoke/smoke "$objdump"
       - name: Translate two sentences with a real model
         run: |
           mkdir -p models/enzh

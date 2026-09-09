@@ -61,7 +61,7 @@ class ModelFilesTest {
             "trgvocab.enzh.spm",
             "lex.50.50.enzh.s2t.bin",
         )
-        val yaml = ModelFiles.fromDirectory(d).toConfigYaml(workspaceMb = 96)
+        val yaml = ModelFiles.fromDirectory(d).toConfigYaml()
         assertTrue(yaml.contains(File(d, "model.enzh.intgemm.alphas.bin").absolutePath))
         assertTrue(yaml.contains("gemm-precision: int8shiftAlphaAll"))
         assertTrue(yaml.lines().none { it.startsWith(" ") && it.contains("\t") })
@@ -84,8 +84,8 @@ class ModelFilesTest {
             "lex.50.50.enzh.s2t.bin",
         )
         val files = ModelFiles.fromDirectory(d)
-        assertTrue(files.toConfigYaml(workspaceMb = 128).contains("mini-batch-words: 512"))
-        assertTrue(files.toConfigYaml(workspaceMb = 128, miniBatchWords = 1024).contains("mini-batch-words: 1024"))
+        assertTrue(files.toConfigYaml().contains("mini-batch-words: 512"))
+        assertTrue(files.toConfigYaml(miniBatchWords = 1024).contains("mini-batch-words: 1024"))
     }
 
     @Test
@@ -192,7 +192,7 @@ class ModelFilesTest {
             "lex.50.50.enzh.s2t.bin",
         )
         val files = ModelFiles.fromDirectory(d)
-        assertEquals(files.toConfigYaml(workspaceMb = 32), files.toConfigYaml(workspaceMb = 512))
+        assertFalse(files.toConfigYaml(miniBatchWords = config.miniBatchWords).contains("workspace"))
     }
 
     @Test

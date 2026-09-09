@@ -1,0 +1,33 @@
+{
+  "id": "android-native-v1",
+  "protocol": {
+    "rounds": 3,
+    "version_order": ["AB", "BA", "AB"],
+    "passes_per_process": 3,
+    "cache_size": 0
+  },
+  "metrics": {
+    "cold_ms": {
+      "unit": "ms",
+      "definition": "median across processes of pass 0 elapsed_ms; includes service/model creation and first translation"
+    },
+    "warm_ms": {
+      "unit": "ms",
+      "definition": "median across processes of each process median elapsed_ms for passes 1 and 2"
+    },
+    "peak_rss_mib": {
+      "unit": "MiB",
+      "definition": "median across processes of pass 0 VmHWM in KiB divided by 1024; not Android app PSS"
+    }
+  },
+  "scenarios": [
+    {"id": "enzh_w1", "workers": 1, "corpus": "eng", "configs": ["enzh1024"], "sentences": 200, "stable_hash": false},
+    {"id": "enzh_w2", "workers": 2, "corpus": "eng", "configs": ["enzh1024"], "sentences": 200, "stable_hash": false},
+    {"id": "enzh_w4", "workers": 4, "corpus": "eng", "configs": ["enzh1024"], "sentences": 200, "stable_hash": false},
+    {"id": "pivot_w1", "workers": 1, "corpus": "jpn", "configs": ["jaen1024", "enzh1024"], "sentences": 200, "stable_hash": false},
+    {"id": "enzh_b512p", "workers": 0, "corpus": "eng", "configs": ["enzh512p"], "sentences": 200, "stable_hash": true},
+    {"id": "pivot_b512p", "workers": 0, "corpus": "jpn", "configs": ["jaen512", "enzh512p"], "sentences": 200, "stable_hash": true},
+    {"id": "enzh_w2_512p", "workers": 2, "corpus": "eng", "configs": ["enzh512p"], "sentences": 200, "stable_hash": false},
+    {"id": "pivot_w2_512p", "workers": 2, "corpus": "jpn", "configs": ["jaen512", "enzh512p"], "sentences": 200, "stable_hash": false}
+  ]
+}

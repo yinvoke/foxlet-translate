@@ -57,7 +57,10 @@ class MainActivity : Activity() {
 
         showMain()
 
-        if (intent.hasExtra("autorun") && !autorunConsumed) {
+        if (intent.hasExtra("isolated_phase") && !autorunConsumed) {
+            autorunConsumed = true
+            startIsolatedBench()
+        } else if (intent.hasExtra("autorun") && !autorunConsumed) {
             autorunConsumed = true
             startBench(intent.getIntExtra("threads", 1), intent.getIntExtra("workspace", 128))
         }
@@ -127,6 +130,32 @@ class MainActivity : Activity() {
     }
 
     // ---- run screen: live log, then straight into the result view ----
+
+    private fun startIsolatedBench() {
+        check(!benchRanInProcess) { "Isolated benchmark requires a fresh process" }
+        benchRanInProcess = true
+        val view = TextView(this).apply {
+            setPadding(dp(12), dp(12), dp(12), dp(12))
+            text = "Isolated benchmark · 请保持前台\n"
+        }
+        swap(ScrollView(this).apply { addView(view) }, null)
+        scope.launch {
+            try {
+                withContext(Dispatchers.Default) {
+                    IsolatedBenchRunner(
+                        this@MainActivity,
+                        intent.getStringExtra("engine") ?: "bergamot",
+                        intent.getStringExtra("isolated_phase")!!,
+                        intent.getIntExtra("threads", 1),
+                        intent.getStringExtra("run_id") ?: error("run_id required"),
+                        intent.getBooleanExtra("prepare_models", false),
+                    ) { line -> scope.launch { view.append(line + "\n") } }.run()
+                }
+            } catch (error: Exception) {
+                view.append("FATAL: $error\n")
+            }
+        }
+    }
 
     private fun startBench(threads: Int, workspaceMb: Int) {
         benchRanInProcess = true

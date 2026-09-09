@@ -10,7 +10,7 @@ from matplotlib import font_manager
 from matplotlib.patches import Patch
 
 ROOT = Path(__file__).resolve().parents[2]
-DATA = ROOT / 'docs/benchmarks/v0.2.0'
+DATA = ROOT / 'benchmarks/v0.2.0'
 raw = json.loads((DATA / 'results.json').read_text())
 font = Path('/Library/Fonts/Arial Unicode.ttf')
 if font.exists():

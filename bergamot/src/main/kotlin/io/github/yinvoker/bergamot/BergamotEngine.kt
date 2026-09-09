@@ -103,7 +103,7 @@ data class ModelFiles(
      * `translation_model.cpp:43`), but `std::stoi("false")` would throw the day
      * that changes.
      */
-    internal fun toConfigYaml(workspaceMb: Int, miniBatchWords: Int = 512): String = """
+    internal fun toConfigYaml(miniBatchWords: Int = 512): String = """
         models:
           - ${model.absolutePath}
         vocabs:
@@ -129,15 +129,13 @@ class EngineConfig(
      * Translation threads inside the engine (>=1).
      *
      * 1 (the default) runs the translation synchronously on the engine thread
-     * — a BlockingService, no dispatch to workers at all. Cheapest and the only
-     * reproducible setting: output is byte-identical across processes, memory
-     * is the lowest of any thread count, and the per-batch dispatch cost is
-     * gone. The right choice for interactive, sentence-at-a-time translation.
+     * — a BlockingService, with no worker dispatch. This uses the least memory
+     * and is the default for interactive, sentence-at-a-time translation.
      *
      * >=2 spawns that many AsyncService workers, which translate one batch in
-     * parallel. Worth it for bulk batches; the cost is that batch composition
-     * now depends on worker timing, so the output of a given sentence can
-     * differ between runs of the same input.
+     * parallel, at the cost of additional memory. Batch composition is fixed
+     * by the input, not worker timing. See [BergamotEngine.translate] for the
+     * output contract, including short inputs and the translation cache.
      */
     val threads: Int = 1,
     /**
@@ -250,7 +248,7 @@ class EngineConfig(
          *
          * Reads `ActivityManager.getMemoryInfo().totalMem`, `isLowRamDevice`
          * and [NativeBridge.fastCoreCount], then defers to
-         * [ThreadTuning.recommend]. The resulting [Decision] is kept in
+         * [ThreadTuning.recommend]. The resulting [ThreadTuning.Decision] is kept in
          * [tuning]. The engine fixes its worker count when the service is
          * created, so build a new engine to re-tier.
          *
@@ -441,16 +439,12 @@ class BergamotEngine(private val config: EngineConfig = EngineConfig()) : Closea
     private fun keyOf(model: ModelFiles) = model.model.absolutePath
 
     /** Load [model] if it is not resident, and mark it used. */
-    // config.workspaceMb is deprecated and no longer reaches the YAML; the
-    // argument is still passed so the internal signature stays put for a
-    // release. Drop both together.
-    @Suppress("DEPRECATION")
     private fun acquire(model: ModelFiles): Long {
         val key = keyOf(model)
         val handle = models.getOrPut(key) {
             NativeBridge.loadModel(
                 serviceHandle(),
-                model.toConfigYaml(config.workspaceMb, config.miniBatchWords),
+                model.toConfigYaml(config.miniBatchWords),
                 if (config.nonbreakingPrefixes) NonbreakingPrefixes.bytesFor(model.sourceLanguage) else null,
             )
         }

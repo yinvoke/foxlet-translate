@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run paired Android engine benchmarks; see docs/benchmarks/v0.2.0/README.md."""
+"""Run the historical pair; see benchmarks/v0.2.0/README.md."""
 import argparse
 import hashlib
 import json

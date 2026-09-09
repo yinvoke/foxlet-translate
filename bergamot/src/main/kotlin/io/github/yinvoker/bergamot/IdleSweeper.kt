@@ -29,9 +29,9 @@ internal class IdleSweeper(
     private val nowNanos: () -> Long,
     private val scheduler: Scheduler,
     /**
-     * Drop what [key] stands for. Called from a sweep, on the owning thread,
-     * after the key has already been dropped from the sweeper's own
-     * bookkeeping — so it must not call [forget] back.
+     * Release the model identified by the supplied key, on the owning thread.
+     * The sweep removes the key from its own bookkeeping before this callback,
+     * so the callback only needs to release the associated model resource.
      */
     private val onIdle: (String) -> Unit,
 ) {

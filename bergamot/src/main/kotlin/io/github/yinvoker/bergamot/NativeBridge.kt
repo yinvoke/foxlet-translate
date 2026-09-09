@@ -36,6 +36,8 @@ internal object NativeBridge {
      * second service and no second set of models.
      */
     external fun createService(workers: Int, cacheSize: Int): Long
+
+    /** Destroy [service] and wait until its workers and native caches are gone. */
     external fun destroyService(service: Long)
     /**
      * Load a model into [service]. Everything the engine needs comes from
@@ -58,7 +60,10 @@ internal object NativeBridge {
      * request was still in flight and it dies when that finishes.
      */
     external fun releaseModel(service: Long, model: Long): Boolean
+    /** Translate [texts] in order; the native result has exactly one item per input. */
     external fun translate(service: Long, model: Long, texts: Array<String>, html: Boolean): Array<String>
+
+    /** Translate [texts] through [first] and then [second], keeping both models resident. */
     external fun translatePivot(
         service: Long,
         first: Long,

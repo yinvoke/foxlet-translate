@@ -1,0 +1,25 @@
+{
+  "suite_id": "android-app-v1",
+  "run_id": "prepare_1_jazh_mlkit_1_787d8fc3b1",
+  "mode": "prepare",
+  "engine": "mlkit",
+  "direction": "jazh",
+  "threads": null,
+  "input_count": 200,
+  "corpus_sha256": "6aef2063af141a8169381b13258e42afc8514cc34dece4f2534671c51f2a0f63",
+  "timestamp_ms": 1788933150966,
+  "device_model": "23127PN0CC",
+  "device_fingerprint": "Xiaomi/houji/houji:16/BP2A.250605.031.A3/OS3.0.305.0.WNCCNXM:user/release-keys",
+  "status": "complete",
+  "protocol": {
+    "passes": 3,
+    "pss_interval_ms": 250,
+    "first": "engine creation + model loading + full first translation; no download or explicit prewarm",
+    "warm": "full repeated translation with the same engine/model resident",
+    "input_mode": "SDK per input",
+    "bergamot_cache_size": 0,
+    "mlkit_cache_control": "not exposed by SDK",
+    "os_file_cache": "not cleared"
+  },
+  "passes": []
+}

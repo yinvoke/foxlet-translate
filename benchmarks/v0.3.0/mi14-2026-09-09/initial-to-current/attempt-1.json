@@ -1,0 +1,227 @@
+{
+  "measured_at": "2026-09-09T20:22:48+0800",
+  "device": {
+    "model": "23127PN0CC",
+    "android": "16",
+    "soc": "Snapdragon 8 Gen 3",
+    "i8mm": true,
+    "id_sha256": "02bfda251ceb556996e08642bfd07e6d9d367515c21df91ee80213fc91d5a811",
+    "fingerprint": "Xiaomi/houji/houji:16/BP2A.250605.031.A3/OS3.0.305.0.WNCCNXM:user/release-keys"
+  },
+  "versions": {
+    "v0.1.0": "d447381b1259a8f101a91390dd8950ad7080c84e",
+    "v0.3.0": "bfc6a08c0aeaa8a679170d517c5c041a83c01834"
+  },
+  "build_manifests": {
+    "v0.1.0": {
+      "label": "v0.1.0",
+      "commit": "d447381b1259a8f101a91390dd8950ad7080c84e",
+      "source_kind": "git-ref",
+      "source_native_sha256": "50f2cfea37bd01b90a9db803877215e8e2cb7a5b4f838eb7f4e5817f7e48b978",
+      "dirty_status": "",
+      "harness_sha256": "298e8116a32fb1ed46846ba533c8dacf6051ebd3d8e68e0a4bc15a77673b4a9d",
+      "binary_sha256": "4051337fe28163278359dd1c3a19e9b4ec18c512d1111be1e550d33ceeccb2af",
+      "build_settings": {
+        "cmake_flags": [
+          "-DANDROID_ABI=arm64-v8a",
+          "-DANDROID_PLATFORM=android-28",
+          "-DCMAKE_BUILD_TYPE=Release",
+          "-DANDROID_STL=c++_static",
+          "-DSSPLIT_USE_INTERNAL_PCRE2=ON",
+          "-DCOMPILE_TESTS=OFF",
+          "-DBUILD_ARCH=armv8-a",
+          "-DBUILD_SMOKE=ON"
+        ],
+        "ndk": "Pkg.Desc = Android NDK\nPkg.Revision = 29.0.13113456-beta1\nPkg.BaseRevision = 29.0.13113456\nPkg.ReleaseName = r29-beta1\n",
+        "cmake": "cmake version 4.4.3"
+      }
+    },
+    "v0.3.0": {
+      "label": "v0.3.0",
+      "commit": "bfc6a08c0aeaa8a679170d517c5c041a83c01834",
+      "source_kind": "working-tree",
+      "source_native_sha256": "e3394de29121491ed752eb94191103c764149b98a4da3d9d0e503916b726c398",
+      "dirty_status": " M .github/workflows/build.yml\n M .gitignore\n M README.md\n M bergamot/src/main/kotlin/io/github/yinvoker/bergamot/BergamotEngine.kt\n M bergamot/src/main/kotlin/io/github/yinvoker/bergamot/IdleSweeper.kt\n M bergamot/src/main/kotlin/io/github/yinvoker/bergamot/NativeBridge.kt\n M bergamot/src/test/kotlin/io/github/yinvoker/bergamot/ModelFilesTest.kt\n M docs/benchmarks/v0.2.0-to-main/README.md\n D docs/benchmarks/v0.2.0-to-main/results-mi14.json\n D docs/benchmarks/v0.2.0-to-main/results.json\n D docs/benchmarks/v0.2.0-to-main/summary-mi14.json\n D docs/benchmarks/v0.2.0-to-main/summary.json\n M docs/benchmarks/v0.2.0/README.md\n D docs/benchmarks/v0.2.0/comparison.png\n D docs/benchmarks/v0.2.0/results.json\n D docs/benchmarks/v0.2.0/summary.json\n M sample/src/main/kotlin/io/github/yinvoker/bergamot/bench/MainActivity.kt\n M tools/version-bench/build.py\n M tools/version-bench/plot.py\n M tools/version-bench/run-pair.py\n M tools/version-bench/run.py\n?? CONTRIBUTING.md\n?? benchmarks/\n?? docs/README.md\n?? docs/architecture.md\n?? docs/benchmarking.md\n?? docs/getting-started.md\n?? sample/src/main/kotlin/io/github/yinvoker/bergamot/bench/IsolatedBenchRunner.kt\n?? tools/app-bench/\n?? tools/bench_device.py\n?? tools/version-bench/README.md\n?? tools/version-bench/check.py\n?? tools/version-bench/suite.py\n?? tools/version-bench/suites/\n?? tools/version-bench/test_check.py\n?? tools/version-bench/test_run_pair.py\n",
+      "harness_sha256": "298e8116a32fb1ed46846ba533c8dacf6051ebd3d8e68e0a4bc15a77673b4a9d",
+      "binary_sha256": "29e841f61c386da6cf00b34f7b4ebec96d5aac4c4ff3411a065f9af75bc4bf0b",
+      "build_settings": {
+        "cmake_flags": [
+          "-DANDROID_ABI=arm64-v8a",
+          "-DANDROID_PLATFORM=android-28",
+          "-DCMAKE_BUILD_TYPE=Release",
+          "-DANDROID_STL=c++_static",
+          "-DSSPLIT_USE_INTERNAL_PCRE2=ON",
+          "-DCOMPILE_TESTS=OFF",
+          "-DBUILD_ARCH=armv8-a",
+          "-DBUILD_SMOKE=ON"
+        ],
+        "ndk": "Pkg.Desc = Android NDK\nPkg.Revision = 29.0.13113456-beta1\nPkg.BaseRevision = 29.0.13113456\nPkg.ReleaseName = r29-beta1\n",
+        "cmake": "cmake version 4.4.3"
+      }
+    }
+  },
+  "build_settings": {
+    "cmake_flags": [
+      "-DANDROID_ABI=arm64-v8a",
+      "-DANDROID_PLATFORM=android-28",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DANDROID_STL=c++_static",
+      "-DSSPLIT_USE_INTERNAL_PCRE2=ON",
+      "-DCOMPILE_TESTS=OFF",
+      "-DBUILD_ARCH=armv8-a",
+      "-DBUILD_SMOKE=ON"
+    ],
+    "ndk": "Pkg.Desc = Android NDK\nPkg.Revision = 29.0.13113456-beta1\nPkg.BaseRevision = 29.0.13113456\nPkg.ReleaseName = r29-beta1\n",
+    "cmake": "cmake version 4.4.3"
+  },
+  "suite_id": "android-native-v1",
+  "suite_sha256": "01fd8553d31a4ced2d1a17f19c92ab3b5ee7d6893b40a61744ac9446c2367e35",
+  "report_kind": "full",
+  "corpus_sha256": {
+    "eng": "407119a09c81211b1144f9f10b72e7a4415141fa83509df183c8394b05ad6d68",
+    "jpn": "6aef2063af141a8169381b13258e42afc8514cc34dece4f2534671c51f2a0f63"
+  },
+  "model_files_sha256": {
+    "/data/local/tmp/bergamot/models/model.enzh.intgemm.alphas.bin": "4e5accc141373565ddc8fa1565bceaa8d0c3482a82cab8131c719ebcc6c2157c",
+    "/data/local/tmp/bergamot/models/srcvocab.enzh.spm": "bd9b65504acc6d9726dd281f7defc2adb7c2c22d0688fe2f84697de25197c8c5",
+    "/data/local/tmp/bergamot/models/trgvocab.enzh.spm": "aded6993c36e440284d11cec3f6b8aef9c0e43188a772d80be342a713adf223d",
+    "/data/local/tmp/bergamot/models/lex.50.50.enzh.s2t.bin": "4a5e5827788060f1d718a8132b69440929387514a045796e9b77f935db68c055",
+    "/data/local/tmp/bergamot/models/jaen/model.jaen.intgemm.alphas.bin": "3a603e20bfe1be86071913f9e23ab5129075bc0a8490151020ac4821e4f17302",
+    "/data/local/tmp/bergamot/models/jaen/vocab.jaen.spm": "5cb217758bae05877bb3f0c2f612e4e7c1e4cb03c10db11f4a47098d7ae62919",
+    "/data/local/tmp/bergamot/models/jaen/lex.50.50.jaen.s2t.bin": "525f412f0d210536c2933c78ae395fa0bf2b5ee6cc5dda61ebc2e79410ebaee4",
+    "/data/local/tmp/bergamot/nonbreaking_prefix.en": "af526c47425bb31b4e7b79ec975c1bb752a34ba21951237d51b965e879d9d51a"
+  },
+  "binary_sha256": {
+    "v0.1.0": "4051337fe28163278359dd1c3a19e9b4ec18c512d1111be1e550d33ceeccb2af",
+    "v0.3.0": "29e841f61c386da6cf00b34f7b4ebec96d5aac4c4ff3411a065f9af75bc4bf0b"
+  },
+  "harness_sha256": "298e8116a32fb1ed46846ba533c8dacf6051ebd3d8e68e0a4bc15a77673b4a9d",
+  "config_yaml": {
+    "enzh1024": "models:\n  - /data/local/tmp/bergamot/models/model.enzh.intgemm.alphas.bin\nvocabs:\n  - /data/local/tmp/bergamot/models/srcvocab.enzh.spm\n  - /data/local/tmp/bergamot/models/trgvocab.enzh.spm\nshortlist:\n  - /data/local/tmp/bergamot/models/lex.50.50.enzh.s2t.bin\n  - false\nbeam-size: 1\nnormalize: 1.0\nword-penalty: 0\nmax-length-break: 128\nmini-batch-words: 1024\nworkspace: 128\nmax-length-factor: 2.0\nskip-cost: true\ncpu-threads: 0\nquiet: true\nquiet-translation: true\ngemm-precision: int8shiftAlphaAll\nalignment: soft\n",
+    "jaen1024": "models:\n  - /data/local/tmp/bergamot/models/jaen/model.jaen.intgemm.alphas.bin\nvocabs:\n  - /data/local/tmp/bergamot/models/jaen/vocab.jaen.spm\n  - /data/local/tmp/bergamot/models/jaen/vocab.jaen.spm\nshortlist:\n  - /data/local/tmp/bergamot/models/jaen/lex.50.50.jaen.s2t.bin\n  - false\nbeam-size: 1\nnormalize: 1.0\nword-penalty: 0\nmax-length-break: 128\nmini-batch-words: 1024\nworkspace: 128\nmax-length-factor: 2.0\nskip-cost: true\ncpu-threads: 0\nquiet: true\nquiet-translation: true\ngemm-precision: int8shiftAlphaAll\nalignment: soft\n",
+    "enzh512p": "models:\n  - /data/local/tmp/bergamot/models/model.enzh.intgemm.alphas.bin\nvocabs:\n  - /data/local/tmp/bergamot/models/srcvocab.enzh.spm\n  - /data/local/tmp/bergamot/models/trgvocab.enzh.spm\nshortlist:\n  - /data/local/tmp/bergamot/models/lex.50.50.enzh.s2t.bin\n  - false\nbeam-size: 1\nnormalize: 1.0\nword-penalty: 0\nmax-length-break: 128\nmini-batch-words: 512\nworkspace: 128\nmax-length-factor: 2.0\nskip-cost: true\ncpu-threads: 0\nquiet: true\nquiet-translation: true\ngemm-precision: int8shiftAlphaAll\nalignment: soft\nssplit-prefix-file: /data/local/tmp/bergamot/nonbreaking_prefix.en\n",
+    "jaen512": "models:\n  - /data/local/tmp/bergamot/models/jaen/model.jaen.intgemm.alphas.bin\nvocabs:\n  - /data/local/tmp/bergamot/models/jaen/vocab.jaen.spm\n  - /data/local/tmp/bergamot/models/jaen/vocab.jaen.spm\nshortlist:\n  - /data/local/tmp/bergamot/models/jaen/lex.50.50.jaen.s2t.bin\n  - false\nbeam-size: 1\nnormalize: 1.0\nword-penalty: 0\nmax-length-break: 128\nmini-batch-words: 512\nworkspace: 128\nmax-length-factor: 2.0\nskip-cost: true\ncpu-threads: 0\nquiet: true\nquiet-translation: true\ngemm-precision: int8shiftAlphaAll\nalignment: soft\n"
+  },
+  "collector_files_sha256": {
+    "tools/version-bench/run-pair.py": "6dd896abf872d5928aec0c6ebe1e44dc802d7c9ce47ff041f9e24186e664e705",
+    "tools/bench_device.py": "d5437e32b1ef59a1b93a36aa49884c4e47014386571b7c2d70dad95feed369df"
+  },
+  "scenarios": {
+    "enzh_w1": {
+      "workers": 1,
+      "corpus": "eng",
+      "configs": [
+        "enzh1024"
+      ],
+      "sentences": 200,
+      "stable_hash": false
+    },
+    "enzh_w2": {
+      "workers": 2,
+      "corpus": "eng",
+      "configs": [
+        "enzh1024"
+      ],
+      "sentences": 200,
+      "stable_hash": false
+    },
+    "enzh_w4": {
+      "workers": 4,
+      "corpus": "eng",
+      "configs": [
+        "enzh1024"
+      ],
+      "sentences": 200,
+      "stable_hash": false
+    },
+    "pivot_w1": {
+      "workers": 1,
+      "corpus": "jpn",
+      "configs": [
+        "jaen1024",
+        "enzh1024"
+      ],
+      "sentences": 200,
+      "stable_hash": false
+    },
+    "enzh_b512p": {
+      "workers": 0,
+      "corpus": "eng",
+      "configs": [
+        "enzh512p"
+      ],
+      "sentences": 200,
+      "stable_hash": true
+    },
+    "pivot_b512p": {
+      "workers": 0,
+      "corpus": "jpn",
+      "configs": [
+        "jaen512",
+        "enzh512p"
+      ],
+      "sentences": 200,
+      "stable_hash": true
+    },
+    "enzh_w2_512p": {
+      "workers": 2,
+      "corpus": "eng",
+      "configs": [
+        "enzh512p"
+      ],
+      "sentences": 200,
+      "stable_hash": false
+    },
+    "pivot_w2_512p": {
+      "workers": 2,
+      "corpus": "jpn",
+      "configs": [
+        "jaen512",
+        "enzh512p"
+      ],
+      "sentences": 200,
+      "stable_hash": false
+    }
+  },
+  "protocol": {
+    "rounds": 3,
+    "version_order": [
+      "AB",
+      "BA",
+      "AB"
+    ],
+    "passes_per_process": 3,
+    "cache_size": 0,
+    "affinity": "7c",
+    "cooldown_seconds": 8,
+    "gate_khz": 2630400,
+    "foreground_checks": "awake-unlocked-focused-before-after-v1",
+    "cold_ms": "service + model creation + first translation",
+    "peak_rss_mib": "VmHWM after first translation",
+    "warm_ms": "passes 1 and 2"
+  },
+  "runs": [
+    {
+      "round": 1,
+      "scenario": "enzh_w1",
+      "version": "v0.1.0",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2169600"
+        },
+        "battery_temp_c": 32.5,
+        "board_temp": "33498",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": -1
+      },
+      "returncode": 2,
+      "samples": [],
+      "error": "frequency gate timeout; not measured"
+    }
+  ]
+}

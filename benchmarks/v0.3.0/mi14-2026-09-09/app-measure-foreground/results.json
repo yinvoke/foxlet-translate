@@ -1,0 +1,508 @@
+{
+  "suite_id": "android-app-v1",
+  "mode": "measure",
+  "measured_at": "2026-09-09T13:57:18+0800",
+  "status": "failed",
+  "apk_sha256": "ad871f79287c006a1a33705e0dd24296cda188a79f9c390198ff844aba55c728",
+  "corpus_sha256": {
+    "enzh": "407119a09c81211b1144f9f10b72e7a4415141fa83509df183c8394b05ad6d68",
+    "jazh": "6aef2063af141a8169381b13258e42afc8514cc34dece4f2534671c51f2a0f63"
+  },
+  "device": {
+    "model": "23127PN0CC",
+    "fingerprint": "Xiaomi/houji/houji:16/BP2A.250605.031.A3/OS3.0.305.0.WNCCNXM:user/release-keys",
+    "id_sha256": "02bfda251ceb556996e08642bfd07e6d9d367515c21df91ee80213fc91d5a811"
+  },
+  "source_commit": "bfc6a08c0aeaa8a679170d517c5c041a83c01834",
+  "source_dirty_status": " M .github/workflows/build.yml\n M .gitignore\n M README.md\n M bergamot/src/main/kotlin/io/github/yinvoker/bergamot/BergamotEngine.kt\n M bergamot/src/main/kotlin/io/github/yinvoker/bergamot/IdleSweeper.kt\n M bergamot/src/main/kotlin/io/github/yinvoker/bergamot/NativeBridge.kt\n M bergamot/src/test/kotlin/io/github/yinvoker/bergamot/ModelFilesTest.kt\n M docs/benchmarks/v0.2.0-to-main/README.md\n D docs/benchmarks/v0.2.0-to-main/results-mi14.json\n D docs/benchmarks/v0.2.0-to-main/results.json\n D docs/benchmarks/v0.2.0-to-main/summary-mi14.json\n D docs/benchmarks/v0.2.0-to-main/summary.json\n M docs/benchmarks/v0.2.0/README.md\n D docs/benchmarks/v0.2.0/comparison.png\n D docs/benchmarks/v0.2.0/results.json\n D docs/benchmarks/v0.2.0/summary.json\n M sample/src/main/kotlin/io/github/yinvoker/bergamot/bench/MainActivity.kt\n M tools/version-bench/build.py\n M tools/version-bench/plot.py\n M tools/version-bench/run-pair.py\n M tools/version-bench/run.py\n?? CONTRIBUTING.md\n?? benchmarks/\n?? docs/README.md\n?? docs/architecture.md\n?? docs/benchmarking.md\n?? docs/getting-started.md\n?? sample/src/main/kotlin/io/github/yinvoker/bergamot/bench/IsolatedBenchRunner.kt\n?? tools/app-bench/\n?? tools/version-bench/README.md\n?? tools/version-bench/check.py\n?? tools/version-bench/suite.py\n?? tools/version-bench/suites/\n?? tools/version-bench/test_check.py\n?? tools/version-bench/test_run_pair.py\n",
+  "mlkit_dependency": "com.google.mlkit:translate:17.0.3",
+  "protocol": {
+    "rounds": 3,
+    "passes": 3,
+    "order": "forward/reverse/forward",
+    "cooldown_seconds": 15,
+    "gate_khz": 2630400,
+    "affinity": "Android foreground scheduling, no taskset",
+    "foreground": "fresh process opens idle benchmark UI before frequency gate; engine not created",
+    "memory": "absolute app PSS; 250 ms samples, not native RSS",
+    "performance_eligible": true
+  },
+  "runs": [
+    {
+      "round": 1,
+      "run_id": "measure_1_enzh_mlkit_1_783b69678c",
+      "direction": "enzh",
+      "engine": "mlkit",
+      "threads": null,
+      "idle_launch_output": "Starting: Intent { cmp=io.github.yinvoker.bergamot.bench/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: io.github.yinvoker.bergamot.bench/.MainActivity\nTotalTime: 286\nWaitTime: 290\nComplete",
+      "before": {
+        "battery_temp_c": 30.5,
+        "battery_level": 25,
+        "battery_status": "2",
+        "ac_powered": "true",
+        "usb_powered": "false",
+        "max_freq_khz": {
+          "2": 3148800,
+          "7": 3052800
+        }
+      },
+      "launch_output": "Starting: Intent { flg=0x4000000 cmp=io.github.yinvoker.bergamot.bench/.MainActivity (has extras) }\nStatus: ok\nLaunchState: WARM\nActivity: io.github.yinvoker.bergamot.bench/.MainActivity\nTotalTime: 62\nWaitTime: 65\nComplete",
+      "result_file": "measure_1_enzh_mlkit_1_783b69678c.json",
+      "after": {
+        "battery_temp_c": 30.5,
+        "battery_level": 25,
+        "battery_status": "2",
+        "ac_powered": "true",
+        "usb_powered": "false",
+        "max_freq_khz": {
+          "2": 2630400,
+          "7": 2169600
+        }
+      },
+      "output_hashes": [
+        "ad71cada0aec467ecf8f735dc7d7944a9b0289bf8eca11849c2e9b79c35c1158",
+        "ad71cada0aec467ecf8f735dc7d7944a9b0289bf8eca11849c2e9b79c35c1158",
+        "ad71cada0aec467ecf8f735dc7d7944a9b0289bf8eca11849c2e9b79c35c1158"
+      ],
+      "outputs_stable": true,
+      "status": "complete"
+    },
+    {
+      "round": 1,
+      "run_id": "measure_1_enzh_bergamot_1_f0fd0f0a3c",
+      "direction": "enzh",
+      "engine": "bergamot",
+      "threads": 1,
+      "idle_launch_output": "Starting: Intent { cmp=io.github.yinvoker.bergamot.bench/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: io.github.yinvoker.bergamot.bench/.MainActivity\nTotalTime: 310\nWaitTime: 316\nComplete",
+      "before": {
+        "battery_temp_c": 30.8,
+        "battery_level": 25,
+        "battery_status": "2",
+        "ac_powered": "true",
+        "usb_powered": "false",
+        "max_freq_khz": {
+          "2": 3148800,
+          "7": 3302400
+        }
+      },
+      "launch_output": "Starting: Intent { flg=0x4000000 cmp=io.github.yinvoker.bergamot.bench/.MainActivity (has extras) }\nStatus: ok\nLaunchState: WARM\nActivity: io.github.yinvoker.bergamot.bench/.MainActivity\nTotalTime: 64\nWaitTime: 67\nComplete",
+      "result_file": "measure_1_enzh_bergamot_1_f0fd0f0a3c.json",
+      "after": {
+        "battery_temp_c": 30.8,
+        "battery_level": 25,
+        "battery_status": "2",
+        "ac_powered": "true",
+        "usb_powered": "false",
+        "max_freq_khz": {
+          "2": 2630400,
+          "7": 2169600
+        }
+      },
+      "output_hashes": [
+        "1dbd1ffbc8a44ee34c7c7527340027cc9ddc2ad881977d89f74cbabb633b56c5",
+        "1dbd1ffbc8a44ee34c7c7527340027cc9ddc2ad881977d89f74cbabb633b56c5",
+        "1dbd1ffbc8a44ee34c7c7527340027cc9ddc2ad881977d89f74cbabb633b56c5"
+      ],
+      "outputs_stable": true,
+      "status": "complete"
+    },
+    {
+      "round": 1,
+      "run_id": "measure_1_enzh_bergamot_2_8dbf539a17",
+      "direction": "enzh",
+      "engine": "bergamot",
+      "threads": 2,
+      "idle_launch_output": "Starting: Intent { cmp=io.github.yinvoker.bergamot.bench/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: io.github.yinvoker.bergamot.bench/.MainActivity\nTotalTime: 286\nWaitTime: 289\nComplete",
+      "before": {
+        "battery_temp_c": 30.8,
+        "battery_level": 25,
+        "battery_status": "2",
+        "ac_powered": "true",
+        "usb_powered": "false",
+        "max_freq_khz": {
+          "2": 3148800,
+          "7": 3052800
+        }
+      },
+      "launch_output": "Starting: Intent { flg=0x4000000 cmp=io.github.yinvoker.bergamot.bench/.MainActivity (has extras) }\nStatus: ok\nLaunchState: WARM\nActivity: io.github.yinvoker.bergamot.bench/.MainActivity\nTotalTime: 66\nWaitTime: 74\nComplete",
+      "result_file": "measure_1_enzh_bergamot_2_8dbf539a17.json",
+      "after": {
+        "battery_temp_c": 30.8,
+        "battery_level": 25,
+        "battery_status": "2",
+        "ac_powered": "true",
+        "usb_powered": "false",
+        "max_freq_khz": {
+          "2": 2630400,
+          "7": 2169600
+        }
+      },
+      "output_hashes": [
+        "1dbd1ffbc8a44ee34c7c7527340027cc9ddc2ad881977d89f74cbabb633b56c5",
+        "1dbd1ffbc8a44ee34c7c7527340027cc9ddc2ad881977d89f74cbabb633b56c5",
+        "1dbd1ffbc8a44ee34c7c7527340027cc9ddc2ad881977d89f74cbabb633b56c5"
+      ],
+      "outputs_stable": true,
+      "status": "complete"
+    },
+    {
+      "round": 1,
+      "run_id": "measure_1_enzh_bergamot_4_705f339e25",
+      "direction": "enzh",
+      "engine": "bergamot",
+      "threads": 4,
+      "idle_launch_output": "Starting: Intent { cmp=io.github.yinvoker.bergamot.bench/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: io.github.yinvoker.bergamot.bench/.MainActivity\nTotalTime: 296\nWaitTime: 299\nComplete",
+      "before": {
+        "battery_temp_c": 31.0,
+        "battery_level": 25,
+        "battery_status": "2",
+        "ac_powered": "true",
+        "usb_powered": "false",
+        "max_freq_khz": {
+          "2": 3148800,
+          "7": 3302400
+        }
+      },
+      "launch_output": "Starting: Intent { flg=0x4000000 cmp=io.github.yinvoker.bergamot.bench/.MainActivity (has extras) }\nStatus: ok\nLaunchState: WARM\nActivity: io.github.yinvoker.bergamot.bench/.MainActivity\nTotalTime: 60\nWaitTime: 63\nComplete",
+      "result_file": "measure_1_enzh_bergamot_4_705f339e25.json",
+      "after": {
+        "battery_temp_c": 31.0,
+        "battery_level": 25,
+        "battery_status": "2",
+        "ac_powered": "true",
+        "usb_powered": "false",
+        "max_freq_khz": {
+          "2": 2630400,
+          "7": 2169600
+        }
+      },
+      "output_hashes": [
+        "1dbd1ffbc8a44ee34c7c7527340027cc9ddc2ad881977d89f74cbabb633b56c5",
+        "1dbd1ffbc8a44ee34c7c7527340027cc9ddc2ad881977d89f74cbabb633b56c5",
+        "1dbd1ffbc8a44ee34c7c7527340027cc9ddc2ad881977d89f74cbabb633b56c5"
+      ],
+      "outputs_stable": true,
+      "status": "complete"
+    },
+    {
+      "round": 1,
+      "run_id": "measure_1_jazh_mlkit_1_047ba87bed",
+      "direction": "jazh",
+      "engine": "mlkit",
+      "threads": null,
+      "idle_launch_output": "Starting: Intent { cmp=io.github.yinvoker.bergamot.bench/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: io.github.yinvoker.bergamot.bench/.MainActivity\nTotalTime: 299\nWaitTime: 302\nComplete",
+      "before": {
+        "battery_temp_c": 31.0,
+        "battery_level": 25,
+        "battery_status": "2",
+        "ac_powered": "true",
+        "usb_powered": "false",
+        "max_freq_khz": {
+          "2": 3148800,
+          "7": 3052800
+        }
+      },
+      "launch_output": "Starting: Intent { flg=0x4000000 cmp=io.github.yinvoker.bergamot.bench/.MainActivity (has extras) }\nStatus: ok\nLaunchState: WARM\nActivity: io.github.yinvoker.bergamot.bench/.MainActivity\nTotalTime: 65\nWaitTime: 67\nComplete",
+      "result_file": "measure_1_jazh_mlkit_1_047ba87bed.json",
+      "after": {
+        "battery_temp_c": 31.2,
+        "battery_level": 25,
+        "battery_status": "2",
+        "ac_powered": "true",
+        "usb_powered": "false",
+        "max_freq_khz": {
+          "2": 2630400,
+          "7": 2169600
+        }
+      },
+      "output_hashes": [
+        "eb54c5dac9701e29f5100a8f1d2df7ef83a145d93dfe8e842657c9c3e9f18fd4",
+        "eb54c5dac9701e29f5100a8f1d2df7ef83a145d93dfe8e842657c9c3e9f18fd4",
+        "eb54c5dac9701e29f5100a8f1d2df7ef83a145d93dfe8e842657c9c3e9f18fd4"
+      ],
+      "outputs_stable": true,
+      "status": "complete"
+    },
+    {
+      "round": 1,
+      "run_id": "measure_1_jazh_bergamot_1_02a4415249",
+      "direction": "jazh",
+      "engine": "bergamot",
+      "threads": 1,
+      "idle_launch_output": "Starting: Intent { cmp=io.github.yinvoker.bergamot.bench/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: io.github.yinvoker.bergamot.bench/.MainActivity\nTotalTime: 299\nWaitTime: 302\nComplete",
+      "before": {
+        "battery_temp_c": 31.4,
+        "battery_level": 25,
+        "battery_status": "2",
+        "ac_powered": "true",
+        "usb_powered": "false",
+        "max_freq_khz": {
+          "2": 3148800,
+          "7": 3052800
+        }
+      },
+      "launch_output": "Starting: Intent { flg=0x4000000 cmp=io.github.yinvoker.bergamot.bench/.MainActivity (has extras) }\nStatus: ok\nLaunchState: WARM\nActivity: io.github.yinvoker.bergamot.bench/.MainActivity\nTotalTime: 58\nWaitTime: 61\nComplete",
+      "result_file": "measure_1_jazh_bergamot_1_02a4415249.json",
+      "after": {
+        "battery_temp_c": 31.4,
+        "battery_level": 25,
+        "battery_status": "2",
+        "ac_powered": "true",
+        "usb_powered": "false",
+        "max_freq_khz": {
+          "2": 2630400,
+          "7": 2169600
+        }
+      },
+      "output_hashes": [
+        "16bb8ed762796f64ca7f8effec9d8bf2828e89be504e4db9d398d7799c33922b",
+        "16bb8ed762796f64ca7f8effec9d8bf2828e89be504e4db9d398d7799c33922b",
+        "16bb8ed762796f64ca7f8effec9d8bf2828e89be504e4db9d398d7799c33922b"
+      ],
+      "outputs_stable": true,
+      "status": "complete"
+    },
+    {
+      "round": 1,
+      "run_id": "measure_1_jazh_bergamot_2_57fc833a93",
+      "direction": "jazh",
+      "engine": "bergamot",
+      "threads": 2,
+      "idle_launch_output": "Starting: Intent { cmp=io.github.yinvoker.bergamot.bench/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: io.github.yinvoker.bergamot.bench/.MainActivity\nTotalTime: 290\nWaitTime: 296\nComplete",
+      "before": {
+        "battery_temp_c": 31.4,
+        "battery_level": 25,
+        "battery_status": "2",
+        "ac_powered": "true",
+        "usb_powered": "false",
+        "max_freq_khz": {
+          "2": 3148800,
+          "7": 3052800
+        }
+      },
+      "launch_output": "Starting: Intent { flg=0x4000000 cmp=io.github.yinvoker.bergamot.bench/.MainActivity (has extras) }\nStatus: ok\nLaunchState: WARM\nActivity: io.github.yinvoker.bergamot.bench/.MainActivity\nTotalTime: 60\nWaitTime: 67\nComplete",
+      "result_file": "measure_1_jazh_bergamot_2_57fc833a93.json",
+      "after": {
+        "battery_temp_c": 31.4,
+        "battery_level": 25,
+        "battery_status": "2",
+        "ac_powered": "true",
+        "usb_powered": "false",
+        "max_freq_khz": {
+          "2": 2630400,
+          "7": 2169600
+        }
+      },
+      "output_hashes": [
+        "16bb8ed762796f64ca7f8effec9d8bf2828e89be504e4db9d398d7799c33922b",
+        "16bb8ed762796f64ca7f8effec9d8bf2828e89be504e4db9d398d7799c33922b",
+        "16bb8ed762796f64ca7f8effec9d8bf2828e89be504e4db9d398d7799c33922b"
+      ],
+      "outputs_stable": true,
+      "status": "complete"
+    },
+    {
+      "round": 1,
+      "run_id": "measure_1_jazh_bergamot_4_4ddf13febe",
+      "direction": "jazh",
+      "engine": "bergamot",
+      "threads": 4,
+      "idle_launch_output": "Starting: Intent { cmp=io.github.yinvoker.bergamot.bench/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: io.github.yinvoker.bergamot.bench/.MainActivity\nTotalTime: 286\nWaitTime: 289\nComplete",
+      "before": {
+        "battery_temp_c": 31.5,
+        "battery_level": 25,
+        "battery_status": "2",
+        "ac_powered": "true",
+        "usb_powered": "false",
+        "max_freq_khz": {
+          "2": 3148800,
+          "7": 3052800
+        }
+      },
+      "launch_output": "Starting: Intent { flg=0x4000000 cmp=io.github.yinvoker.bergamot.bench/.MainActivity (has extras) }\nStatus: ok\nLaunchState: WARM\nActivity: io.github.yinvoker.bergamot.bench/.MainActivity\nTotalTime: 62\nWaitTime: 64\nComplete",
+      "result_file": "measure_1_jazh_bergamot_4_4ddf13febe.json",
+      "after": {
+        "battery_temp_c": 31.5,
+        "battery_level": 25,
+        "battery_status": "2",
+        "ac_powered": "true",
+        "usb_powered": "false",
+        "max_freq_khz": {
+          "2": 2630400,
+          "7": 2169600
+        }
+      },
+      "output_hashes": [
+        "16bb8ed762796f64ca7f8effec9d8bf2828e89be504e4db9d398d7799c33922b",
+        "16bb8ed762796f64ca7f8effec9d8bf2828e89be504e4db9d398d7799c33922b",
+        "16bb8ed762796f64ca7f8effec9d8bf2828e89be504e4db9d398d7799c33922b"
+      ],
+      "outputs_stable": true,
+      "status": "complete"
+    },
+    {
+      "round": 2,
+      "run_id": "measure_2_jazh_bergamot_4_7246690208",
+      "direction": "jazh",
+      "engine": "bergamot",
+      "threads": 4,
+      "idle_launch_output": "Starting: Intent { cmp=io.github.yinvoker.bergamot.bench/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: io.github.yinvoker.bergamot.bench/.MainActivity\nTotalTime: 285\nWaitTime: 289\nComplete",
+      "before": {
+        "battery_temp_c": 31.5,
+        "battery_level": 25,
+        "battery_status": "2",
+        "ac_powered": "true",
+        "usb_powered": "false",
+        "max_freq_khz": {
+          "2": 3148800,
+          "7": 3052800
+        }
+      },
+      "launch_output": "Starting: Intent { flg=0x4000000 cmp=io.github.yinvoker.bergamot.bench/.MainActivity (has extras) }\nStatus: ok\nLaunchState: WARM\nActivity: io.github.yinvoker.bergamot.bench/.MainActivity\nTotalTime: 67\nWaitTime: 75\nComplete",
+      "result_file": "measure_2_jazh_bergamot_4_7246690208.json",
+      "after": {
+        "battery_temp_c": 31.5,
+        "battery_level": 25,
+        "battery_status": "2",
+        "ac_powered": "true",
+        "usb_powered": "false",
+        "max_freq_khz": {
+          "2": 2515200,
+          "7": 2035200
+        }
+      },
+      "output_hashes": [
+        "16bb8ed762796f64ca7f8effec9d8bf2828e89be504e4db9d398d7799c33922b",
+        "16bb8ed762796f64ca7f8effec9d8bf2828e89be504e4db9d398d7799c33922b",
+        "16bb8ed762796f64ca7f8effec9d8bf2828e89be504e4db9d398d7799c33922b"
+      ],
+      "outputs_stable": true,
+      "status": "complete"
+    },
+    {
+      "round": 2,
+      "run_id": "measure_2_jazh_bergamot_2_a4649bd005",
+      "direction": "jazh",
+      "engine": "bergamot",
+      "threads": 2,
+      "idle_launch_output": "Starting: Intent { cmp=io.github.yinvoker.bergamot.bench/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: io.github.yinvoker.bergamot.bench/.MainActivity\nTotalTime: 311\nWaitTime: 314\nComplete",
+      "before": {
+        "battery_temp_c": 32.1,
+        "battery_level": 25,
+        "battery_status": "2",
+        "ac_powered": "true",
+        "usb_powered": "false",
+        "max_freq_khz": {
+          "2": 3148800,
+          "7": 3302400
+        }
+      },
+      "launch_output": "Starting: Intent { flg=0x4000000 cmp=io.github.yinvoker.bergamot.bench/.MainActivity (has extras) }\nStatus: ok\nLaunchState: WARM\nActivity: io.github.yinvoker.bergamot.bench/.MainActivity\nTotalTime: 63\nWaitTime: 70\nComplete",
+      "result_file": "measure_2_jazh_bergamot_2_a4649bd005.json",
+      "after": {
+        "battery_temp_c": 32.1,
+        "battery_level": 25,
+        "battery_status": "2",
+        "ac_powered": "true",
+        "usb_powered": "false",
+        "max_freq_khz": {
+          "2": 2323200,
+          "7": 1939200
+        }
+      },
+      "output_hashes": [
+        "16bb8ed762796f64ca7f8effec9d8bf2828e89be504e4db9d398d7799c33922b",
+        "16bb8ed762796f64ca7f8effec9d8bf2828e89be504e4db9d398d7799c33922b",
+        "16bb8ed762796f64ca7f8effec9d8bf2828e89be504e4db9d398d7799c33922b"
+      ],
+      "outputs_stable": true,
+      "status": "complete"
+    },
+    {
+      "round": 2,
+      "run_id": "measure_2_jazh_bergamot_1_c85808cdf1",
+      "direction": "jazh",
+      "engine": "bergamot",
+      "threads": 1
+    }
+  ],
+  "source_files_sha256": "da4e7a212d609b2aee65a442b694792a33b39ad38cb4f1d0a380b99de4b2f60e",
+  "model_files_sha256_before": [
+    "aded6993c36e440284d11cec3f6b8aef9c0e43188a772d80be342a713adf223d  files/models/enzh/trgvocab.enzh.spm",
+    "bd9b65504acc6d9726dd281f7defc2adb7c2c22d0688fe2f84697de25197c8c5  files/models/enzh/srcvocab.enzh.spm",
+    "4e5accc141373565ddc8fa1565bceaa8d0c3482a82cab8131c719ebcc6c2157c  files/models/enzh/model.enzh.intgemm.alphas.bin",
+    "4a5e5827788060f1d718a8132b69440929387514a045796e9b77f935db68c055  files/models/enzh/lex.50.50.enzh.s2t.bin",
+    "5cb217758bae05877bb3f0c2f612e4e7c1e4cb03c10db11f4a47098d7ae62919  files/models/jaen/vocab.jaen.spm",
+    "c5906fb241eaf3c1d27dfd5fe05bf298268e000b6c1e5691a55c1ef538fe78fe  files/models/jaen/metadata.json",
+    "3a603e20bfe1be86071913f9e23ab5129075bc0a8490151020ac4821e4f17302  files/models/jaen/model.jaen.intgemm.alphas.bin",
+    "525f412f0d210536c2933c78ae395fa0bf2b5ee6cc5dda61ebc2e79410ebaee4  files/models/jaen/lex.50.50.jaen.s2t.bin",
+    "78b58b3b34ce65bcbd5651299229a8d0f31ff9194e14d8ea2b22c2d3b170f137  no_backup/com.google.mlkit.translate.models/en_zh/merged_dict_en_zh_25_both.bin",
+    "aa61a4408999346e528dc4389b1ebbbb65d2edf097ea1398a2ef98bade6a6f2a  no_backup/com.google.mlkit.translate.models/en_zh/translit_zh/sys_dict.jpg",
+    "14906e30830d075da85798900d7e142ad0b183c84d79330ae5f721e68b95cdea  no_backup/com.google.mlkit.translate.models/en_zh/translit_zh/data_scheme.jpg",
+    "1dd38d1defc729f15b15653f629bfef22928a7c2133122d3f3695bc76b57f7be  no_backup/com.google.mlkit.translate.models/en_zh/translit_zh/tokens.jpg",
+    "54340f3afc2c649c2f7f9f31aab538ae7fe58fb703ab422eb6051e054da7659b  no_backup/com.google.mlkit.translate.models/en_zh/translit_zh/polyphone_dict.jpg",
+    "23edafc24f668f02795b42a861c005d4969a0363b27b27df9f051147210ecf92  no_backup/com.google.mlkit.translate.models/en_zh/translit_zh/setting_scheme.jpg",
+    "69c4418682d3927cd905cb03d1d7785230d8730478f6c274bab91937b9f2d33a  no_backup/com.google.mlkit.translate.models/en_zh/merged_dict_en_zh_25_update.bin",
+    "062e6d2b61e10e682c9745cb5ca07fad3a0f86f06c9d9bf5acc2fb5101b8d18e  no_backup/com.google.mlkit.translate.models/en_zh/merged_dict_en_zh_25_from_en.bin",
+    "16eac86213107cc2aa5ee1b76ffa6fc42af3a5a43b50f545d4c6a46bf4597e30  no_backup/com.google.mlkit.translate.models/en_zh/translate_enzh/processor_spec.pb",
+    "21f321a080d84dbfc5f56d1ce7312823e00b9dfea91201ceb5faf7035df24490  no_backup/com.google.mlkit.translate.models/en_zh/translate_enzh/resources/src_wpm_model.model",
+    "9b9255470b48f27f70c0dc2dc937b8a437ccbd8c8bccfa74565a639365430398  no_backup/com.google.mlkit.translate.models/en_zh/translate_enzh/resources/tgt_wpm_model.vocab",
+    "8624d34f64b66ebd575d211f05287a2a547360346f29c1926e22a98ca4d9dd1e  no_backup/com.google.mlkit.translate.models/en_zh/translate_enzh/resources/src_wpm_model.vocab",
+    "2ea8077709961432414c533d14d8aeab4ed94d025f51b350b5352db5145a9e69  no_backup/com.google.mlkit.translate.models/en_zh/translate_enzh/resources/tgt_wpm_model.model",
+    "921b50dd286c65502d86f4bf19e68bb35843c17fb49870fa46a1e816a1cf9f31  no_backup/com.google.mlkit.translate.models/en_zh/translate_enzh/translation_model_encoder_swizzled_birnn_2.bipe",
+    "f009577d219911385c8cafefc7fd9ff5ea327cfeb9ddd8496546580c8593751d  no_backup/com.google.mlkit.translate.models/en_zh/translate_enzh/translation_model_encoder_swizzled_birnn_0.bipe",
+    "3e066f2fe08f12ac97bcf296f8443002f80545887b9a48efd1cc470c73aa4581  no_backup/com.google.mlkit.translate.models/en_zh/translate_enzh/translation_model_decoder_init_0.bipe",
+    "dd4b270e69c6aeb2923204b0d960f6593f3e5408557119ee26b7d86202b7eac1  no_backup/com.google.mlkit.translate.models/en_zh/translate_enzh/translation_model_encoder_swizzled_birnn_1.bipe",
+    "0dc83aed937f95c57827296592f11aec0fd1d8eef3ddff0086e31840eb38312d  no_backup/com.google.mlkit.translate.models/en_zh/translate_enzh/translation_model_decoder_step_0.bipe",
+    "65532c5f2282ea4c4bda1a3ae0694de1f6f926db328efbcf95b44b23831b9b5c  no_backup/com.google.mlkit.translate.models/en_zh/translate_enzh/translation_model.pb",
+    "d44548a4340ceaf82677db717ca27ef00ce2d31253c396d205b9155ad49097c9  no_backup/com.google.mlkit.translate.models/en_zh/translate_enzh/translation_model_decoder_step_embed_ids_0.bipe",
+    "c70f69bb7ce0a0899295cf9bfdc8dfb81176ccb8b453bc8c49ddad44af976000  no_backup/com.google.mlkit.translate.models/en_zh/translate_enzh/translation_model_encoder_embed_ids_0.bipe",
+    "8182e281cfcc0a29c7900291ff97d4920f91959e1364f2a3bc8ea99892c9c58c  no_backup/com.google.mlkit.translate.models/en_zh/merged_dict_en_zh_25_from_zh.bin",
+    "37671fec0a1f8480cd3cf7b4a4b4ca1680fd9f3b4bb51f71bba18a9cf870cb21  no_backup/com.google.mlkit.translate.models/en_zh/translate_zhen/processor_spec.pb",
+    "ec6690e4359e80c3047a3b8c855efbe33696d45e04f0e156922c24cf8a781ec5  no_backup/com.google.mlkit.translate.models/en_zh/translate_zhen/resources/src_wpm_model.model",
+    "f6e769d9cf66bae5965d26f8474474012eb5edee8e04a4a280ae5a5a19bec74e  no_backup/com.google.mlkit.translate.models/en_zh/translate_zhen/resources/tgt_wpm_model.vocab",
+    "434ed6109ea9bbc9d602e4f69f0c79532e9e13d10fdf3674216415645a3ce4ab  no_backup/com.google.mlkit.translate.models/en_zh/translate_zhen/resources/src_wpm_model.vocab",
+    "fafbc774e7afc049522fd693e724c0a1f4fa52fcd192ad8b2dc582ae61c84acd  no_backup/com.google.mlkit.translate.models/en_zh/translate_zhen/resources/tgt_wpm_model.model",
+    "7d6ce82617911abcb69ecfa213edb5c265d70e248e2da800ce9d871e27ea5984  no_backup/com.google.mlkit.translate.models/en_zh/translate_zhen/translation_model_encoder_swizzled_birnn_2.bipe",
+    "a7f783597eed7ca24654ee7f50d536c5c025a51f27c2075467d18afc12288daf  no_backup/com.google.mlkit.translate.models/en_zh/translate_zhen/translation_model_encoder_swizzled_birnn_0.bipe",
+    "e093fa038f6d794d999f543d4d186cf50dadad05d7048156f8d83ab28dff4b77  no_backup/com.google.mlkit.translate.models/en_zh/translate_zhen/translation_model_decoder_init_0.bipe",
+    "75c5ed634e7e74b774161a057c3be9163da188b487d1c869d2f1f8ebae9a4ea4  no_backup/com.google.mlkit.translate.models/en_zh/translate_zhen/translation_model_encoder_swizzled_birnn_1.bipe",
+    "b0a7707c442a43fa7c19caf70eeeca392a560c9acfc085c12d5621d031d0420d  no_backup/com.google.mlkit.translate.models/en_zh/translate_zhen/translation_model_decoder_step_0.bipe",
+    "10e4bc6d55493656f228e7d849a26135983cb26d7383b23f8d4ff152eb65e598  no_backup/com.google.mlkit.translate.models/en_zh/translate_zhen/translation_model.pb",
+    "ab986343de86d1157b8bc478eca2f01b1757318a48ce20dc8b1c47cbc14793e8  no_backup/com.google.mlkit.translate.models/en_zh/translate_zhen/translation_model_decoder_step_embed_ids_0.bipe",
+    "f0880d55fc73bf7df3172fb9153a2d5d190a2b4aa061f0b07f9e3ae37ca77364  no_backup/com.google.mlkit.translate.models/en_zh/translate_zhen/translation_model_encoder_embed_ids_0.bipe",
+    "3c6d1977d9b3cf8cfe68b1f7ae3952057697f7770af3e053f716f96291afaf3d  no_backup/com.google.mlkit.translate.models/en_zh/fallback_to_pb_en_zh.pb.bin",
+    "5f92771c15ecfa10a3076ff6396801d10cfa4c81010314f9e535482ae6f9a311  no_backup/com.google.mlkit.translate.models/en_ja/translit_ja/model.data",
+    "df72e1d2616c35265cfce61742776430be3c6fbe2c01451b04dd419afbd139e5  no_backup/com.google.mlkit.translate.models/en_ja/merged_dict_en_ja_25_both.bin",
+    "91d9007abf4e5b692219638b769b3d2f7ca77950d839aec26939472ec5aaa278  no_backup/com.google.mlkit.translate.models/en_ja/merged_dict_en_ja_25_from_en.bin",
+    "45b14a6a5e5826531c39183bcf6478e6300ff36997ce316ec7fdbd8ca270476c  no_backup/com.google.mlkit.translate.models/en_ja/merged_dict_en_ja_25_from_ja.bin",
+    "6848306fb38b15399b497c95610e96de62ca8c46f36ab2101f650a2a5ac643ee  no_backup/com.google.mlkit.translate.models/en_ja/merged_dict_en_ja_25_update.bin",
+    "eb9c4f50b0d98b6e293c4ad44e8e60cc8160a4c3ee844a8936ea1a39dda9a8f3  no_backup/com.google.mlkit.translate.models/en_ja/translate_jaen/processor_spec.pb",
+    "faee4660d511303f0cef918052801c7d4f00b06aff6257785d17dd272019acd0  no_backup/com.google.mlkit.translate.models/en_ja/translate_jaen/resources/src_wpm_model.model",
+    "24c7b8b306c181354ef9f575b16c02ca74c0e5de2f956598e86bc20d771cbc19  no_backup/com.google.mlkit.translate.models/en_ja/translate_jaen/resources/tgt_wpm_model.vocab",
+    "49bb89849fc7286d253c095c2deb7feb0a4aea88c855634587c8d796b5a56cdc  no_backup/com.google.mlkit.translate.models/en_ja/translate_jaen/resources/src_wpm_model.vocab",
+    "92e0671b2b3af6558eb09f0d7423338a1498b4b0e1d336fac7440782766ffef1  no_backup/com.google.mlkit.translate.models/en_ja/translate_jaen/resources/tgt_wpm_model.model",
+    "0acc7c6c1491d3f71d347533ae5594ebc3c77bca5e7f125b87a1e145e2d52f60  no_backup/com.google.mlkit.translate.models/en_ja/translate_jaen/translation_model_encoder_swizzled_birnn_2.bipe",
+    "b4ca9caf08c13c2ef0843c47be8dd291ec7ae571faff063cc34729370a450801  no_backup/com.google.mlkit.translate.models/en_ja/translate_jaen/translation_model_encoder_swizzled_birnn_0.bipe",
+    "d4c1b46037a149d4427e3abbb0601f8c1a06fa41c4881f8b578b9ad6cec38c0d  no_backup/com.google.mlkit.translate.models/en_ja/translate_jaen/translation_model_decoder_init_0.bipe",
+    "17acfdff39c02faa02494663f310cdfe0ea300b2243e02c842efbe57e5538897  no_backup/com.google.mlkit.translate.models/en_ja/translate_jaen/translation_model_encoder_swizzled_birnn_1.bipe",
+    "1b5d04428231d15ed88752225493c217c44da060c75f043453139f4053a39e44  no_backup/com.google.mlkit.translate.models/en_ja/translate_jaen/translation_model_decoder_step_0.bipe",
+    "8b673d7e476ec94ceb4745cf2da9ce0a534de2969e7d21ac576b77ba0f8d35a7  no_backup/com.google.mlkit.translate.models/en_ja/translate_jaen/translation_model.pb",
+    "79f7742f2b30663f5ac29f7eb282df628e83f4e9554ca88483fe5b470620e938  no_backup/com.google.mlkit.translate.models/en_ja/translate_jaen/translation_model_decoder_step_embed_ids_0.bipe",
+    "24784cb342eb58ff56970188beb1e5edbb0dfa0923387f231258b83691e3adeb  no_backup/com.google.mlkit.translate.models/en_ja/translate_jaen/translation_model_encoder_embed_ids_0.bipe",
+    "325ed6e0937fd8123c0c4ebe14ee1d3a957db2eb13644398150e7c7262724276  no_backup/com.google.mlkit.translate.models/en_ja/translate_enja/processor_spec.pb",
+    "022f8f57013fe5e0d1beb10b38a164cb9226177b0e980aad160088c9ff13943c  no_backup/com.google.mlkit.translate.models/en_ja/translate_enja/resources/src_wpm_model.model",
+    "abead54a5524072ebcd242d4b5b885231778ed2dc73ce44c93ddd2cafde3596b  no_backup/com.google.mlkit.translate.models/en_ja/translate_enja/resources/tgt_wpm_model.vocab",
+    "cd7675fc4fa382537c306fcdfd2000449f6523b33c952e4af0f123cdafe2f746  no_backup/com.google.mlkit.translate.models/en_ja/translate_enja/resources/src_wpm_model.vocab",
+    "c96f46c64407de4ae21ccc58fbd8928c92cf90a34ba8ac4775fa77f5409e887d  no_backup/com.google.mlkit.translate.models/en_ja/translate_enja/resources/tgt_wpm_model.model",
+    "9f586c3817b2a2b788ebff2212257f4c711bf782d6087004ba8134def7366dd2  no_backup/com.google.mlkit.translate.models/en_ja/translate_enja/translation_model_encoder_swizzled_birnn_2.bipe",
+    "819439ea15caf76de5ed2c8977a70d57b07553e6ea1fb898018db7e6a914b2a1  no_backup/com.google.mlkit.translate.models/en_ja/translate_enja/translation_model_encoder_swizzled_birnn_0.bipe",
+    "223d36c96b73fcc680d14b5ac047bf43512cdd2413fc04009b26b9e1530fc12a  no_backup/com.google.mlkit.translate.models/en_ja/translate_enja/translation_model_decoder_init_0.bipe",
+    "2d4c83d148390dc9ec48afc6a9d0c28e812ce09d17884797953c208ebd187a18  no_backup/com.google.mlkit.translate.models/en_ja/translate_enja/translation_model_encoder_swizzled_birnn_1.bipe",
+    "09497225d7bdff2dce776542b003e2dc26f2a5669871502ddc49a1bb2e3a6a06  no_backup/com.google.mlkit.translate.models/en_ja/translate_enja/translation_model_decoder_step_0.bipe",
+    "6717a47b55ff22360fbb18642df69a8afeea634e172c7777d181a2dccbd416f3  no_backup/com.google.mlkit.translate.models/en_ja/translate_enja/translation_model.pb",
+    "2d73fa35ad9733d5dff335802c2e41899574104d41ec3b211a9f84e34268e93b  no_backup/com.google.mlkit.translate.models/en_ja/translate_enja/translation_model_decoder_step_embed_ids_0.bipe",
+    "6132f8ce9fa6d2055d315deb8b04dbcc89130c20b1abd03be68df6996cca5b43  no_backup/com.google.mlkit.translate.models/en_ja/translate_enja/translation_model_encoder_embed_ids_0.bipe"
+  ],
+  "error": "Command '['/Users/yin/Library/Android/sdk/platform-tools/adb', '-s', '<device-serial>', 'shell', 'am force-stop io.github.yinvoker.bergamot.bench']' returned non-zero exit status 1."
+}

@@ -2,104 +2,102 @@
 
 # bergamot-android
 
-**Firefox 同款翻译引擎的 Android 移植,推理完全离线**
+**面向 Android 的高性能本地翻译库：离线、隐私友好、针对 ARM 移动芯片优化**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Android-3DDC84?logo=android&logoColor=white)](#-构建)
 [![minSdk](https://img.shields.io/badge/minSdk-28-blue)](#-范围与限制)
 [![ABI](https://img.shields.io/badge/ABI-arm64--v8a-orange)](#-范围与限制)
 
-[特性](#-特性) · [基准测试](#-基准测试) · [支持的语言模型](#-支持的语言模型) · [快速开始](#-快速开始) · [构建](#-构建) · [Roadmap](#-roadmap)
+[特性](#-特性) · [快速开始](#-快速开始) · [构建](#-构建) · [文档索引](docs/README.md) · [路线图](#-roadmap)
 
 </div>
 
 ---
 
-基于 [mozilla/translations](https://github.com/mozilla/translations) 中
-Firefox 内置整页翻译所使用的 [Bergamot](https://browser.mt/) 引擎,
-完成 Android 平台的 NDK 移植与 Kotlin 封装,并提供为 AAR。
-针对移动端 ARM 芯片优化了 i8mm / NEON 内核、权重缓存与模型内存管理。
-相比 v0.1.0,v0.2.0 在小米 10 英→中默认单 worker 实测中,
-**峰值内存降低约 44%,首次翻译耗时减少约 34%**([基准数据](docs/benchmarks/v0.2.0/README.md))。
+bergamot-android 是面向 Android 的高性能离线翻译库，基于 Mozilla [Firefox Translations](https://github.com/mozilla/translations) 使用的 [Bergamot](https://browser.mt/) 引擎与 Marian 推理运行时，提供 Kotlin API 和可直接集成的 AAR。
+
+项目针对 ARM 移动芯片优化矩阵计算、批处理、线程调度和内存管理，根据设备能力选择 i8mm/SMMLA 或 ruy/SDOT 内核。模型下载后即可在设备上完成翻译，无需将文本发送到云端。引擎、模型及训练流程公开，开发者可自行构建、固定模型版本并调整推理参数。
+
+## 文档入口
+
+| 目的 | 文档 |
+|---|---|
+| 集成 AAR、下载模型、调用 Kotlin API | [快速开始](docs/getting-started.md) |
+| 了解 Android/JNI/引擎/工具边界 | [代码结构与运行时架构](docs/architecture.md) |
+| 本地构建、测试和真机基准 | [构建、测试与基准](docs/benchmarking.md) |
+| 每版性能、原始数据与回归检查 | [benchmarks/](benchmarks/README.md) |
 
 ## ✨ 特性
 
 - **离线推理**:全程无网络请求,模型来自 Mozilla 官方(MPL-2.0)
-- **质量**:COMET 领先 Google ML Kit 端侧翻译 13.5–17.5 分,真机实测见下
-- **Kotlin suspend API**:批量翻译、pivot 中转、HTML 感知翻译
+- **Mozilla 模型**:沿用 Firefox Translations 的官方模型，优化 Android 运行效率；引擎源码、模型与训练流程公开
+- **Kotlin suspend API**:批量翻译、pivot 中转、HTML 感知翻译（实验性）
 - **移动端适配**:i8mm / NEON 内核加速,不支持 i8mm 的设备自动回退 ruy
-- **性能优化**:相较 v0.1.0,峰值内存约 −44%、首次翻译耗时约 −34%(小米 10 英→中,默认单 worker)
+- **性能优化**:相较初版 Android 移植，首次翻译速度提升约 **102–112%**，峰值 RSS 降低约 **41–42%**（小米 14、默认单线程参考测量，见[性能参考](#-性能结果)）
 - **智能分句**:按源语言自带 Moses 前缀表(25 种语言),`Dr.`、`U.S.`、`No. 5` 的句号不再被当成句尾
 - **内存管理**:int8 embedding、模型按需加载、空闲自动卸载与释放确认,可挂 `onTrimMemory`
 - **线程与调度**:单句走同步路径,批量按机型内存与快核数自动定档(`EngineConfig.forDevice`)
 
-## 📊 基准测试
+## 🚀 Android 性能优化
 
-### v0.1.0 → v0.2.0
+优化覆盖计算内核、推理调度、模型生命周期和构建产物：
 
-小米 10 英→中默认单 worker:首次翻译 **7.21 → 4.74 秒(−34%)**,
-峰值 RSS **323 → 182 MiB(−44%)**。
+- **ARM 内核适配**：支持具备 i8mm 的设备使用 SMMLA，其他 ARM64 设备自动回退到 ruy/SDOT，覆盖骁龙 865、8 Gen 1、8 Gen 3 等不同代际。
+- **推理计算优化**：使用 int8 embedding/权重路径，优化 Attention 小矩阵计算、shortlist 和 batch 形状，默认 `mini-batch-words` 为 512。
+- **低延迟路径**：一次一句的交互式翻译默认使用 BlockingService，减少 worker 派发和同步开销；批量任务才启用并行 worker。
+- **设备感知调度**：根据内存、低内存标记和快核数量，在 1/2/4/6 个线程档位中自动选择，并支持显式覆盖。
+- **内存生命周期**：模型按需加载，支持空闲自动卸载、`onTrimMemory` 主动释放和双模型 pivot 的内存权衡。
+- **构建与兼容性**：通过链接裁剪与非 JNI 符号隐藏减小原生库体积，支持 16 KB page size，兼容具备和不具备 i8mm 的 ARM64 设备。
 
-![v0.1.0 与 v0.2.0 的翻译耗时和峰值内存对比](docs/benchmarks/v0.2.0/comparison.png)
+## 📈 性能结果
 
-同一设备、模型、200 句语料与默认参数,三轮独立进程取中位数。首次翻译含模型加载,
-内存为原生引擎 RSS。完整结果与复现方法见 [版本基准说明](docs/benchmarks/v0.2.0/README.md)。
+### 最新版相对初版的提升
 
-### v0.2.0 → 当前 main
+小米 14（骁龙 8 Gen 3），FLORES-200 前 200 条源文，相同模型、各版本默认单线程配置。首次翻译包含模型加载，内存为原生进程峰值 RSS；数据为系统动态调频下三轮交替测量的中位数，仅作性能参考。
 
-同一协议在小米 10 与小米 14 上复测:引擎在相同配置下速度与内存持平;按各自 AAR 默认参数,
-小米 10 英→中单线程首次翻译 **4.72 → 4.25 秒(−10%)**、日→中 **10.21 → 8.66 秒(−15%)**,
-小米 14 英→中 3.13 → 3.05 秒(噪声内)、日→中 **6.95 → 6.29 秒(−10%)**,
-收益来自默认改走同步路径、mini-batch-words 512 与分句前缀表,在没有 i8mm 的机型上更明显;库体积 −25.6%。
-详见 [验收记录](docs/benchmarks/v0.2.0-to-main/README.md)。
+| 场景 | 未优化版本 v0.1.0 | 最新版 v0.3.0（参考） | 改善 |
+|---|---:|---:|---:|
+| 英→中，首次翻译速度 | 27.97 条/秒 | 56.61 条/秒 | **2.02×（+102.4%）** |
+| 英→中，峰值 RSS | 348 MiB | 207 MiB | **−40.6%** |
+| 日→英→中，首次翻译速度 | 12.79 条/秒 | 27.11 条/秒 | **2.12×（+111.9%）** |
+| 日→英→中，峰值 RSS | 530 MiB | 308 MiB | **−41.8%** |
 
-### 与 ML Kit 对比(历史基线)
+测试方法与原始数据见[小米 14 基准报告](benchmarks/v0.3.0/mi14-2026-09-09/initial-to-current/ungated/README.md)，各版本完整对比保存在 [benchmarks/](benchmarks/README.md)。
 
-以下为 v0.1.0 阶段的两台真机对比(COMET × 100,越高越好)。
-v0.2.0 已优化计算与内存,旧图表及下文耗时、PSS 比例不代表新版表现。
-下方 app PSS 与上方原生引擎 RSS 口径不同,新版与 ML Kit 的完整对比待复测。
+### 与 Google ML Kit 端侧翻译对比
 
-![小米 14 基准](docs/benchmark-mi14.png)
+小米 14（骁龙 8 Gen 3），使用 FLORES-200 前 200 条源文，对比 v0.3.0 与 [Google ML Kit 端侧翻译 SDK](https://developers.google.com/ml-kit/language/translation)。在这组英→中、日→中语料上，Mozilla 模型的 COMET 评分更高；Android 优化后的批量翻译速度中位数也更高，但内存开销仍大于 ML Kit。
 
-![小米 10 基准](docs/benchmark-mi10.png)
+**翻译质量**（COMET × 100，越高越好）：
 
-| 方向 | ML Kit | Bergamot |
-|---|---|---|
-| 英 → 中 COMET | 73.7 | **87.3** |
-| 日 → 中 COMET | 69.8 | **87.3** |
+| 方向 | Google ML Kit | v0.3.0 / Mozilla 模型 |
+|---|---:|---:|
+| 英→中 COMET × 100 | 72.69 | **87.27** |
+| 日→中 COMET × 100 | 68.93 | **86.71** |
 
-更多语向的官方评测数据见 Mozilla 的
-[评测面板](https://mozilla.github.io/translations/final-evals/?langpair=en-zh)。
+**翻译速度与内存**（实测中位数）：首次包含模型加载，热态为模型常驻后的翻译；PSS 为 app 进程内存。Bergamot 使用批量接口，ML Kit 按 SDK 逐条调用。
 
-Bergamot 的翻译质量明显优于 Google ML Kit,但时间和内存开销都显著
-更高:同为单线程,耗时是 ML Kit 的 2.4–3.2 倍(老机型差距更大),
-峰值内存约 2.4 倍(日→中双模型常驻时约 3.4 倍)。多线程能明显提速,
-4 线程已接近 ML Kit 的速度,但内存随线程数增长,4 线程峰值约为单线程
-的 2.5 倍。
+| 方向 | 引擎 / 本库线程 | 首次速度（条/秒） | 热态速度（条/秒） | 首次峰值 PSS（MiB） | 热态峰值 PSS（MiB） |
+|---|---|---:|---:|---:|---:|
+| 英→中 | ML Kit / SDK 默认 | 14.42† | 14.58 | 185.9 | 189.6 |
+| 英→中 | v0.3.0 / 1 | 65.52 | 86.51 | 263.0 | 232.1 |
+| 英→中 | v0.3.0 / 2 | 114.48 | 132.64 | 376.5 | 320.3 |
+| 英→中 | v0.3.0 / 4 | 177.12† | 246.82 | 599.2 | 600.1† |
+| 日→中 | ML Kit / SDK 默认 | 6.82 | 6.89 | 236.9 | 238.1 |
+| 日→中 | v0.3.0 / 1 | 44.19† | 39.77 | 353.2 | 329.7 |
+| 日→中 | v0.3.0 / 2 | 53.82† | 61.92 | 550.4 | 505.0 |
+| 日→中 | v0.3.0 / 4 | 88.80† | 109.86 | 931.7 | 933.6 |
 
-ML Kit 的成绩几乎不随机型变化,新旧设备差距很小;Bergamot 是计算与
-内存带宽密集型负载,性能更依赖 SoC:单线程下 8 Gen 3 比骁龙 865
-英→中快 44%(24.8s vs 35.7s)、日→中快 53%(51.5s vs 78.8s)。
+单线程首次翻译速度中位数为 ML Kit 的 **4.54×（英→中）/ 6.48×（日→中）**，首次峰值 PSS 为 **1.41× / 1.49×**。
 
-### 评测方法
-
-| 维度 | 规则 |
-|---|---|
-| 测试集 | [FLORES-200](https://github.com/facebookresearch/flores) devtest 前 200 句(2026-09 由前 150 句扩充;本节数据测于 150 句版本,扩充后待复测)。公开、英/日/中三语内容对齐、自带人工中文参考译文;两个引擎翻同一批句子,对同一份参考打分 |
-| 质量 | [COMET](https://github.com/Unbabel/COMET)(`wmt22-comet-da` × 100):机器翻译评测的标准神经评分模型,输入源文、机翻与参考译文,与人工评价的相关性远高于 BLEU。另用 BLEU(中文分词)交叉验证,结论一致;评分在主机侧统一计算 |
-| 速度 | 基准 app 内计时,全集总耗时。ML Kit 逐句调用(它只有此模式),Bergamot 整批喂入,各按原生调用方式;均不含下载时间,Bergamot 计时含模型加载 |
-| 内存 | 每 250ms 采样一次进程 PSS,取阶段峰值;每阶段独立记录 |
-| 公平性 | 同批句子、同参考译文;日→中双方都经英语中转(ML Kit 内部中转,Bergamot 引擎内建 pivot);每种配置独立进程运行,互不干扰 |
-
-复现:装上 `sample/` 基准 app,一条 adb 命令跑完一种线程配置(见下文;
-marian 持有进程级全局状态,不同线程数须分进程各跑一次),产出 JSON,
-含每阶段内存与 CPU 曲线。
+> † 标记项的极差 / 中位数超过 10%（速度按耗时计算，最高约 41%），上述性能数据及倍率仅供参考。测试方法与原始数据见[基准报告](benchmarks/v0.3.0/mi14-2026-09-09/charged/README.md)。
 
 ## 🌍 支持的语言模型
 
 `registry.json` 当前索引 **104 个模型、53 种语言**,全部以英语为轴:
 51 种语言与英语互译,阿塞拜疆语仅英→阿、阿尔巴尼亚语仅阿→英。
-任意两种非英语语言之间用 `translatePivot` 经英语中转(如日→中)。
+具备“源语言→英语”和“英语→目标语言”两个模型时，可用 `translatePivot` 经英语中转（如日→中）。
 模型由 Mozilla 随 Firefox 持续更新。`from` / `to` 为 `registry.json`
 中的语向代码,可直接用于下载脚本(见[快速开始](#-快速开始))。
 
@@ -218,29 +216,34 @@ marian 持有进程级全局状态,不同线程数须分进程各跑一次),产�
 ## 📁 仓库结构
 
 ```
-engine/        Bergamot 引擎,vendor 自 mozilla/translations(来源与升级手顺见 engine/UPSTREAM.md)
-patches/       对上游的全部本地改动,git 补丁形式存档
-jni/           C++ 胶水层:批量进出;1 线程在调用线程同步翻译(BlockingService),≥2 线程走 AsyncService worker
-bergamot/      Android 库(Kotlin suspend API)→ AAR
-tools/         测试工具(不随库发布):smoke CLI(主机 / adb shell 基准)、regress-hash.sh 哈希回归、smmla-test(SMMLA 内核测试集与形状级 A/B)、i8mm 微基准、version-bench 版本配对基准、float-bench / wemb-check 内核与权重对拍
-sample/        基准测试 app:ML Kit vs Bergamot,内存/CPU 曲线,JSON 导出
-registry.json  Mozilla 模型下载索引(每个方向的 URL / sha256 / 大小)
+bergamot/      Android 库与 Kotlin API
+jni/           JNI 胶水层
+engine/        Bergamot / Marian 引擎与第三方组件
+patches/       上游引擎的 Android 适配补丁
+sample/        示例与基准测试 app
+tools/         构建、测试与性能分析工具
+benchmarks/    版本基准与原始数据
+docs/          集成、架构与开发文档
+registry.json  Mozilla 模型下载索引
 ```
+
+工具和基准 app 不会打包进 AAR。模块职责与上游维护方式见[代码结构与运行时架构](docs/architecture.md)。
 
 ## 🚀 快速开始
 
 ### 引入 AAR
 
-从 [Releases](https://github.com/yinvoke/bergamot-android/releases)
-下载 AAR,放进 app 模块的 `libs/` 目录:
+从 [v0.3.0 Release](https://github.com/yinvoke/bergamot-android/releases/tag/v0.3.0) 下载 `bergamot-v0.3.0.aar`，放入应用模块的 `libs/` 目录：
 
 ```kotlin
 dependencies {
-    implementation(files("libs/bergamot-v0.2.0.aar"))
+    implementation(files("libs/bergamot-v0.3.0.aar"))
     // 本地 AAR 不携带传递依赖,须自行声明:
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
 }
 ```
+
+也可运行 `./gradlew :bergamot:assembleRelease` 从源码构建 AAR，产物为 `bergamot/build/outputs/aar/bergamot-release.aar`，依赖文件名需相应调整。
 
 ### 获取模型
 
@@ -271,12 +274,11 @@ EOF
 ### 调用
 
 ```kotlin
-val engine = BergamotEngine(EngineConfig(threads = 2))
-val model = ModelFiles.fromDirectory(File(modelsDir, "enzh"))
-val translated: List<String> = engine.translate(texts, model)          // suspend
-// 日→中经英语中转,两个模型常驻:
-engine.translatePivot(texts, jaEn, enZh)
-engine.releaseAllModels()   // 异步释放,可挂在 onTrimMemory;返回 Future<Boolean>
+// 在后台协程中调用；实际应用可长期持有 engine，在宿主销毁时关闭。
+BergamotEngine(EngineConfig()).use { engine ->
+    val model = ModelFiles.fromDirectory(File(modelsDir, "enzh"))
+    val translated = engine.translate(listOf("Hello, world."), model)
+}
 ```
 
 `releaseAllModels()` 的 Future 完成后可确认释放结果;如需等待,请在后台线程调用
@@ -289,15 +291,14 @@ engine.releaseAllModels()   // 异步释放,可挂在 onTrimMemory;返回 Future
 
 引擎先按 `.`、`?`、`!` 把段落切成句子再翻译。`ModelFiles.fromDirectory`
 从模型文件名推断源语言(`model.enzh.*.bin` → `en`),加载时自动带上该语言的
-Moses 前缀表,`Dr. Smith`、`U.S.`、`No. 5` 里的句号不再结束句子:FLORES 200 句
-英文从 226 句合成 212 句,「博士。 …」这类碎片译文消失,真机吞吐不变。
-`EngineConfig(nonbreakingPrefixes = false)` 可关掉(复现旧输出,或宿主已按句切好);
+Moses 前缀表，避免将 `Dr. Smith`、`U.S.`、`No. 5` 等缩写中的句号误判为句尾。
+宿主已完成分句时，可使用 `EngineConfig(nonbreakingPrefixes = false)` 关闭前缀表；
 没有表的语言(日、韩、泰等)行为不变。25 张表随 AAR 打包,约 120 KB。
 
 ### 空闲卸载
 
 模型在首次使用时加载,空闲超过 `idleUnloadMillis`(默认 60 s)后由引擎线程上的
-定时任务自动卸载,下一次 `translate` 透明重载(重载加首句约 220 ms,小米 12 / 10 实测)。
+定时任务自动卸载，下一次 `translate` 自动重新加载。
 `0` 表示翻完一批立刻卸,负数表示不自动卸(基准或自行管理释放时用);
 `loadedModelCount()` 返回当前常驻模型数。退到后台不必等计时器,直接释放:
 
@@ -309,44 +310,21 @@ override fun onTrimMemory(level: Int) {
 
 ### 选择线程数
 
-默认 `EngineConfig()` 是 1 线程:翻译在引擎线程上同步执行,不经 worker
-派发,内存最低。交互式「一次一句」只应用 1 线程:
-单句在 4 线程下实测比 1 线程**慢 2.35 倍**,派发开销压过了并行收益。
-
-只有**批量**翻译才值得多线程。让库按设备自动定档:
+`EngineConfig()` 默认使用 1 个线程，适合一次一句的交互式翻译。批量任务可按设备能力自动选择线程数：
 
 ```kotlin
 val config = EngineConfig.forDevice(context, Workload.BATCH)   // 双模型中转用 Workload.PIVOT
 BergamotEngine(config).use { engine -> /* … */ }
 ```
 
-`forDevice` 读取总内存、`isLowRamDevice` 和快核数(不在最慢 CPU 簇里的核),
-在 1 / 2 / 4 / 6 里挑一档。推荐上限按名义内存分级:< 8 GB → 1,8 GB → 2,
-10 GB → 4,≥ 12 GB → 6(6 线程还要有 6 个快核;双模型 pivot 的 6 线程档要
-≥ 16 GB)。`Workload.SINGLE`、低内存机、快核少于 2 个恒为 1。判断依据记在
-`config.tuning`,可直接打日志:
+`forDevice` 根据可用设备信息，在 1 / 2 / 4 / 6 个线程中选择配置；双模型中转使用 `Workload.PIVOT`。可通过 `EngineConfig(threads = 4)` 显式指定，并从 `config.tuning` 查看自动选择依据。
 
-```
-threads=2 workload=BATCH bigCores=4 totalRamMb=7185 lowRam=false
-```
-
-这是推荐档,不是锁:`EngineConfig(threads = 4)` 这样的显式值永远优先;
-宿主自己占内存多的话,按下表自行选低一档。
-
-参考开销(稳态 RSS 含进程底,1/2/4 线程为小米 12 实测,6 线程为小米 14 实测;
-耗时为小米 14 同一限频状态下 200 句相对 1 线程):
-
-| 线程 | 单模型 | 双模型 pivot | 200 句耗时 |
-|---|---|---|---|
-| 1 | 145 MB | 250 MB | 1.00× |
-| 2 | 230 MB | 421 MB | 0.55× |
-| 4 | 401 MB | 758 MB | 0.35× |
-| 6 | 604 MB | 1115 MB | 0.29× |
-
-持续大批量会让 SoC 降频,热态下多线程仍快于少线程,库不做热调度;
-长批之后的单句延迟会变差数分钟,这是温度的结果,与线程数无关。
+更多线程通常能提高批量吞吐，也会增加内存占用。持续翻译可能受到设备温控影响，应用应根据内存预算与交互延迟选择配置。详细用法见[集成指南](docs/getting-started.md)。
 
 ## 🔨 构建
+
+以下是最短构建路径；完整环境要求、SMMLA 测试和真机验证见
+[构建、测试与基准](docs/benchmarking.md)。
 
 Android AAR 可通过 NDK 在 ARM 或 x86_64 主机交叉编译;主机 smoke CLI
 仅支持 ARM(Apple Silicon / ARM Linux)。依赖:JDK 17、Android SDK、
@@ -376,11 +354,8 @@ adb shell am start -n io.github.yinvoker.bergamot.bench/.MainActivity \
 - 输出与输入一一对应,库不做「翻过就跳过」的去重:同一句每次调用都会重翻。
   网页 / 文档场景的已译状态由宿主按「节点身份 + 源文版本 + 目标语言 + 模型版本」
   维护(重新加载可复用、节点改动与切换语言必须重译),不要用全局译文字符串集合跳过输入。
-- 可复现性:同一输入列表、同一模型与配置,在 `cacheSize = 0` 下跨进程、跨线程数逐字节相同
-  (批次由输入决定,与调度时序无关)。只有输入短到分不满每个 worker 一批时
-  (默认 `miniBatchWords = 512` 约每 15 行一批)才按线程数均分,结果仍对该线程数固定。
-  `cacheSize > 0` 时命中的译文可能与冷算差个别句(200 句语料在 20000 槽下差 1 句、512 槽差 5 句,
-  机理是直接映射表撞槽后单独重算),两者都是合法译文。
+- 输出一致性：`cacheSize = 0` 时，相同输入列表、模型与线程配置可在不同进程中得到一致输出。
+  改变线程数可能影响短批次的组批方式；开启缓存后，部分译文也可能与未命中缓存时不同。
 
 ## 🗺️ Roadmap
 
@@ -395,6 +370,35 @@ adb shell am start -n io.github.yinvoker.bergamot.bench/.MainActivity \
 - [ ] HTML 模式验证
 - [ ] SME2 指令集支持
 - [x] 构建优化
+
+## 🤝 参与贡献
+
+欢迎提交问题报告、兼容性反馈和 Pull Request。开发环境、测试要求与上游补丁维护约定见[贡献指南](CONTRIBUTING.md)。
+
+## 📦 库、第三方组件与模型
+
+本项目的 Android 封装、JNI 胶水层、sample、工具和构建脚本由本项目维护，按
+[MIT](LICENSE) 许可发布。下面列出随仓库构建或打包的主要开源组件；更完整的来源与许可
+索引见 [NOTICE](NOTICE) 和各 vendor 目录中的许可文件。
+
+### 引擎与运行时
+
+- [Bergamot translator](https://github.com/mozilla/translations)：Mozilla Firefox 本地翻译引擎，MPL-2.0；本项目使用其 `inference/` 代码并做 Android/ARM 适配。
+- [Marian NMT](https://github.com/marian-nmt/marian)：C++ 神经机器翻译运行时，MIT；本仓库使用 Bergamot 维护的 fork。
+- [ruy](https://github.com/google/ruy)：ARM CPU 矩阵乘后端，Apache-2.0；用于非 SMMLA 设备的 int8/SDOT 回退路径。
+- [SentencePiece](https://github.com/google/sentencepiece)：模型分词与词表处理，Apache-2.0。
+- [ssplit-cpp](https://github.com/browsermt/ssplit-cpp)：句子切分与 non-breaking prefix 数据，Apache-2.0 及其数据源对应条款。
+- [PCRE2](https://github.com/PCRE2Project/pcre2)、cpuinfo、zlib、pathie-cpp、faiss 子集和 `half_float`：分别按各自目录中的 BSD/MIT/Apache 或其他许可分发。
+
+### Android 依赖与基准工具
+
+- [Kotlin Coroutines](https://github.com/Kotlin/kotlinx.coroutines)：Android suspend API 的协程调度，Apache-2.0。
+- [Google ML Kit Translate](https://developers.google.com/ml-kit/language/translation)：只用于 `sample/` 基准 app 的对比评测，不是 Bergamot AAR 的翻译后端；依赖其自身服务条款。
+- [FLORES-200](https://github.com/facebookresearch/flores)：sample 基准语料，按 CC-BY-SA 4.0 使用；它只用于测量，不随库运行时提供。
+
+### 翻译模型
+
+模型来自 Mozilla Firefox Remote Settings 发布的 [Bergamot 模型索引](registry.json)，模型文件按 Mozilla 对应发布许可（当前索引为 MPL-2.0）分发。模型不内置在 AAR 中，应用需要自行下载或随应用部署，并使用 `registry.json` 中的 SHA-256 校验。
 
 ## 📄 许可
 

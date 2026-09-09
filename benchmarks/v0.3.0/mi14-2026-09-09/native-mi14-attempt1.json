@@ -1,0 +1,609 @@
+{
+  "measured_at": "2026-09-09T13:41:27+0800",
+  "device": {
+    "model": "23127PN0CC",
+    "android": "16",
+    "soc": "Snapdragon 8 Gen 3",
+    "i8mm": true,
+    "id_sha256": "02bfda251ceb556996e08642bfd07e6d9d367515c21df91ee80213fc91d5a811",
+    "fingerprint": "Xiaomi/houji/houji:16/BP2A.250605.031.A3/OS3.0.305.0.WNCCNXM:user/release-keys"
+  },
+  "versions": {
+    "v0.2.0": "db1ccfd9a3104f38ac8c4709cab88570fc48bb4f",
+    "v0.3.0": "bfc6a08c0aeaa8a679170d517c5c041a83c01834"
+  },
+  "build_manifests": {
+    "v0.2.0": {
+      "label": "v0.2.0",
+      "commit": "db1ccfd9a3104f38ac8c4709cab88570fc48bb4f",
+      "source_kind": "git-ref",
+      "source_native_sha256": "e68c130e3ed637a4f996dbdaf47c7beb3575461a86afeae4123b12e8dcdbea3e",
+      "dirty_status": "",
+      "harness_sha256": "298e8116a32fb1ed46846ba533c8dacf6051ebd3d8e68e0a4bc15a77673b4a9d",
+      "binary_sha256": "8c5f5508aa729006180dd1912b48f4e42899377767be31604b686906cf6a5ca4",
+      "build_settings": {
+        "cmake_flags": [
+          "-DANDROID_ABI=arm64-v8a",
+          "-DANDROID_PLATFORM=android-28",
+          "-DCMAKE_BUILD_TYPE=Release",
+          "-DANDROID_STL=c++_static",
+          "-DSSPLIT_USE_INTERNAL_PCRE2=ON",
+          "-DCOMPILE_TESTS=OFF",
+          "-DBUILD_ARCH=armv8-a",
+          "-DBUILD_SMOKE=ON"
+        ],
+        "ndk": "Pkg.Desc = Android NDK\nPkg.Revision = 29.0.13113456-beta1\nPkg.BaseRevision = 29.0.13113456\nPkg.ReleaseName = r29-beta1\n",
+        "cmake": "cmake version 4.4.3"
+      }
+    },
+    "v0.3.0": {
+      "label": "v0.3.0",
+      "commit": "bfc6a08c0aeaa8a679170d517c5c041a83c01834",
+      "source_kind": "working-tree",
+      "source_native_sha256": "e3394de29121491ed752eb94191103c764149b98a4da3d9d0e503916b726c398",
+      "dirty_status": " M .github/workflows/build.yml\n M .gitignore\n M README.md\n M bergamot/src/main/kotlin/io/github/yinvoker/bergamot/BergamotEngine.kt\n M bergamot/src/main/kotlin/io/github/yinvoker/bergamot/IdleSweeper.kt\n M bergamot/src/main/kotlin/io/github/yinvoker/bergamot/NativeBridge.kt\n M bergamot/src/test/kotlin/io/github/yinvoker/bergamot/ModelFilesTest.kt\n M docs/benchmarks/v0.2.0-to-main/README.md\n D docs/benchmarks/v0.2.0-to-main/results-mi14.json\n D docs/benchmarks/v0.2.0-to-main/results.json\n D docs/benchmarks/v0.2.0-to-main/summary-mi14.json\n D docs/benchmarks/v0.2.0-to-main/summary.json\n M docs/benchmarks/v0.2.0/README.md\n D docs/benchmarks/v0.2.0/comparison.png\n D docs/benchmarks/v0.2.0/results.json\n D docs/benchmarks/v0.2.0/summary.json\n M sample/src/main/kotlin/io/github/yinvoker/bergamot/bench/MainActivity.kt\n M tools/version-bench/build.py\n M tools/version-bench/plot.py\n M tools/version-bench/run-pair.py\n M tools/version-bench/run.py\n?? CONTRIBUTING.md\n?? benchmarks/\n?? docs/README.md\n?? docs/architecture.md\n?? docs/benchmarking.md\n?? docs/getting-started.md\n?? sample/src/main/kotlin/io/github/yinvoker/bergamot/bench/IsolatedBenchRunner.kt\n?? tools/version-bench/README.md\n?? tools/version-bench/check.py\n?? tools/version-bench/suite.py\n?? tools/version-bench/suites/\n?? tools/version-bench/test_check.py\n?? tools/version-bench/test_run_pair.py\n",
+      "harness_sha256": "298e8116a32fb1ed46846ba533c8dacf6051ebd3d8e68e0a4bc15a77673b4a9d",
+      "binary_sha256": "f95a008ec06e0f01b570d311aa35fca39b61199c7fbba21be941a3c639659287",
+      "build_settings": {
+        "cmake_flags": [
+          "-DANDROID_ABI=arm64-v8a",
+          "-DANDROID_PLATFORM=android-28",
+          "-DCMAKE_BUILD_TYPE=Release",
+          "-DANDROID_STL=c++_static",
+          "-DSSPLIT_USE_INTERNAL_PCRE2=ON",
+          "-DCOMPILE_TESTS=OFF",
+          "-DBUILD_ARCH=armv8-a",
+          "-DBUILD_SMOKE=ON"
+        ],
+        "ndk": "Pkg.Desc = Android NDK\nPkg.Revision = 29.0.13113456-beta1\nPkg.BaseRevision = 29.0.13113456\nPkg.ReleaseName = r29-beta1\n",
+        "cmake": "cmake version 4.4.3"
+      }
+    }
+  },
+  "build_settings": {
+    "cmake_flags": [
+      "-DANDROID_ABI=arm64-v8a",
+      "-DANDROID_PLATFORM=android-28",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DANDROID_STL=c++_static",
+      "-DSSPLIT_USE_INTERNAL_PCRE2=ON",
+      "-DCOMPILE_TESTS=OFF",
+      "-DBUILD_ARCH=armv8-a",
+      "-DBUILD_SMOKE=ON"
+    ],
+    "ndk": "Pkg.Desc = Android NDK\nPkg.Revision = 29.0.13113456-beta1\nPkg.BaseRevision = 29.0.13113456\nPkg.ReleaseName = r29-beta1\n",
+    "cmake": "cmake version 4.4.3"
+  },
+  "suite_id": "android-native-v1",
+  "suite_sha256": "01fd8553d31a4ced2d1a17f19c92ab3b5ee7d6893b40a61744ac9446c2367e35",
+  "report_kind": "full",
+  "corpus_sha256": {
+    "eng": "407119a09c81211b1144f9f10b72e7a4415141fa83509df183c8394b05ad6d68",
+    "jpn": "6aef2063af141a8169381b13258e42afc8514cc34dece4f2534671c51f2a0f63"
+  },
+  "model_files_sha256": {
+    "/data/local/tmp/bergamot/models/model.enzh.intgemm.alphas.bin": "4e5accc141373565ddc8fa1565bceaa8d0c3482a82cab8131c719ebcc6c2157c",
+    "/data/local/tmp/bergamot/models/srcvocab.enzh.spm": "bd9b65504acc6d9726dd281f7defc2adb7c2c22d0688fe2f84697de25197c8c5",
+    "/data/local/tmp/bergamot/models/trgvocab.enzh.spm": "aded6993c36e440284d11cec3f6b8aef9c0e43188a772d80be342a713adf223d",
+    "/data/local/tmp/bergamot/models/lex.50.50.enzh.s2t.bin": "4a5e5827788060f1d718a8132b69440929387514a045796e9b77f935db68c055",
+    "/data/local/tmp/bergamot/models/jaen/model.jaen.intgemm.alphas.bin": "3a603e20bfe1be86071913f9e23ab5129075bc0a8490151020ac4821e4f17302",
+    "/data/local/tmp/bergamot/models/jaen/vocab.jaen.spm": "5cb217758bae05877bb3f0c2f612e4e7c1e4cb03c10db11f4a47098d7ae62919",
+    "/data/local/tmp/bergamot/models/jaen/lex.50.50.jaen.s2t.bin": "525f412f0d210536c2933c78ae395fa0bf2b5ee6cc5dda61ebc2e79410ebaee4",
+    "/data/local/tmp/bergamot/nonbreaking_prefix.en": "af526c47425bb31b4e7b79ec975c1bb752a34ba21951237d51b965e879d9d51a"
+  },
+  "binary_sha256": {
+    "v0.2.0": "8c5f5508aa729006180dd1912b48f4e42899377767be31604b686906cf6a5ca4",
+    "v0.3.0": "f95a008ec06e0f01b570d311aa35fca39b61199c7fbba21be941a3c639659287"
+  },
+  "harness_sha256": "298e8116a32fb1ed46846ba533c8dacf6051ebd3d8e68e0a4bc15a77673b4a9d",
+  "config_yaml": {
+    "enzh1024": "models:\n  - /data/local/tmp/bergamot/models/model.enzh.intgemm.alphas.bin\nvocabs:\n  - /data/local/tmp/bergamot/models/srcvocab.enzh.spm\n  - /data/local/tmp/bergamot/models/trgvocab.enzh.spm\nshortlist:\n  - /data/local/tmp/bergamot/models/lex.50.50.enzh.s2t.bin\n  - false\nbeam-size: 1\nnormalize: 1.0\nword-penalty: 0\nmax-length-break: 128\nmini-batch-words: 1024\nworkspace: 128\nmax-length-factor: 2.0\nskip-cost: true\ncpu-threads: 0\nquiet: true\nquiet-translation: true\ngemm-precision: int8shiftAlphaAll\nalignment: soft\n",
+    "jaen1024": "models:\n  - /data/local/tmp/bergamot/models/jaen/model.jaen.intgemm.alphas.bin\nvocabs:\n  - /data/local/tmp/bergamot/models/jaen/vocab.jaen.spm\n  - /data/local/tmp/bergamot/models/jaen/vocab.jaen.spm\nshortlist:\n  - /data/local/tmp/bergamot/models/jaen/lex.50.50.jaen.s2t.bin\n  - false\nbeam-size: 1\nnormalize: 1.0\nword-penalty: 0\nmax-length-break: 128\nmini-batch-words: 1024\nworkspace: 128\nmax-length-factor: 2.0\nskip-cost: true\ncpu-threads: 0\nquiet: true\nquiet-translation: true\ngemm-precision: int8shiftAlphaAll\nalignment: soft\n",
+    "enzh512p": "models:\n  - /data/local/tmp/bergamot/models/model.enzh.intgemm.alphas.bin\nvocabs:\n  - /data/local/tmp/bergamot/models/srcvocab.enzh.spm\n  - /data/local/tmp/bergamot/models/trgvocab.enzh.spm\nshortlist:\n  - /data/local/tmp/bergamot/models/lex.50.50.enzh.s2t.bin\n  - false\nbeam-size: 1\nnormalize: 1.0\nword-penalty: 0\nmax-length-break: 128\nmini-batch-words: 512\nworkspace: 128\nmax-length-factor: 2.0\nskip-cost: true\ncpu-threads: 0\nquiet: true\nquiet-translation: true\ngemm-precision: int8shiftAlphaAll\nalignment: soft\nssplit-prefix-file: /data/local/tmp/bergamot/nonbreaking_prefix.en\n",
+    "jaen512": "models:\n  - /data/local/tmp/bergamot/models/jaen/model.jaen.intgemm.alphas.bin\nvocabs:\n  - /data/local/tmp/bergamot/models/jaen/vocab.jaen.spm\n  - /data/local/tmp/bergamot/models/jaen/vocab.jaen.spm\nshortlist:\n  - /data/local/tmp/bergamot/models/jaen/lex.50.50.jaen.s2t.bin\n  - false\nbeam-size: 1\nnormalize: 1.0\nword-penalty: 0\nmax-length-break: 128\nmini-batch-words: 512\nworkspace: 128\nmax-length-factor: 2.0\nskip-cost: true\ncpu-threads: 0\nquiet: true\nquiet-translation: true\ngemm-precision: int8shiftAlphaAll\nalignment: soft\n"
+  },
+  "scenarios": {
+    "enzh_w1": {
+      "workers": 1,
+      "corpus": "eng",
+      "configs": [
+        "enzh1024"
+      ],
+      "sentences": 200,
+      "stable_hash": false
+    },
+    "enzh_w2": {
+      "workers": 2,
+      "corpus": "eng",
+      "configs": [
+        "enzh1024"
+      ],
+      "sentences": 200,
+      "stable_hash": false
+    },
+    "enzh_w4": {
+      "workers": 4,
+      "corpus": "eng",
+      "configs": [
+        "enzh1024"
+      ],
+      "sentences": 200,
+      "stable_hash": false
+    },
+    "pivot_w1": {
+      "workers": 1,
+      "corpus": "jpn",
+      "configs": [
+        "jaen1024",
+        "enzh1024"
+      ],
+      "sentences": 200,
+      "stable_hash": false
+    },
+    "enzh_b512p": {
+      "workers": 0,
+      "corpus": "eng",
+      "configs": [
+        "enzh512p"
+      ],
+      "sentences": 200,
+      "stable_hash": true
+    },
+    "pivot_b512p": {
+      "workers": 0,
+      "corpus": "jpn",
+      "configs": [
+        "jaen512",
+        "enzh512p"
+      ],
+      "sentences": 200,
+      "stable_hash": true
+    },
+    "enzh_w2_512p": {
+      "workers": 2,
+      "corpus": "eng",
+      "configs": [
+        "enzh512p"
+      ],
+      "sentences": 200,
+      "stable_hash": false
+    },
+    "pivot_w2_512p": {
+      "workers": 2,
+      "corpus": "jpn",
+      "configs": [
+        "jaen512",
+        "enzh512p"
+      ],
+      "sentences": 200,
+      "stable_hash": false
+    }
+  },
+  "protocol": {
+    "rounds": 3,
+    "version_order": [
+      "AB",
+      "BA",
+      "AB"
+    ],
+    "passes_per_process": 3,
+    "cache_size": 0,
+    "affinity": "7c",
+    "cooldown_seconds": 8,
+    "gate_khz": 2630400,
+    "cold_ms": "service + model creation + first translation",
+    "peak_rss_mib": "VmHWM after first translation",
+    "warm_ms": "passes 1 and 2"
+  },
+  "runs": [
+    {
+      "round": 1,
+      "scenario": "enzh_w1",
+      "version": "v0.2.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-13a8bc5fbc7f/v0.2.0 1 /data/local/tmp/bergamot/vb-13a8bc5fbc7f/enzh1024.yml < /data/local/tmp/bergamot/vb-13a8bc5fbc7f/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.9,
+        "board_temp": "31984",
+        "gate_wait_s": 62
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 3347.021,
+          "peak_rss_mib": 207.898,
+          "rss_mib": 186.734,
+          "output_bytes": 22590,
+          "output_hash": "3c037b5de2029912"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 2906.824,
+          "peak_rss_mib": 207.898,
+          "rss_mib": 187.656,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 2896.947,
+          "peak_rss_mib": 207.898,
+          "rss_mib": 187.668,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2169600"
+        },
+        "battery_temp_c": 30.9,
+        "board_temp": "32052"
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w1",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-13a8bc5fbc7f/v0.3.0 1 /data/local/tmp/bergamot/vb-13a8bc5fbc7f/enzh1024.yml < /data/local/tmp/bergamot/vb-13a8bc5fbc7f/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31954",
+        "gate_wait_s": 31
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 3401.337,
+          "peak_rss_mib": 206.773,
+          "rss_mib": 185.648,
+          "output_bytes": 22591,
+          "output_hash": "aa87159c6d3ec623"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 2909.422,
+          "peak_rss_mib": 206.773,
+          "rss_mib": 186.32,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 2914.896,
+          "peak_rss_mib": 206.773,
+          "rss_mib": 186.152,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2553600"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31946"
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w2",
+      "version": "v0.2.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-13a8bc5fbc7f/v0.2.0 2 /data/local/tmp/bergamot/vb-13a8bc5fbc7f/enzh1024.yml < /data/local/tmp/bergamot/vb-13a8bc5fbc7f/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31962",
+        "gate_wait_s": 36
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1914.92,
+          "peak_rss_mib": 307.004,
+          "rss_mib": 300.18,
+          "output_bytes": 22591,
+          "output_hash": "b1a05933822b3d63"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1574.94,
+          "peak_rss_mib": 307.004,
+          "rss_mib": 297.656,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1565.584,
+          "peak_rss_mib": 307.004,
+          "rss_mib": 297.984,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2553600"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31889"
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w2",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-13a8bc5fbc7f/v0.3.0 2 /data/local/tmp/bergamot/vb-13a8bc5fbc7f/enzh1024.yml < /data/local/tmp/bergamot/vb-13a8bc5fbc7f/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31914",
+        "gate_wait_s": 5
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1934.795,
+          "peak_rss_mib": 303.648,
+          "rss_mib": 298.484,
+          "output_bytes": 22579,
+          "output_hash": "be114020f154244f"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1618.399,
+          "peak_rss_mib": 303.648,
+          "rss_mib": 296.742,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1549.742,
+          "peak_rss_mib": 303.648,
+          "rss_mib": 297.305,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2304000"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "32031"
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w4",
+      "version": "v0.2.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-13a8bc5fbc7f/v0.2.0 4 /data/local/tmp/bergamot/vb-13a8bc5fbc7f/enzh1024.yml < /data/local/tmp/bergamot/vb-13a8bc5fbc7f/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.5,
+        "board_temp": "31985",
+        "gate_wait_s": 26
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1229.339,
+          "peak_rss_mib": 524.402,
+          "rss_mib": 519.969,
+          "output_bytes": 22591,
+          "output_hash": "b1a05933822b3d63"
+        },
+        {
+          "pass": 1,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 959.68,
+          "peak_rss_mib": 524.402,
+          "rss_mib": 516.707,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 2,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1008.404,
+          "peak_rss_mib": 524.402,
+          "rss_mib": 517.957,
+          "output_bytes": 22607,
+          "output_hash": "8d1405a8eb38653a"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2496000"
+        },
+        "battery_temp_c": 30.5,
+        "board_temp": "31985"
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w4",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-13a8bc5fbc7f/v0.3.0 4 /data/local/tmp/bergamot/vb-13a8bc5fbc7f/enzh1024.yml < /data/local/tmp/bergamot/vb-13a8bc5fbc7f/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.5,
+        "board_temp": "31960",
+        "gate_wait_s": 26
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1224.385,
+          "peak_rss_mib": 520.301,
+          "rss_mib": 516.215,
+          "output_bytes": 22570,
+          "output_hash": "6ace67e9b8e01c53"
+        },
+        {
+          "pass": 1,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 968.686,
+          "peak_rss_mib": 522.906,
+          "rss_mib": 517.375,
+          "output_bytes": 22575,
+          "output_hash": "ec4ae3e511f2723c"
+        },
+        {
+          "pass": 2,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 942.97,
+          "peak_rss_mib": 522.906,
+          "rss_mib": 516.781,
+          "output_bytes": 22591,
+          "output_hash": "aa87159c6d3ec623"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.5,
+        "board_temp": "31960"
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "pivot_w1",
+      "version": "v0.2.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-13a8bc5fbc7f/v0.2.0 1 /data/local/tmp/bergamot/vb-13a8bc5fbc7f/jaen1024.yml /data/local/tmp/bergamot/vb-13a8bc5fbc7f/enzh1024.yml < /data/local/tmp/bergamot/vb-13a8bc5fbc7f/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.5,
+        "board_temp": "31993",
+        "gate_wait_s": 21
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 7123.64,
+          "peak_rss_mib": 313.855,
+          "rss_mib": 310.215,
+          "output_bytes": 22659,
+          "output_hash": "d1734015cc5ed4e8"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 6482.326,
+          "peak_rss_mib": 313.855,
+          "rss_mib": 310.457,
+          "output_bytes": 22686,
+          "output_hash": "f9077e4684862ab4"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 6439.872,
+          "peak_rss_mib": 313.855,
+          "rss_mib": 310.445,
+          "output_bytes": 22686,
+          "output_hash": "f9077e4684862ab4"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2169600"
+        },
+        "battery_temp_c": 30.5,
+        "board_temp": "32193"
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "pivot_w1",
+      "version": "v0.3.0",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2169600"
+        },
+        "battery_temp_c": 31.4,
+        "board_temp": "33321",
+        "gate_wait_s": -1
+      },
+      "returncode": 2,
+      "samples": [],
+      "error": "frequency gate timeout; not measured"
+    }
+  ]
+}

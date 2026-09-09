@@ -1,0 +1,3375 @@
+{
+  "measured_at": "2026-09-09T20:48:19+0800",
+  "device": {
+    "model": "23127PN0CC",
+    "android": "16",
+    "soc": "Snapdragon 8 Gen 3",
+    "i8mm": true,
+    "id_sha256": "02bfda251ceb556996e08642bfd07e6d9d367515c21df91ee80213fc91d5a811",
+    "fingerprint": "Xiaomi/houji/houji:16/BP2A.250605.031.A3/OS3.0.305.0.WNCCNXM:user/release-keys"
+  },
+  "versions": {
+    "v0.1.0": "d447381b1259a8f101a91390dd8950ad7080c84e",
+    "v0.3.0": "bfc6a08c0aeaa8a679170d517c5c041a83c01834"
+  },
+  "build_manifests": {
+    "v0.1.0": {
+      "label": "v0.1.0",
+      "commit": "d447381b1259a8f101a91390dd8950ad7080c84e",
+      "source_kind": "git-ref",
+      "source_native_sha256": "50f2cfea37bd01b90a9db803877215e8e2cb7a5b4f838eb7f4e5817f7e48b978",
+      "dirty_status": "",
+      "harness_sha256": "298e8116a32fb1ed46846ba533c8dacf6051ebd3d8e68e0a4bc15a77673b4a9d",
+      "binary_sha256": "4051337fe28163278359dd1c3a19e9b4ec18c512d1111be1e550d33ceeccb2af",
+      "build_settings": {
+        "cmake_flags": [
+          "-DANDROID_ABI=arm64-v8a",
+          "-DANDROID_PLATFORM=android-28",
+          "-DCMAKE_BUILD_TYPE=Release",
+          "-DANDROID_STL=c++_static",
+          "-DSSPLIT_USE_INTERNAL_PCRE2=ON",
+          "-DCOMPILE_TESTS=OFF",
+          "-DBUILD_ARCH=armv8-a",
+          "-DBUILD_SMOKE=ON"
+        ],
+        "ndk": "Pkg.Desc = Android NDK\nPkg.Revision = 29.0.13113456-beta1\nPkg.BaseRevision = 29.0.13113456\nPkg.ReleaseName = r29-beta1\n",
+        "cmake": "cmake version 4.4.3"
+      }
+    },
+    "v0.3.0": {
+      "label": "v0.3.0",
+      "commit": "bfc6a08c0aeaa8a679170d517c5c041a83c01834",
+      "source_kind": "working-tree",
+      "source_native_sha256": "e3394de29121491ed752eb94191103c764149b98a4da3d9d0e503916b726c398",
+      "dirty_status": " M .github/workflows/build.yml\n M .gitignore\n M README.md\n M bergamot/src/main/kotlin/io/github/yinvoker/bergamot/BergamotEngine.kt\n M bergamot/src/main/kotlin/io/github/yinvoker/bergamot/IdleSweeper.kt\n M bergamot/src/main/kotlin/io/github/yinvoker/bergamot/NativeBridge.kt\n M bergamot/src/test/kotlin/io/github/yinvoker/bergamot/ModelFilesTest.kt\n M docs/benchmarks/v0.2.0-to-main/README.md\n D docs/benchmarks/v0.2.0-to-main/results-mi14.json\n D docs/benchmarks/v0.2.0-to-main/results.json\n D docs/benchmarks/v0.2.0-to-main/summary-mi14.json\n D docs/benchmarks/v0.2.0-to-main/summary.json\n M docs/benchmarks/v0.2.0/README.md\n D docs/benchmarks/v0.2.0/comparison.png\n D docs/benchmarks/v0.2.0/results.json\n D docs/benchmarks/v0.2.0/summary.json\n M sample/src/main/kotlin/io/github/yinvoker/bergamot/bench/MainActivity.kt\n M tools/version-bench/build.py\n M tools/version-bench/plot.py\n M tools/version-bench/run-pair.py\n M tools/version-bench/run.py\n?? CONTRIBUTING.md\n?? benchmarks/\n?? docs/README.md\n?? docs/architecture.md\n?? docs/benchmarking.md\n?? docs/getting-started.md\n?? sample/src/main/kotlin/io/github/yinvoker/bergamot/bench/IsolatedBenchRunner.kt\n?? tools/app-bench/\n?? tools/bench_device.py\n?? tools/version-bench/README.md\n?? tools/version-bench/check.py\n?? tools/version-bench/suite.py\n?? tools/version-bench/suites/\n?? tools/version-bench/test_check.py\n?? tools/version-bench/test_run_pair.py\n",
+      "harness_sha256": "298e8116a32fb1ed46846ba533c8dacf6051ebd3d8e68e0a4bc15a77673b4a9d",
+      "binary_sha256": "29e841f61c386da6cf00b34f7b4ebec96d5aac4c4ff3411a065f9af75bc4bf0b",
+      "build_settings": {
+        "cmake_flags": [
+          "-DANDROID_ABI=arm64-v8a",
+          "-DANDROID_PLATFORM=android-28",
+          "-DCMAKE_BUILD_TYPE=Release",
+          "-DANDROID_STL=c++_static",
+          "-DSSPLIT_USE_INTERNAL_PCRE2=ON",
+          "-DCOMPILE_TESTS=OFF",
+          "-DBUILD_ARCH=armv8-a",
+          "-DBUILD_SMOKE=ON"
+        ],
+        "ndk": "Pkg.Desc = Android NDK\nPkg.Revision = 29.0.13113456-beta1\nPkg.BaseRevision = 29.0.13113456\nPkg.ReleaseName = r29-beta1\n",
+        "cmake": "cmake version 4.4.3"
+      }
+    }
+  },
+  "build_settings": {
+    "cmake_flags": [
+      "-DANDROID_ABI=arm64-v8a",
+      "-DANDROID_PLATFORM=android-28",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DANDROID_STL=c++_static",
+      "-DSSPLIT_USE_INTERNAL_PCRE2=ON",
+      "-DCOMPILE_TESTS=OFF",
+      "-DBUILD_ARCH=armv8-a",
+      "-DBUILD_SMOKE=ON"
+    ],
+    "ndk": "Pkg.Desc = Android NDK\nPkg.Revision = 29.0.13113456-beta1\nPkg.BaseRevision = 29.0.13113456\nPkg.ReleaseName = r29-beta1\n",
+    "cmake": "cmake version 4.4.3"
+  },
+  "suite_id": "android-native-v1",
+  "suite_sha256": "01fd8553d31a4ced2d1a17f19c92ab3b5ee7d6893b40a61744ac9446c2367e35",
+  "report_kind": "exploratory",
+  "corpus_sha256": {
+    "eng": "407119a09c81211b1144f9f10b72e7a4415141fa83509df183c8394b05ad6d68",
+    "jpn": "6aef2063af141a8169381b13258e42afc8514cc34dece4f2534671c51f2a0f63"
+  },
+  "model_files_sha256": {
+    "/data/local/tmp/bergamot/models/model.enzh.intgemm.alphas.bin": "4e5accc141373565ddc8fa1565bceaa8d0c3482a82cab8131c719ebcc6c2157c",
+    "/data/local/tmp/bergamot/models/srcvocab.enzh.spm": "bd9b65504acc6d9726dd281f7defc2adb7c2c22d0688fe2f84697de25197c8c5",
+    "/data/local/tmp/bergamot/models/trgvocab.enzh.spm": "aded6993c36e440284d11cec3f6b8aef9c0e43188a772d80be342a713adf223d",
+    "/data/local/tmp/bergamot/models/lex.50.50.enzh.s2t.bin": "4a5e5827788060f1d718a8132b69440929387514a045796e9b77f935db68c055",
+    "/data/local/tmp/bergamot/models/jaen/model.jaen.intgemm.alphas.bin": "3a603e20bfe1be86071913f9e23ab5129075bc0a8490151020ac4821e4f17302",
+    "/data/local/tmp/bergamot/models/jaen/vocab.jaen.spm": "5cb217758bae05877bb3f0c2f612e4e7c1e4cb03c10db11f4a47098d7ae62919",
+    "/data/local/tmp/bergamot/models/jaen/lex.50.50.jaen.s2t.bin": "525f412f0d210536c2933c78ae395fa0bf2b5ee6cc5dda61ebc2e79410ebaee4",
+    "/data/local/tmp/bergamot/nonbreaking_prefix.en": "af526c47425bb31b4e7b79ec975c1bb752a34ba21951237d51b965e879d9d51a"
+  },
+  "binary_sha256": {
+    "v0.1.0": "4051337fe28163278359dd1c3a19e9b4ec18c512d1111be1e550d33ceeccb2af",
+    "v0.3.0": "29e841f61c386da6cf00b34f7b4ebec96d5aac4c4ff3411a065f9af75bc4bf0b"
+  },
+  "harness_sha256": "298e8116a32fb1ed46846ba533c8dacf6051ebd3d8e68e0a4bc15a77673b4a9d",
+  "config_yaml": {
+    "enzh1024": "models:\n  - /data/local/tmp/bergamot/models/model.enzh.intgemm.alphas.bin\nvocabs:\n  - /data/local/tmp/bergamot/models/srcvocab.enzh.spm\n  - /data/local/tmp/bergamot/models/trgvocab.enzh.spm\nshortlist:\n  - /data/local/tmp/bergamot/models/lex.50.50.enzh.s2t.bin\n  - false\nbeam-size: 1\nnormalize: 1.0\nword-penalty: 0\nmax-length-break: 128\nmini-batch-words: 1024\nworkspace: 128\nmax-length-factor: 2.0\nskip-cost: true\ncpu-threads: 0\nquiet: true\nquiet-translation: true\ngemm-precision: int8shiftAlphaAll\nalignment: soft\n",
+    "jaen1024": "models:\n  - /data/local/tmp/bergamot/models/jaen/model.jaen.intgemm.alphas.bin\nvocabs:\n  - /data/local/tmp/bergamot/models/jaen/vocab.jaen.spm\n  - /data/local/tmp/bergamot/models/jaen/vocab.jaen.spm\nshortlist:\n  - /data/local/tmp/bergamot/models/jaen/lex.50.50.jaen.s2t.bin\n  - false\nbeam-size: 1\nnormalize: 1.0\nword-penalty: 0\nmax-length-break: 128\nmini-batch-words: 1024\nworkspace: 128\nmax-length-factor: 2.0\nskip-cost: true\ncpu-threads: 0\nquiet: true\nquiet-translation: true\ngemm-precision: int8shiftAlphaAll\nalignment: soft\n",
+    "enzh512p": "models:\n  - /data/local/tmp/bergamot/models/model.enzh.intgemm.alphas.bin\nvocabs:\n  - /data/local/tmp/bergamot/models/srcvocab.enzh.spm\n  - /data/local/tmp/bergamot/models/trgvocab.enzh.spm\nshortlist:\n  - /data/local/tmp/bergamot/models/lex.50.50.enzh.s2t.bin\n  - false\nbeam-size: 1\nnormalize: 1.0\nword-penalty: 0\nmax-length-break: 128\nmini-batch-words: 512\nworkspace: 128\nmax-length-factor: 2.0\nskip-cost: true\ncpu-threads: 0\nquiet: true\nquiet-translation: true\ngemm-precision: int8shiftAlphaAll\nalignment: soft\nssplit-prefix-file: /data/local/tmp/bergamot/nonbreaking_prefix.en\n",
+    "jaen512": "models:\n  - /data/local/tmp/bergamot/models/jaen/model.jaen.intgemm.alphas.bin\nvocabs:\n  - /data/local/tmp/bergamot/models/jaen/vocab.jaen.spm\n  - /data/local/tmp/bergamot/models/jaen/vocab.jaen.spm\nshortlist:\n  - /data/local/tmp/bergamot/models/jaen/lex.50.50.jaen.s2t.bin\n  - false\nbeam-size: 1\nnormalize: 1.0\nword-penalty: 0\nmax-length-break: 128\nmini-batch-words: 512\nworkspace: 128\nmax-length-factor: 2.0\nskip-cost: true\ncpu-threads: 0\nquiet: true\nquiet-translation: true\ngemm-precision: int8shiftAlphaAll\nalignment: soft\n"
+  },
+  "collector_files_sha256": {
+    "tools/version-bench/run-pair.py": "6fdaf76d7ffe98c62a4199b6dea3105b93ddbd12c716b2fcc38d12a27cc07ebf",
+    "tools/bench_device.py": "d5437e32b1ef59a1b93a36aa49884c4e47014386571b7c2d70dad95feed369df"
+  },
+  "scenarios": {
+    "enzh_w1": {
+      "workers": 1,
+      "corpus": "eng",
+      "configs": [
+        "enzh1024"
+      ],
+      "sentences": 200,
+      "stable_hash": false
+    },
+    "enzh_w2": {
+      "workers": 2,
+      "corpus": "eng",
+      "configs": [
+        "enzh1024"
+      ],
+      "sentences": 200,
+      "stable_hash": false
+    },
+    "enzh_w4": {
+      "workers": 4,
+      "corpus": "eng",
+      "configs": [
+        "enzh1024"
+      ],
+      "sentences": 200,
+      "stable_hash": false
+    },
+    "pivot_w1": {
+      "workers": 1,
+      "corpus": "jpn",
+      "configs": [
+        "jaen1024",
+        "enzh1024"
+      ],
+      "sentences": 200,
+      "stable_hash": false
+    },
+    "enzh_b512p": {
+      "workers": 0,
+      "corpus": "eng",
+      "configs": [
+        "enzh512p"
+      ],
+      "sentences": 200,
+      "stable_hash": true
+    },
+    "pivot_b512p": {
+      "workers": 0,
+      "corpus": "jpn",
+      "configs": [
+        "jaen512",
+        "enzh512p"
+      ],
+      "sentences": 200,
+      "stable_hash": true
+    },
+    "enzh_w2_512p": {
+      "workers": 2,
+      "corpus": "eng",
+      "configs": [
+        "enzh512p"
+      ],
+      "sentences": 200,
+      "stable_hash": false
+    },
+    "pivot_w2_512p": {
+      "workers": 2,
+      "corpus": "jpn",
+      "configs": [
+        "jaen512",
+        "enzh512p"
+      ],
+      "sentences": 200,
+      "stable_hash": false
+    }
+  },
+  "protocol": {
+    "rounds": 3,
+    "version_order": [
+      "AB",
+      "BA",
+      "AB"
+    ],
+    "passes_per_process": 3,
+    "cache_size": 0,
+    "affinity": "7c",
+    "cooldown_seconds": 8,
+    "gate_khz": null,
+    "foreground_checks": "awake-unlocked-focused-before-after-v1",
+    "cold_ms": "service + model creation + first translation",
+    "peak_rss_mib": "VmHWM after first translation",
+    "warm_ms": "passes 1 and 2",
+    "frequency_gate_mode": "skipped-explicitly",
+    "reference_gate_khz": 2630400
+  },
+  "runs": [
+    {
+      "round": 1,
+      "scenario": "enzh_w1",
+      "version": "v0.1.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.1.0 1 /data/local/tmp/bergamot/vb-435121422952/enzh1024.yml < /data/local/tmp/bergamot/vb-435121422952/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 33.2,
+        "board_temp": "34186",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 6829.152,
+          "peak_rss_mib": 348.781,
+          "rss_mib": 253.504,
+          "output_bytes": 22590,
+          "output_hash": "27b9258f63c4ea00"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 6363.184,
+          "peak_rss_mib": 348.781,
+          "rss_mib": 254.773,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 6335.731,
+          "peak_rss_mib": 348.781,
+          "rss_mib": 254.859,
+          "output_bytes": 22584,
+          "output_hash": "e9b5ff64312cdc5b"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 33.2,
+        "board_temp": "34632",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w1",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.3.0 1 /data/local/tmp/bergamot/vb-435121422952/enzh1024.yml < /data/local/tmp/bergamot/vb-435121422952/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 33.2,
+        "board_temp": "34464",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 3765.424,
+          "peak_rss_mib": 207.395,
+          "rss_mib": 186.336,
+          "output_bytes": 22584,
+          "output_hash": "fb3640ab016508c2"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 3197.763,
+          "peak_rss_mib": 207.395,
+          "rss_mib": 187.055,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 3180.353,
+          "peak_rss_mib": 207.395,
+          "rss_mib": 186.957,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 33.2,
+        "board_temp": "34840",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w2",
+      "version": "v0.1.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.1.0 2 /data/local/tmp/bergamot/vb-435121422952/enzh1024.yml < /data/local/tmp/bergamot/vb-435121422952/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 33.2,
+        "board_temp": "34651",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3732.917,
+          "peak_rss_mib": 536.566,
+          "rss_mib": 425.488,
+          "output_bytes": 22581,
+          "output_hash": "eeb83fbcb30579f5"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3328.405,
+          "peak_rss_mib": 536.566,
+          "rss_mib": 427.012,
+          "output_bytes": 22581,
+          "output_hash": "3f56aacfa170db77"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3433.186,
+          "peak_rss_mib": 536.566,
+          "rss_mib": 424.461,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 33.5,
+        "board_temp": "34911",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w2",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.3.0 2 /data/local/tmp/bergamot/vb-435121422952/enzh1024.yml < /data/local/tmp/bergamot/vb-435121422952/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 33.5,
+        "board_temp": "35044",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2078.228,
+          "peak_rss_mib": 301.586,
+          "rss_mib": 294.371,
+          "output_bytes": 22590,
+          "output_hash": "3c037b5de2029912"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1734.249,
+          "peak_rss_mib": 301.586,
+          "rss_mib": 296.379,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1740.838,
+          "peak_rss_mib": 301.586,
+          "rss_mib": 296.453,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 33.5,
+        "board_temp": "35044",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w4",
+      "version": "v0.1.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.1.0 4 /data/local/tmp/bergamot/vb-435121422952/enzh1024.yml < /data/local/tmp/bergamot/vb-435121422952/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 33.5,
+        "board_temp": "35262",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 2506.696,
+          "peak_rss_mib": 876.637,
+          "rss_mib": 755.387,
+          "output_bytes": 22581,
+          "output_hash": "3f56aacfa170db77"
+        },
+        {
+          "pass": 1,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 2065.354,
+          "peak_rss_mib": 876.637,
+          "rss_mib": 756.012,
+          "output_bytes": 22587,
+          "output_hash": "50ecc1b27fa0f332"
+        },
+        {
+          "pass": 2,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 2038.635,
+          "peak_rss_mib": 876.637,
+          "rss_mib": 754.18,
+          "output_bytes": 22595,
+          "output_hash": "143337ab6a2ca586"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 33.5,
+        "board_temp": "35184",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w4",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.3.0 4 /data/local/tmp/bergamot/vb-435121422952/enzh1024.yml < /data/local/tmp/bergamot/vb-435121422952/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 33.5,
+        "board_temp": "35267",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1340.721,
+          "peak_rss_mib": 522.801,
+          "rss_mib": 518.234,
+          "output_bytes": 22588,
+          "output_hash": "5df306300763abce"
+        },
+        {
+          "pass": 1,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1153.911,
+          "peak_rss_mib": 522.801,
+          "rss_mib": 513.934,
+          "output_bytes": 22612,
+          "output_hash": "885da7dd1a689c48"
+        },
+        {
+          "pass": 2,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1056.822,
+          "peak_rss_mib": 522.801,
+          "rss_mib": 514.039,
+          "output_bytes": 22634,
+          "output_hash": "fddb13918afc6395"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 33.5,
+        "board_temp": "35267",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "pivot_w1",
+      "version": "v0.1.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.1.0 1 /data/local/tmp/bergamot/vb-435121422952/jaen1024.yml /data/local/tmp/bergamot/vb-435121422952/enzh1024.yml < /data/local/tmp/bergamot/vb-435121422952/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 33.5,
+        "board_temp": "35396",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 14470.867,
+          "peak_rss_mib": 513.395,
+          "rss_mib": 459.469,
+          "output_bytes": 22677,
+          "output_hash": "91ea1c5f5e793de5"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 13642.144,
+          "peak_rss_mib": 513.395,
+          "rss_mib": 463.031,
+          "output_bytes": 22677,
+          "output_hash": "2ab33ee79c891533"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 13511.604,
+          "peak_rss_mib": 513.395,
+          "rss_mib": 463.719,
+          "output_bytes": 22664,
+          "output_hash": "77f83d9d78151778"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 34.0,
+        "board_temp": "35600",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "pivot_w1",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.3.0 1 /data/local/tmp/bergamot/vb-435121422952/jaen1024.yml /data/local/tmp/bergamot/vb-435121422952/enzh1024.yml < /data/local/tmp/bergamot/vb-435121422952/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 34.0,
+        "board_temp": "35857",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 7655.921,
+          "peak_rss_mib": 311.777,
+          "rss_mib": 309.43,
+          "output_bytes": 22686,
+          "output_hash": "f9077e4684862ab4"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 7149.322,
+          "peak_rss_mib": 311.777,
+          "rss_mib": 309.398,
+          "output_bytes": 22686,
+          "output_hash": "f9077e4684862ab4"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 7152.911,
+          "peak_rss_mib": 311.777,
+          "rss_mib": 309.41,
+          "output_bytes": 22686,
+          "output_hash": "f9077e4684862ab4"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 34.3,
+        "board_temp": "36058",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_b512p",
+      "version": "v0.1.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.1.0 0 /data/local/tmp/bergamot/vb-435121422952/enzh512p.yml < /data/local/tmp/bergamot/vb-435121422952/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 34.3,
+        "board_temp": "36058",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 6525.425,
+          "peak_rss_mib": 348.359,
+          "rss_mib": 236.855,
+          "output_bytes": 22570,
+          "output_hash": "e94f7d5363394e0e"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 6206.582,
+          "peak_rss_mib": 348.359,
+          "rss_mib": 235.203,
+          "output_bytes": 22575,
+          "output_hash": "6db8b15f60c3eafb"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 6204.271,
+          "peak_rss_mib": 348.359,
+          "rss_mib": 235.199,
+          "output_bytes": 22597,
+          "output_hash": "1cfc5353edbf7e33"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 34.3,
+        "board_temp": "35974",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_b512p",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.3.0 0 /data/local/tmp/bergamot/vb-435121422952/enzh512p.yml < /data/local/tmp/bergamot/vb-435121422952/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 34.3,
+        "board_temp": "35863",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 3408.743,
+          "peak_rss_mib": 207.156,
+          "rss_mib": 162.895,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 3161.205,
+          "peak_rss_mib": 207.156,
+          "rss_mib": 163.035,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 3161.148,
+          "peak_rss_mib": 207.156,
+          "rss_mib": 163.047,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 34.4,
+        "board_temp": "35832",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "pivot_b512p",
+      "version": "v0.1.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.1.0 0 /data/local/tmp/bergamot/vb-435121422952/jaen512.yml /data/local/tmp/bergamot/vb-435121422952/enzh512p.yml < /data/local/tmp/bergamot/vb-435121422952/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 34.4,
+        "board_temp": "35962",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 13470.907,
+          "peak_rss_mib": 526.055,
+          "rss_mib": 406.832,
+          "output_bytes": 22690,
+          "output_hash": "52ec166651769fe4"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 12706.167,
+          "peak_rss_mib": 526.055,
+          "rss_mib": 407.727,
+          "output_bytes": 22669,
+          "output_hash": "69a2656363c354d8"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 12582.829,
+          "peak_rss_mib": 526.055,
+          "rss_mib": 407.719,
+          "output_bytes": 22644,
+          "output_hash": "f9188675b69b8e64"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 34.4,
+        "board_temp": "36260",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "pivot_b512p",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.3.0 0 /data/local/tmp/bergamot/vb-435121422952/jaen512.yml /data/local/tmp/bergamot/vb-435121422952/enzh512p.yml < /data/local/tmp/bergamot/vb-435121422952/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 34.4,
+        "board_temp": "36104",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 7056.897,
+          "peak_rss_mib": 308.559,
+          "rss_mib": 264.859,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 6556.746,
+          "peak_rss_mib": 308.559,
+          "rss_mib": 264.945,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 6559.982,
+          "peak_rss_mib": 308.559,
+          "rss_mib": 264.941,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 34.7,
+        "board_temp": "36412",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w2_512p",
+      "version": "v0.1.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.1.0 2 /data/local/tmp/bergamot/vb-435121422952/enzh512p.yml < /data/local/tmp/bergamot/vb-435121422952/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 34.7,
+        "board_temp": "36377",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3886.179,
+          "peak_rss_mib": 520.68,
+          "rss_mib": 381.031,
+          "output_bytes": 22563,
+          "output_hash": "1d4fee25fa3f11b4"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3276.689,
+          "peak_rss_mib": 520.68,
+          "rss_mib": 382.836,
+          "output_bytes": 22562,
+          "output_hash": "a3fec69cd1a37b6d"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3305.857,
+          "peak_rss_mib": 520.68,
+          "rss_mib": 382.711,
+          "output_bytes": 22563,
+          "output_hash": "218a1ec806041534"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 34.7,
+        "board_temp": "36475",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w2_512p",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.3.0 2 /data/local/tmp/bergamot/vb-435121422952/enzh512p.yml < /data/local/tmp/bergamot/vb-435121422952/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 34.7,
+        "board_temp": "36404",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1974.193,
+          "peak_rss_mib": 283.805,
+          "rss_mib": 249.539,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1693.858,
+          "peak_rss_mib": 283.805,
+          "rss_mib": 249.922,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1682.565,
+          "peak_rss_mib": 283.805,
+          "rss_mib": 250.109,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 34.7,
+        "board_temp": "36571",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "pivot_w2_512p",
+      "version": "v0.1.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.1.0 2 /data/local/tmp/bergamot/vb-435121422952/jaen512.yml /data/local/tmp/bergamot/vb-435121422952/enzh512p.yml < /data/local/tmp/bergamot/vb-435121422952/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 34.9,
+        "board_temp": "36571",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 8038.779,
+          "peak_rss_mib": 759.062,
+          "rss_mib": 720.113,
+          "output_bytes": 22638,
+          "output_hash": "3c787cb2049d312f"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 7284.245,
+          "peak_rss_mib": 759.062,
+          "rss_mib": 722.078,
+          "output_bytes": 22645,
+          "output_hash": "2beb13bda937bbf"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 7223.289,
+          "peak_rss_mib": 759.062,
+          "rss_mib": 721.273,
+          "output_bytes": 22633,
+          "output_hash": "b3177f52b6abaea7"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 35.0,
+        "board_temp": "36936",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "pivot_w2_512p",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.3.0 2 /data/local/tmp/bergamot/vb-435121422952/jaen512.yml /data/local/tmp/bergamot/vb-435121422952/enzh512p.yml < /data/local/tmp/bergamot/vb-435121422952/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 35.0,
+        "board_temp": "36875",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 4397.681,
+          "peak_rss_mib": 435.133,
+          "rss_mib": 430.277,
+          "output_bytes": 22636,
+          "output_hash": "d455d9e42919b0f9"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3945.137,
+          "peak_rss_mib": 435.133,
+          "rss_mib": 431.188,
+          "output_bytes": 22653,
+          "output_hash": "6956e0cc6c3f0e14"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3824.658,
+          "peak_rss_mib": 435.133,
+          "rss_mib": 431.234,
+          "output_bytes": 22636,
+          "output_hash": "d455d9e42919b0f9"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 35.0,
+        "board_temp": "37039",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "enzh_w1",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.3.0 1 /data/local/tmp/bergamot/vb-435121422952/enzh1024.yml < /data/local/tmp/bergamot/vb-435121422952/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 35.0,
+        "board_temp": "36893",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 3892.618,
+          "peak_rss_mib": 207.082,
+          "rss_mib": 185.609,
+          "output_bytes": 22590,
+          "output_hash": "3c037b5de2029912"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 3395.357,
+          "peak_rss_mib": 207.082,
+          "rss_mib": 186.641,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 3414.275,
+          "peak_rss_mib": 207.082,
+          "rss_mib": 186.547,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 35.4,
+        "board_temp": "36990",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "enzh_w1",
+      "version": "v0.1.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.1.0 1 /data/local/tmp/bergamot/vb-435121422952/enzh1024.yml < /data/local/tmp/bergamot/vb-435121422952/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 35.4,
+        "board_temp": "37126",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 7150.633,
+          "peak_rss_mib": 348.402,
+          "rss_mib": 252.801,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 6425.267,
+          "peak_rss_mib": 348.402,
+          "rss_mib": 253.586,
+          "output_bytes": 22584,
+          "output_hash": "e9b5ff64312cdc5b"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 6596.147,
+          "peak_rss_mib": 348.402,
+          "rss_mib": 253.211,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 35.5,
+        "board_temp": "37013",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "enzh_w2",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.3.0 2 /data/local/tmp/bergamot/vb-435121422952/enzh1024.yml < /data/local/tmp/bergamot/vb-435121422952/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 35.5,
+        "board_temp": "37065",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2184.238,
+          "peak_rss_mib": 302.863,
+          "rss_mib": 293.625,
+          "output_bytes": 22581,
+          "output_hash": "eeb83fbcb30579f5"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1829.996,
+          "peak_rss_mib": 302.863,
+          "rss_mib": 295.906,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1816.217,
+          "peak_rss_mib": 302.863,
+          "rss_mib": 296.512,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 35.5,
+        "board_temp": "37200",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "enzh_w2",
+      "version": "v0.1.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.1.0 2 /data/local/tmp/bergamot/vb-435121422952/enzh1024.yml < /data/local/tmp/bergamot/vb-435121422952/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 35.5,
+        "board_temp": "37200",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3901.371,
+          "peak_rss_mib": 567.551,
+          "rss_mib": 421.734,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3460.359,
+          "peak_rss_mib": 567.551,
+          "rss_mib": 424.047,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3382.075,
+          "peak_rss_mib": 567.551,
+          "rss_mib": 423.27,
+          "output_bytes": 22590,
+          "output_hash": "21cb41871d7b532"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2323200",
+          "7": "1939200"
+        },
+        "battery_temp_c": 35.5,
+        "board_temp": "36995",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "enzh_w4",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.3.0 4 /data/local/tmp/bergamot/vb-435121422952/enzh1024.yml < /data/local/tmp/bergamot/vb-435121422952/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 35.5,
+        "board_temp": "36995",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1361.239,
+          "peak_rss_mib": 522.68,
+          "rss_mib": 518.18,
+          "output_bytes": 22570,
+          "output_hash": "69908b545748141b"
+        },
+        {
+          "pass": 1,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1144.583,
+          "peak_rss_mib": 522.68,
+          "rss_mib": 516.246,
+          "output_bytes": 22655,
+          "output_hash": "45e34be9f0ad0066"
+        },
+        {
+          "pass": 2,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1104.157,
+          "peak_rss_mib": 522.68,
+          "rss_mib": 515.227,
+          "output_bytes": 22606,
+          "output_hash": "6a2455ca354d81ac"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 35.5,
+        "board_temp": "37143",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "enzh_w4",
+      "version": "v0.1.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.1.0 4 /data/local/tmp/bergamot/vb-435121422952/enzh1024.yml < /data/local/tmp/bergamot/vb-435121422952/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 35.5,
+        "board_temp": "37104",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 2553.503,
+          "peak_rss_mib": 940.461,
+          "rss_mib": 756.969,
+          "output_bytes": 22570,
+          "output_hash": "70a76659e0dd4312"
+        },
+        {
+          "pass": 1,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1997.242,
+          "peak_rss_mib": 940.461,
+          "rss_mib": 758.441,
+          "output_bytes": 22615,
+          "output_hash": "6d5af8b9327069e5"
+        },
+        {
+          "pass": 2,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 2066.381,
+          "peak_rss_mib": 940.461,
+          "rss_mib": 758.637,
+          "output_bytes": 22649,
+          "output_hash": "c9c2223ae61ce90d"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 35.5,
+        "board_temp": "37104",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "pivot_w1",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.3.0 1 /data/local/tmp/bergamot/vb-435121422952/jaen1024.yml /data/local/tmp/bergamot/vb-435121422952/enzh1024.yml < /data/local/tmp/bergamot/vb-435121422952/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 35.5,
+        "board_temp": "37404",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 8187.063,
+          "peak_rss_mib": 312.508,
+          "rss_mib": 308.945,
+          "output_bytes": 22674,
+          "output_hash": "5c5d7f8a7effb864"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 7514.071,
+          "peak_rss_mib": 312.508,
+          "rss_mib": 309.137,
+          "output_bytes": 22686,
+          "output_hash": "f9077e4684862ab4"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 7566.007,
+          "peak_rss_mib": 312.508,
+          "rss_mib": 309.133,
+          "output_bytes": 22686,
+          "output_hash": "f9077e4684862ab4"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 35.7,
+        "board_temp": "37522",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "pivot_w1",
+      "version": "v0.1.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.1.0 1 /data/local/tmp/bergamot/vb-435121422952/jaen1024.yml /data/local/tmp/bergamot/vb-435121422952/enzh1024.yml < /data/local/tmp/bergamot/vb-435121422952/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 35.7,
+        "board_temp": "37285",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 15682.444,
+          "peak_rss_mib": 530.371,
+          "rss_mib": 454.75,
+          "output_bytes": 22662,
+          "output_hash": "6ceba235c5ae0b48"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 14330.863,
+          "peak_rss_mib": 530.371,
+          "rss_mib": 463.523,
+          "output_bytes": 22667,
+          "output_hash": "e5775238ea3493a2"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 14303.156,
+          "peak_rss_mib": 530.371,
+          "rss_mib": 463.535,
+          "output_bytes": 22661,
+          "output_hash": "675ec976b70daa4b"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 35.9,
+        "board_temp": "37322",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "enzh_b512p",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.3.0 0 /data/local/tmp/bergamot/vb-435121422952/enzh512p.yml < /data/local/tmp/bergamot/vb-435121422952/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 35.9,
+        "board_temp": "37288",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 3532.828,
+          "peak_rss_mib": 206.758,
+          "rss_mib": 162.508,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 3296.8,
+          "peak_rss_mib": 206.758,
+          "rss_mib": 162.656,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 3296.354,
+          "peak_rss_mib": 206.758,
+          "rss_mib": 162.664,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 35.9,
+        "board_temp": "37460",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "enzh_b512p",
+      "version": "v0.1.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.1.0 0 /data/local/tmp/bergamot/vb-435121422952/enzh512p.yml < /data/local/tmp/bergamot/vb-435121422952/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 35.9,
+        "board_temp": "37328",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 6802.951,
+          "peak_rss_mib": 348.012,
+          "rss_mib": 236.121,
+          "output_bytes": 22576,
+          "output_hash": "75540e14bfab2d9b"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 6467.152,
+          "peak_rss_mib": 348.012,
+          "rss_mib": 234.773,
+          "output_bytes": 22563,
+          "output_hash": "8e5960133e8ec7bc"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 6453.427,
+          "peak_rss_mib": 348.012,
+          "rss_mib": 234.656,
+          "output_bytes": 22601,
+          "output_hash": "ec8fc2fb428e1766"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 35.9,
+        "board_temp": "37386",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "pivot_b512p",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.3.0 0 /data/local/tmp/bergamot/vb-435121422952/jaen512.yml /data/local/tmp/bergamot/vb-435121422952/enzh512p.yml < /data/local/tmp/bergamot/vb-435121422952/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 35.9,
+        "board_temp": "37349",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 7382.177,
+          "peak_rss_mib": 308.402,
+          "rss_mib": 264.812,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 6852.55,
+          "peak_rss_mib": 308.402,
+          "rss_mib": 264.844,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 6856.133,
+          "peak_rss_mib": 308.402,
+          "rss_mib": 264.801,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.0,
+        "board_temp": "37314",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "pivot_b512p",
+      "version": "v0.1.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.1.0 0 /data/local/tmp/bergamot/vb-435121422952/jaen512.yml /data/local/tmp/bergamot/vb-435121422952/enzh512p.yml < /data/local/tmp/bergamot/vb-435121422952/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.0,
+        "board_temp": "37491",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 14130.586,
+          "peak_rss_mib": 526.254,
+          "rss_mib": 407.012,
+          "output_bytes": 22688,
+          "output_hash": "4df32b0848c9d91"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 13313.966,
+          "peak_rss_mib": 526.254,
+          "rss_mib": 407.141,
+          "output_bytes": 22682,
+          "output_hash": "f3943a306837d86d"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 13369.203,
+          "peak_rss_mib": 526.254,
+          "rss_mib": 407.223,
+          "output_bytes": 22635,
+          "output_hash": "4ba8d256d410b105"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.1,
+        "board_temp": "37629",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "enzh_w2_512p",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.3.0 2 /data/local/tmp/bergamot/vb-435121422952/enzh512p.yml < /data/local/tmp/bergamot/vb-435121422952/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.1,
+        "board_temp": "37526",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2132.256,
+          "peak_rss_mib": 284.426,
+          "rss_mib": 248.277,
+          "output_bytes": 22538,
+          "output_hash": "8eb038714ab6bdfe"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2013.878,
+          "peak_rss_mib": 284.426,
+          "rss_mib": 248.922,
+          "output_bytes": 22557,
+          "output_hash": "f8b489dfa93bff41"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1747.496,
+          "peak_rss_mib": 284.426,
+          "rss_mib": 249.551,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.1,
+        "board_temp": "37652",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "enzh_w2_512p",
+      "version": "v0.1.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.1.0 2 /data/local/tmp/bergamot/vb-435121422952/enzh512p.yml < /data/local/tmp/bergamot/vb-435121422952/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.1,
+        "board_temp": "37305",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 4074.365,
+          "peak_rss_mib": 560.309,
+          "rss_mib": 378.195,
+          "output_bytes": 22569,
+          "output_hash": "73a8460d88bb0d54"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3334.094,
+          "peak_rss_mib": 560.309,
+          "rss_mib": 386.344,
+          "output_bytes": 22569,
+          "output_hash": "43238b2ec858633d"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3362.078,
+          "peak_rss_mib": 560.309,
+          "rss_mib": 381.066,
+          "output_bytes": 22575,
+          "output_hash": "d7f9b3c3876903ed"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.1,
+        "board_temp": "37755",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "pivot_w2_512p",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.3.0 2 /data/local/tmp/bergamot/vb-435121422952/jaen512.yml /data/local/tmp/bergamot/vb-435121422952/enzh512p.yml < /data/local/tmp/bergamot/vb-435121422952/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.2,
+        "board_temp": "37686",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 4500.002,
+          "peak_rss_mib": 437.727,
+          "rss_mib": 430.457,
+          "output_bytes": 22614,
+          "output_hash": "1c4bd808011faadd"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3997.899,
+          "peak_rss_mib": 437.727,
+          "rss_mib": 430.824,
+          "output_bytes": 22633,
+          "output_hash": "c6609236b5e1d29f"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3989.564,
+          "peak_rss_mib": 437.727,
+          "rss_mib": 431.336,
+          "output_bytes": 22636,
+          "output_hash": "d455d9e42919b0f9"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.2,
+        "board_temp": "37897",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "pivot_w2_512p",
+      "version": "v0.1.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.1.0 2 /data/local/tmp/bergamot/vb-435121422952/jaen512.yml /data/local/tmp/bergamot/vb-435121422952/enzh512p.yml < /data/local/tmp/bergamot/vb-435121422952/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.2,
+        "board_temp": "37868",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 8416.526,
+          "peak_rss_mib": 772.523,
+          "rss_mib": 722.281,
+          "output_bytes": 22625,
+          "output_hash": "a817ef70ba8ce4c9"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 7555.379,
+          "peak_rss_mib": 772.523,
+          "rss_mib": 723.473,
+          "output_bytes": 22631,
+          "output_hash": "49cd049868065740"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 7725.032,
+          "peak_rss_mib": 772.523,
+          "rss_mib": 711.102,
+          "output_bytes": 22676,
+          "output_hash": "6d8b81ee48c145e1"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.2,
+        "board_temp": "38030",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "enzh_w1",
+      "version": "v0.1.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.1.0 1 /data/local/tmp/bergamot/vb-435121422952/enzh1024.yml < /data/local/tmp/bergamot/vb-435121422952/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.2,
+        "board_temp": "38017",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 7271.087,
+          "peak_rss_mib": 348.492,
+          "rss_mib": 252.957,
+          "output_bytes": 22590,
+          "output_hash": "27b9258f63c4ea00"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 6709.488,
+          "peak_rss_mib": 348.492,
+          "rss_mib": 252.711,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 6682.157,
+          "peak_rss_mib": 348.492,
+          "rss_mib": 252.707,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.6,
+        "board_temp": "38189",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "enzh_w1",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.3.0 1 /data/local/tmp/bergamot/vb-435121422952/enzh1024.yml < /data/local/tmp/bergamot/vb-435121422952/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.6,
+        "board_temp": "38124",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 3983.308,
+          "peak_rss_mib": 207.398,
+          "rss_mib": 186.371,
+          "output_bytes": 22591,
+          "output_hash": "b1a05933822b3d63"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 3400.504,
+          "peak_rss_mib": 207.398,
+          "rss_mib": 186.992,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 3401.245,
+          "peak_rss_mib": 207.398,
+          "rss_mib": 187.109,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.6,
+        "board_temp": "38026",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "enzh_w2",
+      "version": "v0.1.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.1.0 2 /data/local/tmp/bergamot/vb-435121422952/enzh1024.yml < /data/local/tmp/bergamot/vb-435121422952/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.6,
+        "board_temp": "37985",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3916.196,
+          "peak_rss_mib": 540.062,
+          "rss_mib": 423.66,
+          "output_bytes": 22593,
+          "output_hash": "3feda1d52abe2dab"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3591.227,
+          "peak_rss_mib": 540.062,
+          "rss_mib": 421.527,
+          "output_bytes": 22581,
+          "output_hash": "a82eb18dd77428b8"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3608.372,
+          "peak_rss_mib": 540.062,
+          "rss_mib": 424.281,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.6,
+        "board_temp": "37956",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "enzh_w2",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.3.0 2 /data/local/tmp/bergamot/vb-435121422952/enzh1024.yml < /data/local/tmp/bergamot/vb-435121422952/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.6,
+        "board_temp": "38057",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2118.661,
+          "peak_rss_mib": 303.227,
+          "rss_mib": 296.168,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1829.367,
+          "peak_rss_mib": 303.227,
+          "rss_mib": 296.375,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1827.81,
+          "peak_rss_mib": 303.227,
+          "rss_mib": 296.684,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.6,
+        "board_temp": "37872",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "enzh_w4",
+      "version": "v0.1.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.1.0 4 /data/local/tmp/bergamot/vb-435121422952/enzh1024.yml < /data/local/tmp/bergamot/vb-435121422952/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.6,
+        "board_temp": "38079",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 2623.429,
+          "peak_rss_mib": 958.191,
+          "rss_mib": 755.5,
+          "output_bytes": 22581,
+          "output_hash": "3f56aacfa170db77"
+        },
+        {
+          "pass": 1,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 2001.495,
+          "peak_rss_mib": 958.191,
+          "rss_mib": 759.328,
+          "output_bytes": 22606,
+          "output_hash": "63907b2f1908e74"
+        },
+        {
+          "pass": 2,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1968.293,
+          "peak_rss_mib": 958.191,
+          "rss_mib": 757.633,
+          "output_bytes": 22603,
+          "output_hash": "23ab8059bccbe7a3"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.6,
+        "board_temp": "38263",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "enzh_w4",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.3.0 4 /data/local/tmp/bergamot/vb-435121422952/enzh1024.yml < /data/local/tmp/bergamot/vb-435121422952/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.6,
+        "board_temp": "38263",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1380.706,
+          "peak_rss_mib": 520.418,
+          "rss_mib": 515.891,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 1,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1110.733,
+          "peak_rss_mib": 520.418,
+          "rss_mib": 514.73,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 2,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1117.288,
+          "peak_rss_mib": 520.418,
+          "rss_mib": 514.887,
+          "output_bytes": 22632,
+          "output_hash": "17054867cb23a2b6"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.6,
+        "board_temp": "38112",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "pivot_w1",
+      "version": "v0.1.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.1.0 1 /data/local/tmp/bergamot/vb-435121422952/jaen1024.yml /data/local/tmp/bergamot/vb-435121422952/enzh1024.yml < /data/local/tmp/bergamot/vb-435121422952/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.6,
+        "board_temp": "38162",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 15635.57,
+          "peak_rss_mib": 530.668,
+          "rss_mib": 454.848,
+          "output_bytes": 22662,
+          "output_hash": "cd959ddcc8605333"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 14257.563,
+          "peak_rss_mib": 530.668,
+          "rss_mib": 463.633,
+          "output_bytes": 22663,
+          "output_hash": "fe27368e2d4b4fac"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 14225.693,
+          "peak_rss_mib": 530.668,
+          "rss_mib": 463.379,
+          "output_bytes": 22664,
+          "output_hash": "f3894d51759c5d5c"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.8,
+        "board_temp": "38266",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "pivot_w1",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.3.0 1 /data/local/tmp/bergamot/vb-435121422952/jaen1024.yml /data/local/tmp/bergamot/vb-435121422952/enzh1024.yml < /data/local/tmp/bergamot/vb-435121422952/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.8,
+        "board_temp": "38090",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 8082.154,
+          "peak_rss_mib": 311.242,
+          "rss_mib": 308.961,
+          "output_bytes": 22686,
+          "output_hash": "f9077e4684862ab4"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 7503.992,
+          "peak_rss_mib": 311.242,
+          "rss_mib": 308.938,
+          "output_bytes": 22686,
+          "output_hash": "f9077e4684862ab4"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 7390.806,
+          "peak_rss_mib": 311.242,
+          "rss_mib": 309.0,
+          "output_bytes": 22686,
+          "output_hash": "f9077e4684862ab4"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.8,
+        "board_temp": "38295",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "enzh_b512p",
+      "version": "v0.1.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.1.0 0 /data/local/tmp/bergamot/vb-435121422952/enzh512p.yml < /data/local/tmp/bergamot/vb-435121422952/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.8,
+        "board_temp": "38321",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 6834.961,
+          "peak_rss_mib": 348.578,
+          "rss_mib": 236.816,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 6456.58,
+          "peak_rss_mib": 348.578,
+          "rss_mib": 235.082,
+          "output_bytes": 22581,
+          "output_hash": "bfe70ecddea1b39b"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 6456.072,
+          "peak_rss_mib": 348.578,
+          "rss_mib": 235.402,
+          "output_bytes": 22600,
+          "output_hash": "22d9a9b0dbd65961"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.8,
+        "board_temp": "38336",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "enzh_b512p",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.3.0 0 /data/local/tmp/bergamot/vb-435121422952/enzh512p.yml < /data/local/tmp/bergamot/vb-435121422952/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.8,
+        "board_temp": "38299",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 3584.353,
+          "peak_rss_mib": 207.074,
+          "rss_mib": 162.945,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 3339.237,
+          "peak_rss_mib": 207.074,
+          "rss_mib": 163.086,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 3339.977,
+          "peak_rss_mib": 207.074,
+          "rss_mib": 163.098,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.8,
+        "board_temp": "38241",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "pivot_b512p",
+      "version": "v0.1.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.1.0 0 /data/local/tmp/bergamot/vb-435121422952/jaen512.yml /data/local/tmp/bergamot/vb-435121422952/enzh512p.yml < /data/local/tmp/bergamot/vb-435121422952/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.8,
+        "board_temp": "38214",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 14024.348,
+          "peak_rss_mib": 526.246,
+          "rss_mib": 406.996,
+          "output_bytes": 22681,
+          "output_hash": "a38bf70515b95635"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 13336.655,
+          "peak_rss_mib": 526.246,
+          "rss_mib": 407.254,
+          "output_bytes": 22637,
+          "output_hash": "2ce1308bb0812368"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 13331.539,
+          "peak_rss_mib": 526.246,
+          "rss_mib": 407.203,
+          "output_bytes": 22664,
+          "output_hash": "ed447ba203a6e41c"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.8,
+        "board_temp": "38296",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "pivot_b512p",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.3.0 0 /data/local/tmp/bergamot/vb-435121422952/jaen512.yml /data/local/tmp/bergamot/vb-435121422952/enzh512p.yml < /data/local/tmp/bergamot/vb-435121422952/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.8,
+        "board_temp": "38297",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 7378.05,
+          "peak_rss_mib": 308.461,
+          "rss_mib": 264.77,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 6884.844,
+          "peak_rss_mib": 308.461,
+          "rss_mib": 264.859,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 6869.007,
+          "peak_rss_mib": 308.461,
+          "rss_mib": 264.859,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.9,
+        "board_temp": "38253",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "enzh_w2_512p",
+      "version": "v0.1.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.1.0 2 /data/local/tmp/bergamot/vb-435121422952/enzh512p.yml < /data/local/tmp/bergamot/vb-435121422952/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.9,
+        "board_temp": "38310",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3991.754,
+          "peak_rss_mib": 532.105,
+          "rss_mib": 382.488,
+          "output_bytes": 22547,
+          "output_hash": "7198941e69746d82"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3601.182,
+          "peak_rss_mib": 532.105,
+          "rss_mib": 383.25,
+          "output_bytes": 22562,
+          "output_hash": "bd97c9670734ae0a"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3452.272,
+          "peak_rss_mib": 532.105,
+          "rss_mib": 382.684,
+          "output_bytes": 22570,
+          "output_hash": "9fd9bedd477c6764"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 36.9,
+        "board_temp": "38358",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "enzh_w2_512p",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.3.0 2 /data/local/tmp/bergamot/vb-435121422952/enzh512p.yml < /data/local/tmp/bergamot/vb-435121422952/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 37.0,
+        "board_temp": "38358",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2253.571,
+          "peak_rss_mib": 291.316,
+          "rss_mib": 248.492,
+          "output_bytes": 22557,
+          "output_hash": "c1743d7c39b36647"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 2039.056,
+          "peak_rss_mib": 291.316,
+          "rss_mib": 249.242,
+          "output_bytes": 22557,
+          "output_hash": "f8b489dfa93bff41"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1765.238,
+          "peak_rss_mib": 291.316,
+          "rss_mib": 249.922,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 37.0,
+        "board_temp": "38144",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "pivot_w2_512p",
+      "version": "v0.1.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.1.0 2 /data/local/tmp/bergamot/vb-435121422952/jaen512.yml /data/local/tmp/bergamot/vb-435121422952/enzh512p.yml < /data/local/tmp/bergamot/vb-435121422952/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 37.0,
+        "board_temp": "38116",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 8515.286,
+          "peak_rss_mib": 753.398,
+          "rss_mib": 721.172,
+          "output_bytes": 22651,
+          "output_hash": "eb2196bacd5e387c"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 7608.442,
+          "peak_rss_mib": 753.398,
+          "rss_mib": 722.57,
+          "output_bytes": 22635,
+          "output_hash": "18ad2ad956fd88a5"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 7710.902,
+          "peak_rss_mib": 753.398,
+          "rss_mib": 723.98,
+          "output_bytes": 22657,
+          "output_hash": "4ed225fabb1c5a92"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 37.0,
+        "board_temp": "38458",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "pivot_w2_512p",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/bergamot/vb-435121422952/v0.3.0 2 /data/local/tmp/bergamot/vb-435121422952/jaen512.yml /data/local/tmp/bergamot/vb-435121422952/enzh512p.yml < /data/local/tmp/bergamot/vb-435121422952/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 37.0,
+        "board_temp": "38741",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 4601.677,
+          "peak_rss_mib": 436.242,
+          "rss_mib": 430.875,
+          "output_bytes": 22639,
+          "output_hash": "1eb0c4ffaa32661a"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3999.607,
+          "peak_rss_mib": 436.242,
+          "rss_mib": 430.996,
+          "output_bytes": 22636,
+          "output_hash": "d455d9e42919b0f9"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3986.436,
+          "peak_rss_mib": 436.242,
+          "rss_mib": 431.258,
+          "output_bytes": 22636,
+          "output_hash": "d455d9e42919b0f9"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2188800",
+          "7": "1824000"
+        },
+        "battery_temp_c": 37.0,
+        "board_temp": "38686",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.bergamot.bench"
+        }
+      }
+    }
+  ]
+}

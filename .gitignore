@@ -24,9 +24,14 @@ local.properties
 build-android/
 build-host-*/
 build-*.log
+__pycache__/
 
-# research notes stay local; only the two benchmark charts the README embeds are tracked
+# Research notes stay local; public documentation is explicitly tracked below.
 docs/*
+!docs/README.md
+!docs/getting-started.md
+!docs/architecture.md
+!docs/benchmarking.md
 !docs/benchmark-mi10.png
 !docs/benchmark-mi14.png
 !docs/smmla-compatibility.md

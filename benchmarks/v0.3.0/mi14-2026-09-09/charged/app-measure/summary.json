@@ -1,0 +1,118 @@
+{
+  "suite_id": "android-app-v1",
+  "accepted": false,
+  "errors": [
+    "enzh/mlkit/Nonet: cold_ms spread exceeds 10%",
+    "enzh/bergamot/4t: cold_ms spread exceeds 10%",
+    "enzh/bergamot/4t: warm_pss_mib spread exceeds 10%",
+    "jazh/bergamot/1t: cold_ms spread exceeds 10%",
+    "jazh/bergamot/2t: cold_ms spread exceeds 10%",
+    "jazh/bergamot/4t: cold_ms spread exceeds 10%"
+  ],
+  "scenarios": [
+    {
+      "scenario": "enzh/mlkit/Nonet",
+      "successful_processes": 3,
+      "cold_ms": 13868.735672,
+      "warm_ms": 13715.515437,
+      "cold_pss_mib": 185.9,
+      "warm_pss_mib": 189.6,
+      "cold_inputs_per_second": 14.420925218423903,
+      "warm_inputs_per_second": 14.582025802724486,
+      "unique_output_hashes": [
+        "ad71cada0aec467ecf8f735dc7d7944a9b0289bf8eca11849c2e9b79c35c1158"
+      ]
+    },
+    {
+      "scenario": "enzh/bergamot/1t",
+      "successful_processes": 3,
+      "cold_ms": 3052.60927,
+      "warm_ms": 2311.839244,
+      "cold_pss_mib": 263,
+      "warm_pss_mib": 232.1,
+      "cold_inputs_per_second": 65.51772018958718,
+      "warm_inputs_per_second": 86.51120553432392,
+      "unique_output_hashes": [
+        "1dbd1ffbc8a44ee34c7c7527340027cc9ddc2ad881977d89f74cbabb633b56c5"
+      ]
+    },
+    {
+      "scenario": "enzh/bergamot/2t",
+      "successful_processes": 3,
+      "cold_ms": 1746.962447,
+      "warm_ms": 1507.8301555,
+      "cold_pss_mib": 376.5,
+      "warm_pss_mib": 320.3,
+      "cold_inputs_per_second": 114.48443001362352,
+      "warm_inputs_per_second": 132.64093390789066,
+      "unique_output_hashes": [
+        "1dbd1ffbc8a44ee34c7c7527340027cc9ddc2ad881977d89f74cbabb633b56c5"
+      ]
+    },
+    {
+      "scenario": "enzh/bergamot/4t",
+      "successful_processes": 3,
+      "cold_ms": 1129.202655,
+      "warm_ms": 810.309583,
+      "cold_pss_mib": 599.2,
+      "warm_pss_mib": 600.1,
+      "cold_inputs_per_second": 177.11612624573576,
+      "warm_inputs_per_second": 246.81924562652,
+      "unique_output_hashes": [
+        "1dbd1ffbc8a44ee34c7c7527340027cc9ddc2ad881977d89f74cbabb633b56c5"
+      ]
+    },
+    {
+      "scenario": "jazh/mlkit/Nonet",
+      "successful_processes": 3,
+      "cold_ms": 29319.076811,
+      "warm_ms": 29045.139806500003,
+      "cold_pss_mib": 236.9,
+      "warm_pss_mib": 238.1,
+      "cold_inputs_per_second": 6.821497187283999,
+      "warm_inputs_per_second": 6.885833613899219,
+      "unique_output_hashes": [
+        "eb54c5dac9701e29f5100a8f1d2df7ef83a145d93dfe8e842657c9c3e9f18fd4"
+      ]
+    },
+    {
+      "scenario": "jazh/bergamot/1t",
+      "successful_processes": 3,
+      "cold_ms": 4525.78229,
+      "warm_ms": 5029.4226805,
+      "cold_pss_mib": 353.2,
+      "warm_pss_mib": 329.7,
+      "cold_inputs_per_second": 44.19125516530315,
+      "warm_inputs_per_second": 39.76599556355383,
+      "unique_output_hashes": [
+        "16bb8ed762796f64ca7f8effec9d8bf2828e89be504e4db9d398d7799c33922b"
+      ]
+    },
+    {
+      "scenario": "jazh/bergamot/2t",
+      "successful_processes": 3,
+      "cold_ms": 3716.354634,
+      "warm_ms": 3229.7452590000003,
+      "cold_pss_mib": 550.4,
+      "warm_pss_mib": 505,
+      "cold_inputs_per_second": 53.81617732878611,
+      "warm_inputs_per_second": 61.92438844601768,
+      "unique_output_hashes": [
+        "16bb8ed762796f64ca7f8effec9d8bf2828e89be504e4db9d398d7799c33922b"
+      ]
+    },
+    {
+      "scenario": "jazh/bergamot/4t",
+      "successful_processes": 3,
+      "cold_ms": 2252.131145,
+      "warm_ms": 1820.5061970000002,
+      "cold_pss_mib": 931.7,
+      "warm_pss_mib": 933.6,
+      "cold_inputs_per_second": 88.80477517662499,
+      "warm_inputs_per_second": 109.85955462803622,
+      "unique_output_hashes": [
+        "16bb8ed762796f64ca7f8effec9d8bf2828e89be504e4db9d398d7799c33922b"
+      ]
+    }
+  ]
+}

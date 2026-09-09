@@ -1,4 +1,4 @@
-# 文档索引
+# Foxlet Translate 文档
 
 这里按使用、开发和验证组织文档。[根 README](../README.md) 介绍项目定位、性能、接入方式和限制；[benchmarks/](../benchmarks/README.md) 按版本保存性能证据。
 

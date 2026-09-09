@@ -1,6 +1,6 @@
 <div align="center">
 
-# bergamot-android
+# Foxlet Translate
 
 **面向 Android 的高性能本地翻译库：离线、隐私友好、针对 ARM 移动芯片优化**
 
@@ -15,7 +15,7 @@
 
 ---
 
-bergamot-android 是面向 Android 的高性能离线翻译库，基于 Mozilla [Firefox Translations](https://github.com/mozilla/translations) 使用的 [Bergamot](https://browser.mt/) 引擎与 Marian 推理运行时，提供 Kotlin API 和可直接集成的 AAR。
+Foxlet Translate 是面向 Android 的高性能离线翻译库，基于 Mozilla [Firefox Translations](https://github.com/mozilla/translations) 使用的 [Bergamot](https://browser.mt/) 引擎、Marian 推理运行时与 Mozilla 翻译模型，提供 Kotlin API 和可直接集成的 AAR。
 
 项目针对 ARM 移动芯片优化矩阵计算、批处理、线程调度和内存管理，根据设备能力选择 i8mm/SMMLA 或 ruy/SDOT 内核。模型下载后即可在设备上完成翻译，无需将文本发送到云端。引擎、模型及训练流程公开，开发者可自行构建、固定模型版本并调整推理参数。
 

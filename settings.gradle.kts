@@ -11,6 +11,6 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "bergamot-android"
+rootProject.name = "foxlet-translate"
 include(":bergamot")
 include(":sample")

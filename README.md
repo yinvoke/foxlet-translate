@@ -233,7 +233,7 @@ registry.json  Mozilla 模型下载索引
 
 ### 引入 AAR
 
-从 [v0.3.0 Release](https://github.com/yinvoke/bergamot-android/releases/tag/v0.3.0) 下载 `bergamot-v0.3.0.aar`，放入应用模块的 `libs/` 目录：
+从 [v0.3.0 Release](https://github.com/yinvoke/foxlet-translate/releases/tag/v0.3.0) 下载 `bergamot-v0.3.0.aar`，放入应用模块的 `libs/` 目录：
 
 ```kotlin
 dependencies {
@@ -411,6 +411,6 @@ LICENSE 文件。模型为 Mozilla 官方发布,MPL-2.0。
 
 <div align="center">
 
-[![Star History Chart](https://api.star-history.com/svg?repos=yinvoke/bergamot-android&type=Date)](https://www.star-history.com/#yinvoke/bergamot-android&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=yinvoke/foxlet-translate&type=Date)](https://www.star-history.com/#yinvoke/foxlet-translate&Date)
 
 </div>

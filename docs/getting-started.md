@@ -4,7 +4,7 @@
 
 ## 1. 添加 AAR
 
-从 [v0.3.0 Release](https://github.com/yinvoke/bergamot-android/releases/tag/v0.3.0) 下载 `bergamot-v0.3.0.aar`，放入应用模块的 `libs/` 目录。
+从 [v0.3.0 Release](https://github.com/yinvoke/foxlet-translate/releases/tag/v0.3.0) 下载 `bergamot-v0.3.0.aar`，放入应用模块的 `libs/` 目录。
 
 ```kotlin
 dependencies {

@@ -1,6 +1,6 @@
 # v0.3.0：性能记录
 
-本目录保留 v0.3.0 发布前基于 `main`（HEAD `bfc6a08c0aeaa8a679170d517c5c041a83c01834`）采集的记录。报告中的提交、未提交状态和源码摘要保留采集时的原值，不因发布而改写为 tag；发布内容见 [v0.3.0 Release](https://github.com/yinvoke/bergamot-android/releases/tag/v0.3.0)。
+本目录保留 v0.3.0 发布前基于 `main`（HEAD `bfc6a08c0aeaa8a679170d517c5c041a83c01834`）采集的记录。报告中的提交、未提交状态和源码摘要保留采集时的原值，不因发布而改写为 tag；发布内容见 [v0.3.0 Release](https://github.com/yinvoke/foxlet-translate/releases/tag/v0.3.0)。
 
 **2026-09-09 更新**：[小米 14 复测](mi14-2026-09-09/README.md)已取得 v0.3.0 与 ML Kit 的 200 条语料 COMET 结果；性能测试因频率门槛及随后 ADB 断开而未完成三轮。下方性能表仍为 2026-09-07 的同源历史参考，未用本次单轮数据替换。
 

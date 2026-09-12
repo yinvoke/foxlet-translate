@@ -1,4 +1,5 @@
 #include "common/binary.h"
+#include "common/binary_validation.h"
 #include "common/definitions.h"
 #include "common/file_stream.h"
 #include "common/io_item.h"
@@ -23,14 +24,21 @@ struct Header {
 template <typename T>
 const T* get(const void*& current, uint64_t num = 1) {
   const T* ptr = (const T*)current;
-  current = (const T*)current + num;
+  current = static_cast<const char*>(current) + num * sizeof(T);
   return ptr;
+}
+
+// Serialized dimensions/padding need not be naturally aligned.
+template <typename T> T readValue(const void*& current) {
+  T value;
+  std::memcpy(&value, get<T>(current), sizeof(T));
+  return value;
 }
 
 void loadItems(const void* current, std::vector<io::Item>& items, bool mapped) {
   uint64_t totalBytesLoaded = 0;  // Track total bytes loaded
 
-  uint64_t binaryFileVersion = *get<uint64_t>(current);
+  uint64_t binaryFileVersion = readValue<uint64_t>(current);
   ABORT_IF(binaryFileVersion != BINARY_FILE_VERSION,
            "Binary file versions do not match: {} (file) != {} (expected)",
            binaryFileVersion,
@@ -38,7 +46,7 @@ void loadItems(const void* current, std::vector<io::Item>& items, bool mapped) {
 
   totalBytesLoaded += sizeof(uint64_t);  // Account for binaryFileVersion
 
-  uint64_t numHeaders = *get<uint64_t>(current);  // number of item headers that follow
+  uint64_t numHeaders = readValue<uint64_t>(current);  // number of item headers that follow
   totalBytesLoaded += sizeof(uint64_t);           // Account for numHeaders
 
   const Header* headers = get<Header>(current, numHeaders);  // read that many headers
@@ -64,11 +72,11 @@ void loadItems(const void* current, std::vector<io::Item>& items, bool mapped) {
     items[i].shape.resize(len);
     const int* arr = get<int>(current, len);            // read shape
     totalBytesLoaded += len * sizeof(int);              // Account for shape bytes
-    std::copy(arr, arr + len, items[i].shape.begin());  // copy to Item::shape
+    std::memcpy(items[i].shape.data(), arr, len * sizeof(int));  // copy to Item::shape
   }
 
   // move by offset bytes, aligned to 256-bytes boundary
-  uint64_t offset = *get<uint64_t>(current);
+  uint64_t offset = readValue<uint64_t>(current);
   totalBytesLoaded += sizeof(uint64_t);  // Account for offset metadata
   get<char>(current, offset);
   totalBytesLoaded += offset;  // Account for offset bytes
@@ -92,7 +100,7 @@ void loadItems(const void* current, std::vector<io::Item>& items, bool mapped) {
       if(items[i].name.find("Wemb") != std::string::npos) {  // Since Wemb need to be dequantised,
                                                              // we have a special case for them
 #ifdef ARM
-        // PATCH D1/D2: keep the embedding table quantised. The stored bytes are
+        // keep the embedding table quantised. The stored bytes are
         // already the row-major [vocab x dim] int8 table both consumers want:
         // the input side dequantises the handful of rows it actually gathers
         // (RowsDequantNodeOp) and the output side feeds the very same buffer to
@@ -168,6 +176,7 @@ void loadItems(const std::string& fileName, std::vector<io::Item>& items) {
 #endif
 
   // Load items from buffer without mapping
+  validateModelBytes(buf.data(), buf.size());
   loadItems(buf.data(), items, false);
 }
 

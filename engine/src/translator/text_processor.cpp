@@ -64,17 +64,8 @@ TextProcessor::TextProcessor(Ptr<Options> options, const Vocabs &vocabs, const s
 
 TextProcessor::TextProcessor(Ptr<Options> options, const Vocabs &vocabs, const AlignedMemory &memory)
     : vocabs_(vocabs) {
-  // This is not the best of the solutions at the moment, but is consistent with what happens among other structures
-  // like model, vocabulary or shortlist. First, we check if the bytearray is empty. If not, we load from ByteArray. In
-  // case empty, the string based loader which reads from file is called. However, ssplit allows for not supplying
-  // ssplit-prefix-file where-in the purely regular expression based splitter is activated.
-  //
-  // For now, we allow not supplying an ssplit-prefix-file.
-  //
-  // The test below used to read `memory.begin() == nullptr && memory.size()`, which no AlignedMemory can satisfy: a
-  // non-empty allocation always has a non-null base. The byte-array branch was therefore dead and every caller silently
-  // fell back to the file path (or, with no path either, to the bare regex splitter).
-
+  // Prefer the supplied prefix bytes, then the configured file. An empty
+  // file path selects the regex-only splitter.
   if (memory.begin() != nullptr && memory.size()) {
     ssplit_ = loadSplitter(memory);
   } else {

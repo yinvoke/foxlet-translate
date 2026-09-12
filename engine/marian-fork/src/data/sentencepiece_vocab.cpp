@@ -173,9 +173,8 @@ public:
 
     // Train the SentencePiece model
     const auto status = sentencepiece::SentencePieceTrainer::Train(command.str());
-    ABORT_IF(!status.ok(),
-             "SentencePiece vocabulary error: {}",
-             status.ToString());
+    // Foxlet: malformed vocabulary files are recoverable input errors.
+    if (!status.ok()) throw std::invalid_argument("SentencePiece vocabulary error: " + status.ToString());
 
     LOG(info, "[SentencePiece] Removing {}", vocabPath + ".vocab");
     ABORT_IF(remove((vocabPath + ".vocab").c_str()) != 0,
@@ -299,9 +298,8 @@ public:
     spm_.reset(new sentencepiece::SentencePieceProcessor());
     const auto status = spm_->Load(vocabPath);
 
-    ABORT_IF(!status.ok(),
-             "SentencePiece vocabulary error: {}",
-             status.ToString());
+    // Foxlet: malformed vocabulary files are recoverable input errors.
+    if (!status.ok()) throw std::invalid_argument("SentencePiece vocabulary error: " + status.ToString());
 
     return spm_->GetPieceSize();
   }
@@ -315,9 +313,8 @@ public:
     spm_.reset(new sentencepiece::SentencePieceProcessor());
     const auto status = spm_->LoadFromSerializedProto(serialized);
 
-    ABORT_IF(!status.ok(),
-             "SentencePiece vocabulary error: {}",
-             status.ToString());
+    // Foxlet: malformed vocabulary files are recoverable input errors.
+    if (!status.ok()) throw std::invalid_argument("SentencePiece vocabulary error: " + status.ToString());
 
     return spm_->GetPieceSize();
 

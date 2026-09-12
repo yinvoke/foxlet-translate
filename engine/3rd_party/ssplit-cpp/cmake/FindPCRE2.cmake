@@ -1,3 +1,4 @@
+# Modified by Foxlet Translate; original license and copyright retained.
 # Depending on the value of SSPLIT_USE_INTERNAL_PRCRE2 this cmake file
 # either tries to find the Perl Compatible Regular Expresison library (pcre2)
 # on the system (when OFF), or downloads and compiles them locally (when ON).

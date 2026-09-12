@@ -12,7 +12,7 @@
 #include <cstring>
 #include <string>
 #include <vector>
-#include "common/lifecycle.h"  // D0: prepacked-cache tracing
+#include "common/lifecycle.h"  // prepacked-cache tracing
 #include "integer_common.h"
 #include "smmla_gemm.h"
 #pragma GCC diagnostic push
@@ -35,11 +35,11 @@ namespace integer {
 
 using Index = unsigned int;
 
-/// PATCH A / D0: everything the int8 ruy GEMM keeps per thread. A Context owns
+/// everything the int8 ruy GEMM keeps per thread. A Context owns
 /// a thread pool, allocators and the prepacked-weight cache; rebuilding it per
 /// matmul is pure overhead, and Context is not thread-safe, so thread_local is
 /// the matching lifetime -- it maps 1:1 onto the AsyncService worker model.
-/// Hoisted into a named accessor (D0) so an explicit release can clear the
+/// A named accessor allows an explicit release to clear the
 /// cache from outside the GEMM. `inline` gives one instance per thread across
 /// all translation units.
 struct RuyThreadState {
@@ -59,7 +59,7 @@ inline RuyThreadState &threadRuyState() {
   return state;
 }
 
-/// D0: drop THIS thread's ruy prepacked-weight cache. Only affects the calling
+/// drop THIS thread's ruy prepacked-weight cache. Only affects the calling
 /// thread; the next GEMM re-packs, so this is a memory/latency trade only.
 inline void releaseThreadRuyCache() {
   RuyThreadState &state = threadRuyState();
@@ -254,12 +254,12 @@ inline void transpose(const int8_t *input, Index rows, Index cols, int8_t *outpu
       // The following is adapted from
       // https://github.com/google/ruy/blob/878283640de7946a43053e8ebf4f15114fbc9156/example/example.cc#L129-L152
 
-      // PATCH A / D0: the one ruy::Context per thread (see threadRuyState()).
+      // the one ruy::Context per thread (see threadRuyState()).
       RuyThreadState &state = threadRuyState();
       ruy::Context &context = state.context;
       long long &accountedPrepackedBytes = state.accountedPrepackedBytes;
 
-      // PATCH B: drop this thread's prepacked weights when any model has been
+      // drop this thread's prepacked weights when any model has been
       // torn down since we last packed. Cheap: one relaxed atomic load per
       // GEMM, and the clear only ever runs on the generation change.
       const uint64_t generation =
@@ -278,7 +278,7 @@ inline void transpose(const int8_t *input, Index rows, Index cols, int8_t *outpu
         state.seenGeneration = generation;
       }
 
-      // PATCH C: on CPUs with i8mm (Armv9 cores) the int8 GEMM runs the
+      // on CPUs with i8mm (Armv9 cores) the int8 GEMM runs the
       // SMMLA kernel in smmla_gemm.cpp -- same integer math, bit-identical
       // accumulators, measured 1.15-1.4x end to end on 8 Gen 1 / 8 Gen 3.
       // Weights are prepacked per thread under the same generation guard as
@@ -298,7 +298,7 @@ inline void transpose(const int8_t *input, Index rows, Index cols, int8_t *outpu
       ruy::Matrix<std::int8_t> rhs;
       ruy::MakeSimpleLayout(width, cols_B, ruy::Order::kColMajor, rhs.mutable_layout());
       rhs.set_data(input_B_prepared);
-      // PATCH B: B holds constant model weights whenever the caller says so, so
+      // B holds constant model weights whenever the caller says so, so
       // ruy may keep the packed form across calls instead of re-packing every
       // GEMM. Because dst is row-major, ruy transposes internally and this
       // operand lands on Side::kLhs -- the policy travels with the matrix, so
@@ -320,7 +320,7 @@ inline void transpose(const int8_t *input, Index rows, Index cols, int8_t *outpu
       ruy::MulParams<std::int32_t, std::int32_t> mul_params;
       ruy::Mul(lhs, rhs, mul_params, &context, &dst);
 
-      // D0: refresh this thread's share of the global prepacked-byte total.
+      // refresh this thread's share of the global prepacked-byte total.
       // Only under the lifecycle gate -- it costs a cache read per GEMM.
       if (lifecycle::enabled()) {
         const long long bytes = static_cast<long long>(
@@ -332,7 +332,7 @@ inline void transpose(const int8_t *input, Index rows, Index cols, int8_t *outpu
         }
       }
 
-      }  // PATCH C: end of the ruy path
+      }  // end of the ruy path
 
       // Unquantise:
       float32x4_t multiplier = vdupq_n_f32(unquant_multiplier);
@@ -447,7 +447,7 @@ public:
     ABORT_IF(child(0) == nullptr, "B cannot be null");
   }
 
-  // PATCH D1: variant that selects straight out of an already-quantised model
+  // variant that selects straight out of an already-quantised model
   // parameter (an int8 Wemb, reshaped to the [dim x vocab] column-major view
   // ruy wants). There is no PrepareB node to take the multiplier from, so it
   // arrives as an explicit second child.
@@ -564,7 +564,7 @@ struct QuantMultRuyNodeOp : public UnaryNodeOp {
 };
 
 /*
- * PATCH D1: B multiplier for an embedding table that stayed int8.
+ * B multiplier for an embedding table that stayed int8.
  *
  * The FP32 path derived it as 127 / MaxAbsolute(table) over the *dequantised*
  * table, i.e. over int8[i] * (1/q). Because 1/q > 0, that maximum is exactly
@@ -659,7 +659,7 @@ struct WembQuantMultNodeOp : public UnaryNodeOp {
 };
 
 /*
- * PATCH D2: gather-and-dequantise for an int8 embedding table.
+ * gather-and-dequantise for an int8 embedding table.
  *
  * Replaces rows(E, idx) when E stayed quantised. Dequantises only the rows the
  * batch actually looks up, using the exact expression (and expression order)
@@ -768,7 +768,7 @@ public:
     return { [=]() {
           float aQuantMult = std::static_pointer_cast<PrepareNode >(child(0))->quantMult_;
           float bQuantMult;
-          // PATCH B: a RuySelectColumnsB child rewrites one reused buffer every
+          // a RuySelectColumnsB child rewrites one reused buffer every
           // step (shortlist column selection), so its packed form must never be
           // cached. The other two cases -- a memoized RuyPrepareB and an already
           // prepared parameter tensor -- are constant for the model's lifetime.

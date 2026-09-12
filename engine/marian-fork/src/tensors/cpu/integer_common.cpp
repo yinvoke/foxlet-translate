@@ -1,6 +1,6 @@
 #include "integer_common.h"
 
-// D0: releaseThreadPackingCaches() needs the per-thread cache owners. Both are
+// releaseThreadPackingCaches() needs the per-thread cache owners. Both are
 // architecture-gated exactly as their GEMM paths are.
 #if defined(ARM)
 #include "ruy_interface.h"
@@ -26,7 +26,7 @@ namespace marian {
 namespace cpu {
 namespace integer {
 
-// PATCH B: see integer_common.h. Function-local static so the counter is
+// see integer_common.h. Function-local static so the counter is
 // initialised on first use regardless of translation-unit ordering.
 std::atomic<uint64_t> &prepackGeneration() {
   static std::atomic<uint64_t> generation{0};
@@ -37,7 +37,7 @@ void bumpPrepackGeneration() {
   prepackGeneration().fetch_add(1, std::memory_order_relaxed);
 }
 
-// D0: see integer_common.h. Both caches are per-thread, so this only ever
+// see integer_common.h. Both caches are per-thread, so this only ever
 // touches the calling thread's state -- no locking needed, and no ordering
 // against other threads' GEMMs.
 void releaseThreadPackingCaches() {
@@ -49,7 +49,7 @@ void releaseThreadPackingCaches() {
 #endif
 }
 
-// PATCH D1/D2: see integer_common.h.
+// see integer_common.h.
 namespace {
 bool envFlag(const char *name) {
   const char *value = std::getenv(name);

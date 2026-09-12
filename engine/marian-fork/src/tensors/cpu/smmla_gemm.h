@@ -37,7 +37,7 @@ void gemm8(const int8_t* A,
            bool cacheableB,
            uint64_t generation);
 
-// D0: drop THIS thread's packed-B cache and release its scratch buffers.
+// drop THIS thread's packed-B cache and release its scratch buffers.
 // Affects only the calling thread; safe on a thread that never ran a GEMM.
 // The next gemm8 on this thread simply re-packs, so this is a memory/latency
 // trade, never a correctness one.

@@ -62,7 +62,7 @@ class TranslationModel {
   TranslationModel(const Config& options, size_t replicas = 1)
       : TranslationModel(options, getMemoryBundleFromConfig(options), replicas) {}
 
-  /// PATCH B: invalidates every worker's cached prepacked weights. The weight
+  /// invalidates every worker's cached prepacked weights. The weight
   /// allocation this model owns is about to be freed, and ruy's prepacked cache
   /// keys on the source data pointer -- a later model handed the same address
   /// would otherwise hit a stale packed buffer.
@@ -166,7 +166,7 @@ class TranslationModel {
   std::shared_ptr<QualityEstimator> qualityEstimator_;
 
   void loadBackend(size_t idx);
-  /// D0 diagnostic: bytes still held by the raw model file image. Non-zero
+  /// Diagnostic: bytes still held by the raw model file image. Non-zero
   /// after translation means some replica was never loaded, so loadBackend()
   /// never reached the point where it drops the image.
   size_t modelMemoryBytes() const;

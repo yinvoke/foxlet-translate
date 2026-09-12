@@ -53,7 +53,7 @@ inline void GemmRuy(const bool transA,
                     const float beta,
                     float *C,
                     const int ldc) {
-  // PATCH A: see ruy_interface.h -- one Context per thread, not per call.
+  // see ruy_interface.h -- one Context per thread, not per call.
   // No cache policy is set here on purpose: the float path multiplies
   // activations, which change every call and must never be cached.
   static thread_local ruy::Context context;

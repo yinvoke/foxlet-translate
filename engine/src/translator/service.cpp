@@ -13,9 +13,9 @@
 
 #include "batch.h"
 #include "byte_array_util.h"
-#include "common/lifecycle.h"                // D0: worker/service lifecycle tracing
+#include "common/lifecycle.h"                // worker/service lifecycle tracing
 #include "definitions.h"
-#include "tensors/cpu/integer_common.h"  // D0: releaseThreadPackingCaches()
+#include "tensors/cpu/integer_common.h"  // releaseThreadPackingCaches()
 
 namespace marian {
 namespace bergamot {
@@ -44,7 +44,7 @@ std::optional<TranslationCache> makeOptionalCache(size_t size, size_t mutexBucke
   return size > 0 ? std::make_optional<TranslationCache>(size, mutexBuckets) : std::nullopt;
 }
 
-/// F5: gathers N responses by index and parks the calling thread until every one has arrived. The callbacks run on
+/// gathers N responses by index and parks the calling thread until every one has arrived. The callbacks run on
 /// worker threads; the mutex both guards the slots and publishes the workers' writes to the waiter.
 ///
 /// Lives on the caller's stack, and the callbacks capture it by pointer: they outlive the wait (a Request is only
@@ -76,7 +76,7 @@ class ResponseCollector {
   std::condition_variable done_;
 };
 
-// D0: hand freed pages back to the OS. Freeing to the allocator is not the
+// hand freed pages back to the OS. Freeing to the allocator is not the
 // same as shrinking RSS -- bionic's scudo and macOS libmalloc both keep
 // per-thread magazines that otherwise only drain when the thread exits, so a
 // release that frees tens of MB can leave RSS completely flat. Only called on
@@ -228,7 +228,7 @@ AsyncService::AsyncService(const AsyncService::Config &config)
         size_t sentences = safeBatchingPool_.generateBatch(seenMaintenanceEpoch, maintenanceDue, translationModel,
                                                            batch);
         if (maintenanceDue) {
-          // D0: everything this thread holds on a model's behalf goes here.
+          // everything this thread holds on a model's behalf goes here.
           batch.clear();
           translationModel.reset();
           marian::cpu::integer::releaseThreadPackingCaches();
@@ -239,7 +239,7 @@ AsyncService::AsyncService(const AsyncService::Config &config)
         }
         if (sentences == 0) break;  // shutdown
         translationModel->translateBatch(cpuId, batch);
-        // D0: drop the batch's RequestSentences and this worker's owning model
+        // drop the batch's RequestSentences and this worker's owning model
         // reference before blocking again. Without this the last batch's model
         // stays alive for as long as the worker sits idle -- which is forever,
         // in an app that has stopped translating.

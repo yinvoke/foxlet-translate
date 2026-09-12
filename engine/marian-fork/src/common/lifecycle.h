@@ -1,5 +1,5 @@
 #pragma once
-// D0: opt-in lifecycle tracing for model / graph / GEMM-packing-cache teardown.
+// opt-in lifecycle tracing for model / graph / GEMM-packing-cache teardown.
 //
 // Everything here is inert unless BERGAMOT_LIFECYCLE=1 is set in the
 // environment before the process starts. The cost on a hot path is then

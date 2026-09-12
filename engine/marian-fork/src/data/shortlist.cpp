@@ -1,5 +1,7 @@
 #include "shortlist.h"
 #include <queue>
+#include <stdexcept>
+#include <cstring>
 
 namespace marian {
 namespace data {
@@ -155,19 +157,16 @@ Ptr<Shortlist> LexicalShortlistGenerator::generate(Ptr<data::CorpusBatch> batch)
 }
 
 void BinaryShortlistGenerator::contentCheck() {
-  bool failFlag = 0;
-  // The offset table has to be within the size of shortlists.
-  for(int i = 0; i < wordToOffsetSize_-1; i++)
-    failFlag |= wordToOffset_[i] >= shortListsSize_;
-
-  // The last element of wordToOffset_ must equal shortListsSize_
-  failFlag |= wordToOffset_[wordToOffsetSize_-1] != shortListsSize_;
-
-  // The vocabulary indices have to be within the vocabulary size.
-  size_t vSize = trgVocab_->size();
-  for(int j = 0; j < shortListsSize_; j++)
-    failFlag |= shortLists_[j] >= vSize;
-  ABORT_IF(failFlag, "Error: shortlist indices are out of bounds");
+  if (wordToOffsetSize_ != srcVocab_->size() + 1 ||
+      (shared_ && srcVocab_->size() != trgVocab_->size()))
+    throw std::invalid_argument("Shortlist vocabulary size mismatch");
+  for (size_t i = 0; i + 1 < wordToOffsetSize_; ++i)
+    if (wordToOffset_[i] > wordToOffset_[i + 1] || wordToOffset_[i] > shortListsSize_)
+      throw std::invalid_argument("Invalid shortlist offset");
+  if (wordToOffset_[0] != 0 || wordToOffset_[wordToOffsetSize_ - 1] != shortListsSize_)
+    throw std::invalid_argument("Invalid shortlist sentinel");
+  for (size_t j = 0; j < shortListsSize_; ++j)
+    if (shortLists_[j] >= trgVocab_->size()) throw std::invalid_argument("Invalid shortlist token");
 }
 
 // load shortlist from buffer
@@ -177,19 +176,25 @@ void BinaryShortlistGenerator::load(const void* ptr_void, size_t blobSize, bool 
    * wordToOffset array
    * shortLists array
    */
-  ABORT_IF(blobSize < sizeof(Header), "Shortlist length {} too short to have a header", blobSize);
+  if (!ptr_void || blobSize < sizeof(Header)) throw std::invalid_argument("Truncated shortlist header");
 
   const char *ptr = static_cast<const char*>(ptr_void);
-  const Header &header = *reinterpret_cast<const Header*>(ptr);
+  Header header;
+  std::memcpy(&header, ptr, sizeof(header));
   ptr += sizeof(Header);
-  ABORT_IF(header.magic != BINARY_SHORTLIST_MAGIC, "Incorrect magic in binary shortlist");
-
-  uint64_t expectedSize = sizeof(Header) + header.wordToOffsetSize * sizeof(uint64_t) + header.shortListsSize * sizeof(WordIndex);
-  ABORT_IF(expectedSize != blobSize, "Shortlist header claims file size should be {} but file is {}", expectedSize, blobSize);
-
+  if (header.magic != BINARY_SHORTLIST_MAGIC) throw std::invalid_argument("Invalid shortlist magic");
+  size_t remaining = blobSize - sizeof(Header);
+  if (!header.wordToOffsetSize || header.wordToOffsetSize > remaining / sizeof(uint64_t))
+    throw std::invalid_argument("Invalid shortlist offset count");
+  remaining -= header.wordToOffsetSize * sizeof(uint64_t);
+  if (header.shortListsSize > remaining / sizeof(WordIndex) ||
+      header.shortListsSize * sizeof(WordIndex) != remaining)
+    throw std::invalid_argument("Invalid shortlist data length");
   if (check) {
-    uint64_t checksumActual = util::hashMem<uint64_t, uint64_t>(&header.firstNum, (blobSize - sizeof(header.magic) - sizeof(header.checksum)) / sizeof(uint64_t));
-    ABORT_IF(checksumActual != header.checksum, "checksum check failed: this binary shortlist is corrupted");
+    uint64_t checksumActual = util::hashMem<uint64_t, uint64_t>(
+      reinterpret_cast<const uint64_t*>(ptr_void) + 2,
+      (blobSize - sizeof(header.magic) - sizeof(header.checksum)) / sizeof(uint64_t));
+    if (checksumActual != header.checksum) throw std::invalid_argument("Shortlist checksum mismatch");
   }
 
   firstNum_ = header.firstNum;
@@ -206,8 +211,7 @@ void BinaryShortlistGenerator::load(const void* ptr_void, size_t blobSize, bool 
   shortLists_ = reinterpret_cast<const WordIndex*>(ptr);
 
   // Verify offsets and vocab ids are within bounds if requested by user.
-  if(check)
-    contentCheck();
+  contentCheck(); // Foxlet: bounds must never depend on an optional checksum flag.
 }
 
 // load shortlist from file

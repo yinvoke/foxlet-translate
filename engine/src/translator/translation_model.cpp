@@ -3,13 +3,13 @@
 #include "batch.h"
 #include "byte_array_util.h"
 #include "cache.h"
-#include "common/lifecycle.h"  // D0: model/backend lifecycle tracing
+#include "common/lifecycle.h"  // model/backend lifecycle tracing
 #include "common/logging.h"
 #include "data/corpus.h"
 #include "data/text_input.h"
 #include "html.h"
 #include "parser.h"
-#include "tensors/cpu/integer_common.h"  // PATCH B: prepack generation counter
+#include "tensors/cpu/integer_common.h"  // prepack generation counter
 #include "translator/beam_search.h"
 
 namespace marian {
@@ -41,7 +41,7 @@ TranslationModel::TranslationModel(const Config &options, MemoryBundle &&memory 
   bool shared_vcb = (vocabs_.sources().front() == vocabs_.target());
 
   if (memory_.shortlist.size() > 0 && memory_.shortlist.begin() != nullptr) {
-    bool check = options_->get<bool>("check-bytearray", false);
+    bool check = true; // Foxlet: shortlist boundaries are mandatory.
     shortlistGenerator_ = New<data::BinaryShortlistGenerator>(memory_.shortlist.begin(), memory_.shortlist.size(),
                                                               vocabs_.sources().front(), vocabs_.target(), srcIdx,
                                                               trgIdx, shared_vcb, check);
@@ -62,7 +62,7 @@ TranslationModel::TranslationModel(const Config &options, MemoryBundle &&memory 
   }
 }
 
-// PATCH B: see translation_model.h. Bumping here makes every worker thread drop
+// see translation_model.h. Bumping here makes every worker thread drop
 // its ruy prepacked-weight cache before any replacement model can be handed the
 // freed weight addresses.
 TranslationModel::~TranslationModel() {
@@ -70,7 +70,7 @@ TranslationModel::~TranslationModel() {
     size_t loaded = 0;
     for (const auto &backend : backend_) loaded += backend.initialized ? 1 : 0;
     // model_bytes>0 here means some replica was never used, so loadBackend()
-    // never got to drop the file image (D0, lazy-replica residue).
+    // never got to drop the file image (unused lazy replica).
     lifecycle::event("model_dtor_enter id=%zu replicas=%zu backends_loaded=%zu model_bytes=%zu", modelId_,
                      backend_.size(), loaded, modelMemoryBytes());
   }
@@ -133,10 +133,8 @@ void TranslationModel::loadBackend(size_t idx) {
         ABORT_IF(
             (uintptr_t)model.begin() % 256 != 0,
             "The provided memory is not aligned to 256 bytes and will crash when vector instructions are used on it.");
-        if (options_->get<bool>("check-bytearray", false)) {
-          ABORT_IF(!validateBinaryModel(model, model.size()),
-                   "The binary file is invalid. Incomplete or corrupted download?");
-        }
+        if (!validateBinaryModel(model, model.size()))
+          throw std::invalid_argument("Invalid binary model");
 
         model_ptrs[i] = model.begin();
         LOG(debug, "Loaded model {} of {} from memory", (i + 1), model_ptrs.size());

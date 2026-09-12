@@ -100,7 +100,7 @@ size_t ThreadsafeBatchingPool<BatchingPoolType>::generateBatch(size_t &seenMaint
   size_t sentencesInBatch = backend_.generateBatch(std::forward<Args>(args)...);
   assert(sentencesInBatch > 0 || shutdown_);
   enqueued_ -= sentencesInBatch;
-  // D0: with nothing left pending, the aggregate queue's owning references to
+  // with nothing left pending, the aggregate queue's owning references to
   // TranslationModels are dead weight -- it would otherwise hold them until
   // some later generateBatch found that model's pool empty, which only happens
   // once new work arrives. enqueueRequest() re-inserts, so this is safe.

@@ -41,7 +41,7 @@ class ThreadsafeBatchingPool {
   template <class... Args>
   void enqueueRequest(Args &&...args);
 
-  /// F5: produce several requests under a single lock and a single notify.
+  /// produce several requests under a single lock and a single notify.
   /// Consumers therefore never observe a half-submitted set, so the batches
   /// they generate depend only on what was submitted -- not on how far the
   /// producer had got when a worker happened to wake up. The trailing
@@ -53,7 +53,7 @@ class ThreadsafeBatchingPool {
   void enqueueRequests(Args &&...args);
 
   /// Consumer side. Blocks until there is a batch, a shutdown, or a
-  /// maintenance request (D0).
+  /// maintenance request.
   ///
   /// @param [in,out] seenMaintenanceEpoch: consumer-owned; the epoch this
   /// consumer has already serviced. Start it at 0.
@@ -68,11 +68,11 @@ class ThreadsafeBatchingPool {
   // Removes any pending requests from the batching pool.
   void clear();
 
-  /// D0: how many consumers call generateBatch. Must be set before they start;
+  /// how many consumers call generateBatch. Must be set before they start;
   /// runMaintenance() waits for exactly this many acknowledgements.
   void setConsumerCount(size_t consumers);
 
-  /// D0, producer side. Wakes every consumer, has each run one maintenance
+  /// Producer side. Wakes every consumer, has each run one maintenance
   /// pass (drop its cached model reference and its GEMM packing caches), and
   /// blocks until all of them have acknowledged. Also drops the aggregate
   /// queue's model references when nothing is pending.
@@ -110,7 +110,7 @@ class ThreadsafeBatchingPool {
   // maintenance epoch.
   std::condition_variable work_;
 
-  // D0 maintenance protocol.
+  // Worker maintenance protocol.
   // Lock order, where both are taken: maintenanceSerial_ then mutex_. Never
   // the reverse; consumers only ever take mutex_.
   std::mutex maintenanceSerial_;         // serialises concurrent runMaintenance()

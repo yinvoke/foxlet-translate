@@ -14,7 +14,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "common/lifecycle.h"  // D0: packing-cache tracing
+#include "common/lifecycle.h"  // packing-cache tracing
 
 #if defined(__linux__)
 #include <sys/auxv.h>
@@ -259,7 +259,7 @@ thread_local std::vector<int8_t> aScratch;
 thread_local std::vector<int8_t> bScratch;
 thread_local uint64_t seenGeneration = 0;
 thread_local testing::TileCounters tileCounts;
-// D0: this thread's contribution to the process-wide cache/scratch totals,
+// this thread's contribution to the process-wide cache/scratch totals,
 // maintained only while lifecycle tracing is on. Declared after the caches
 // above so it is destroyed before them at thread exit: the global totals then
 // drop when a worker thread goes away.
@@ -273,7 +273,7 @@ struct CacheAccount {
 };
 thread_local CacheAccount cacheAccount;
 
-// D0: publish this thread's current bCache / scratch footprint. Called only
+// publish this thread's current bCache / scratch footprint. Called only
 // where a size can actually have changed.
 void publishCacheBytes() {
   if (!lifecycle::enabled()) return;

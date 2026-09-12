@@ -31,7 +31,7 @@ namespace marian {
 namespace cpu {
 namespace integer {
 
-// PATCH B: staleness guard for ruy's per-thread prepacked-weight cache.
+// staleness guard for ruy's per-thread prepacked-weight cache.
 //
 // The cache is keyed on {src data pointer, packed layout, zero point} and does
 // NOT hash the buffer contents. A freed model whose weight allocation is later
@@ -46,7 +46,7 @@ namespace integer {
 std::atomic<uint64_t> &prepackGeneration();
 void bumpPrepackGeneration();
 
-// D0: drop THIS thread's GEMM weight-packing caches -- ruy's prepacked cache
+// drop THIS thread's GEMM weight-packing caches -- ruy's prepacked cache
 // and, on i8mm CPUs, the SMMLA packed-B cache and scratch buffers. They are
 // thread_local, so a model teardown on another thread cannot free them; the
 // generation guard above only reclaims them lazily, at the next GEMM this
@@ -57,7 +57,7 @@ void bumpPrepackGeneration();
 // own weights. Only affects the calling thread.
 void releaseThreadPackingCaches();
 
-// PATCH D1/D2: the embedding tables (Wemb) stay int8 in memory.
+// the embedding tables (Wemb) stay int8 in memory.
 //
 // Upstream dequantises every Wemb item at load time (binary.cpp ->
 // unquantizeWemb), which costs 4x the bytes of the stored table and then makes

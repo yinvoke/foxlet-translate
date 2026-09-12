@@ -81,7 +81,7 @@ class BlockingService {
   std::vector<Response> pivotMultiple(std::shared_ptr<TranslationModel> first, std::shared_ptr<TranslationModel> second,
                                       std::vector<std::string> &&sources,
                                       const std::vector<ResponseOptions> &responseOptions);
-  /// D0: drop `model` and reclaim what this service holds on its behalf.
+  /// drop `model` and reclaim what this service holds on its behalf.
   /// BlockingService has no worker threads, so the GEMM weight-packing caches
   /// live on the calling thread and are cleared here directly.
   ///
@@ -175,7 +175,7 @@ class AsyncService {
   void pivot(std::shared_ptr<TranslationModel> first, std::shared_ptr<TranslationModel> second, std::string &&source,
              CallbackType clientCallback, const ResponseOptions &options = ResponseOptions());
 
-  /// F5: the batch counterpart of translate(), shaped like
+  /// the batch counterpart of translate(), shaped like
   /// BlockingService::translateMultiple but executed on the worker pool. Every
   /// request is built on the calling thread and the whole set enters the pool
   /// in one step, so the batches the workers form -- and therefore the output
@@ -208,7 +208,7 @@ class AsyncService {
                                           std::vector<std::string> &&sources,
                                           const ResponseOptions &options = ResponseOptions());
 
-  /// F5: the batch counterpart of pivot(), with the same guarantee (including
+  /// the batch counterpart of pivot(), with the same guarantee (including
   /// the sentence cap and its caveat) and the same shape as
   /// BlockingService::pivotMultiple. The second leg is a hard
   /// barrier: it is built only after the first leg has completed in full, on
@@ -231,7 +231,7 @@ class AsyncService {
   /// Clears all pending requests.
   void clear();
 
-  /// D0: drop `model` and reclaim everything this service holds on its behalf
+  /// drop `model` and reclaim everything this service holds on its behalf
   /// -- each worker's cached model reference and last batch, the aggregate
   /// queue's reference, and every worker's GEMM weight-packing caches. This is
   /// the counterpart of createCompatibleModel(); simply dropping the handle

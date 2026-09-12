@@ -1,3 +1,5 @@
+#include <cstring>
+#include <stdexcept>
 #include "common/io.h"
 
 #include "3rd_party/cnpy/cnpy.h"
@@ -20,6 +22,15 @@ bool isBin(const std::string& fileName) {
          && fileName.substr(fileName.length() - 4) == ".bin";
 }
 
+// Modified by Foxlet Translate: do not let YAML read past its tensor buffer.
+static std::string boundedYaml(const Item& item) {
+  const auto length = item.bytes->size();
+  if (!length || item.mapped) throw std::invalid_argument("Invalid model YAML storage");
+  const auto* end = static_cast<const char*>(std::memchr(item.data(), 0, length));
+  if (!end) throw std::invalid_argument("Model YAML is not terminated within its tensor");
+  return std::string(item.data(), static_cast<size_t>(end - item.data()));
+}
+
 void getYamlFromNpz(YAML::Node& yaml,
                     const std::string& varName,
                     const std::string& fileName) {
@@ -33,7 +44,7 @@ void getYamlFromBin(YAML::Node& yaml,
                     const std::string& fileName) {
   auto item = binary::getItem(fileName, varName);
   if(item.size() > 0)
-    yaml = YAML::Load(item.data());
+    yaml = YAML::Load(boundedYaml(item));
 }
 
 void getYamlFromModel(YAML::Node& yaml,
@@ -53,7 +64,7 @@ void getYamlFromModel(YAML::Node& yaml,
                       const void* ptr) {
   auto item = binary::getItem(ptr, varName);
   if(item.size() > 0)
-    yaml = YAML::Load(item.data());
+    yaml = YAML::Load(boundedYaml(item));
 }
 
 // Load YAML from item
@@ -62,7 +73,7 @@ void getYamlFromModel(YAML::Node& yaml,
                       const std::vector<Item>& items) {
     for(auto& item : items) {
       if(item.name == varName) {
-        yaml = YAML::Load(item.data());
+        yaml = YAML::Load(boundedYaml(item));
         return;
       }
     }

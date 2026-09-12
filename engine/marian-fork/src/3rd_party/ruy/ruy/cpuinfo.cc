@@ -1,3 +1,4 @@
+// Modified by Foxlet Translate; original license and copyright retained.
 #include "ruy/cpuinfo.h"
 #if defined(__aarch64__) && defined(__linux__)
 #include <sys/auxv.h>

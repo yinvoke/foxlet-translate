@@ -13,7 +13,7 @@ def inspect(path, prefixes=None):
     with zipfile.ZipFile(path) as archive:
         contents = {name: archive.read(name) for name in archive.namelist() if not name.endswith('/')}
     if path.suffix == '.aar':
-        for name in ['jni/arm64-v8a/libbergamot.so', 'jni/arm64-v8a/libc++_shared.so', 'proguard.txt']:
+        for name in ['jni/arm64-v8a/libfoxlet.so', 'jni/arm64-v8a/libc++_shared.so', 'proguard.txt']:
             if name not in contents: raise ValueError(f'{path}: missing {name}')
         with zipfile.ZipFile(io.BytesIO(contents['classes.jar'])) as jar:
             contents.update({name: jar.read(name) for name in jar.namelist() if not name.endswith('/')})

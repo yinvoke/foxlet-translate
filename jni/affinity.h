@@ -14,8 +14,8 @@
 //
 // This is *topology*, not availability: it does not shrink when the app is
 // moved into a background cpuset.
-namespace bergamot_android {
+namespace foxlet_android {
 
 std::size_t fastCoreCount();
 
-}  // namespace bergamot_android
+}  // namespace foxlet_android

@@ -28,18 +28,18 @@ jobs:
           clang++ -std=c++17 -O1 -g -fsanitize=address,undefined -I . tools/safety-tests/native_safety_test.cpp -o /tmp/foxlet-native-safety
           /tmp/foxlet-native-safety
       - name: Build and test delivered SDK and R8 consumer
-        run: ./gradlew :bergamot:test :bergamot:packageWithoutPrefixes :demo:assembleRelease :demo:assembleReleaseAndroidTest
+        run: ./gradlew :foxlet:test :foxlet:packageWithoutPrefixes :demo:assembleRelease :demo:assembleReleaseAndroidTest
       - name: Verify package contents and hardening
         run: |
           python3 tools/distribution/check_hardening.py
-          python3 tools/distribution/verify_artifacts.py --aar bergamot/build/outputs/aar/bergamot-release.aar --no-prefixes bergamot/build/outputs/aar/bergamot-no-prefixes-release.aar --apk demo/build/outputs/apk/release/demo-release.apk
+          python3 tools/distribution/verify_artifacts.py --aar foxlet/build/outputs/aar/foxlet-release.aar --no-prefixes foxlet/build/outputs/aar/foxlet-no-prefixes-release.aar --apk demo/build/outputs/apk/release/demo-release.apk
       - name: Prepare versioned release files
         run: |
           mkdir -p release-files device-files
-          cp bergamot/build/outputs/aar/bergamot-release.aar "release-files/bergamot-${GITHUB_REF_NAME}.aar"
-          cp bergamot/build/outputs/aar/bergamot-no-prefixes-release.aar "release-files/bergamot-${GITHUB_REF_NAME}-no-prefixes.aar"
+          cp foxlet/build/outputs/aar/foxlet-release.aar "release-files/foxlet-${GITHUB_REF_NAME}.aar"
+          cp foxlet/build/outputs/aar/foxlet-no-prefixes-release.aar "release-files/foxlet-${GITHUB_REF_NAME}-no-prefixes.aar"
           cp demo/build/outputs/apk/release/demo-release.apk "release-files/foxlet-demo-${GITHUB_REF_NAME}.apk"
-          cp bergamot/build/generated/distributionResources/io/github/yinvoker/foxlet/licenses/*.txt release-files/
+          cp foxlet/build/generated/distributionResources/io/github/yinvoker/foxlet/licenses/*.txt release-files/
           cp demo/build/outputs/apk/release/demo-release.apk device-files/
           cp demo/build/outputs/apk/androidTest/release/demo-release-androidTest.apk device-files/
           cp tools/distribution/run_device_tests.py device-files/

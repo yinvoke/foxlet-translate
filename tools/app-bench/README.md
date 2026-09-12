@@ -1,6 +1,8 @@
 # Android app 对比与质量复测
 
-本工具对应新增的 **`android-app-v1`**，用于 v0.3.0 AAR 与 Google ML Kit 的 app 级比较。它不替换 [`android-native-v1`](../version-bench/README.md) 的固定八场景，也不把 app PSS 与 native RSS 混算。旧版 150 条语料的图表另存于[历史归档](../../benchmarks/v0.1.0/mlkit.md)。
+本工具使用 **`android-app-v1`** 协议，比较 Foxlet AAR 与 Google ML Kit。它不替换 [`android-native-v1`](../version-bench/README.md) 的固定八场景，也不把 app PSS 与 native RSS 混算。旧版 150 条语料的图表另存于[历史归档](../../benchmarks/v0.1.0/mlkit.md)。
+
+报告字段和命令参数中的 `bergamot` 保留为协议中的后端标识，以兼容历史数据；应用显示名称为 Foxlet。
 
 ## 固定协议
 
@@ -9,19 +11,19 @@
 | 方向 | 引擎 | 本库线程配置 |
 |---|---|---:|
 | 英→中 | ML Kit | SDK 不提供线程控制 |
-| 英→中 | Bergamot | 1 |
-| 英→中 | Bergamot | 2 |
-| 英→中 | Bergamot | 4 |
+| 英→中 | Foxlet | 1 |
+| 英→中 | Foxlet | 2 |
+| 英→中 | Foxlet | 4 |
 | 日→英→中 | ML Kit | SDK 内部中转，不提供线程控制 |
-| 日→英→中 | Bergamot | 1 |
-| 日→英→中 | Bergamot | 2 |
-| 日→英→中 | Bergamot | 4 |
+| 日→英→中 | Foxlet | 1 |
+| 日→英→中 | Foxlet | 2 |
+| 日→英→中 | Foxlet | 4 |
 
-- FLORES-200 devtest 前 200 条，输入来自仓库 `sample/src/main/assets/bench/`；双方使用同一批源文。Bergamot 使用 AAR 批量接口，ML Kit 按 SDK 接口逐条调用。
+- FLORES-200 devtest 前 200 条，输入来自仓库 `sample/src/main/assets/bench/`；双方使用同一批源文。Foxlet 使用 AAR 批量接口，ML Kit 按 SDK 接口逐条调用。
 - 每行三个独立进程，场景顺序为正序 / 逆序 / 正序；每进程完整翻译三遍。首遍包含引擎创建、模型加载和翻译，后两遍保持引擎与模型常驻。下载在另一进程预先完成，双方均不做额外预热。
 - 每行固定记录首次速度、热态速度、首次峰值 PSS、热态峰值 PSS，以及输出哈希、状态和原始结果。首次速度为 `200000 / 首遍耗时中位数 ms`；热态先取每进程后两遍耗时中位数，再取三个进程的中位数换算。
 - PSS 每 250 ms 采样，报告绝对 app PSS，包含 JVM/UI；不扣空载值。每进程热态峰值取后两遍峰值的较大值，再取三个进程的中位数。短暂内存尖峰可能被采样遗漏。
-- Bergamot 结果缓存关闭，ML Kit 不公开缓存控制。系统文件缓存不清空，因此“首次”不是冷磁盘启动。
+- Foxlet 结果缓存关闭，ML Kit 不公开缓存控制。系统文件缓存不清空，因此“首次”不是冷磁盘启动。
 - 每次先强制停止基准 app，再打开不创建引擎的空闲页面，在前台等待频率恢复；随后重建测试 Activity。保持屏幕常亮，不使用 taskset。不要退回桌面或与其他基准并行运行。
 - 新采集器追加 `foreground_checks: awake-unlocked-focused-before-after-v1`：每进程前后检查屏幕为 Awake、锁屏关闭、焦点属于基准 app，任一缺失或不满足即停止并保留结果。`am start` 返回成功不等于设备已解锁。这是运行条件的额外证据，不改八场景、重复次数或计时口径；只采集前后快照，不宣称连续监控全程前台状态。
 - 当前设备布局为小米 14：起跑时 CPU 2 / 7 的频率上限均不低于 2630400 kHz，最多等待 180 秒；进程间休息 15 秒。门槛不是锁频，前后温度与频率上限均保存。
@@ -37,7 +39,7 @@
 ./gradlew :sample:assembleDebug
 adb -s DEVICE install -r sample/build/outputs/apk/debug/sample-debug.apk
 
-# 单独准备 ML Kit 模型；Bergamot 模型使用 sample 的 files/models 目录。
+# 单独准备 ML Kit 模型；Foxlet 模型使用 sample 的 files/models 目录。
 python3 tools/app-bench/run.py prepare /path/to/new-prepare \
   --adb /path/to/adb --serial DEVICE \
   --apk sample/build/outputs/apk/debug/sample-debug.apk

@@ -11,7 +11,7 @@ android {
         applicationId = "io.github.yinvoker.foxlet.bench"
         minSdk = 28
         targetSdk = 36
-        versionCode = 1
+        versionCode = 2
         versionName = project.version.toString()
         ndk { abiFilters += "arm64-v8a" }
     }
@@ -27,7 +27,7 @@ kotlin {
 }
 
 dependencies {
-    implementation(project(":bergamot"))
+    implementation(project(":foxlet"))
     implementation("com.google.mlkit:translate:17.0.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
 }

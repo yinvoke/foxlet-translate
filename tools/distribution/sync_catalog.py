@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / 'bergamot/src/main/resources/io/github/yinvoker/foxlet/models.tsv'
+OUT = ROOT / 'foxlet/src/main/resources/io/github/yinvoker/foxlet/models.tsv'
 
 def main():
     parser = argparse.ArgumentParser()

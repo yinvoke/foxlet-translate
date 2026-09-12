@@ -226,7 +226,7 @@ class MainActivity : Activity() {
             card.addView(TextView(this).apply {
                 textSize = 13f
                 setTypeface(typeface, android.graphics.Typeface.BOLD)
-                text = p.optString("name")
+                text = p.optString("name").replace("bergamot", "Foxlet")
             })
 
             if (p.has("error")) {

@@ -140,7 +140,7 @@ def main():
     source_hashes = {}
     for name in sorted(set(paths) - {""}):
         file = REPO / name
-        if file.is_file() and (name.startswith(("engine/", "jni/", "bergamot/src/", "sample/src/", "tools/app-bench/"))
+        if file.is_file() and (name.startswith(("engine/", "jni/", "foxlet/src/", "sample/src/", "tools/app-bench/"))
                                or name.endswith(".gradle.kts") or name in ("CMakeLists.txt", "gradle.properties", "tools/bench_device.py")):
             source_hashes[name] = sha256(file.read_bytes())
     (args.output / "source-files.json").write_text(json.dumps(source_hashes, indent=2) + "\n")

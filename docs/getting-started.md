@@ -1,7 +1,7 @@
 # 快速开始
 
-本文对应 v0.3.1；v0.3.0 用户请看[该版本文档](https://github.com/yinvoke/foxlet-translate/blob/v0.3.0/docs/getting-started.md)。
-当前源码的 SDK 包名为 `io.github.yinvoker.foxlet`；从旧版迁移时需更新 `io.github.yinvoker.bergamot` 的 imports。
+本文对应 v0.3.2；v0.3.1 用户请看[该版本文档](https://github.com/yinvoke/foxlet-translate/blob/v0.3.1/docs/getting-started.md)。
+从 v0.3.1 升级时，将 `BergamotEngine` 改为 `FoxletEngine`，AAR 文件名前缀改为 `foxlet`，构建模块改为 `:foxlet`。包名仍为 `io.github.yinvoker.foxlet`，需重新编译宿主；不要混用新旧 AAR 或 JNI 动态库。
 支持 Android 9+、arm64-v8a。开发环境为 JDK 17、Android SDK 36、NDK 29.0.13113456、CMake 3.31.6；Gradle wrapper 固定工具链。
 
 ## 1. 先体验完整示例
@@ -19,23 +19,23 @@ adb install -r demo/build/outputs/apk/release/demo-release.apk
 ## 2. 集成 AAR
 
 ```bash
-./gradlew :bergamot:assembleRelease :bergamot:packageWithoutPrefixes
+./gradlew :foxlet:assembleRelease :foxlet:packageWithoutPrefixes
 ```
 
-默认产物为 `bergamot/build/outputs/aar/bergamot-release.aar`，将其复制到宿主模块的 `libs/`：
+默认产物为 `foxlet/build/outputs/aar/foxlet-release.aar`，将其复制到宿主模块的 `libs/`：
 
 ```kotlin
 // app/build.gradle.kts
 android { defaultConfig { minSdk = 28 } }
 dependencies {
-    implementation(files("libs/bergamot-release.aar"))
+    implementation(files("libs/foxlet-release.aar"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
 }
 ```
 
 AAR 不携带传递依赖，请显式声明协程依赖。已验证仓库当前 AGP/Kotlin 工具链；旧 Kotlin 编译器可能无法读取新版 Kotlin 元数据，建议使用同等或更新版本。
 
-`bergamot-no-prefixes-release.aar` 不包含 LGPL-2.1 分句前缀表。两种 AAR 二选一，不要同时引入；默认版本会保护 `Dr.` 等缩写，无表版本使用基础分句，也可以由宿主提供自有前缀表。
+`foxlet-no-prefixes-release.aar` 不包含 LGPL-2.1 分句前缀表。两种 AAR 二选一，不要同时引入；默认版本会保护 `Dr.` 等缩写，无表版本使用基础分句，也可以由宿主提供自有前缀表。
 
 ## 3. 下载模型并翻译
 
@@ -49,7 +49,7 @@ AAR 不携带传递依赖，请显式声明协程依赖。已验证仓库当前 
 
 ```kotlin
 import android.content.Context
-import io.github.yinvoker.foxlet.BergamotEngine
+import io.github.yinvoker.foxlet.FoxletEngine
 import io.github.yinvoker.foxlet.ModelCatalog
 import java.io.File
 import kotlinx.coroutines.Dispatchers
@@ -65,7 +65,7 @@ suspend fun translateEnglish(context: Context, text: String): String {
         },
     )
     return withContext(Dispatchers.IO) {
-        BergamotEngine().use { engine ->
+        FoxletEngine().use { engine ->
             engine.translate(listOf(text), files).single()
         }
     }

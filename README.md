@@ -76,7 +76,7 @@ Foxlet Translate 是面向 Android 的高性能离线翻译库，基于 Mozilla 
 | 英→中 COMET × 100 | 72.69 | **87.27** |
 | 日→中 COMET × 100 | 68.93 | **86.71** |
 
-**翻译速度与内存**（实测中位数）：首次包含模型加载，热态为模型常驻后的翻译；PSS 为 app 进程内存。Bergamot 使用批量接口，ML Kit 按 SDK 逐条调用。
+**翻译速度与内存**（实测中位数）：首次包含模型加载，热态为模型常驻后的翻译；PSS 为 app 进程内存。Foxlet 使用批量接口，ML Kit 按 SDK 逐条调用。
 
 | 方向 | 引擎 / 本库线程 | 首次速度（条/秒） | 热态速度（条/秒） | 首次峰值 PSS（MiB） | 热态峰值 PSS（MiB） |
 |---|---|---:|---:|---:|---:|
@@ -216,7 +216,7 @@ Foxlet Translate 是面向 Android 的高性能离线翻译库，基于 Mozilla 
 ## 📁 仓库结构
 
 ```
-bergamot/      Android 库与 Kotlin API
+foxlet/      Android 库与 Kotlin API
 jni/           JNI 胶水层
 engine/        Bergamot / Marian 引擎与第三方组件
 patches/       上游引擎的 Android 适配补丁
@@ -232,10 +232,9 @@ registry.json  Mozilla 模型下载索引
 
 ## 🚀 快速开始
 
-以下示例适用于 **v0.3.1**，包含模型下载、校验和 demo API。
-SDK 包名已改为 `io.github.yinvoker.foxlet`，升级时需更新 imports。
-[v0.3.0 Release](https://github.com/yinvoke/foxlet-translate/releases/tag/v0.3.0) 保持原 API，
-请使用[对应版本文档](https://github.com/yinvoke/foxlet-translate/blob/v0.3.0/docs/getting-started.md)。
+以下示例适用于 **v0.3.2**。模块、AAR 和入口类已统一为 Foxlet，
+升级时将 `BergamotEngine` 改为 `FoxletEngine`，并更新 AAR 文件名；包名仍为 `io.github.yinvoker.foxlet`。
+v0.3.1 用户请使用[对应版本文档](https://github.com/yinvoke/foxlet-translate/blob/v0.3.1/docs/getting-started.md)。
 
 ```bash
 ./gradlew :demo:assembleRelease
@@ -248,11 +247,11 @@ adb install -r demo/build/outputs/apk/release/demo-release.apk
 自行构建 SDK：
 
 ```bash
-./gradlew :bergamot:assembleRelease :bergamot:packageWithoutPrefixes
+./gradlew :foxlet:assembleRelease :foxlet:packageWithoutPrefixes
 ```
 
-默认 AAR 和不含 LGPL 分句数据的 `bergamot-no-prefixes-release.aar` 位于
-`bergamot/build/outputs/aar/`。两种版本二选一，宿主另行声明 Kotlin 协程依赖。
+默认 AAR 和不含 LGPL 分句数据的 `foxlet-no-prefixes-release.aar` 位于
+`foxlet/build/outputs/aar/`。两种版本二选一，宿主另行声明 Kotlin 协程依赖。
 
 ### 下载模型并翻译
 
@@ -262,7 +261,7 @@ adb install -r demo/build/outputs/apk/release/demo-release.apk
 // app/build.gradle.kts
 android { defaultConfig { minSdk = 28 } }
 dependencies {
-    implementation(files("libs/bergamot-release.aar"))
+    implementation(files("libs/foxlet-release.aar"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
 }
 ```
@@ -277,7 +276,7 @@ dependencies {
 
 ```kotlin
 import android.content.Context
-import io.github.yinvoker.foxlet.BergamotEngine
+import io.github.yinvoker.foxlet.FoxletEngine
 import io.github.yinvoker.foxlet.ModelCatalog
 import java.io.File
 import kotlinx.coroutines.Dispatchers
@@ -290,7 +289,7 @@ suspend fun translateEnglish(context: Context, text: String): String {
         to = "zh-Hans",
     )
     return withContext(Dispatchers.IO) {
-        BergamotEngine().use { engine ->
+        FoxletEngine().use { engine ->
             engine.translate(listOf(text), model).single()
         }
     }
@@ -332,7 +331,7 @@ override fun onTrimMemory(level: Int) {
 
 ```kotlin
 val config = EngineConfig.forDevice(context, Workload.BATCH)   // 双模型中转用 Workload.PIVOT
-BergamotEngine(config).use { engine -> /* … */ }
+FoxletEngine(config).use { engine -> /* … */ }
 ```
 
 `forDevice` 根据可用设备信息，在 1 / 2 / 4 / 6 个线程中选择配置；双模型中转使用 `Workload.PIVOT`。可通过 `EngineConfig(threads = 4)` 显式指定，并从 `config.tuning` 查看自动选择依据。
@@ -349,7 +348,7 @@ Android AAR 可通过 NDK 在 ARM 或 x86_64 主机交叉编译;主机 smoke CLI
 NDK r29、CMake 3.31.6。
 
 ```bash
-./gradlew :bergamot:assembleRelease          # AAR
+./gradlew :foxlet:assembleRelease          # AAR
 ./gradlew :demo:assembleRelease             # 对外演示 app（消费 AAR，开启 R8）
 ./gradlew :sample:assembleDebug              # 内部基准 app（含评测数据）
 cmake -B build-host -DCMAKE_BUILD_TYPE=Release -DSSPLIT_USE_INTERNAL_PCRE2=ON \
@@ -411,7 +410,7 @@ AAR 内附带许可文本及对应源码取得说明。
 ### Android 依赖与基准工具
 
 - [Kotlin Coroutines](https://github.com/Kotlin/kotlinx.coroutines)：Android suspend API 的协程调度，Apache-2.0。
-- [Google ML Kit Translate](https://developers.google.com/ml-kit/language/translation)：只用于 `sample/` 基准 app 的对比评测，不是 Bergamot AAR 的翻译后端；依赖其自身服务条款。
+- [Google ML Kit Translate](https://developers.google.com/ml-kit/language/translation)：只用于 `sample/` 基准 app 的对比评测，不是 Foxlet AAR 的翻译后端；依赖其自身服务条款。
 - [FLORES-200](https://github.com/facebookresearch/flores)：仅用于评测，采用 CC-BY-SA 4.0，不包含在 SDK AAR 或 demo APK 中。源码评测数据保留[出处和 NLLB 2022 引用](benchmarks/CITATION.md)。
 
 ### 翻译模型

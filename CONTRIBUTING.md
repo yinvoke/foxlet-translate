@@ -16,7 +16,7 @@
 ## 提交前检查
 
 ```bash
-./gradlew :bergamot:test :bergamot:assembleRelease :sample:assembleDebug
+./gradlew :foxlet:test :foxlet:assembleRelease :sample:assembleDebug
 cmake -B build-host -DCMAKE_BUILD_TYPE=Release \
   -DSSPLIT_USE_INTERNAL_PCRE2=ON -DCOMPILE_TESTS=OFF
 cmake --build build-host --target smoke

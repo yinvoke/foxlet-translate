@@ -5,7 +5,7 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.*
-import io.github.yinvoker.foxlet.BergamotEngine
+import io.github.yinvoker.foxlet.FoxletEngine
 import io.github.yinvoker.foxlet.ModelCatalog
 import io.github.yinvoker.foxlet.ModelFiles
 import java.io.File
@@ -83,7 +83,7 @@ class MainActivity : Activity() {
                     val ready = checkNotNull(model)
                     val start = System.nanoTime()
                     val result = withContext(Dispatchers.IO) {
-                        BergamotEngine().use { it.translate(listOf(text), ready).single() }
+                        FoxletEngine().use { it.translate(listOf(text), ready).single() }
                     }
                     output.text = result
                     status.text = "翻译完成 · ${(System.nanoTime() - start) / 1_000_000} ms（含加载）"

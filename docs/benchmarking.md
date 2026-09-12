@@ -11,10 +11,10 @@
 
 ```bash
 # Kotlin/JVM 单元测试
-./gradlew :bergamot:test
+./gradlew :foxlet:test
 
 # 发布 AAR
-./gradlew :bergamot:assembleRelease
+./gradlew :foxlet:assembleRelease
 
 # 基准 app
 ./gradlew :sample:assembleDebug
@@ -74,9 +74,9 @@ tools/regress-hash.sh build-host/tools/smoke/smoke \
 
 ```bash
 python3 tools/distribution/sync_catalog.py --check
-./gradlew :bergamot:test :bergamot:packageWithoutPrefixes :demo:assembleRelease :demo:assembleReleaseAndroidTest
+./gradlew :foxlet:test :foxlet:packageWithoutPrefixes :demo:assembleRelease :demo:assembleReleaseAndroidTest
 python3 tools/distribution/check_hardening.py
-python3 tools/distribution/verify_artifacts.py --aar bergamot/build/outputs/aar/bergamot-release.aar --no-prefixes bergamot/build/outputs/aar/bergamot-no-prefixes-release.aar --apk demo/build/outputs/apk/release/demo-release.apk
+python3 tools/distribution/verify_artifacts.py --aar foxlet/build/outputs/aar/foxlet-release.aar --no-prefixes foxlet/build/outputs/aar/foxlet-no-prefixes-release.aar --apk demo/build/outputs/apk/release/demo-release.apk
 ```
 
 设备解锁并首次联网下载 Mozilla 模型，设置 adb 设备序列号后运行：

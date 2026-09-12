@@ -24,7 +24,7 @@ android {
                     // cross-compiling; the explicit arch skips it entirely.
                     "-DBUILD_ARCH=armv8-a",
                 )
-                targets += "bergamot"
+                targets += "foxlet"
             }
         }
     }
@@ -91,6 +91,6 @@ tasks.named("preBuild") { dependsOn(generateDistributionResources) }
 tasks.register<Exec>("packageWithoutPrefixes") {
     dependsOn("assembleRelease")
     commandLine("python3", rootProject.file("tools/distribution/package_notices.py"),
-        "--without-prefixes", layout.buildDirectory.file("outputs/aar/bergamot-release.aar").get().asFile,
-        "--output", layout.buildDirectory.file("outputs/aar/bergamot-no-prefixes-release.aar").get().asFile)
+        "--without-prefixes", layout.buildDirectory.file("outputs/aar/foxlet-release.aar").get().asFile,
+        "--output", layout.buildDirectory.file("outputs/aar/foxlet-no-prefixes-release.aar").get().asFile)
 }

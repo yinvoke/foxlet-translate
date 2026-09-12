@@ -7,14 +7,14 @@ root = Path(__file__).resolve().parents[2]
 # selects Release. Check both independently so a newer debug build cannot hide
 # missing hardening in the shipped release configuration.
 for config in ['RelWithDebInfo', 'Release']:
-    files = list((root / 'bergamot/.cxx' / config).glob('**/compile_commands.json'))
+    files = list((root / 'foxlet/.cxx' / config).glob('**/compile_commands.json'))
     if not files:
         if config == 'RelWithDebInfo':
             raise SystemExit('No release AAR compile_commands.json; build the AAR first')
         continue
     path = max(files, key=lambda p: p.stat().st_mtime_ns)
     commands = json.loads(path.read_text())
-    for source in ['common/binary.cpp', 'sentencepiece_processor.cc', 'jni/bergamot_jni.cpp']:
+    for source in ['common/binary.cpp', 'sentencepiece_processor.cc', 'jni/foxlet_jni.cpp']:
         matches = [x for x in commands if x['file'].endswith(source)]
         if not matches: raise SystemExit(f'{path}: no compile command for {source}')
         for item in matches:

@@ -7,7 +7,7 @@ Python 3.9+、CMake、NDK r29、adb 和固定 ARM64 真机。工具只测 native
 在仓库根目录运行，输出目录必须在仓库外且没有同名构建：
 
 ```bash
-BENCH_BUILD=$(mktemp -d /tmp/bergamot-version-build.XXXXXX)
+BENCH_BUILD=$(mktemp -d /tmp/foxlet-version-build.XXXXXX)
 python3 tools/version-bench/build.py --ndk "$ANDROID_NDK_HOME" \
   --output "$BENCH_BUILD" --refs v0.2.0 --working-tree-version v0.3.0
 ```
@@ -37,7 +37,7 @@ python3 tools/version-bench/build.py --ndk "$ANDROID_NDK_HOME" \
 
 | 配置 | 小米 10 | 小米 14 |
 |---|---|---|
-| 基础目录 | `/data/local/tmp/bg` | `/data/local/tmp/bergamot` |
+| 基础目录 | `/data/local/tmp/bg` | `/data/local/tmp/foxlet` |
 | CPU 亲和性 | `f0`（CPU 4–7） | `7c`（CPU 2–6） |
 | 起跑前监测 | CPU 4 / 7 频率上限 | CPU 2 / 7 上限 ≥ 2630400 kHz |
 | 进程间等待 | 4 s | 8 s，另等频率恢复，最多 180 s |

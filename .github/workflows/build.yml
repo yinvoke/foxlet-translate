@@ -37,15 +37,15 @@ jobs:
       - name: Validate pinned model catalog
         run: python3 tools/distribution/sync_catalog.py --check
       - name: Unit tests, final AAR, R8 consumer and device-test APK
-        run: ./gradlew :bergamot:test :bergamot:packageWithoutPrefixes :demo:assembleRelease :demo:assembleReleaseAndroidTest :sample:assembleDebug
+        run: ./gradlew :foxlet:test :foxlet:packageWithoutPrefixes :demo:assembleRelease :demo:assembleReleaseAndroidTest :sample:assembleDebug
       - name: Check delivered bytes and hardening
         run: |
           python3 tools/distribution/check_hardening.py
-          python3 tools/distribution/verify_artifacts.py --aar bergamot/build/outputs/aar/bergamot-release.aar --no-prefixes bergamot/build/outputs/aar/bergamot-no-prefixes-release.aar --apk demo/build/outputs/apk/release/demo-release.apk
+          python3 tools/distribution/verify_artifacts.py --aar foxlet/build/outputs/aar/foxlet-release.aar --no-prefixes foxlet/build/outputs/aar/foxlet-no-prefixes-release.aar --apk demo/build/outputs/apk/release/demo-release.apk
       - uses: actions/upload-artifact@v4
         with:
-          name: bergamot-release-aar
-          path: bergamot/build/outputs/aar/bergamot-release.aar
+          name: foxlet-release-aar
+          path: foxlet/build/outputs/aar/foxlet-release.aar
 
   # 主机冒烟工具须在 ARM 宿主构建(与设备同走 ruy/NEON 路径)。
   host-smoke:

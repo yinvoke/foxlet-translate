@@ -6,7 +6,7 @@ android {
         applicationId = "io.github.yinvoker.foxlet.demo"
         minSdk = 28
         targetSdk = 36
-        versionCode = 1
+        versionCode = 2
         versionName = project.version.toString()
         ndk { abiFilters += "arm64-v8a" }
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -28,7 +28,7 @@ android {
 }
 kotlin { compilerOptions { jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17) } }
 // This example consumes the final AAR, not the library's project classes.
-val sdkAar = rootProject.layout.projectDirectory.file("bergamot/build/outputs/aar/bergamot-release.aar")
+val sdkAar = rootProject.layout.projectDirectory.file("foxlet/build/outputs/aar/foxlet-release.aar")
 dependencies {
     implementation(files(sdkAar))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
@@ -36,4 +36,4 @@ dependencies {
     androidTestImplementation("androidx.test:runner:1.7.0")
     androidTestImplementation("com.google.errorprone:error_prone_annotations:2.36.0")
 }
-tasks.named("preBuild") { dependsOn(":bergamot:assembleRelease") }
+tasks.named("preBuild") { dependsOn(":foxlet:assembleRelease") }

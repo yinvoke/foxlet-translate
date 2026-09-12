@@ -14,7 +14,7 @@ p.add_argument('--build-root', type=Path, required=True)
 p.add_argument('--output', type=Path, required=True)
 a = p.parse_args()
 repo = Path(__file__).resolve().parents[2]
-remote = '/data/local/tmp/bergamot-v010-v020'
+remote = '/data/local/tmp/foxlet-v010-v020'
 versions = ['v0.1.0', 'v0.2.0']
 
 def adb(*args):

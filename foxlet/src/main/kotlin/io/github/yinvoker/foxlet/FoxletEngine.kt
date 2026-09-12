@@ -136,7 +136,7 @@ class EngineConfig(
      *
      * >=2 spawns that many AsyncService workers, which translate one batch in
      * parallel, at the cost of additional memory. Batch composition is fixed
-     * by the input, not worker timing. See [BergamotEngine.translate] for the
+     * by the input, not worker timing. See [FoxletEngine.translate] for the
      * output contract, including short inputs and the translation cache.
      */
     val threads: Int = 1,
@@ -166,7 +166,7 @@ class EngineConfig(
     /**
      * Translation cache slots; 0 disables caching. Entries are keyed by sentence
      * tokens and the loaded model's id. Collisions can change batch composition
-     * and therefore output; use 0 for the [BergamotEngine.translate] output contract.
+     * and therefore output; use 0 for the [FoxletEngine.translate] output contract.
      * Unloading a model makes its entries unreachable until overwritten.
      */
     val cacheSize: Int = 0,
@@ -236,7 +236,7 @@ class EngineConfig(
 }
 
 /**
- * Bergamot engine with lazy model loading and idle-based unloading.
+ * Foxlet translation engine with lazy model loading and idle-based unloading.
  *
  * All native work runs on one dedicated thread; [translate] and
  * [translatePivot] suspend until their batch completes. At
@@ -252,16 +252,16 @@ class EngineConfig(
  * middle of a batch. Reloading is invisible to the caller; [loadedModelCount]
  * is there for anyone who wants to watch it happen.
  */
-class BergamotEngine(private val config: EngineConfig = EngineConfig()) : Closeable {
+class FoxletEngine(private val config: EngineConfig = EngineConfig()) : Closeable {
     companion object { private val processLease = AtomicBoolean(false) }
-    init { check(processLease.compareAndSet(false, true)) { "Only one BergamotEngine may be open per process; close it before creating another" } }
+    init { check(processLease.compareAndSet(false, true)) { "Only one FoxletEngine may be open per process; close it before creating another" } }
     private val lifecycleLock = Any()
     @Volatile private var closing = false
     private var closeFuture: Future<*>? = null
-    private fun checkOpen() = check(!closing) { "BergamotEngine is closed" }
+    private fun checkOpen() = check(!closing) { "FoxletEngine is closed" }
 
 
-    private val executor = ScheduledThreadPoolExecutor(1) { r -> Thread(r, "bergamot") }.apply {
+    private val executor = ScheduledThreadPoolExecutor(1) { r -> Thread(r, "foxlet") }.apply {
         // A sweep left in the queue by close() would call into a destroyed
         // service. close() cancels it, this is the belt to that pair of braces.
         executeExistingDelayedTasksAfterShutdownPolicy = false

@@ -7,7 +7,7 @@ package io.github.yinvoker.foxlet
  * Deliberately free of Android, JNI and any real clock: the clock and the
  * scheduler are constructor parameters, so the whole policy — the deadline
  * arithmetic and the re-arming both — is exercisable from a JVM unit test.
- * [BergamotEngine] supplies the real pair (`System.nanoTime` and its own
+ * [FoxletEngine] supplies the real pair (`System.nanoTime` and its own
  * engine thread).
  *
  * Exactly one sweep is armed at a time, for the earliest deadline among the

@@ -12,6 +12,6 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "foxlet-translate"
-include(":bergamot")
+include(":foxlet")
 include(":sample")
 include(":demo")

@@ -156,7 +156,7 @@ Java_io_github_yinvoker_foxlet_NativeBridge_createService(JNIEnv *env, jobject, 
       // path is live in this process (0 = ruy SDOT fallback).
       // mode/workers say which service this engine got: blocking translates on
       // the caller's thread, async on `workers` engine threads.
-      __android_log_print(ANDROID_LOG_INFO, "bergamot",
+      __android_log_print(ANDROID_LOG_INFO, "foxlet",
                           "ruy runtime paths=0x%x dotprod=%d cache_local=%d cache_llc=%d smmla=%d "
                           "mode=%s workers=%zu",
                           static_cast<int>(probe.get_runtime_enabled_paths()),
@@ -195,7 +195,7 @@ Java_io_github_yinvoker_foxlet_NativeBridge_destroyService(JNIEnv *, jobject, jl
 // service handle on purpose — the tier is picked before the engine exists.
 JNIEXPORT jint JNICALL
 Java_io_github_yinvoker_foxlet_NativeBridge_fastCoreCount(JNIEnv *, jobject) {
-  return static_cast<jint>(bergamot_android::fastCoreCount());
+  return static_cast<jint>(foxlet_android::fastCoreCount());
 }
 
 JNIEXPORT jlong JNICALL

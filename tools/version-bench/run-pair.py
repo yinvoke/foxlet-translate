@@ -45,7 +45,7 @@ repo = Path(__file__).resolve().parents[2]
 layouts = {
   'mi10': dict(model='Mi 10', base='/data/local/tmp/bg', cpus=[4, 7], mask='f0', soc='Snapdragon 865', i8mm=False,
                cfg1024='config-mbw1024.yml', jaen1024='config-jaen.yml', cfg512p='config-mbw512on.yml', jaen512='config-jaen512.yml'),
-  'mi14': dict(model='23127PN0CC', base='/data/local/tmp/bergamot', cpus=[2, 7], mask='7c', soc='Snapdragon 8 Gen 3', i8mm=True, gate_khz=2630400, cooldown=8,
+  'mi14': dict(model='23127PN0CC', base='/data/local/tmp/foxlet', cpus=[2, 7], mask='7c', soc='Snapdragon 8 Gen 3', i8mm=True, gate_khz=2630400, cooldown=8,
                cfg1024='config-mbw1024.yml', jaen1024='config-jaen.yml', cfg512p='config-mbw512on.yml', jaen512='config-jaen512.yml'),
 }
 L = layouts[dev]; remote = L['base'] + '/vb-' + uuid.uuid4().hex[:12]
@@ -107,7 +107,7 @@ for name, src, fix in [('enzh1024', L['cfg1024'], ('mini-batch-words: 512', 'min
     c = shell(f"cat {L['base']}/{src}")
     if fix: c = c.replace(*fix)
     c += '\n'; configs[name] = c
-    with tempfile.TemporaryDirectory(prefix='bergamot-bench-config-') as temp:
+    with tempfile.TemporaryDirectory(prefix='foxlet-bench-config-') as temp:
         path = Path(temp) / f'{name}.yml'
         path.write_text(c)
         adb('push', str(path), f'{remote}/{name}.yml')

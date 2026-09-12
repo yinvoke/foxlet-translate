@@ -32,7 +32,7 @@ class NativeSmokeTest {
      * 「拿它自己记下的那组输入直接调纯函数」逐字段相同(不动点)。
      *
      * 实际档位、fastCoreCount 与 MemoryInfo 四字段打到 logcat(tag
-     * `bergamot-test`)备查。
+     * `foxlet-test`)备查。
      */
     @Test
     fun deviceTuningDecisionIsConsistent() {
@@ -100,7 +100,7 @@ class NativeSmokeTest {
     @Test
     fun canonicalSentenceWhenModelsPresent() = runBlocking {
         val dir = modelDirOrSkip()
-        BergamotEngine(EngineConfig(threads = 1)).use { engine ->
+        FoxletEngine(EngineConfig(threads = 1)).use { engine ->
             val t0 = System.nanoTime()
             val first = engine.translate(listOf(CANONICAL_SOURCE), ModelFiles.fromDirectory(dir))
             val t1 = System.nanoTime()
@@ -120,7 +120,7 @@ class NativeSmokeTest {
     @Test
     fun canonicalSentenceWithWorkersWhenModelsPresent() = runBlocking {
         val dir = modelDirOrSkip()
-        BergamotEngine(EngineConfig(threads = 2)).use { engine ->
+        FoxletEngine(EngineConfig(threads = 2)).use { engine ->
             val t0 = System.nanoTime()
             val out = engine.translate(listOf(CANONICAL_SOURCE), ModelFiles.fromDirectory(dir))
             val t1 = System.nanoTime()
@@ -153,7 +153,7 @@ class NativeSmokeTest {
         Assume.assumeTrue("expected $CORPUS_LINES lines, got ${corpus.size}", corpus.size == CORPUS_LINES)
 
         // device/200 正典使用英文前缀表和 batch 512。
-        BergamotEngine(EngineConfig(threads = 1, miniBatchWords = 512)).use { engine ->
+        FoxletEngine(EngineConfig(threads = 1, miniBatchWords = 512)).use { engine ->
             val model = ModelFiles.fromDirectory(dir)
             // first_ms includes service creation and the lazy model load;
             // second/third are warm. Logged for the app-path latency record.
@@ -187,7 +187,7 @@ class NativeSmokeTest {
         val corpus = corpusFile.readLines().dropLastWhile { it.isEmpty() }
         Assume.assumeTrue("expected $CORPUS_LINES lines, got ${corpus.size}", corpus.size == CORPUS_LINES)
 
-        BergamotEngine(EngineConfig(threads = 2, miniBatchWords = 512)).use { engine ->
+        FoxletEngine(EngineConfig(threads = 2, miniBatchWords = 512)).use { engine ->
             val model = ModelFiles.fromDirectory(dir)
             val t0 = System.nanoTime()
             val first = engine.translate(corpus, model)
@@ -221,10 +221,10 @@ class NativeSmokeTest {
         val model = ModelFiles.fromDirectory(dir)
         assertEquals("en", model.sourceLanguage)
 
-        val withTable = BergamotEngine(EngineConfig(threads = 1)).use { engine ->
+        val withTable = FoxletEngine(EngineConfig(threads = 1)).use { engine ->
             engine.translate(ABBREVIATION_LINES, model)
         }
-        val withoutTable = BergamotEngine(EngineConfig(threads = 1, nonbreakingPrefixes = false)).use { engine ->
+        val withoutTable = FoxletEngine(EngineConfig(threads = 1, nonbreakingPrefixes = false)).use { engine ->
             engine.translate(ABBREVIATION_LINES, model)
         }
         Log.i(TAG, "ssplit with=$withTable")
@@ -241,13 +241,13 @@ class NativeSmokeTest {
      * 空闲回收在真机上真的会自己发生:保温期设成 1.5 s,翻一句,然后什么都不做
      * 地等 3 s,常驻模型数必须自己回到 0(定时清扫跑过了,原生侧已析构)。
      * 之后再翻同一句仍要译对 —— 重载对调用方透明 —— 重载那一句的耗时打到
-     * logcat(tag `bergamot-test`),用来对账「保温多久才划算」。
+     * logcat(tag `foxlet-test`),用来对账「保温多久才划算」。
      * 需要模型,没有则跳过(Assume),不算失败。
      */
     @Test
     fun idleUnloadReclaimsTheModelAndReloadsOnDemand() = runBlocking {
         val dir = modelDirOrSkip()
-        BergamotEngine(EngineConfig(threads = 1, idleUnloadMillis = IDLE_MILLIS)).use { engine ->
+        FoxletEngine(EngineConfig(threads = 1, idleUnloadMillis = IDLE_MILLIS)).use { engine ->
             val model = ModelFiles.fromDirectory(dir)
             assertEquals(CANONICAL_ZH, engine.translate(listOf(CANONICAL_SOURCE), model).single())
             assertEquals("model should be resident right after a translation", 1, engine.loadedModelCount().get())
@@ -275,7 +275,7 @@ class NativeSmokeTest {
     }
 
     private companion object {
-        const val TAG = "bergamot-test"
+        const val TAG = "foxlet-test"
 
         const val MB = 1024L * 1024L
 

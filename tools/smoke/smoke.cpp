@@ -671,7 +671,7 @@ int main(int argc, char *argv[]) {
     emit("load_ms", msSince(loadStart));
     emitMem("after_load");
 
-    // Same batch entry points the AAR takes (bergamot_jni.cpp translate/translatePivot): the whole corpus is
+    // Same batch entry points the AAR takes (foxlet_jni.cpp translate/translatePivot): the whole corpus is
     // submitted in one step, so the hash below is comparable with the blocking one above.
     runPasses([&](std::vector<std::string> &&sources, const std::vector<ResponseOptions> &options) {
       // The options here are uniform (all default); the batch API takes one for the whole array.

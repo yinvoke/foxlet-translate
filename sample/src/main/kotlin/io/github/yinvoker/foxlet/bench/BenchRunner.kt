@@ -8,7 +8,7 @@ import com.google.mlkit.common.model.DownloadConditions
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.TranslatorOptions
-import io.github.yinvoker.foxlet.BergamotEngine
+import io.github.yinvoker.foxlet.FoxletEngine
 import io.github.yinvoker.foxlet.EngineConfig
 import io.github.yinvoker.foxlet.ModelFiles
 import io.github.yinvoker.foxlet.ThreadTuning
@@ -19,14 +19,14 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 /**
- * One-tap benchmark: ML Kit vs Bergamot on the same fixed test set
+ * One-tap benchmark: ML Kit vs Foxlet on the same fixed test set
  * (FLORES-200 devtest, first 200 sentences), en->zh and ja->zh.
  * Emits bench_result_<threads>t.json into the app's files dirs (external +
  * internal mirror) for host-side scoring (COMET) and curve plotting.
  */
 class BenchRunner(
     private val context: Context,
-    private val bergamotThreads: Int,
+    private val foxletThreads: Int,
     private val workspaceMb: Int,
     private val log: (String) -> Unit,
 ) {
@@ -55,7 +55,7 @@ class BenchRunner(
      * What E3 auto-tiering *would* pick on this device, per workload.
      *
      * Recorded only. The benchmark keeps running the thread count the caller
-     * asked for ([bergamotThreads]), because the whole point of the sweep is to
+     * asked for ([foxletThreads]), because the whole point of the sweep is to
      * measure every tier — this is the column that lets host-side scoring say
      * which of those tiers the picker would have chosen.
      */
@@ -90,13 +90,13 @@ class BenchRunner(
         val jpn = asset("jpn.txt")
         val phases = JSONArray()
 
-        // --- ML Kit (once; identical across bergamot thread configs) ---
-        if (bergamotThreads == 1) {
+        // --- ML Kit (once; identical across Foxlet thread configs) ---
+        if (foxletThreads == 1) {
             phases.put(mlkitPhase("mlkit-enzh", TranslateLanguage.ENGLISH, eng))
             phases.put(mlkitPhase("mlkit-jazh", TranslateLanguage.JAPANESE, jpn))
         }
 
-        // --- Bergamot ---
+        // --- Foxlet ---
         // External first (adb-push friendly on older Androids), internal as
         // fallback (run-as friendly where shell can't touch Android/data).
         val modelsDir = listOf(File(filesDir, "models"), File(context.filesDir, "models"))
@@ -110,11 +110,11 @@ class BenchRunner(
         val ready = enzh.listFiles()?.any { it.name.endsWith(".bin") } == true &&
             jaen.listFiles()?.any { it.name.endsWith(".bin") } == true
         if (!ready) {
-            log("!! bergamot models missing under ${modelsDir.absolutePath} (adb push models/ there); skipping bergamot phases")
+            log("!! Foxlet models missing under ${modelsDir.absolutePath} (adb push models/ there); skipping Foxlet phases")
         } else {
             // One engine per process run: marian keeps process-global state and a
             // second AsyncService in the same process fails (known engine limit).
-            val t = bergamotThreads
+            val t = foxletThreads
             // idleUnloadMillis < 0: no automatic unloading. The phases below
             // decide themselves when a model goes away, and a timer firing
             // mid-phase would land in the memory curve.
@@ -122,17 +122,17 @@ class BenchRunner(
             // through so the `--ei workspace` switch and the result-file suffix
             // keep working against older result sets.
             @Suppress("DEPRECATION")
-            val engine = BergamotEngine(EngineConfig(threads = t, workspaceMb = workspaceMb, idleUnloadMillis = -1))
+            val engine = FoxletEngine(EngineConfig(threads = t, workspaceMb = workspaceMb, idleUnloadMillis = -1))
             try {
-                phases.put(bergamotPhase("bergamot-enzh-${t}t", engine) {
+                phases.put(foxletPhase("bergamot-enzh-${t}t", engine) {
                     it.translate(eng, ModelFiles.fromDirectory(enzh))
                 })
                 engine.releaseAllModels()
-                phases.put(bergamotPhase("bergamot-jazh-pivot-${t}t", engine) {
+                phases.put(foxletPhase("bergamot-jazh-pivot-${t}t", engine) {
                     it.translatePivot(jpn, ModelFiles.fromDirectory(jaen), ModelFiles.fromDirectory(enzh))
                 })
                 engine.releaseAllModels()
-                phases.put(bergamotPhase("bergamot-jazh-seq-${t}t", engine) {
+                phases.put(foxletPhase("bergamot-jazh-seq-${t}t", engine) {
                     // RAM-capped variant: one model resident at a time.
                     val english = it.translate(jpn, ModelFiles.fromDirectory(jaen))
                     it.releaseAllModels()
@@ -150,7 +150,7 @@ class BenchRunner(
             .put("n", eng.size)
             .put("phases", phases)
         val suffix = if (workspaceMb == 128) "" else "-w$workspaceMb"
-        val out = File(filesDir, "bench_result_${bergamotThreads}t$suffix.json")
+        val out = File(filesDir, "bench_result_${foxletThreads}t$suffix.json")
         out.writeText(result.toString())
         // Mirror into internal storage: on Android 14+ neither shell nor run-as
         // can read the external app dir, so this copy is what adb collects.
@@ -159,7 +159,7 @@ class BenchRunner(
         // keep overwriting so adb collection scripts stay unchanged).
         val stamp = java.text.SimpleDateFormat("yyyyMMdd-HHmmss", java.util.Locale.US)
             .format(java.util.Date(result.getLong("timestamp")))
-        File(File(context.filesDir, "records").apply { mkdirs() }, "bench_${stamp}_${bergamotThreads}t$suffix.json")
+        File(File(context.filesDir, "records").apply { mkdirs() }, "bench_${stamp}_${foxletThreads}t$suffix.json")
             .writeText(result.toString())
         log("done -> ${out.absolutePath}")
         return result
@@ -206,25 +206,26 @@ class BenchRunner(
         return phase
     }
 
-    private suspend fun bergamotPhase(
+    private suspend fun foxletPhase(
         name: String,
-        engine: BergamotEngine,
-        block: suspend (BergamotEngine) -> List<String>,
+        engine: FoxletEngine,
+        block: suspend (FoxletEngine) -> List<String>,
     ): JSONObject {
-        log("[$name] starting")
+        val displayName = name.replace("bergamot", "Foxlet")
+        log("[$displayName] starting")
         val sampler = MetricsSampler().also { it.start() }
-        val phase = JSONObject().put("name", name).put("engine", "bergamot").put("threads", bergamotThreads)
+        val phase = JSONObject().put("name", name).put("engine", "bergamot").put("threads", foxletThreads)
         try {
             val t0 = System.nanoTime()
             val outputs = block(engine)
             phase.put("totalMs", (System.nanoTime() - t0) / 1_000_000)
             phase.put("outputs", JSONArray().also { arr -> outputs.forEach { arr.put(it) } })
         } catch (e: Exception) {
-            log("[$name] FAILED: $e")
+            log("[$displayName] FAILED: $e")
             phase.put("error", e.toString())
         }
         phase.put("metrics", sampler.stopAndReport())
-        log("[$name] finished")
+        log("[$displayName] finished")
         return phase
     }
 }

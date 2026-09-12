@@ -11,7 +11,7 @@ import org.junit.Test
  * whole idle policy runs here with no Android, no JNI and no sleeping: the
  * test moves time by hand and fires the armed sweep itself.
  *
- * [BergamotEngine] cannot be built in a JVM test — its constructor reaches
+ * [FoxletEngine] cannot be built in a JVM test — its constructor reaches
  * [NativeBridge] and `System.loadLibrary` — which is exactly why the policy
  * lives in its own class.
  */

@@ -247,11 +247,11 @@ class ModelFilesTest {
     }
 
     @Test fun `engine lease is exclusive and close is repeatable`() {
-        val engine = BergamotEngine()
-        try { assertThrows(IllegalStateException::class.java) { BergamotEngine() } }
+        val engine = FoxletEngine()
+        try { assertThrows(IllegalStateException::class.java) { FoxletEngine() } }
         finally { engine.close() }
         engine.close()
         assertThrows(IllegalStateException::class.java) { engine.loadedModelCount() }
-        BergamotEngine().close()
+        FoxletEngine().close()
     }
 }

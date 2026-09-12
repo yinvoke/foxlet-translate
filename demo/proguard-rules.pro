@@ -3,7 +3,7 @@
 -keep class kotlin.jvm.internal.Lambda { *; }
 # These public SDK entry points are also called by the separate device-test APK.
 # This keeps that consumer API reachable; internal SDK code remains optimized.
--keep,allowoptimization,allowobfuscation class io.github.yinvoker.foxlet.BergamotEngine { public *; }
+-keep,allowoptimization,allowobfuscation class io.github.yinvoker.foxlet.FoxletEngine { public *; }
 -keep,allowoptimization,allowobfuscation class io.github.yinvoker.foxlet.ModelFiles { public *; }
 -keep,allowoptimization,allowobfuscation class io.github.yinvoker.foxlet.ModelCatalog { public *; }
 # AndroidX Test and Kotlin test code run from a separate APK and share the target

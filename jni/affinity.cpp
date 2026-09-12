@@ -10,7 +10,7 @@
 #include <utility>
 #include <vector>
 
-namespace bergamot_android {
+namespace foxlet_android {
 
 std::size_t fastCoreCount() {
   static const std::size_t probed = [] {
@@ -49,12 +49,12 @@ std::size_t fastCoreCount() {
   return probed;
 }
 
-}  // namespace bergamot_android
+}  // namespace foxlet_android
 
 #else  // !defined(__linux__)
 
-namespace bergamot_android {
+namespace foxlet_android {
 std::size_t fastCoreCount() { return 0; }
-}  // namespace bergamot_android
+}  // namespace foxlet_android
 
 #endif

@@ -2,7 +2,7 @@ package io.github.yinvoker.foxlet
 
 /**
  * Raw JNI surface. Blocking, batch-in/batch-out; no threading or lifecycle
- * here — [BergamotEngine] owns both. Handles are opaque native pointers.
+ * here — [FoxletEngine] owns both. Handles are opaque native pointers.
  *
  * Every call for a given service handle must be made from one and the same
  * thread: at `workers <= 1` the native side is a BlockingService, which is not
@@ -10,7 +10,7 @@ package io.github.yinvoker.foxlet
  */
 internal object NativeBridge {
     init {
-        System.loadLibrary("bergamot")
+        System.loadLibrary("foxlet")
     }
 
     /**

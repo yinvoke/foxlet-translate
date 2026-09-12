@@ -2,7 +2,7 @@ package io.github.yinvoker.foxlet.demo
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import io.github.yinvoker.foxlet.BergamotEngine
+import io.github.yinvoker.foxlet.FoxletEngine
 import io.github.yinvoker.foxlet.ModelCatalog
 import io.github.yinvoker.foxlet.ModelFiles
 import java.io.File
@@ -18,7 +18,7 @@ class DeliveryTest {
     @Test fun finalAarTranslatesAndRejectsDamagedModels() = runBlocking {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         val model = ModelCatalog.download(File(context.filesDir, "delivery-test-models"), "en", "zh-Hans")
-        BergamotEngine().use { engine ->
+        FoxletEngine().use { engine ->
             val result = engine.translate(listOf("Hello, world.", "A happy day. 😀", "A\u0000B"), model)
             assertEquals(3, result.size)
             assertTrue(result[0].isNotBlank())
@@ -40,11 +40,11 @@ class DeliveryTest {
         }
         val damaged = ModelFiles(bad, model.srcVocab, model.trgVocab, model.shortlist,
             expectedSha256 = assets.associate { it.name to sha(it) })
-        BergamotEngine().use { engine ->
+        FoxletEngine().use { engine ->
             try { engine.translate(listOf("Hello."), damaged); fail("damaged model accepted") }
             catch (_: RuntimeException) { /* required recoverable failure */ }
         }
-        BergamotEngine().use { assertTrue(it.translate(listOf("Hello, world."), model).single().isNotBlank()) }
+        FoxletEngine().use { assertTrue(it.translate(listOf("Hello, world."), model).single().isNotBlank()) }
         for (name in listOf("SOURCE.txt", "NOTICE.txt", "THIRD_PARTY_NOTICES.txt")) {
             assertNotNull(javaClass.getResourceAsStream("/io/github/yinvoker/foxlet/licenses/$name"))
         }

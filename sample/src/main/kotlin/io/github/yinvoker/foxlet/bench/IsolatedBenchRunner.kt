@@ -9,7 +9,7 @@ import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.Translator
 import com.google.mlkit.nl.translate.TranslatorOptions
-import io.github.yinvoker.foxlet.BergamotEngine
+import io.github.yinvoker.foxlet.FoxletEngine
 import io.github.yinvoker.foxlet.EngineConfig
 import io.github.yinvoker.foxlet.ModelFiles
 import java.io.File
@@ -86,7 +86,7 @@ class IsolatedBenchRunner(
         fun save() = output.writeText(report.toString(2) + "\n")
         save()
         var translator: Translator? = null
-        var engine: BergamotEngine? = null
+        var engine: FoxletEngine? = null
         try {
             if (prepare) {
                 translator = newTranslator()
@@ -99,7 +99,7 @@ class IsolatedBenchRunner(
                 val models = if (backend == "bergamot") {
                     listOfNotNull(context.getExternalFilesDir(null)?.let { File(it, "models") }, File(context.filesDir, "models"))
                         .firstOrNull { File(it, "enzh").listFiles()?.any { f -> f.name.endsWith(".bin") } == true }
-                        ?: error("Bergamot models missing")
+                        ?: error("Foxlet models missing")
                 } else null
                 val idle = List(6) { Debug.getPss().also { Thread.sleep(250) } }.sorted()
                 report.put("baseline_pss_mib", (idle[2] + idle[3]) / 2048.0)
@@ -113,7 +113,7 @@ class IsolatedBenchRunner(
                             val client = translator ?: newTranslator().also { translator = it }
                             inputs.map { Tasks.await(client.translate(it), 120, TimeUnit.SECONDS) }
                         } else {
-                            val client = engine ?: BergamotEngine(EngineConfig(
+                            val client = engine ?: FoxletEngine(EngineConfig(
                                 threads = threads, cacheSize = 0, idleUnloadMillis = -1,
                             )).also { engine = it }
                             val enzh = ModelFiles.fromDirectory(File(models!!, "enzh"))

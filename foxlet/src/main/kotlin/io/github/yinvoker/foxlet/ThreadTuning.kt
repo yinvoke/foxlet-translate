@@ -107,7 +107,7 @@ object ThreadTuning {
         val native = try {
             NativeBridge.fastCoreCount()
         } catch (e: LinkageError) {
-            // No libbergamot for this ABI, or it failed to load. Tiering can
+            // No libfoxlet for this ABI, or it failed to load. Tiering can
             // still answer usefully.
             0
         }

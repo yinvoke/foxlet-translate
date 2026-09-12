@@ -1,8 +1,8 @@
 # Native build entry. Consumed two ways:
 #   - host (ARM only): engine + tools/smoke, driven by plain cmake
-#   - Android: engine + jni, driven by AGP externalNativeBuild (see bergamot/)
+#   - Android: engine + jni, driven by AGP externalNativeBuild (see foxlet/)
 cmake_minimum_required(VERSION 3.22)
-project(bergamot_android CXX C)
+project(foxlet_android CXX C)
 
 # Old cmake_minimum_required() calls throughout the vendored tree.
 set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
@@ -17,7 +17,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # ARM, wrong string_view, etc.). Mirrors the flag set the engine itself is
 # built with.
 if(NOT CMAKE_SYSTEM_PROCESSOR MATCHES "^(aarch64|arm64|armv8)")
-  message(FATAL_ERROR "bergamot-android is ARM-only (see engine/UPSTREAM.md)")
+  message(FATAL_ERROR "Foxlet Translate is ARM-only (see engine/UPSTREAM.md)")
 endif()
 add_compile_definitions(ARM FMA SSE COMPILE_CPU=1 USE_PTHREADS USE_SENTENCEPIECE _USE_INTERNAL_STRING_VIEW)
 add_compile_options(-flax-vector-conversions -fno-strict-aliasing)
@@ -39,7 +39,7 @@ if(ANDROID)
 
   # Hidden by default. --exclude-libs already demoted everything that arrives
   # from an archive; this covers what is compiled straight into the .so
-  # (jni/bergamot_jni.cpp, jni/affinity.cpp and the templates, vtables and
+  # (jni/foxlet_jni.cpp, jni/affinity.cpp and the templates, vtables and
   # type_infos they emit) and lets the compiler stop routing intra-library
   # calls through the PLT. The seven Java_* stay exported: jni.h defines
   # JNIEXPORT as visibility("default"), which wins over the default here.

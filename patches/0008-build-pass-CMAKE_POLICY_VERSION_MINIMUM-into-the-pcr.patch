@@ -1,5 +1,5 @@
 From c2d961d7e4e9d8c3e94235646ace708f747bed29 Mon Sep 17 00:00:00 2001
-From: yinvoker <yinvoker@outlook.com>
+From: yinvoker <redacted@example.invalid>
 Date: Mon, 31 Aug 2026 20:23:15 +0800
 Subject: [PATCH] build: pass CMAKE_POLICY_VERSION_MINIMUM into the pcre2
  external project; restore trimmed 3rd_party CMakeLists
@@ -7,7 +7,6 @@ Subject: [PATCH] build: pass CMAKE_POLICY_VERSION_MINIMUM into the pcre2
 The pcre2 sub-configure is a separate cmake process and does not inherit the
 policy floor set by the top-level lists file.
 
-Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>
 ---
  CMakeLists.txt                                | 16 ++++++++
  engine/3rd_party/CMakeLists.txt               |  6 +++

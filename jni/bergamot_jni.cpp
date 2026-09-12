@@ -1,4 +1,4 @@
-// JNI glue for io.github.yinvoker.bergamot.NativeBridge.
+// JNI glue for io.github.yinvoker.foxlet.NativeBridge.
 // Thin by design: batch in, batch out, blocking from the caller's view.
 //
 // Two execution modes behind one handle, chosen once at createService():
@@ -17,6 +17,8 @@
 #include "tensors/cpu/smmla_gemm.h"
 
 #include "affinity.h"
+#include "utf_codec.h"
+#include <limits>
 
 #include <memory>
 #include <string>
@@ -50,24 +52,41 @@ struct ServiceHandle {
 };
 
 void throwJava(JNIEnv *env, const std::string &message) {
+  if (env->ExceptionCheck()) return; // Preserve the original Java allocation/array error.
+  // ThrowNew also expects MUTF-8. Keep diagnostics ASCII; paths may contain Unicode.
+  std::string safe = message;
+  for (auto& c : safe) if (static_cast<unsigned char>(c) >= 128) c = '?';
   jclass cls = env->FindClass("java/lang/RuntimeException");
-  if (cls != nullptr) env->ThrowNew(cls, message.c_str());
+  if (cls != nullptr) env->ThrowNew(cls, safe.c_str());
 }
 
 std::string toStdString(JNIEnv *env, jstring value) {
-  const char *chars = env->GetStringUTFChars(value, nullptr);
-  std::string result(chars == nullptr ? "" : chars);
-  if (chars != nullptr) env->ReleaseStringUTFChars(value, chars);
-  return result;
+  if (!value) throw std::invalid_argument("Null string");
+  jsize length = env->GetStringLength(value);
+  const jchar* chars = env->GetStringChars(value, nullptr);
+  if (!chars) throw std::runtime_error("Cannot read Java string");
+  try {
+    // Copy code units without aliasing jchar as char16_t.
+    std::u16string utf16(chars, chars + length);
+    env->ReleaseStringChars(value, chars);
+    chars = nullptr;
+    return foxlet::toUtf8(utf16);
+  } catch (...) {
+    if (chars) env->ReleaseStringChars(value, chars);
+    throw;
+  }
 }
 
 std::vector<std::string> toStdStrings(JNIEnv *env, jobjectArray array) {
+  if (!array) throw std::invalid_argument("Null texts array");
   jsize n = env->GetArrayLength(array);
   std::vector<std::string> result;
   result.reserve(n);
   for (jsize i = 0; i < n; ++i) {
     auto element = static_cast<jstring>(env->GetObjectArrayElement(array, i));
-    result.push_back(toStdString(env, element));
+    if (env->ExceptionCheck()) throw std::runtime_error("Cannot read texts array");
+    try { result.push_back(toStdString(env, element)); }
+    catch (...) { if (element) env->DeleteLocalRef(element); throw; }
     env->DeleteLocalRef(element);
   }
   return result;
@@ -82,16 +101,28 @@ marian::bergamot::AlignedMemory toAlignedMemory(JNIEnv *env, jbyteArray bytes) {
   if (length <= 0) return marian::bergamot::AlignedMemory();
   marian::bergamot::AlignedMemory memory(static_cast<size_t>(length), 64);
   env->GetByteArrayRegion(bytes, 0, length, reinterpret_cast<jbyte *>(memory.begin()));
+  if (env->ExceptionCheck()) throw std::runtime_error("Cannot read prefix bytes");
   return memory;
 }
 
 jobjectArray toJavaStrings(JNIEnv *env, const std::vector<Response> &responses) {
+  if (responses.size() > static_cast<size_t>(std::numeric_limits<jsize>::max()))
+    throw std::length_error("Too many translations");
   jclass stringClass = env->FindClass("java/lang/String");
+  if (!stringClass) return nullptr;
   jobjectArray result = env->NewObjectArray(static_cast<jsize>(responses.size()), stringClass, nullptr);
+  env->DeleteLocalRef(stringClass);
+  if (!result) return nullptr;
   for (jsize i = 0; i < static_cast<jsize>(responses.size()); ++i) {
-    jstring text = env->NewStringUTF(responses[i].target.text.c_str());
+    auto utf16 = foxlet::toUtf16(responses[i].target.text);
+    if (utf16.size() > static_cast<size_t>(std::numeric_limits<jsize>::max())) throw std::length_error("Translation too long");
+    std::vector<jchar> chars(utf16.begin(), utf16.end());
+    static const jchar empty = 0;
+    jstring text = env->NewString(chars.empty() ? &empty : chars.data(), static_cast<jsize>(chars.size()));
+    if (!text) return nullptr;
     env->SetObjectArrayElement(result, i, text);
     env->DeleteLocalRef(text);
+    if (env->ExceptionCheck()) return nullptr;
   }
   return result;
 }
@@ -109,7 +140,7 @@ std::vector<ResponseOptions> perTextOptions(size_t n, bool html) {
 extern "C" {
 
 JNIEXPORT jlong JNICALL
-Java_io_github_yinvoker_bergamot_NativeBridge_createService(JNIEnv *env, jobject, jint workers, jint cacheSize) {
+Java_io_github_yinvoker_foxlet_NativeBridge_createService(JNIEnv *env, jobject, jint workers, jint cacheSize) {
   try {
     const size_t numWorkers = workers < 1 ? 1 : static_cast<size_t>(workers);
     const bool blocking = numWorkers <= 1;
@@ -155,7 +186,7 @@ Java_io_github_yinvoker_bergamot_NativeBridge_createService(JNIEnv *env, jobject
 }
 
 JNIEXPORT void JNICALL
-Java_io_github_yinvoker_bergamot_NativeBridge_destroyService(JNIEnv *, jobject, jlong service) {
+Java_io_github_yinvoker_foxlet_NativeBridge_destroyService(JNIEnv *, jobject, jlong service) {
   delete reinterpret_cast<ServiceHandle *>(service);
 }
 
@@ -163,12 +194,12 @@ Java_io_github_yinvoker_bergamot_NativeBridge_destroyService(JNIEnv *, jobject, 
 // or 0 when the topology gives no usable answer (see affinity.h). Free of any
 // service handle on purpose — the tier is picked before the engine exists.
 JNIEXPORT jint JNICALL
-Java_io_github_yinvoker_bergamot_NativeBridge_fastCoreCount(JNIEnv *, jobject) {
+Java_io_github_yinvoker_foxlet_NativeBridge_fastCoreCount(JNIEnv *, jobject) {
   return static_cast<jint>(bergamot_android::fastCoreCount());
 }
 
 JNIEXPORT jlong JNICALL
-Java_io_github_yinvoker_bergamot_NativeBridge_loadModel(JNIEnv *env, jobject, jlong service, jstring configYaml,
+Java_io_github_yinvoker_foxlet_NativeBridge_loadModel(JNIEnv *env, jobject, jlong service, jstring configYaml,
                                                         jbyteArray ssplitPrefix) {
   try {
     auto *svc = reinterpret_cast<ServiceHandle *>(service);
@@ -198,7 +229,7 @@ Java_io_github_yinvoker_bergamot_NativeBridge_loadModel(JNIEnv *env, jobject, jl
   }
 }
 
-// D0: releasing a model needs the service. Dropping the handle alone frees
+// releasing a model needs the service. Dropping the handle alone frees
 // nothing. Under async, each worker keeps an owning reference to the model it
 // last translated with, the aggregate queue keeps one too, and the per-thread
 // GEMM weight-packing caches only clear at the next GEMM on that thread --
@@ -207,7 +238,7 @@ Java_io_github_yinvoker_bergamot_NativeBridge_loadModel(JNIEnv *env, jobject, jl
 // same kind of reference. Both services' release() close all of that and report
 // whether the model was actually destroyed.
 JNIEXPORT jboolean JNICALL
-Java_io_github_yinvoker_bergamot_NativeBridge_releaseModel(JNIEnv *, jobject, jlong service, jlong model) {
+Java_io_github_yinvoker_foxlet_NativeBridge_releaseModel(JNIEnv *, jobject, jlong service, jlong model) {
   auto *handle = reinterpret_cast<ModelHandle *>(model);
   if (handle == nullptr) return JNI_TRUE;
   bool destroyed = false;
@@ -224,7 +255,7 @@ Java_io_github_yinvoker_bergamot_NativeBridge_releaseModel(JNIEnv *, jobject, jl
 }
 
 JNIEXPORT jobjectArray JNICALL
-Java_io_github_yinvoker_bergamot_NativeBridge_translate(JNIEnv *env, jobject, jlong service, jlong model,
+Java_io_github_yinvoker_foxlet_NativeBridge_translate(JNIEnv *env, jobject, jlong service, jlong model,
                                                         jobjectArray texts, jboolean html) {
   try {
     auto *svc = reinterpret_cast<ServiceHandle *>(service);
@@ -249,7 +280,7 @@ Java_io_github_yinvoker_bergamot_NativeBridge_translate(JNIEnv *env, jobject, jl
 }
 
 JNIEXPORT jobjectArray JNICALL
-Java_io_github_yinvoker_bergamot_NativeBridge_translatePivot(JNIEnv *env, jobject, jlong service, jlong first,
+Java_io_github_yinvoker_foxlet_NativeBridge_translatePivot(JNIEnv *env, jobject, jlong service, jlong first,
                                                              jlong second, jobjectArray texts, jboolean html) {
   try {
     auto *svc = reinterpret_cast<ServiceHandle *>(service);

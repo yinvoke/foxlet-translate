@@ -1,5 +1,5 @@
 From a901c7e781bda5fff62cb842d13a3e58245d2da3 Mon Sep 17 00:00:00 2001
-From: yinvoker <yinvoker@outlook.com>
+From: yinvoker <redacted@example.invalid>
 Date: Sat, 5 Sep 2026 21:28:17 +0800
 Subject: [PATCH] =?UTF-8?q?perf:=20keep=20the=20Wemb=20tables=20int8=20?=
  =?UTF-8?q?=E2=80=94=20dequantise=20rows=20on=20lookup,=20reuse=20the=20ta?=
@@ -8,7 +8,6 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
 ---
  engine/marian-fork/src/common/binary.cpp      |  30 +++
  engine/marian-fork/src/layers/generic.cpp     |  77 ++++++-

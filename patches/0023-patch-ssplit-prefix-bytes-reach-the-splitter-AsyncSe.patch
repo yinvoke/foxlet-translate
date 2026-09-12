@@ -1,5 +1,5 @@
 From cb285dbff26729651ccaec9f3ef11676d1586313 Mon Sep 17 00:00:00 2001
-From: yinvoker <yinvoker@outlook.com>
+From: yinvoker <redacted@example.invalid>
 Date: Sun, 6 Sep 2026 23:03:10 +0800
 Subject: [PATCH] patch: ssplit prefix bytes reach the splitter;
  AsyncService::createCompatibleModel(config, MemoryBundle) (patch 0023)
@@ -8,7 +8,6 @@ text_processor.cpp tested memory.begin() == nullptr && memory.size(), which no
 AlignedMemory satisfies, so the byte-array route for ssplit-prefix-file was dead
 and every caller fell back to the file path. Upstream bug.
 
-Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
 ---
  engine/src/translator/service.h          | 7 +++++++
  engine/src/translator/text_processor.cpp | 6 +++++-

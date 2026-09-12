@@ -1,0 +1,1446 @@
+From f855a5bf58037137765ab87c303686c127479db2 Mon Sep 17 00:00:00 2001
+From: yinvoker <redacted@example.invalid>
+Date: Sat, 12 Sep 2026 10:11:58 +0800
+Subject: [PATCH] fix: validate native model inputs and preserve upstream
+ notices
+
+---
+ .../ssplit-cpp/cmake/FindPCRE2.cmake          |   1 +
+ .../src/3rd_party/ruy/ruy/cpuinfo.cc          |   1 +
+ .../sentencepiece/src/trainer_interface.cc    |   1 +
+ engine/marian-fork/src/common/binary.cpp      |  21 +-
+ .../src/common/binary_validation.h            |  72 ++++
+ engine/marian-fork/src/common/io.cpp          |  17 +-
+ engine/marian-fork/src/common/lifecycle.h     |   2 +-
+ .../src/data/sentencepiece_vocab.cpp          |  15 +-
+ engine/marian-fork/src/data/shortlist.cpp     |  52 +--
+ .../src/tensors/cpu/integer_common.cpp        |   8 +-
+ .../src/tensors/cpu/integer_common.h          |   6 +-
+ .../marian-fork/src/tensors/cpu/prod_blas.h   |   2 +-
+ .../src/tensors/cpu/ruy_interface.h           |  28 +-
+ .../src/tensors/cpu/smmla_gemm.cpp            |   6 +-
+ .../marian-fork/src/tensors/cpu/smmla_gemm.h  |   2 +-
+ engine/src/translator/LICENSE                 | 373 ++++++++++++++++++
+ engine/src/translator/byte_array_util.cpp     | 103 ++---
+ engine/src/translator/service.cpp             |  12 +-
+ engine/src/translator/service.h               |   8 +-
+ engine/src/translator/text_processor.cpp      |  13 +-
+ .../translator/threadsafe_batching_pool.cpp   |   2 +-
+ .../src/translator/threadsafe_batching_pool.h |  10 +-
+ engine/src/translator/translation_model.cpp   |  16 +-
+ engine/src/translator/translation_model.h     |   4 +-
+ 24 files changed, 589 insertions(+), 186 deletions(-)
+ create mode 100644 engine/marian-fork/src/common/binary_validation.h
+ create mode 100644 engine/src/translator/LICENSE
+
+diff --git a/engine/3rd_party/ssplit-cpp/cmake/FindPCRE2.cmake b/engine/3rd_party/ssplit-cpp/cmake/FindPCRE2.cmake
+index f4dab22..5743ffa 100644
+--- a/engine/3rd_party/ssplit-cpp/cmake/FindPCRE2.cmake
++++ b/engine/3rd_party/ssplit-cpp/cmake/FindPCRE2.cmake
+@@ -1,3 +1,4 @@
++# Modified by Foxlet Translate; original license and copyright retained.
+ # Depending on the value of SSPLIT_USE_INTERNAL_PRCRE2 this cmake file
+ # either tries to find the Perl Compatible Regular Expresison library (pcre2)
+ # on the system (when OFF), or downloads and compiles them locally (when ON).
+diff --git a/engine/marian-fork/src/3rd_party/ruy/ruy/cpuinfo.cc b/engine/marian-fork/src/3rd_party/ruy/ruy/cpuinfo.cc
+index 9f49bb0..faacb0d 100644
+--- a/engine/marian-fork/src/3rd_party/ruy/ruy/cpuinfo.cc
++++ b/engine/marian-fork/src/3rd_party/ruy/ruy/cpuinfo.cc
+@@ -1,3 +1,4 @@
++// Modified by Foxlet Translate; original license and copyright retained.
+ #include "ruy/cpuinfo.h"
+ #if defined(__aarch64__) && defined(__linux__)
+ #include <sys/auxv.h>
+diff --git a/engine/marian-fork/src/3rd_party/sentencepiece/src/trainer_interface.cc b/engine/marian-fork/src/3rd_party/sentencepiece/src/trainer_interface.cc
+index 6400c1c..87b075e 100644
+--- a/engine/marian-fork/src/3rd_party/sentencepiece/src/trainer_interface.cc
++++ b/engine/marian-fork/src/3rd_party/sentencepiece/src/trainer_interface.cc
+@@ -1,3 +1,4 @@
++// Modified by Foxlet Translate; original license and copyright retained.
+ // Copyright 2016 Google Inc.
+ //
+ // Licensed under the Apache License, Version 2.0 (the "License");
+diff --git a/engine/marian-fork/src/common/binary.cpp b/engine/marian-fork/src/common/binary.cpp
+index 6cf2fe2..72a15ae 100644
+--- a/engine/marian-fork/src/common/binary.cpp
++++ b/engine/marian-fork/src/common/binary.cpp
+@@ -1,4 +1,5 @@
+ #include "common/binary.h"
++#include "common/binary_validation.h"
+ #include "common/definitions.h"
+ #include "common/file_stream.h"
+ #include "common/io_item.h"
+@@ -23,14 +24,21 @@ struct Header {
+ template <typename T>
+ const T* get(const void*& current, uint64_t num = 1) {
+   const T* ptr = (const T*)current;
+-  current = (const T*)current + num;
++  current = static_cast<const char*>(current) + num * sizeof(T);
+   return ptr;
+ }
+
++// Serialized dimensions/padding need not be naturally aligned.
++template <typename T> T readValue(const void*& current) {
++  T value;
++  std::memcpy(&value, get<T>(current), sizeof(T));
++  return value;
++}
++
+ void loadItems(const void* current, std::vector<io::Item>& items, bool mapped) {
+   uint64_t totalBytesLoaded = 0;  // Track total bytes loaded
+
+-  uint64_t binaryFileVersion = *get<uint64_t>(current);
++  uint64_t binaryFileVersion = readValue<uint64_t>(current);
+   ABORT_IF(binaryFileVersion != BINARY_FILE_VERSION,
+            "Binary file versions do not match: {} (file) != {} (expected)",
+            binaryFileVersion,
+@@ -38,7 +46,7 @@ void loadItems(const void* current, std::vector<io::Item>& items, bool mapped) {
+
+   totalBytesLoaded += sizeof(uint64_t);  // Account for binaryFileVersion
+
+-  uint64_t numHeaders = *get<uint64_t>(current);  // number of item headers that follow
++  uint64_t numHeaders = readValue<uint64_t>(current);  // number of item headers that follow
+   totalBytesLoaded += sizeof(uint64_t);           // Account for numHeaders
+
+   const Header* headers = get<Header>(current, numHeaders);  // read that many headers
+@@ -64,11 +72,11 @@ void loadItems(const void* current, std::vector<io::Item>& items, bool mapped) {
+     items[i].shape.resize(len);
+     const int* arr = get<int>(current, len);            // read shape
+     totalBytesLoaded += len * sizeof(int);              // Account for shape bytes
+-    std::copy(arr, arr + len, items[i].shape.begin());  // copy to Item::shape
++    std::memcpy(items[i].shape.data(), arr, len * sizeof(int));  // copy to Item::shape
+   }
+
+   // move by offset bytes, aligned to 256-bytes boundary
+-  uint64_t offset = *get<uint64_t>(current);
++  uint64_t offset = readValue<uint64_t>(current);
+   totalBytesLoaded += sizeof(uint64_t);  // Account for offset metadata
+   get<char>(current, offset);
+   totalBytesLoaded += offset;  // Account for offset bytes
+@@ -92,7 +100,7 @@ void loadItems(const void* current, std::vector<io::Item>& items, bool mapped) {
+       if(items[i].name.find("Wemb") != std::string::npos) {  // Since Wemb need to be dequantised,
+                                                              // we have a special case for them
+ #ifdef ARM
+-        // PATCH D1/D2: keep the embedding table quantised. The stored bytes are
++        // keep the embedding table quantised. The stored bytes are
+         // already the row-major [vocab x dim] int8 table both consumers want:
+         // the input side dequantises the handful of rows it actually gathers
+         // (RowsDequantNodeOp) and the output side feeds the very same buffer to
+@@ -168,6 +176,7 @@ void loadItems(const std::string& fileName, std::vector<io::Item>& items) {
+ #endif
+
+   // Load items from buffer without mapping
++  validateModelBytes(buf.data(), buf.size());
+   loadItems(buf.data(), items, false);
+ }
+
+diff --git a/engine/marian-fork/src/common/binary_validation.h b/engine/marian-fork/src/common/binary_validation.h
+new file mode 100644
+index 0000000..0ff260f
+--- /dev/null
++++ b/engine/marian-fork/src/common/binary_validation.h
+@@ -0,0 +1,72 @@
++// Copyright (c) 2026 yinvoker. SPDX-License-Identifier: MIT
++#pragma once
++#include <cstdint>
++#include <cstring>
++#include <limits>
++#include <set>
++#include <stdexcept>
++#include <string>
++#include <vector>
++
++namespace marian { namespace io { namespace binary {
++// All input-controlled pointer movement uses remaining bytes, never unchecked sums.
++class CheckedBytes {
++  const unsigned char* p_;
++  size_t remaining_;
++public:
++  CheckedBytes(const void* data, size_t size) : p_(static_cast<const unsigned char*>(data)), remaining_(size) {
++    if (!data && size) throw std::invalid_argument("Null binary model");
++  }
++  size_t remaining() const { return remaining_; }
++  const unsigned char* take(uint64_t count) {
++    if (count > remaining_) throw std::invalid_argument("Truncated binary model");
++    const auto* out = p_;
++    if (count) p_ += static_cast<size_t>(count);
++    remaining_ -= static_cast<size_t>(count);
++    return out;
++  }
++  template<class T> T read() { T out; std::memcpy(&out, take(sizeof(T)), sizeof(T)); return out; }
++};
++inline void validateModelBytes(const void* data, size_t size) {
++  struct Header { uint64_t name, type, shape, bytes; };
++  CheckedBytes in(data, size);
++  if (in.read<uint64_t>() != 1) throw std::invalid_argument("Unsupported binary model version");
++  uint64_t count = in.read<uint64_t>();
++  if (!count || count > in.remaining() / sizeof(Header)) throw std::invalid_argument("Invalid tensor count");
++  std::vector<Header> headers;
++  headers.reserve(static_cast<size_t>(count));
++  for (uint64_t i = 0; i < count; ++i) headers.push_back(in.read<Header>());
++  std::set<std::string> names;
++  for (const auto& h : headers) {
++    if (!h.name) throw std::invalid_argument("Empty tensor name");
++    const auto* name = in.take(h.name);
++    if (name[h.name - 1] || std::memchr(name, 0, h.name - 1)) throw std::invalid_argument("Invalid tensor name");
++    if (!names.emplace(reinterpret_cast<const char*>(name), h.name - 1).second)
++      throw std::invalid_argument("Duplicate tensor name");
++  }
++  for (const auto& h : headers) {
++    if (!h.shape || h.shape > 4 || h.shape > in.remaining() / sizeof(int32_t))
++      throw std::invalid_argument("Invalid tensor rank");
++    uint64_t elements = 1;
++    for (uint64_t j = 0; j < h.shape; ++j) {
++      int32_t dim = in.read<int32_t>();
++      // Marian Shape uses signed int products; reject overflow before it reaches Shape.
++      if (dim <= 0 || elements > uint64_t(std::numeric_limits<int32_t>::max()) / uint64_t(dim))
++        throw std::invalid_argument("Invalid tensor dimensions");
++      elements *= static_cast<uint64_t>(dim);
++    }
++    const uint64_t width = h.type & 255;
++    const uint64_t kind = h.type & ~uint64_t(255);
++    const bool scalar = ((kind == 0x100 || kind == 0x200) && (width == 1 || width == 2 || width == 4 || width == 8))
++                     || (kind == 0x400 && (width == 2 || width == 4 || width == 8));
++    const bool quant = kind == 0x4100 && (width == 1 || width == 2);
++    if (!scalar && !quant) throw std::invalid_argument("Unsupported tensor type");
++    if (h.bytes < elements * width + (quant ? sizeof(float) : 0))
++      throw std::invalid_argument("Tensor data shorter than its shape");
++  }
++  uint64_t padding = in.read<uint64_t>();
++  in.take(padding);
++  for (const auto& h : headers) in.take(h.bytes);
++  if (in.remaining()) throw std::invalid_argument("Trailing binary model data");
++}
++}}}
+diff --git a/engine/marian-fork/src/common/io.cpp b/engine/marian-fork/src/common/io.cpp
+index 138337e..b43eb9c 100644
+--- a/engine/marian-fork/src/common/io.cpp
++++ b/engine/marian-fork/src/common/io.cpp
+@@ -1,3 +1,5 @@
++#include <cstring>
++#include <stdexcept>
+ #include "common/io.h"
+
+ #include "3rd_party/cnpy/cnpy.h"
+@@ -20,6 +22,15 @@ bool isBin(const std::string& fileName) {
+          && fileName.substr(fileName.length() - 4) == ".bin";
+ }
+
++// Modified by Foxlet Translate: do not let YAML read past its tensor buffer.
++static std::string boundedYaml(const Item& item) {
++  const auto length = item.bytes->size();
++  if (!length || item.mapped) throw std::invalid_argument("Invalid model YAML storage");
++  const auto* end = static_cast<const char*>(std::memchr(item.data(), 0, length));
++  if (!end) throw std::invalid_argument("Model YAML is not terminated within its tensor");
++  return std::string(item.data(), static_cast<size_t>(end - item.data()));
++}
++
+ void getYamlFromNpz(YAML::Node& yaml,
+                     const std::string& varName,
+                     const std::string& fileName) {
+@@ -33,7 +44,7 @@ void getYamlFromBin(YAML::Node& yaml,
+                     const std::string& fileName) {
+   auto item = binary::getItem(fileName, varName);
+   if(item.size() > 0)
+-    yaml = YAML::Load(item.data());
++    yaml = YAML::Load(boundedYaml(item));
+ }
+
+ void getYamlFromModel(YAML::Node& yaml,
+@@ -53,7 +64,7 @@ void getYamlFromModel(YAML::Node& yaml,
+                       const void* ptr) {
+   auto item = binary::getItem(ptr, varName);
+   if(item.size() > 0)
+-    yaml = YAML::Load(item.data());
++    yaml = YAML::Load(boundedYaml(item));
+ }
+
+ // Load YAML from item
+@@ -62,7 +73,7 @@ void getYamlFromModel(YAML::Node& yaml,
+                       const std::vector<Item>& items) {
+     for(auto& item : items) {
+       if(item.name == varName) {
+-        yaml = YAML::Load(item.data());
++        yaml = YAML::Load(boundedYaml(item));
+         return;
+       }
+     }
+diff --git a/engine/marian-fork/src/common/lifecycle.h b/engine/marian-fork/src/common/lifecycle.h
+index a3967ba..029f4e5 100644
+--- a/engine/marian-fork/src/common/lifecycle.h
++++ b/engine/marian-fork/src/common/lifecycle.h
+@@ -1,5 +1,5 @@
+ #pragma once
+-// D0: opt-in lifecycle tracing for model / graph / GEMM-packing-cache teardown.
++// opt-in lifecycle tracing for model / graph / GEMM-packing-cache teardown.
+ //
+ // Everything here is inert unless BERGAMOT_LIFECYCLE=1 is set in the
+ // environment before the process starts. The cost on a hot path is then
+diff --git a/engine/marian-fork/src/data/sentencepiece_vocab.cpp b/engine/marian-fork/src/data/sentencepiece_vocab.cpp
+index d406a58..4672ca0 100644
+--- a/engine/marian-fork/src/data/sentencepiece_vocab.cpp
++++ b/engine/marian-fork/src/data/sentencepiece_vocab.cpp
+@@ -173,9 +173,8 @@ public:
+
+     // Train the SentencePiece model
+     const auto status = sentencepiece::SentencePieceTrainer::Train(command.str());
+-    ABORT_IF(!status.ok(),
+-             "SentencePiece vocabulary error: {}",
+-             status.ToString());
++    // Foxlet: malformed vocabulary files are recoverable input errors.
++    if (!status.ok()) throw std::invalid_argument("SentencePiece vocabulary error: " + status.ToString());
+
+     LOG(info, "[SentencePiece] Removing {}", vocabPath + ".vocab");
+     ABORT_IF(remove((vocabPath + ".vocab").c_str()) != 0,
+@@ -299,9 +298,8 @@ public:
+     spm_.reset(new sentencepiece::SentencePieceProcessor());
+     const auto status = spm_->Load(vocabPath);
+
+-    ABORT_IF(!status.ok(),
+-             "SentencePiece vocabulary error: {}",
+-             status.ToString());
++    // Foxlet: malformed vocabulary files are recoverable input errors.
++    if (!status.ok()) throw std::invalid_argument("SentencePiece vocabulary error: " + status.ToString());
+
+     return spm_->GetPieceSize();
+   }
+@@ -315,9 +313,8 @@ public:
+     spm_.reset(new sentencepiece::SentencePieceProcessor());
+     const auto status = spm_->LoadFromSerializedProto(serialized);
+
+-    ABORT_IF(!status.ok(),
+-             "SentencePiece vocabulary error: {}",
+-             status.ToString());
++    // Foxlet: malformed vocabulary files are recoverable input errors.
++    if (!status.ok()) throw std::invalid_argument("SentencePiece vocabulary error: " + status.ToString());
+
+     return spm_->GetPieceSize();
+
+diff --git a/engine/marian-fork/src/data/shortlist.cpp b/engine/marian-fork/src/data/shortlist.cpp
+index 4cd6bae..cae7fbb 100644
+--- a/engine/marian-fork/src/data/shortlist.cpp
++++ b/engine/marian-fork/src/data/shortlist.cpp
+@@ -1,5 +1,7 @@
+ #include "shortlist.h"
+ #include <queue>
++#include <stdexcept>
++#include <cstring>
+
+ namespace marian {
+ namespace data {
+@@ -155,19 +157,16 @@ Ptr<Shortlist> LexicalShortlistGenerator::generate(Ptr<data::CorpusBatch> batch)
+ }
+
+ void BinaryShortlistGenerator::contentCheck() {
+-  bool failFlag = 0;
+-  // The offset table has to be within the size of shortlists.
+-  for(int i = 0; i < wordToOffsetSize_-1; i++)
+-    failFlag |= wordToOffset_[i] >= shortListsSize_;
+-
+-  // The last element of wordToOffset_ must equal shortListsSize_
+-  failFlag |= wordToOffset_[wordToOffsetSize_-1] != shortListsSize_;
+-
+-  // The vocabulary indices have to be within the vocabulary size.
+-  size_t vSize = trgVocab_->size();
+-  for(int j = 0; j < shortListsSize_; j++)
+-    failFlag |= shortLists_[j] >= vSize;
+-  ABORT_IF(failFlag, "Error: shortlist indices are out of bounds");
++  if (wordToOffsetSize_ != srcVocab_->size() + 1 ||
++      (shared_ && srcVocab_->size() != trgVocab_->size()))
++    throw std::invalid_argument("Shortlist vocabulary size mismatch");
++  for (size_t i = 0; i + 1 < wordToOffsetSize_; ++i)
++    if (wordToOffset_[i] > wordToOffset_[i + 1] || wordToOffset_[i] > shortListsSize_)
++      throw std::invalid_argument("Invalid shortlist offset");
++  if (wordToOffset_[0] != 0 || wordToOffset_[wordToOffsetSize_ - 1] != shortListsSize_)
++    throw std::invalid_argument("Invalid shortlist sentinel");
++  for (size_t j = 0; j < shortListsSize_; ++j)
++    if (shortLists_[j] >= trgVocab_->size()) throw std::invalid_argument("Invalid shortlist token");
+ }
+
+ // load shortlist from buffer
+@@ -177,19 +176,25 @@ void BinaryShortlistGenerator::load(const void* ptr_void, size_t blobSize, bool
+    * wordToOffset array
+    * shortLists array
+    */
+-  ABORT_IF(blobSize < sizeof(Header), "Shortlist length {} too short to have a header", blobSize);
++  if (!ptr_void || blobSize < sizeof(Header)) throw std::invalid_argument("Truncated shortlist header");
+
+   const char *ptr = static_cast<const char*>(ptr_void);
+-  const Header &header = *reinterpret_cast<const Header*>(ptr);
++  Header header;
++  std::memcpy(&header, ptr, sizeof(header));
+   ptr += sizeof(Header);
+-  ABORT_IF(header.magic != BINARY_SHORTLIST_MAGIC, "Incorrect magic in binary shortlist");
+-
+-  uint64_t expectedSize = sizeof(Header) + header.wordToOffsetSize * sizeof(uint64_t) + header.shortListsSize * sizeof(WordIndex);
+-  ABORT_IF(expectedSize != blobSize, "Shortlist header claims file size should be {} but file is {}", expectedSize, blobSize);
+-
++  if (header.magic != BINARY_SHORTLIST_MAGIC) throw std::invalid_argument("Invalid shortlist magic");
++  size_t remaining = blobSize - sizeof(Header);
++  if (!header.wordToOffsetSize || header.wordToOffsetSize > remaining / sizeof(uint64_t))
++    throw std::invalid_argument("Invalid shortlist offset count");
++  remaining -= header.wordToOffsetSize * sizeof(uint64_t);
++  if (header.shortListsSize > remaining / sizeof(WordIndex) ||
++      header.shortListsSize * sizeof(WordIndex) != remaining)
++    throw std::invalid_argument("Invalid shortlist data length");
+   if (check) {
+-    uint64_t checksumActual = util::hashMem<uint64_t, uint64_t>(&header.firstNum, (blobSize - sizeof(header.magic) - sizeof(header.checksum)) / sizeof(uint64_t));
+-    ABORT_IF(checksumActual != header.checksum, "checksum check failed: this binary shortlist is corrupted");
++    uint64_t checksumActual = util::hashMem<uint64_t, uint64_t>(
++      reinterpret_cast<const uint64_t*>(ptr_void) + 2,
++      (blobSize - sizeof(header.magic) - sizeof(header.checksum)) / sizeof(uint64_t));
++    if (checksumActual != header.checksum) throw std::invalid_argument("Shortlist checksum mismatch");
+   }
+
+   firstNum_ = header.firstNum;
+@@ -206,8 +211,7 @@ void BinaryShortlistGenerator::load(const void* ptr_void, size_t blobSize, bool
+   shortLists_ = reinterpret_cast<const WordIndex*>(ptr);
+
+   // Verify offsets and vocab ids are within bounds if requested by user.
+-  if(check)
+-    contentCheck();
++  contentCheck(); // Foxlet: bounds must never depend on an optional checksum flag.
+ }
+
+ // load shortlist from file
+diff --git a/engine/marian-fork/src/tensors/cpu/integer_common.cpp b/engine/marian-fork/src/tensors/cpu/integer_common.cpp
+index 17053ff..f589057 100644
+--- a/engine/marian-fork/src/tensors/cpu/integer_common.cpp
++++ b/engine/marian-fork/src/tensors/cpu/integer_common.cpp
+@@ -1,6 +1,6 @@
+ #include "integer_common.h"
+
+-// D0: releaseThreadPackingCaches() needs the per-thread cache owners. Both are
++// releaseThreadPackingCaches() needs the per-thread cache owners. Both are
+ // architecture-gated exactly as their GEMM paths are.
+ #if defined(ARM)
+ #include "ruy_interface.h"
+@@ -26,7 +26,7 @@ namespace marian {
+ namespace cpu {
+ namespace integer {
+
+-// PATCH B: see integer_common.h. Function-local static so the counter is
++// see integer_common.h. Function-local static so the counter is
+ // initialised on first use regardless of translation-unit ordering.
+ std::atomic<uint64_t> &prepackGeneration() {
+   static std::atomic<uint64_t> generation{0};
+@@ -37,7 +37,7 @@ void bumpPrepackGeneration() {
+   prepackGeneration().fetch_add(1, std::memory_order_relaxed);
+ }
+
+-// D0: see integer_common.h. Both caches are per-thread, so this only ever
++// see integer_common.h. Both caches are per-thread, so this only ever
+ // touches the calling thread's state -- no locking needed, and no ordering
+ // against other threads' GEMMs.
+ void releaseThreadPackingCaches() {
+@@ -49,7 +49,7 @@ void releaseThreadPackingCaches() {
+ #endif
+ }
+
+-// PATCH D1/D2: see integer_common.h.
++// see integer_common.h.
+ namespace {
+ bool envFlag(const char *name) {
+   const char *value = std::getenv(name);
+diff --git a/engine/marian-fork/src/tensors/cpu/integer_common.h b/engine/marian-fork/src/tensors/cpu/integer_common.h
+index c3921dd..06007eb 100644
+--- a/engine/marian-fork/src/tensors/cpu/integer_common.h
++++ b/engine/marian-fork/src/tensors/cpu/integer_common.h
+@@ -31,7 +31,7 @@ namespace marian {
+ namespace cpu {
+ namespace integer {
+
+-// PATCH B: staleness guard for ruy's per-thread prepacked-weight cache.
++// staleness guard for ruy's per-thread prepacked-weight cache.
+ //
+ // The cache is keyed on {src data pointer, packed layout, zero point} and does
+ // NOT hash the buffer contents. A freed model whose weight allocation is later
+@@ -46,7 +46,7 @@ namespace integer {
+ std::atomic<uint64_t> &prepackGeneration();
+ void bumpPrepackGeneration();
+
+-// D0: drop THIS thread's GEMM weight-packing caches -- ruy's prepacked cache
++// drop THIS thread's GEMM weight-packing caches -- ruy's prepacked cache
+ // and, on i8mm CPUs, the SMMLA packed-B cache and scratch buffers. They are
+ // thread_local, so a model teardown on another thread cannot free them; the
+ // generation guard above only reclaims them lazily, at the next GEMM this
+@@ -57,7 +57,7 @@ void bumpPrepackGeneration();
+ // own weights. Only affects the calling thread.
+ void releaseThreadPackingCaches();
+
+-// PATCH D1/D2: the embedding tables (Wemb) stay int8 in memory.
++// the embedding tables (Wemb) stay int8 in memory.
+ //
+ // Upstream dequantises every Wemb item at load time (binary.cpp ->
+ // unquantizeWemb), which costs 4x the bytes of the stored table and then makes
+diff --git a/engine/marian-fork/src/tensors/cpu/prod_blas.h b/engine/marian-fork/src/tensors/cpu/prod_blas.h
+index 00a40b1..aeabdbb 100644
+--- a/engine/marian-fork/src/tensors/cpu/prod_blas.h
++++ b/engine/marian-fork/src/tensors/cpu/prod_blas.h
+@@ -53,7 +53,7 @@ inline void GemmRuy(const bool transA,
+                     const float beta,
+                     float *C,
+                     const int ldc) {
+-  // PATCH A: see ruy_interface.h -- one Context per thread, not per call.
++  // see ruy_interface.h -- one Context per thread, not per call.
+   // No cache policy is set here on purpose: the float path multiplies
+   // activations, which change every call and must never be cached.
+   static thread_local ruy::Context context;
+diff --git a/engine/marian-fork/src/tensors/cpu/ruy_interface.h b/engine/marian-fork/src/tensors/cpu/ruy_interface.h
+index e13d492..d74af3b 100644
+--- a/engine/marian-fork/src/tensors/cpu/ruy_interface.h
++++ b/engine/marian-fork/src/tensors/cpu/ruy_interface.h
+@@ -12,7 +12,7 @@
+ #include <cstring>
+ #include <string>
+ #include <vector>
+-#include "common/lifecycle.h"  // D0: prepacked-cache tracing
++#include "common/lifecycle.h"  // prepacked-cache tracing
+ #include "integer_common.h"
+ #include "smmla_gemm.h"
+ #pragma GCC diagnostic push
+@@ -35,11 +35,11 @@ namespace integer {
+
+ using Index = unsigned int;
+
+-/// PATCH A / D0: everything the int8 ruy GEMM keeps per thread. A Context owns
++/// everything the int8 ruy GEMM keeps per thread. A Context owns
+ /// a thread pool, allocators and the prepacked-weight cache; rebuilding it per
+ /// matmul is pure overhead, and Context is not thread-safe, so thread_local is
+ /// the matching lifetime -- it maps 1:1 onto the AsyncService worker model.
+-/// Hoisted into a named accessor (D0) so an explicit release can clear the
++/// A named accessor allows an explicit release to clear the
+ /// cache from outside the GEMM. `inline` gives one instance per thread across
+ /// all translation units.
+ struct RuyThreadState {
+@@ -59,7 +59,7 @@ inline RuyThreadState &threadRuyState() {
+   return state;
+ }
+
+-/// D0: drop THIS thread's ruy prepacked-weight cache. Only affects the calling
++/// drop THIS thread's ruy prepacked-weight cache. Only affects the calling
+ /// thread; the next GEMM re-packs, so this is a memory/latency trade only.
+ inline void releaseThreadRuyCache() {
+   RuyThreadState &state = threadRuyState();
+@@ -254,12 +254,12 @@ inline void transpose(const int8_t *input, Index rows, Index cols, int8_t *outpu
+       // The following is adapted from
+       // https://github.com/google/ruy/blob/878283640de7946a43053e8ebf4f15114fbc9156/example/example.cc#L129-L152
+
+-      // PATCH A / D0: the one ruy::Context per thread (see threadRuyState()).
++      // the one ruy::Context per thread (see threadRuyState()).
+       RuyThreadState &state = threadRuyState();
+       ruy::Context &context = state.context;
+       long long &accountedPrepackedBytes = state.accountedPrepackedBytes;
+
+-      // PATCH B: drop this thread's prepacked weights when any model has been
++      // drop this thread's prepacked weights when any model has been
+       // torn down since we last packed. Cheap: one relaxed atomic load per
+       // GEMM, and the clear only ever runs on the generation change.
+       const uint64_t generation =
+@@ -278,7 +278,7 @@ inline void transpose(const int8_t *input, Index rows, Index cols, int8_t *outpu
+         state.seenGeneration = generation;
+       }
+
+-      // PATCH C: on CPUs with i8mm (Armv9 cores) the int8 GEMM runs the
++      // on CPUs with i8mm (Armv9 cores) the int8 GEMM runs the
+       // SMMLA kernel in smmla_gemm.cpp -- same integer math, bit-identical
+       // accumulators, measured 1.15-1.4x end to end on 8 Gen 1 / 8 Gen 3.
+       // Weights are prepacked per thread under the same generation guard as
+@@ -298,7 +298,7 @@ inline void transpose(const int8_t *input, Index rows, Index cols, int8_t *outpu
+       ruy::Matrix<std::int8_t> rhs;
+       ruy::MakeSimpleLayout(width, cols_B, ruy::Order::kColMajor, rhs.mutable_layout());
+       rhs.set_data(input_B_prepared);
+-      // PATCH B: B holds constant model weights whenever the caller says so, so
++      // B holds constant model weights whenever the caller says so, so
+       // ruy may keep the packed form across calls instead of re-packing every
+       // GEMM. Because dst is row-major, ruy transposes internally and this
+       // operand lands on Side::kLhs -- the policy travels with the matrix, so
+@@ -320,7 +320,7 @@ inline void transpose(const int8_t *input, Index rows, Index cols, int8_t *outpu
+       ruy::MulParams<std::int32_t, std::int32_t> mul_params;
+       ruy::Mul(lhs, rhs, mul_params, &context, &dst);
+
+-      // D0: refresh this thread's share of the global prepacked-byte total.
++      // refresh this thread's share of the global prepacked-byte total.
+       // Only under the lifecycle gate -- it costs a cache read per GEMM.
+       if (lifecycle::enabled()) {
+         const long long bytes = static_cast<long long>(
+@@ -332,7 +332,7 @@ inline void transpose(const int8_t *input, Index rows, Index cols, int8_t *outpu
+         }
+       }
+
+-      }  // PATCH C: end of the ruy path
++      }  // end of the ruy path
+
+       // Unquantise:
+       float32x4_t multiplier = vdupq_n_f32(unquant_multiplier);
+@@ -447,7 +447,7 @@ public:
+     ABORT_IF(child(0) == nullptr, "B cannot be null");
+   }
+
+-  // PATCH D1: variant that selects straight out of an already-quantised model
++  // variant that selects straight out of an already-quantised model
+   // parameter (an int8 Wemb, reshaped to the [dim x vocab] column-major view
+   // ruy wants). There is no PrepareB node to take the multiplier from, so it
+   // arrives as an explicit second child.
+@@ -564,7 +564,7 @@ struct QuantMultRuyNodeOp : public UnaryNodeOp {
+ };
+
+ /*
+- * PATCH D1: B multiplier for an embedding table that stayed int8.
++ * B multiplier for an embedding table that stayed int8.
+  *
+  * The FP32 path derived it as 127 / MaxAbsolute(table) over the *dequantised*
+  * table, i.e. over int8[i] * (1/q). Because 1/q > 0, that maximum is exactly
+@@ -659,7 +659,7 @@ struct WembQuantMultNodeOp : public UnaryNodeOp {
+ };
+
+ /*
+- * PATCH D2: gather-and-dequantise for an int8 embedding table.
++ * gather-and-dequantise for an int8 embedding table.
+  *
+  * Replaces rows(E, idx) when E stayed quantised. Dequantises only the rows the
+  * batch actually looks up, using the exact expression (and expression order)
+@@ -768,7 +768,7 @@ public:
+     return { [=]() {
+           float aQuantMult = std::static_pointer_cast<PrepareNode >(child(0))->quantMult_;
+           float bQuantMult;
+-          // PATCH B: a RuySelectColumnsB child rewrites one reused buffer every
++          // a RuySelectColumnsB child rewrites one reused buffer every
+           // step (shortlist column selection), so its packed form must never be
+           // cached. The other two cases -- a memoized RuyPrepareB and an already
+           // prepared parameter tensor -- are constant for the model's lifetime.
+diff --git a/engine/marian-fork/src/tensors/cpu/smmla_gemm.cpp b/engine/marian-fork/src/tensors/cpu/smmla_gemm.cpp
+index df5b231..8abe337 100644
+--- a/engine/marian-fork/src/tensors/cpu/smmla_gemm.cpp
++++ b/engine/marian-fork/src/tensors/cpu/smmla_gemm.cpp
+@@ -14,7 +14,7 @@
+ #include <unordered_map>
+ #include <vector>
+
+-#include "common/lifecycle.h"  // D0: packing-cache tracing
++#include "common/lifecycle.h"  // packing-cache tracing
+
+ #if defined(__linux__)
+ #include <sys/auxv.h>
+@@ -259,7 +259,7 @@ thread_local std::vector<int8_t> aScratch;
+ thread_local std::vector<int8_t> bScratch;
+ thread_local uint64_t seenGeneration = 0;
+ thread_local testing::TileCounters tileCounts;
+-// D0: this thread's contribution to the process-wide cache/scratch totals,
++// this thread's contribution to the process-wide cache/scratch totals,
+ // maintained only while lifecycle tracing is on. Declared after the caches
+ // above so it is destroyed before them at thread exit: the global totals then
+ // drop when a worker thread goes away.
+@@ -273,7 +273,7 @@ struct CacheAccount {
+ };
+ thread_local CacheAccount cacheAccount;
+
+-// D0: publish this thread's current bCache / scratch footprint. Called only
++// publish this thread's current bCache / scratch footprint. Called only
+ // where a size can actually have changed.
+ void publishCacheBytes() {
+   if (!lifecycle::enabled()) return;
+diff --git a/engine/marian-fork/src/tensors/cpu/smmla_gemm.h b/engine/marian-fork/src/tensors/cpu/smmla_gemm.h
+index 47fe74a..44025de 100644
+--- a/engine/marian-fork/src/tensors/cpu/smmla_gemm.h
++++ b/engine/marian-fork/src/tensors/cpu/smmla_gemm.h
+@@ -37,7 +37,7 @@ void gemm8(const int8_t* A,
+            bool cacheableB,
+            uint64_t generation);
+
+-// D0: drop THIS thread's packed-B cache and release its scratch buffers.
++// drop THIS thread's packed-B cache and release its scratch buffers.
+ // Affects only the calling thread; safe on a thread that never ran a GEMM.
+ // The next gemm8 on this thread simply re-packs, so this is a memory/latency
+ // trade, never a correctness one.
+diff --git a/engine/src/translator/LICENSE b/engine/src/translator/LICENSE
+new file mode 100644
+index 0000000..a612ad9
+--- /dev/null
++++ b/engine/src/translator/LICENSE
+@@ -0,0 +1,373 @@
++Mozilla Public License Version 2.0
++==================================
++
++1. Definitions
++--------------
++
++1.1. "Contributor"
++    means each individual or legal entity that creates, contributes to
++    the creation of, or owns Covered Software.
++
++1.2. "Contributor Version"
++    means the combination of the Contributions of others (if any) used
++    by a Contributor and that particular Contributor's Contribution.
++
++1.3. "Contribution"
++    means Covered Software of a particular Contributor.
++
++1.4. "Covered Software"
++    means Source Code Form to which the initial Contributor has attached
++    the notice in Exhibit A, the Executable Form of such Source Code
++    Form, and Modifications of such Source Code Form, in each case
++    including portions thereof.
++
++1.5. "Incompatible With Secondary Licenses"
++    means
++
++    (a) that the initial Contributor has attached the notice described
++        in Exhibit B to the Covered Software; or
++
++    (b) that the Covered Software was made available under the terms of
++        version 1.1 or earlier of the License, but not also under the
++        terms of a Secondary License.
++
++1.6. "Executable Form"
++    means any form of the work other than Source Code Form.
++
++1.7. "Larger Work"
++    means a work that combines Covered Software with other material, in
++    a separate file or files, that is not Covered Software.
++
++1.8. "License"
++    means this document.
++
++1.9. "Licensable"
++    means having the right to grant, to the maximum extent possible,
++    whether at the time of the initial grant or subsequently, any and
++    all of the rights conveyed by this License.
++
++1.10. "Modifications"
++    means any of the following:
++
++    (a) any file in Source Code Form that results from an addition to,
++        deletion from, or modification of the contents of Covered
++        Software; or
++
++    (b) any new file in Source Code Form that contains any Covered
++        Software.
++
++1.11. "Patent Claims" of a Contributor
++    means any patent claim(s), including without limitation, method,
++    process, and apparatus claims, in any patent Licensable by such
++    Contributor that would be infringed, but for the grant of the
++    License, by the making, using, selling, offering for sale, having
++    made, import, or transfer of either its Contributions or its
++    Contributor Version.
++
++1.12. "Secondary License"
++    means either the GNU General Public License, Version 2.0, the GNU
++    Lesser General Public License, Version 2.1, the GNU Affero General
++    Public License, Version 3.0, or any later versions of those
++    licenses.
++
++1.13. "Source Code Form"
++    means the form of the work preferred for making modifications.
++
++1.14. "You" (or "Your")
++    means an individual or a legal entity exercising rights under this
++    License. For legal entities, "You" includes any entity that
++    controls, is controlled by, or is under common control with You. For
++    purposes of this definition, "control" means (a) the power, direct
++    or indirect, to cause the direction or management of such entity,
++    whether by contract or otherwise, or (b) ownership of more than
++    fifty percent (50%) of the outstanding shares or beneficial
++    ownership of such entity.
++
++2. License Grants and Conditions
++--------------------------------
++
++2.1. Grants
++
++Each Contributor hereby grants You a world-wide, royalty-free,
++non-exclusive license:
++
++(a) under intellectual property rights (other than patent or trademark)
++    Licensable by such Contributor to use, reproduce, make available,
++    modify, display, perform, distribute, and otherwise exploit its
++    Contributions, either on an unmodified basis, with Modifications, or
++    as part of a Larger Work; and
++
++(b) under Patent Claims of such Contributor to make, use, sell, offer
++    for sale, have made, import, and otherwise transfer either its
++    Contributions or its Contributor Version.
++
++2.2. Effective Date
++
++The licenses granted in Section 2.1 with respect to any Contribution
++become effective for each Contribution on the date the Contributor first
++distributes such Contribution.
++
++2.3. Limitations on Grant Scope
++
++The licenses granted in this Section 2 are the only rights granted under
++this License. No additional rights or licenses will be implied from the
++distribution or licensing of Covered Software under this License.
++Notwithstanding Section 2.1(b) above, no patent license is granted by a
++Contributor:
++
++(a) for any code that a Contributor has removed from Covered Software;
++    or
++
++(b) for infringements caused by: (i) Your and any other third party's
++    modifications of Covered Software, or (ii) the combination of its
++    Contributions with other software (except as part of its Contributor
++    Version); or
++
++(c) under Patent Claims infringed by Covered Software in the absence of
++    its Contributions.
++
++This License does not grant any rights in the trademarks, service marks,
++or logos of any Contributor (except as may be necessary to comply with
++the notice requirements in Section 3.4).
++
++2.4. Subsequent Licenses
++
++No Contributor makes additional grants as a result of Your choice to
++distribute the Covered Software under a subsequent version of this
++License (see Section 10.2) or under the terms of a Secondary License (if
++permitted under the terms of Section 3.3).
++
++2.5. Representation
++
++Each Contributor represents that the Contributor believes its
++Contributions are its original creation(s) or it has sufficient rights
++to grant the rights to its Contributions conveyed by this License.
++
++2.6. Fair Use
++
++This License is not intended to limit any rights You have under
++applicable copyright doctrines of fair use, fair dealing, or other
++equivalents.
++
++2.7. Conditions
++
++Sections 3.1, 3.2, 3.3, and 3.4 are conditions of the licenses granted
++in Section 2.1.
++
++3. Responsibilities
++-------------------
++
++3.1. Distribution of Source Form
++
++All distribution of Covered Software in Source Code Form, including any
++Modifications that You create or to which You contribute, must be under
++the terms of this License. You must inform recipients that the Source
++Code Form of the Covered Software is governed by the terms of this
++License, and how they can obtain a copy of this License. You may not
++attempt to alter or restrict the recipients' rights in the Source Code
++Form.
++
++3.2. Distribution of Executable Form
++
++If You distribute Covered Software in Executable Form then:
++
++(a) such Covered Software must also be made available in Source Code
++    Form, as described in Section 3.1, and You must inform recipients of
++    the Executable Form how they can obtain a copy of such Source Code
++    Form by reasonable means in a timely manner, at a charge no more
++    than the cost of distribution to the recipient; and
++
++(b) You may distribute such Executable Form under the terms of this
++    License, or sublicense it under different terms, provided that the
++    license for the Executable Form does not attempt to limit or alter
++    the recipients' rights in the Source Code Form under this License.
++
++3.3. Distribution of a Larger Work
++
++You may create and distribute a Larger Work under terms of Your choice,
++provided that You also comply with the requirements of this License for
++the Covered Software. If the Larger Work is a combination of Covered
++Software with a work governed by one or more Secondary Licenses, and the
++Covered Software is not Incompatible With Secondary Licenses, this
++License permits You to additionally distribute such Covered Software
++under the terms of such Secondary License(s), so that the recipient of
++the Larger Work may, at their option, further distribute the Covered
++Software under the terms of either this License or such Secondary
++License(s).
++
++3.4. Notices
++
++You may not remove or alter the substance of any license notices
++(including copyright notices, patent notices, disclaimers of warranty,
++or limitations of liability) contained within the Source Code Form of
++the Covered Software, except that You may alter any license notices to
++the extent required to remedy known factual inaccuracies.
++
++3.5. Application of Additional Terms
++
++You may choose to offer, and to charge a fee for, warranty, support,
++indemnity or liability obligations to one or more recipients of Covered
++Software. However, You may do so only on Your own behalf, and not on
++behalf of any Contributor. You must make it absolutely clear that any
++such warranty, support, indemnity, or liability obligation is offered by
++You alone, and You hereby agree to indemnify every Contributor for any
++liability incurred by such Contributor as a result of warranty, support,
++indemnity or liability terms You offer. You may include additional
++disclaimers of warranty and limitations of liability specific to any
++jurisdiction.
++
++4. Inability to Comply Due to Statute or Regulation
++---------------------------------------------------
++
++If it is impossible for You to comply with any of the terms of this
++License with respect to some or all of the Covered Software due to
++statute, judicial order, or regulation then You must: (a) comply with
++the terms of this License to the maximum extent possible; and (b)
++describe the limitations and the code they affect. Such description must
++be placed in a text file included with all distributions of the Covered
++Software under this License. Except to the extent prohibited by statute
++or regulation, such description must be sufficiently detailed for a
++recipient of ordinary skill to be able to understand it.
++
++5. Termination
++--------------
++
++5.1. The rights granted under this License will terminate automatically
++if You fail to comply with any of its terms. However, if You become
++compliant, then the rights granted under this License from a particular
++Contributor are reinstated (a) provisionally, unless and until such
++Contributor explicitly and finally terminates Your grants, and (b) on an
++ongoing basis, if such Contributor fails to notify You of the
++non-compliance by some reasonable means prior to 60 days after You have
++come back into compliance. Moreover, Your grants from a particular
++Contributor are reinstated on an ongoing basis if such Contributor
++notifies You of the non-compliance by some reasonable means, this is the
++first time You have received notice of non-compliance with this License
++from such Contributor, and You become compliant prior to 30 days after
++Your receipt of the notice.
++
++5.2. If You initiate litigation against any entity by asserting a patent
++infringement claim (excluding declaratory judgment actions,
++counter-claims, and cross-claims) alleging that a Contributor Version
++directly or indirectly infringes any patent, then the rights granted to
++You by any and all Contributors for the Covered Software under Section
++2.1 of this License shall terminate.
++
++5.3. In the event of termination under Sections 5.1 or 5.2 above, all
++end user license agreements (excluding distributors and resellers) which
++have been validly granted by You or Your distributors under this License
++prior to termination shall survive termination.
++
++************************************************************************
++*                                                                      *
++*  6. Disclaimer of Warranty                                           *
++*  -------------------------                                           *
++*                                                                      *
++*  Covered Software is provided under this License on an "as is"       *
++*  basis, without warranty of any kind, either expressed, implied, or  *
++*  statutory, including, without limitation, warranties that the       *
++*  Covered Software is free of defects, merchantable, fit for a        *
++*  particular purpose or non-infringing. The entire risk as to the     *
++*  quality and performance of the Covered Software is with You.        *
++*  Should any Covered Software prove defective in any respect, You     *
++*  (not any Contributor) assume the cost of any necessary servicing,   *
++*  repair, or correction. This disclaimer of warranty constitutes an   *
++*  essential part of this License. No use of any Covered Software is   *
++*  authorized under this License except under this disclaimer.         *
++*                                                                      *
++************************************************************************
++
++************************************************************************
++*                                                                      *
++*  7. Limitation of Liability                                          *
++*  --------------------------                                          *
++*                                                                      *
++*  Under no circumstances and under no legal theory, whether tort      *
++*  (including negligence), contract, or otherwise, shall any           *
++*  Contributor, or anyone who distributes Covered Software as          *
++*  permitted above, be liable to You for any direct, indirect,         *
++*  special, incidental, or consequential damages of any character      *
++*  including, without limitation, damages for lost profits, loss of    *
++*  goodwill, work stoppage, computer failure or malfunction, or any    *
++*  and all other commercial damages or losses, even if such party      *
++*  shall have been informed of the possibility of such damages. This   *
++*  limitation of liability shall not apply to liability for death or   *
++*  personal injury resulting from such party's negligence to the       *
++*  extent applicable law prohibits such limitation. Some               *
++*  jurisdictions do not allow the exclusion or limitation of           *
++*  incidental or consequential damages, so this exclusion and          *
++*  limitation may not apply to You.                                    *
++*                                                                      *
++************************************************************************
++
++8. Litigation
++-------------
++
++Any litigation relating to this License may be brought only in the
++courts of a jurisdiction where the defendant maintains its principal
++place of business and such litigation shall be governed by laws of that
++jurisdiction, without reference to its conflict-of-law provisions.
++Nothing in this Section shall prevent a party's ability to bring
++cross-claims or counter-claims.
++
++9. Miscellaneous
++----------------
++
++This License represents the complete agreement concerning the subject
++matter hereof. If any provision of this License is held to be
++unenforceable, such provision shall be reformed only to the extent
++necessary to make it enforceable. Any law or regulation which provides
++that the language of a contract shall be construed against the drafter
++shall not be used to construe this License against a Contributor.
++
++10. Versions of the License
++---------------------------
++
++10.1. New Versions
++
++Mozilla Foundation is the license steward. Except as provided in Section
++10.3, no one other than the license steward has the right to modify or
++publish new versions of this License. Each version will be given a
++distinguishing version number.
++
++10.2. Effect of New Versions
++
++You may distribute the Covered Software under the terms of the version
++of the License under which You originally received the Covered Software,
++or under the terms of any subsequent version published by the license
++steward.
++
++10.3. Modified Versions
++
++If you create software not governed by this License, and you want to
++create a new license for such software, you may create and use a
++modified version of this License if you rename the license and remove
++any references to the name of the license steward (except to note that
++such modified license differs from this License).
++
++10.4. Distributing Source Code Form that is Incompatible With Secondary
++Licenses
++
++If You choose to distribute Source Code Form that is Incompatible With
++Secondary Licenses under the terms of this version of the License, the
++notice described in Exhibit B of this License must be attached.
++
++Exhibit A - Source Code Form License Notice
++-------------------------------------------
++
++  This Source Code Form is subject to the terms of the Mozilla Public
++  License, v. 2.0. If a copy of the MPL was not distributed with this
++  file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++If it is not possible or desirable to put the notice in a particular
++file, then You may include the notice in a location (such as a LICENSE
++file in a relevant directory) where a recipient would be likely to look
++for such a notice.
++
++You may add additional accurate notices of copyright ownership.
++
++Exhibit B - "Incompatible With Secondary Licenses" Notice
++---------------------------------------------------------
++
++  This Source Code Form is "Incompatible With Secondary Licenses", as
++  defined by the Mozilla Public License, v. 2.0.
+diff --git a/engine/src/translator/byte_array_util.cpp b/engine/src/translator/byte_array_util.cpp
+index c7515e7..1728727 100644
+--- a/engine/src/translator/byte_array_util.cpp
++++ b/engine/src/translator/byte_array_util.cpp
+@@ -2,6 +2,9 @@
+
+ #include <cstdlib>
+ #include <memory>
++#include <fstream>
++#include <stdexcept>
++#include "common/binary_validation.h"
+
+ #include "common/io.h"
+ #include "data/shortlist.h"
+@@ -9,85 +12,26 @@
+ namespace marian {
+ namespace bergamot {
+
+-namespace {
+-// This is a basic validator that checks if the file has not been truncated
+-// it basically loads up the header and checks
+-
+-// This struct and the getter are copied from the marian source, because it's located
+-// inside src/common/binary.cpp:15 and we can't include it.
+-struct Header {
+-  uint64_t nameLength;
+-  uint64_t type;
+-  uint64_t shapeLength;
+-  uint64_t dataLength;
+-};
+-
+-// cast current void pointer to T pointer and move forward by num elements
+-template <typename T>
+-const T* get(const void*& current, uint64_t num = 1) {
+-  const T* ptr = (const T*)current;
+-  current = (const T*)current + num;
+-  return ptr;
+-}
+-}  // Anonymous namespace
+-
++// Modified by Foxlet Translate: validate before any native metadata parser runs.
+ bool validateBinaryModel(const AlignedMemory& model, uint64_t fileSize) {
+-  const void* current = model.begin();
+-  uint64_t memoryNeeded =
+-      sizeof(uint64_t) * 2;  // We keep track of how much memory we would need if we have a complete file
+-  uint64_t numHeaders;
+-  if (fileSize >= memoryNeeded) {  // We have enough filesize to fetch the headers.
+-    uint64_t binaryFileVersion = *get<uint64_t>(current);
+-    numHeaders = *get<uint64_t>(current);  // number of item headers that follow
+-  } else {
+-    return false;
+-  }
+-  memoryNeeded += numHeaders * sizeof(Header);
+-  const Header* headers;
+-  if (fileSize >= memoryNeeded) {
+-    headers = get<Header>(current, numHeaders);  // read that many headers
+-  } else {
+-    return false;
+-  }
+-
+-  // Calculate how many bytes we are going to for reading just the names and the shape
+-  for (uint64_t i = 0; i < numHeaders; i++) {
+-    memoryNeeded += headers[i].nameLength + headers[i].shapeLength * sizeof(int);
+-    // Advance the pointers.
+-    get<char>(current, headers[i].nameLength);
+-    get<int>(current, headers[i].shapeLength);
+-  }
+-
+-  // Before we start reading the data, there is a small padding to ensure alignment
+-  // Read that in, before calculating the actual tensor memory requirements.
+-  uint64_t aligned_offset;
+-  if (fileSize >= memoryNeeded) {
+-    aligned_offset = *get<uint64_t>(current);  // Offset to align memory to 256 size
+-    memoryNeeded += aligned_offset + sizeof(uint64_t);
+-  } else {
+-    return false;
+-  }
+-
+-  // Finally the tensor size:
+-  for (uint64_t i = 0; i < numHeaders; i++) {
+-    memoryNeeded += headers[i].dataLength;
+-  }
+-
+-  // If this final check passes, the file is at least big enough to contain the model
+-  if (fileSize >= memoryNeeded) {
++  if (fileSize > model.size()) return false;
++  try {
++    marian::io::binary::validateModelBytes(model.begin(), static_cast<size_t>(fileSize));
+     return true;
+-  } else {
+-    return false;
+-  }
++  } catch (const std::invalid_argument&) { return false; }
+ }
+
+ AlignedMemory loadFileToMemory(const std::string& path, size_t alignment) {
+-  uint64_t fileSize = filesystem::fileSize(path);
+-  io::InputFileStream in(path);
+-  ABORT_IF(in.bad(), "Failed opening file stream: {}", path);
++  std::ifstream in(path, std::ios::binary | std::ios::ate);
++  if (!in) throw std::invalid_argument("Cannot open model file: " + path);
++  const auto end = in.tellg();
++  if (end <= 0 || static_cast<uint64_t>(end) > 1024ULL * 1024 * 1024)
++    throw std::invalid_argument("Empty or oversized model file: " + path);
++  size_t fileSize = static_cast<size_t>(end);
+   AlignedMemory alignedMemory(fileSize, alignment);
+-  in.read(reinterpret_cast<char*>(alignedMemory.begin()), fileSize);
+-  ABORT_IF(alignedMemory.size() != fileSize, "Error reading file {}", path);
++  in.seekg(0);
++  if (!in.read(reinterpret_cast<char*>(alignedMemory.begin()), fileSize))
++    throw std::invalid_argument("Incomplete model read: " + path);
+   return alignedMemory;
+ }
+
+@@ -99,12 +43,13 @@ std::vector<AlignedMemory> getModelMemoryFromConfig(marian::Ptr<marian::Options>
+     const auto model = models[i];
+     if (marian::io::isBin(model)) {
+       modelMemories[i] = loadFileToMemory(model, 256);
++      marian::io::binary::validateModelBytes(modelMemories[i].begin(), modelMemories[i].size());
+     } else if (marian::io::isNpz(model)) {
+       // if any of the models are npz format, we revert to loading from file for all models.
+       LOG(debug, "Encountered an npz file {}; will use file loading for {} models", model, models.size());
+       return {};
+     } else {
+-      ABORT("Unknown extension for model: {}, should be one of `.bin` or `.npz`", model);
++      throw std::invalid_argument("Unsupported model extension: " + model);
+     }
+   }
+
+@@ -114,8 +59,8 @@ std::vector<AlignedMemory> getModelMemoryFromConfig(marian::Ptr<marian::Options>
+ AlignedMemory getShortlistMemoryFromConfig(marian::Ptr<marian::Options> options) {
+   auto shortlist = options->get<std::vector<std::string>>("shortlist");
+   if (!shortlist.empty()) {
+-    ABORT_IF(!marian::data::isBinaryShortlist(shortlist[0]),
+-             "Loading non-binary shortlist file into memory is not supported");
++    if (!marian::data::isBinaryShortlist(shortlist[0]))
++      throw std::invalid_argument("Invalid binary shortlist");
+     return loadFileToMemory(shortlist[0], 64);
+   }
+   return AlignedMemory();
+@@ -124,12 +69,12 @@ AlignedMemory getShortlistMemoryFromConfig(marian::Ptr<marian::Options> options)
+ void getVocabsMemoryFromConfig(marian::Ptr<marian::Options> options,
+                                std::vector<std::shared_ptr<AlignedMemory>>& vocabMemories) {
+   auto vfiles = options->get<std::vector<std::string>>("vocabs");
+-  ABORT_IF(vfiles.size() < 2, "Insufficient number of vocabularies.");
++  if (vfiles.size() != 2) throw std::invalid_argument("Expected two vocabularies");
+   vocabMemories.resize(vfiles.size());
+   std::unordered_map<std::string, std::shared_ptr<AlignedMemory>> vocabMap;
+   for (size_t i = 0; i < vfiles.size(); ++i) {
+-    ABORT_IF(marian::filesystem::Path(vfiles[i]).extension() != marian::filesystem::Path(".spm"),
+-             "Loading non-SentencePiece vocab files into memory is not supported");
++    if (marian::filesystem::Path(vfiles[i]).extension() != marian::filesystem::Path(".spm"))
++      throw std::invalid_argument("Expected SentencePiece vocabulary");
+     auto m = vocabMap.emplace(std::make_pair(vfiles[i], std::shared_ptr<AlignedMemory>()));
+     if (m.second) {
+       m.first->second = std::make_shared<AlignedMemory>(loadFileToMemory(vfiles[i], 64));
+diff --git a/engine/src/translator/service.cpp b/engine/src/translator/service.cpp
+index 1e527c7..e196f5c 100644
+--- a/engine/src/translator/service.cpp
++++ b/engine/src/translator/service.cpp
+@@ -13,9 +13,9 @@
+
+ #include "batch.h"
+ #include "byte_array_util.h"
+-#include "common/lifecycle.h"                // D0: worker/service lifecycle tracing
++#include "common/lifecycle.h"                // worker/service lifecycle tracing
+ #include "definitions.h"
+-#include "tensors/cpu/integer_common.h"  // D0: releaseThreadPackingCaches()
++#include "tensors/cpu/integer_common.h"  // releaseThreadPackingCaches()
+
+ namespace marian {
+ namespace bergamot {
+@@ -44,7 +44,7 @@ std::optional<TranslationCache> makeOptionalCache(size_t size, size_t mutexBucke
+   return size > 0 ? std::make_optional<TranslationCache>(size, mutexBuckets) : std::nullopt;
+ }
+
+-/// F5: gathers N responses by index and parks the calling thread until every one has arrived. The callbacks run on
++/// gathers N responses by index and parks the calling thread until every one has arrived. The callbacks run on
+ /// worker threads; the mutex both guards the slots and publishes the workers' writes to the waiter.
+ ///
+ /// Lives on the caller's stack, and the callbacks capture it by pointer: they outlive the wait (a Request is only
+@@ -76,7 +76,7 @@ class ResponseCollector {
+   std::condition_variable done_;
+ };
+
+-// D0: hand freed pages back to the OS. Freeing to the allocator is not the
++// hand freed pages back to the OS. Freeing to the allocator is not the
+ // same as shrinking RSS -- bionic's scudo and macOS libmalloc both keep
+ // per-thread magazines that otherwise only drain when the thread exits, so a
+ // release that frees tens of MB can leave RSS completely flat. Only called on
+@@ -228,7 +228,7 @@ AsyncService::AsyncService(const AsyncService::Config &config)
+         size_t sentences = safeBatchingPool_.generateBatch(seenMaintenanceEpoch, maintenanceDue, translationModel,
+                                                            batch);
+         if (maintenanceDue) {
+-          // D0: everything this thread holds on a model's behalf goes here.
++          // everything this thread holds on a model's behalf goes here.
+           batch.clear();
+           translationModel.reset();
+           marian::cpu::integer::releaseThreadPackingCaches();
+@@ -239,7 +239,7 @@ AsyncService::AsyncService(const AsyncService::Config &config)
+         }
+         if (sentences == 0) break;  // shutdown
+         translationModel->translateBatch(cpuId, batch);
+-        // D0: drop the batch's RequestSentences and this worker's owning model
++        // drop the batch's RequestSentences and this worker's owning model
+         // reference before blocking again. Without this the last batch's model
+         // stays alive for as long as the worker sits idle -- which is forever,
+         // in an app that has stopped translating.
+diff --git a/engine/src/translator/service.h b/engine/src/translator/service.h
+index 053f0b8..0bec720 100644
+--- a/engine/src/translator/service.h
++++ b/engine/src/translator/service.h
+@@ -81,7 +81,7 @@ class BlockingService {
+   std::vector<Response> pivotMultiple(std::shared_ptr<TranslationModel> first, std::shared_ptr<TranslationModel> second,
+                                       std::vector<std::string> &&sources,
+                                       const std::vector<ResponseOptions> &responseOptions);
+-  /// D0: drop `model` and reclaim what this service holds on its behalf.
++  /// drop `model` and reclaim what this service holds on its behalf.
+   /// BlockingService has no worker threads, so the GEMM weight-packing caches
+   /// live on the calling thread and are cleared here directly.
+   ///
+@@ -175,7 +175,7 @@ class AsyncService {
+   void pivot(std::shared_ptr<TranslationModel> first, std::shared_ptr<TranslationModel> second, std::string &&source,
+              CallbackType clientCallback, const ResponseOptions &options = ResponseOptions());
+
+-  /// F5: the batch counterpart of translate(), shaped like
++  /// the batch counterpart of translate(), shaped like
+   /// BlockingService::translateMultiple but executed on the worker pool. Every
+   /// request is built on the calling thread and the whole set enters the pool
+   /// in one step, so the batches the workers form -- and therefore the output
+@@ -208,7 +208,7 @@ class AsyncService {
+                                           std::vector<std::string> &&sources,
+                                           const ResponseOptions &options = ResponseOptions());
+
+-  /// F5: the batch counterpart of pivot(), with the same guarantee (including
++  /// the batch counterpart of pivot(), with the same guarantee (including
+   /// the sentence cap and its caveat) and the same shape as
+   /// BlockingService::pivotMultiple. The second leg is a hard
+   /// barrier: it is built only after the first leg has completed in full, on
+@@ -231,7 +231,7 @@ class AsyncService {
+   /// Clears all pending requests.
+   void clear();
+
+-  /// D0: drop `model` and reclaim everything this service holds on its behalf
++  /// drop `model` and reclaim everything this service holds on its behalf
+   /// -- each worker's cached model reference and last batch, the aggregate
+   /// queue's reference, and every worker's GEMM weight-packing caches. This is
+   /// the counterpart of createCompatibleModel(); simply dropping the handle
+diff --git a/engine/src/translator/text_processor.cpp b/engine/src/translator/text_processor.cpp
+index 79a9e82..c8c1661 100644
+--- a/engine/src/translator/text_processor.cpp
++++ b/engine/src/translator/text_processor.cpp
+@@ -64,17 +64,8 @@ TextProcessor::TextProcessor(Ptr<Options> options, const Vocabs &vocabs, const s
+
+ TextProcessor::TextProcessor(Ptr<Options> options, const Vocabs &vocabs, const AlignedMemory &memory)
+     : vocabs_(vocabs) {
+-  // This is not the best of the solutions at the moment, but is consistent with what happens among other structures
+-  // like model, vocabulary or shortlist. First, we check if the bytearray is empty. If not, we load from ByteArray. In
+-  // case empty, the string based loader which reads from file is called. However, ssplit allows for not supplying
+-  // ssplit-prefix-file where-in the purely regular expression based splitter is activated.
+-  //
+-  // For now, we allow not supplying an ssplit-prefix-file.
+-  //
+-  // The test below used to read `memory.begin() == nullptr && memory.size()`, which no AlignedMemory can satisfy: a
+-  // non-empty allocation always has a non-null base. The byte-array branch was therefore dead and every caller silently
+-  // fell back to the file path (or, with no path either, to the bare regex splitter).
+-
++  // Prefer the supplied prefix bytes, then the configured file. An empty
++  // file path selects the regex-only splitter.
+   if (memory.begin() != nullptr && memory.size()) {
+     ssplit_ = loadSplitter(memory);
+   } else {
+diff --git a/engine/src/translator/threadsafe_batching_pool.cpp b/engine/src/translator/threadsafe_batching_pool.cpp
+index 2e3a400..5c8a8a1 100644
+--- a/engine/src/translator/threadsafe_batching_pool.cpp
++++ b/engine/src/translator/threadsafe_batching_pool.cpp
+@@ -100,7 +100,7 @@ size_t ThreadsafeBatchingPool<BatchingPoolType>::generateBatch(size_t &seenMaint
+   size_t sentencesInBatch = backend_.generateBatch(std::forward<Args>(args)...);
+   assert(sentencesInBatch > 0 || shutdown_);
+   enqueued_ -= sentencesInBatch;
+-  // D0: with nothing left pending, the aggregate queue's owning references to
++  // with nothing left pending, the aggregate queue's owning references to
+   // TranslationModels are dead weight -- it would otherwise hold them until
+   // some later generateBatch found that model's pool empty, which only happens
+   // once new work arrives. enqueueRequest() re-inserts, so this is safe.
+diff --git a/engine/src/translator/threadsafe_batching_pool.h b/engine/src/translator/threadsafe_batching_pool.h
+index 33d0083..6187d34 100644
+--- a/engine/src/translator/threadsafe_batching_pool.h
++++ b/engine/src/translator/threadsafe_batching_pool.h
+@@ -41,7 +41,7 @@ class ThreadsafeBatchingPool {
+   template <class... Args>
+   void enqueueRequest(Args &&...args);
+
+-  /// F5: produce several requests under a single lock and a single notify.
++  /// produce several requests under a single lock and a single notify.
+   /// Consumers therefore never observe a half-submitted set, so the batches
+   /// they generate depend only on what was submitted -- not on how far the
+   /// producer had got when a worker happened to wake up. The trailing
+@@ -53,7 +53,7 @@ class ThreadsafeBatchingPool {
+   void enqueueRequests(Args &&...args);
+
+   /// Consumer side. Blocks until there is a batch, a shutdown, or a
+-  /// maintenance request (D0).
++  /// maintenance request.
+   ///
+   /// @param [in,out] seenMaintenanceEpoch: consumer-owned; the epoch this
+   /// consumer has already serviced. Start it at 0.
+@@ -68,11 +68,11 @@ class ThreadsafeBatchingPool {
+   // Removes any pending requests from the batching pool.
+   void clear();
+
+-  /// D0: how many consumers call generateBatch. Must be set before they start;
++  /// how many consumers call generateBatch. Must be set before they start;
+   /// runMaintenance() waits for exactly this many acknowledgements.
+   void setConsumerCount(size_t consumers);
+
+-  /// D0, producer side. Wakes every consumer, has each run one maintenance
++  /// Producer side. Wakes every consumer, has each run one maintenance
+   /// pass (drop its cached model reference and its GEMM packing caches), and
+   /// blocks until all of them have acknowledged. Also drops the aggregate
+   /// queue's model references when nothing is pending.
+@@ -110,7 +110,7 @@ class ThreadsafeBatchingPool {
+   // maintenance epoch.
+   std::condition_variable work_;
+
+-  // D0 maintenance protocol.
++  // Worker maintenance protocol.
+   // Lock order, where both are taken: maintenanceSerial_ then mutex_. Never
+   // the reverse; consumers only ever take mutex_.
+   std::mutex maintenanceSerial_;         // serialises concurrent runMaintenance()
+diff --git a/engine/src/translator/translation_model.cpp b/engine/src/translator/translation_model.cpp
+index b31cc14..0d3f2ee 100644
+--- a/engine/src/translator/translation_model.cpp
++++ b/engine/src/translator/translation_model.cpp
+@@ -3,13 +3,13 @@
+ #include "batch.h"
+ #include "byte_array_util.h"
+ #include "cache.h"
+-#include "common/lifecycle.h"  // D0: model/backend lifecycle tracing
++#include "common/lifecycle.h"  // model/backend lifecycle tracing
+ #include "common/logging.h"
+ #include "data/corpus.h"
+ #include "data/text_input.h"
+ #include "html.h"
+ #include "parser.h"
+-#include "tensors/cpu/integer_common.h"  // PATCH B: prepack generation counter
++#include "tensors/cpu/integer_common.h"  // prepack generation counter
+ #include "translator/beam_search.h"
+
+ namespace marian {
+@@ -41,7 +41,7 @@ TranslationModel::TranslationModel(const Config &options, MemoryBundle &&memory
+   bool shared_vcb = (vocabs_.sources().front() == vocabs_.target());
+
+   if (memory_.shortlist.size() > 0 && memory_.shortlist.begin() != nullptr) {
+-    bool check = options_->get<bool>("check-bytearray", false);
++    bool check = true; // Foxlet: shortlist boundaries are mandatory.
+     shortlistGenerator_ = New<data::BinaryShortlistGenerator>(memory_.shortlist.begin(), memory_.shortlist.size(),
+                                                               vocabs_.sources().front(), vocabs_.target(), srcIdx,
+                                                               trgIdx, shared_vcb, check);
+@@ -62,7 +62,7 @@ TranslationModel::TranslationModel(const Config &options, MemoryBundle &&memory
+   }
+ }
+
+-// PATCH B: see translation_model.h. Bumping here makes every worker thread drop
++// see translation_model.h. Bumping here makes every worker thread drop
+ // its ruy prepacked-weight cache before any replacement model can be handed the
+ // freed weight addresses.
+ TranslationModel::~TranslationModel() {
+@@ -70,7 +70,7 @@ TranslationModel::~TranslationModel() {
+     size_t loaded = 0;
+     for (const auto &backend : backend_) loaded += backend.initialized ? 1 : 0;
+     // model_bytes>0 here means some replica was never used, so loadBackend()
+-    // never got to drop the file image (D0, lazy-replica residue).
++    // never got to drop the file image (unused lazy replica).
+     lifecycle::event("model_dtor_enter id=%zu replicas=%zu backends_loaded=%zu model_bytes=%zu", modelId_,
+                      backend_.size(), loaded, modelMemoryBytes());
+   }
+@@ -133,10 +133,8 @@ void TranslationModel::loadBackend(size_t idx) {
+         ABORT_IF(
+             (uintptr_t)model.begin() % 256 != 0,
+             "The provided memory is not aligned to 256 bytes and will crash when vector instructions are used on it.");
+-        if (options_->get<bool>("check-bytearray", false)) {
+-          ABORT_IF(!validateBinaryModel(model, model.size()),
+-                   "The binary file is invalid. Incomplete or corrupted download?");
+-        }
++        if (!validateBinaryModel(model, model.size()))
++          throw std::invalid_argument("Invalid binary model");
+
+         model_ptrs[i] = model.begin();
+         LOG(debug, "Loaded model {} of {} from memory", (i + 1), model_ptrs.size());
+diff --git a/engine/src/translator/translation_model.h b/engine/src/translator/translation_model.h
+index 4e18227..145a68b 100644
+--- a/engine/src/translator/translation_model.h
++++ b/engine/src/translator/translation_model.h
+@@ -62,7 +62,7 @@ class TranslationModel {
+   TranslationModel(const Config& options, size_t replicas = 1)
+       : TranslationModel(options, getMemoryBundleFromConfig(options), replicas) {}
+
+-  /// PATCH B: invalidates every worker's cached prepacked weights. The weight
++  /// invalidates every worker's cached prepacked weights. The weight
+   /// allocation this model owns is about to be freed, and ruy's prepacked cache
+   /// keys on the source data pointer -- a later model handed the same address
+   /// would otherwise hit a stale packed buffer.
+@@ -166,7 +166,7 @@ class TranslationModel {
+   std::shared_ptr<QualityEstimator> qualityEstimator_;
+
+   void loadBackend(size_t idx);
+-  /// D0 diagnostic: bytes still held by the raw model file image. Non-zero
++  /// Diagnostic: bytes still held by the raw model file image. Non-zero
+   /// after translation means some replica was never loaded, so loadBackend()
+   /// never reached the point where it drops the image.
+   size_t modelMemoryBytes() const;

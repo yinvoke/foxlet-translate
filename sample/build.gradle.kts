@@ -4,15 +4,15 @@ plugins {
 }
 
 android {
-    namespace = "io.github.yinvoker.bergamot.bench"
+    namespace = "io.github.yinvoker.foxlet.bench"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "io.github.yinvoker.bergamot.bench"
+        applicationId = "io.github.yinvoker.foxlet.bench"
         minSdk = 28
         targetSdk = 36
         versionCode = 1
-        versionName = "0.1"
+        versionName = project.version.toString()
         ndk { abiFilters += "arm64-v8a" }
     }
 

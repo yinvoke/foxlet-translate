@@ -17,6 +17,7 @@ bench-a3-*/
 # gradle / IDE / local machine
 .claude/
 .gradle/
+.kotlin/
 local.properties
 .idea/
 *.iml
@@ -32,9 +33,4 @@ docs/*
 !docs/getting-started.md
 !docs/architecture.md
 !docs/benchmarking.md
-!docs/benchmark-mi10.png
-!docs/benchmark-mi14.png
 !docs/smmla-compatibility.md
-
-# Published version benchmark charts and source measurements
-!docs/benchmarks/

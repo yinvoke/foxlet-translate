@@ -43,7 +43,7 @@ tools/smmla-test/check-opcodes.sh build-host/tools/smoke/smoke "$(xcrun -f llvm-
 基准 app 的启动方式：
 
 ```bash
-adb shell am start -n io.github.yinvoker.bergamot.bench/.MainActivity \
+adb shell am start -n io.github.yinvoker.foxlet.bench/.MainActivity \
   --ez autorun true --ei threads 2
 ```
 
@@ -68,3 +68,35 @@ tools/regress-hash.sh build-host/tools/smoke/smoke \
 `.github/workflows/build.yml` 在 Ubuntu 上构建 AAR、运行 JVM 测试和构建 sample；在 macOS ARM 与 Linux ARM 上运行主机 smoke、SMMLA 测试及指令隔离检查。macOS 兼容不支持 i8mm 的设备，Linux ARM 必须实际执行 i8mm 测试，不能跳过。发布由 `.github/workflows/release.yml` 的 `v*` tag 触发，并要求存在对应的 `.github/releases/<tag>.md`。
 
 不要提交 `build/`、下载模型或临时 logcat；经检查的版本基准原始 JSON 应保存在 `benchmarks/<version>/` 并挂到索引。CI 验证基准检查器自身的测试，固定设备上的实测仍需单独运行。
+
+
+## 发行构件与 Android 门禁
+
+```bash
+python3 tools/distribution/sync_catalog.py --check
+./gradlew :bergamot:test :bergamot:packageWithoutPrefixes :demo:assembleRelease :demo:assembleReleaseAndroidTest
+python3 tools/distribution/check_hardening.py
+python3 tools/distribution/verify_artifacts.py --aar bergamot/build/outputs/aar/bergamot-release.aar --no-prefixes bergamot/build/outputs/aar/bergamot-no-prefixes-release.aar --apk demo/build/outputs/apk/release/demo-release.apk
+```
+
+设备解锁并首次联网下载 Mozilla 模型，设置 adb 设备序列号后运行：
+
+```bash
+python3 tools/distribution/run_device_tests.py --serial YOUR_DEVICE_SERIAL --apk demo/build/outputs/apk/release/demo-release.apk --test-apk demo/build/outputs/apk/androidTest/release/demo-release-androidTest.apk --output build/device-result.json
+```
+
+该测试没有缺模型时的跳过分支，必须完成真实翻译、Unicode 输入、损坏模型拒绝、释放后重建及许可资源读取。
+测试目标是经过 R8 的最终 AAR 消费 app。ARM64 模拟器可做功能验证，但不能用于真机性能结论。
+发布工作流要求 `android-arm64` 标签的隔离 self-hosted runner（可以是连接 ARM64 设备/模拟器的 macOS/Linux 主机），
+配置仓库变量 `FOXLET_ANDROID_SERIAL` 并确保 Python 3/adb 在 PATH；该门禁通过前不会发布 Release。
+常规 PR CI 不接触自托管设备，只执行构建、R8、包内容与主机检查。
+
+独立原生安全测试：
+
+```bash
+clang++ -std=c++17 -O1 -g -fsanitize=address,undefined -I . tools/safety-tests/native_safety_test.cpp -o /tmp/foxlet-native-safety
+/tmp/foxlet-native-safety
+```
+
+FLORES-200 仅是评测集，引用和许可见 [CITATION](../benchmarks/CITATION.md)。
+发行 AAR/demo 的包检查会拒绝混入 benchmark 文件或已知评测原文样本。

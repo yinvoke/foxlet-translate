@@ -4,11 +4,12 @@ on:
   push:
     tags: ["v*"]
 
+permissions:
+  contents: read
+
 jobs:
-  release:
+  build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -18,14 +19,79 @@ jobs:
       - uses: android-actions/setup-android@v3
       - name: Install NDK and CMake
         run: sdkmanager "ndk;29.0.13113456" "cmake;3.31.6"
-      - name: Check release notes
-        run: test -s ".github/releases/${GITHUB_REF_NAME}.md"
-      - name: Test + build AAR
-        run: ./gradlew :bergamot:test :bergamot:assembleRelease
-      - name: Version the artifact
-        run: cp bergamot/build/outputs/aar/bergamot-release.aar "bergamot-${GITHUB_REF_NAME}.aar"
+      - name: Check release inputs
+        run: |
+          version=$(sed -n 's/^version=//p' gradle.properties)
+          test "$GITHUB_REF_NAME" = "v$version"
+          test -s ".github/releases/${GITHUB_REF_NAME}.md"
+          python3 tools/distribution/sync_catalog.py --check
+          clang++ -std=c++17 -O1 -g -fsanitize=address,undefined -I . tools/safety-tests/native_safety_test.cpp -o /tmp/foxlet-native-safety
+          /tmp/foxlet-native-safety
+      - name: Build and test delivered SDK and R8 consumer
+        run: ./gradlew :bergamot:test :bergamot:packageWithoutPrefixes :demo:assembleRelease :demo:assembleReleaseAndroidTest
+      - name: Verify package contents and hardening
+        run: |
+          python3 tools/distribution/check_hardening.py
+          python3 tools/distribution/verify_artifacts.py --aar bergamot/build/outputs/aar/bergamot-release.aar --no-prefixes bergamot/build/outputs/aar/bergamot-no-prefixes-release.aar --apk demo/build/outputs/apk/release/demo-release.apk
+      - name: Prepare versioned release files
+        run: |
+          mkdir -p release-files device-files
+          cp bergamot/build/outputs/aar/bergamot-release.aar "release-files/bergamot-${GITHUB_REF_NAME}.aar"
+          cp bergamot/build/outputs/aar/bergamot-no-prefixes-release.aar "release-files/bergamot-${GITHUB_REF_NAME}-no-prefixes.aar"
+          cp demo/build/outputs/apk/release/demo-release.apk "release-files/foxlet-demo-${GITHUB_REF_NAME}.apk"
+          cp bergamot/build/generated/distributionResources/io/github/yinvoker/foxlet/licenses/*.txt release-files/
+          cp demo/build/outputs/apk/release/demo-release.apk device-files/
+          cp demo/build/outputs/apk/androidTest/release/demo-release-androidTest.apk device-files/
+          cp tools/distribution/run_device_tests.py device-files/
+          cd release-files
+          sha256sum *.aar *.apk *.txt > SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-files
+          path: release-files/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: device-files
+          path: device-files/
+
+  # Configure an isolated runner with this label and a connected ARM64 Android
+  # device/emulator. Publishing intentionally waits for the actual binary test.
+  device:
+    needs: build
+    runs-on: [self-hosted, android-arm64]
+    timeout-minutes: 30
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: device-files
+          path: device-files
+      - name: Test exact release APK on Android
+        env:
+          DEVICE_SERIAL: ${{ vars.FOXLET_ANDROID_SERIAL }}
+        run: python3 device-files/run_device_tests.py --serial "$DEVICE_SERIAL" --apk device-files/demo-release.apk --test-apk device-files/demo-release-androidTest.apk --output device-result.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: device-result
+          path: device-result.json
+
+  publish:
+    needs: [build, device]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-files
+          path: release-files
+      - uses: actions/download-artifact@v4
+        with:
+          name: device-result
+          path: release-files
       - uses: softprops/action-gh-release@v2
         with:
-          files: bergamot-*.aar
+          files: release-files/*
           body_path: .github/releases/${{ github.ref_name }}.md
           fail_on_unmatched_files: true

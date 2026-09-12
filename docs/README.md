@@ -6,6 +6,7 @@
 
 - [快速开始](getting-started.md)：引入 AAR、准备模型、调用 Kotlin API、处理生命周期。
 - [支持的语言模型](../registry.json)：Mozilla 模型索引，包含下载地址、SHA-256 和文件大小。
+- [第三方许可说明](../NOTICE)：代码、运行库、模型和评测数据的许可范围及随包声明。
 - [SMMLA 兼容性清单](smmla-compatibility.md)：已经验证过 i8mm/SMMLA 路径的设备。
 
 ## 开发者
@@ -15,17 +16,12 @@
 - [贡献指南](../CONTRIBUTING.md)：改动范围、上游 vendor 规则、验证要求和文档约定。
 - [上游来源与升级](../engine/UPSTREAM.md)：引擎 vendor 来源、裁剪范围和 re-vendor 流程。
 
-## 性能与验收归档
+## 性能与质量
 
-- [版本基准与回归规则](../benchmarks/README.md)：每个版本的数据入口、指标口径、阈值及新增流程。
-- [v0.1.0 → v0.2.0 基准](../benchmarks/v0.2.0/README.md)：历史配对实测与原始数据。
-- [与 Google ML Kit 的历史评测](../benchmarks/v0.1.0/mlkit.md)：v0.1.0 阶段的质量分数、真机图表与 app PSS 方法。
-- [v0.3.0 性能记录](../benchmarks/v0.3.0/README.md)：版本源码与实测的对应关系、基线与参考数据的边界。
-- [2026-09-09 小米 14 复测](../benchmarks/v0.3.0/mi14-2026-09-09/README.md)：新版 COMET、app 原始译文及未完成的性能测试。
-- [同日重连场次](../benchmarks/v0.3.0/mi14-2026-09-09/reconnected/README.md)：旧版→新版质量对照、新版 AAR 译文一致性和独立性能复测。
-- [同日充电后场次](../benchmarks/v0.3.0/mi14-2026-09-09/charged/README.md)：加入前后前台核验；原生 48 进程通过，app 24 进程完整但六项波动超限，附已执行复核。
-- [app 对比与质量评分工具](../tools/app-bench/README.md)：独立进程的 ML Kit/AAR 对照，与原生基准分开记录。
-- [版本测量工具](../tools/version-bench/README.md)：从 tag 或未提交代码构建、运行及检查。
+- [版本基准](../benchmarks/README.md)：各版本、设备的性能结果与回归规则。
+- [v0.3.0 测试结果](../benchmarks/v0.3.0/README.md)：小米 10 / 14 性能、翻译质量及 ML Kit 对比。
+- [App 评测工具](../tools/app-bench/README.md)：AAR 与 ML Kit 的性能测量和质量评分。
+- [版本回归工具](../tools/version-bench/README.md)：按固定协议构建、测量和检查版本差异。
 
 ## 阅读约定
 

@@ -50,7 +50,7 @@ class RunnerTest(unittest.TestCase):
             if shell == 'dumpsys window':
                 locked = mode == 'locked'
                 return ('mDreamingLockscreen=' + str(locked).lower() + '\n'
-                        'mCurrentFocus=Window{abc u0 io.github.yinvoker.bergamot.bench/.MainActivity}')
+                        'mCurrentFocus=Window{abc u0 io.github.yinvoker.foxlet.bench/.MainActivity}')
             if 'board_sensor_temp' in shell:
                 return '30000'
             if shell.startswith('sha256sum'):

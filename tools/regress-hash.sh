@@ -13,7 +13,7 @@
 # pushed path), or set it empty to reproduce a pre-prefix-table hash.
 # The jaen config is left alone: ssplit-cpp has no Japanese table, and the second
 # leg of a pivot re-uses the boundaries the first leg found instead of splitting
-# again -- which is why the pivot hashes below did not move.
+# again.
 # The pivot hash is only stable on an engine that carries patch 0012 (requests
 # ordered by id, not heap address); without it the ja->zh output differs run to
 # run even in blocking mode, so on such an engine check en->zh only.
@@ -22,34 +22,16 @@ smoke=${1:?smoke}; enzh=${2:?enzh config}; eng=${3:?eng.txt}
 jaen=${4:-}; jpn=${5:-}
 platform=${PLATFORM:-host}
 
-# Canonical blocking hashes (FNV-1a over the corpus output) by platform, config
-# and corpus size: host runs the mbw1024 CI config, devices run the mbw512
-# default. The hash covers the whole corpus and batch composition changes the
-# output of individual sentences, so each corpus size has its own table entry
-# (bench set grew from FLORES lines 1-150 to 1-200 on 2026-09-04).
-# Host table re-baselined 2026-09-05 for patch 0018: the small-GEMM kernel
-# reproduces ruy's accumulation order, which differs from Accelerate's, so the
-# Accelerate host build moves (host/150 pivot happens not to); every device runs
-# ruy and is unchanged. Pre-0018 host values: host/150 1728c7c863926c5c/
-# 58b6667dd43d6364, host/200 3b458f7f7fe6fd68/00602a479d7c106b.
-# Host en->zh re-baselined 2026-09-06 for the nonbreaking-prefix table: it merges
-# the fragments the bare regex cut at `Dr.`, `U.S.`, `No. 5` and the like (200
-# lines: 226 sentences -> 212), so the corpus output changes. Pre-table en->zh
-# values: host/150 0a46cfb6e339ff29, host/200 cec5ff3b1fc29f8e.
-# Device en->zh re-baselined the same day on a Mi 12 (SMMLA == ruy, both corpus
-# sizes; pivot unchanged). Pre-table device en->zh values: device/150
-# 1742b57a069b1da7, device/200 f8a315e6571cc957.
+# Canonical FNV-1a hashes cover the complete corpus with source-language prefixes.
+# Host uses batch 1024; device uses batch 512. Corpus size and batch composition
+# affect output, so each combination has a separate entry.
 n=$(wc -l < "$eng" | tr -d ' ')
 case "$platform/$n" in
   host/150)   can_enzh=a548669c86d03fc1; can_pivot=58b6667dd43d6364 ;;
   host/200)   can_enzh=16537889a77b25db; can_pivot=e9d84f82b99250ee ;;
   device/150) can_enzh=a61c0d35a4d8f2e8; can_pivot=28028fc1ed7d0099 ;;
-  device/200) can_enzh=88295d89303c20bd; can_pivot=fb3dda796b1186af ;;   # en->zh: Mi 12 2026-09-06 (prefix table); pivot: Mi 10 (865, ruy) 2026-09-04, Mi 14 SMMLA == ruy 2026-09-05
-  # Host build with the float GEMM on ruy (-DUSE_APPLE_ACCELERATE=OFF -DUSE_RUY_SGEMM=ON):
-  # attention float products accumulate in ruy order, so the hashes differ from
-  # the Accelerate host table above. Baselined 2026-09-05 on the D0 tree; en->zh
-  # re-baselined 2026-09-06 for the prefix table (pre-table: host-ruy/150
-  # 54754317ebc21206, host-ruy/200 01802271f3d28be7), pivot unchanged.
+  device/200) can_enzh=88295d89303c20bd; can_pivot=fb3dda796b1186af ;;
+  # Ruy float GEMM uses a different accumulation order from Apple Accelerate.
   host-ruy/150) can_enzh=19a4e7f9052e5c18; can_pivot=c9bbc00386d027f4 ;;
   host-ruy/200) can_enzh=54fdd3c3cb2f9f4e; can_pivot=7dcaeab06551bf6d ;;
   host/*|host-ruy/*|device/*) can_enzh=; can_pivot= ;;

@@ -19,9 +19,9 @@ FLORES-200 devtest 前 150 条，COMET（`wmt22-comet-da` × 100），越高越�
 
 图表保留原样，包含历史质量、速度与内存数据。
 
-![小米 14：v0.1.0 阶段基准](../../docs/benchmark-mi14.png)
+![小米 14：v0.1.0 阶段基准](mlkit-mi14.png)
 
-![小米 10：v0.1.0 阶段基准](../../docs/benchmark-mi10.png)
+![小米 10：v0.1.0 阶段基准](mlkit-mi10.png)
 
 当时的单线程测试中，Bergamot 完成同一批翻译的总耗时为 ML Kit 的约 2.4–3.2 倍，峰值 PSS 约为 2.4 倍，日→中双模型常驻时约为 3.4 倍。4 线程翻译速度已接近 ML Kit，但峰值 PSS 约为 Bergamot 单线程的 2.5 倍。这些是旧版的取舍，不能用来描述 v0.3.0。
 
@@ -31,7 +31,7 @@ FLORES-200 devtest 前 150 条，COMET（`wmt22-comet-da` × 100），越高越�
 
 | 维度 | 本次历史测试的规则 |
 |---|---|
-| 测试集 | [FLORES-200](https://github.com/facebookresearch/flores) devtest 前 **150 条**；英、日、中内容对齐，使用人工中文参考译文。仓库语料于 2026-09 扩充到 200 条，但本页分数和图表未随之重测 |
+| 测试集 | [FLORES-200](https://github.com/facebookresearch/flores) devtest 前 **150 条**；英、日、中内容对齐，使用人工中文参考译文。当前仓库语料为 200 条，但本页分数和图表未随之重测 |
 | 质量 | [COMET](https://github.com/Unbabel/COMET) `wmt22-comet-da` × 100；两个引擎使用同一批源文、同一份参考，主机侧统一评分。历史记录另以中文分词 BLEU 交叉验证，结论一致 |
 | 速度 | 基准 app 内记录全集总耗时；ML Kit 逐条调用，Bergamot 整批输入；均不含模型下载，Bergamot 计时包含模型加载 |
 | 内存 | 每 250 ms 采样一次 app 进程 PSS，取各阶段峰值；不是 native RSS |

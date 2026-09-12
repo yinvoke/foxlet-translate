@@ -1,0 +1,7 @@
+FLORES-200 devtest, NLLB Team et al. (2022).
+English and Japanese: first 200 sentences, copied without rewriting.
+Source: https://github.com/facebookresearch/flores/tree/main/flores200
+License: CC-BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0/
+Citation: NLLB Team et al., No Language Left Behind: Scaling Human-Centered Machine Translation (2022).
+Full BibTeX and attribution: https://github.com/yinvoke/foxlet-translate/blob/main/benchmarks/CITATION.md
+Benchmark-only data. Not included in the SDK AAR or public demo APK.

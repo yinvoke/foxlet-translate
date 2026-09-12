@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "io.github.yinvoker.bergamot"
+    namespace = "io.github.yinvoker.foxlet"
     compileSdk = 36
     ndkVersion = "29.0.13113456"
 
@@ -70,4 +70,27 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.3.0")
     androidTestImplementation("androidx.test:runner:1.7.0")
     androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
+}
+
+// Carry license texts into classes.jar for AAR consumers.
+val distributionResources = layout.buildDirectory.dir("generated/distributionResources")
+val generateDistributionResources by tasks.registering(Exec::class) {
+    outputs.dir(distributionResources)
+    // SOURCE.txt records the current commit/tag and local modification state.
+    outputs.upToDateWhen { false }
+    commandLine("python3", rootProject.file("tools/distribution/package_notices.py"),
+        "--resources", distributionResources.get().asFile)
+}
+androidComponents {
+    onVariants { variant ->
+        variant.sources.resources?.addStaticSourceDirectory(distributionResources.get().asFile.absolutePath)
+    }
+}
+tasks.named("preBuild") { dependsOn(generateDistributionResources) }
+
+tasks.register<Exec>("packageWithoutPrefixes") {
+    dependsOn("assembleRelease")
+    commandLine("python3", rootProject.file("tools/distribution/package_notices.py"),
+        "--without-prefixes", layout.buildDirectory.file("outputs/aar/bergamot-release.aar").get().asFile,
+        "--output", layout.buildDirectory.file("outputs/aar/bergamot-no-prefixes-release.aar").get().asFile)
 }

@@ -1,88 +1,115 @@
 # 快速开始
 
-本文面向把 Foxlet Translate 集成到 Android 应用的开发者。翻译在设备上离线运行，应用需要自行把模型文件下载或随应用分发到私有目录。
+本文对应 v0.3.1；v0.3.0 用户请看[该版本文档](https://github.com/yinvoke/foxlet-translate/blob/v0.3.0/docs/getting-started.md)。
+当前源码的 SDK 包名为 `io.github.yinvoker.foxlet`；从旧版迁移时需更新 `io.github.yinvoker.bergamot` 的 imports。
+支持 Android 9+、arm64-v8a。开发环境为 JDK 17、Android SDK 36、NDK 29.0.13113456、CMake 3.31.6；Gradle wrapper 固定工具链。
 
-## 1. 添加 AAR
+## 1. 先体验完整示例
 
-从 [v0.3.0 Release](https://github.com/yinvoke/foxlet-translate/releases/tag/v0.3.0) 下载 `bergamot-v0.3.0.aar`，放入应用模块的 `libs/` 目录。
+```bash
+./gradlew :demo:assembleRelease
+adb install -r demo/build/outputs/apk/release/demo-release.apk
+```
+
+打开 Foxlet Translate，点击“下载 / 检查模型”，完成后可断网输入英文并翻译。
+下载支持进度、取消、失败重试和 SHA-256 校验。演示 APK 用开发签名，仅供体验。
+`demo/` 直接依赖构建完成的 AAR，并开启 R8；不包含 ML Kit 或 FLORES-200。
+`sample/` 是单独的内部评测 app，不是此演示。
+
+## 2. 集成 AAR
+
+```bash
+./gradlew :bergamot:assembleRelease :bergamot:packageWithoutPrefixes
+```
+
+默认产物为 `bergamot/build/outputs/aar/bergamot-release.aar`，将其复制到宿主模块的 `libs/`：
 
 ```kotlin
+// app/build.gradle.kts
+android { defaultConfig { minSdk = 28 } }
 dependencies {
-    implementation(files("libs/bergamot-v0.3.0.aar"))
+    implementation(files("libs/bergamot-release.aar"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
 }
 ```
 
-AAR 不携带 Kotlin 协程的传递依赖。项目源码内的 `bergamot` 模块也可以直接作为 Gradle module 使用。
+AAR 不携带传递依赖，请显式声明协程依赖。已验证仓库当前 AGP/Kotlin 工具链；旧 Kotlin 编译器可能无法读取新版 Kotlin 元数据，建议使用同等或更新版本。
 
-也可运行 `./gradlew :bergamot:assembleRelease` 从源码构建，产物位于 `bergamot/build/outputs/aar/bergamot-release.aar`；自行构建时按实际文件名调整依赖。
+`bergamot-no-prefixes-release.aar` 不包含 LGPL-2.1 分句前缀表。两种 AAR 二选一，不要同时引入；默认版本会保护 `Dr.` 等缩写，无表版本使用基础分句，也可以由宿主提供自有前缀表。
 
-## 2. 准备模型
+## 3. 下载模型并翻译
 
-`registry.json` 是 Mozilla Remote Settings 模型索引快照。每个方向通常包含模型、SentencePiece 词表和 lexical shortlist；这些文件必须放在同一目录，并且下载后应校验 SHA-256。
+宿主只在下载模型时需要网络权限：
 
-下面的脚本下载英译简中模型到 `models/enzh/`：
-
-```bash
-python3 - <<'EOF'
-import hashlib
-import json
-import pathlib
-import urllib.request
-
-src, dst = "en", "zh-Hans"
-registry = json.load(open("registry.json", encoding="utf-8"))
-model = next(item for item in registry["models"]
-             if item["from"] == src and item["to"] == dst)
-out = pathlib.Path("models/enzh")
-out.mkdir(parents=True, exist_ok=True)
-for item in model["files"]:
-    path = out / item["name"]
-    urllib.request.urlretrieve(item["url"], path)
-    digest = hashlib.sha256(path.read_bytes()).hexdigest()
-    if digest != item["sha256"]:
-        raise SystemExit(f"sha256 mismatch: {path}")
-    print("ok", path)
-EOF
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
 ```
 
-应用运行时应把模型下载到应用私有目录，校验成功后再创建 `ModelFiles`。模型文件属于 Mozilla 发布物，许可信息见 [NOTICE](../NOTICE)。
-
-## 3. 翻译文本
+下面是包含 imports、模型目录和后台线程的完整调用函数。可从 Activity 的生命周期协程中调用；界面及错误处理参考 `demo/`。
 
 ```kotlin
-// 在后台协程中执行，避免 use 结束时的 close() 阻塞主线程。
-BergamotEngine(EngineConfig()).use { engine ->
-    val enZh = ModelFiles.fromDirectory(File(modelsDir, "enzh"))
-    val result = engine.translate(listOf("Hello, world."), enZh)
-}
-```
+import android.content.Context
+import io.github.yinvoker.foxlet.BergamotEngine
+import io.github.yinvoker.foxlet.ModelCatalog
+import java.io.File
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-`translate` 是 `suspend` 函数，返回值与输入一一对应。非英语语言之间可通过英语中转：
-
-```kotlin
-BergamotEngine(EngineConfig()).use { engine ->
-    val result = engine.translatePivot(
-        texts = listOf("こんにちは。"),
-        first = ModelFiles.fromDirectory(File(modelsDir, "jaen")),
-        second = ModelFiles.fromDirectory(File(modelsDir, "enzh")),
+suspend fun translateEnglish(context: Context, text: String): String {
+    val files = ModelCatalog.download(
+        root = File(context.filesDir, "translation-models"),
+        from = "en",
+        to = "zh-Hans",
+        onProgress = { downloaded, total ->
+            // 回调在 IO 线程执行；更新 UI 时请切换到主线程。
+        },
     )
+    return withContext(Dispatchers.IO) {
+        BergamotEngine().use { engine ->
+            engine.translate(listOf(text), files).single()
+        }
+    }
 }
 ```
 
-如果设备内存紧张，也可以先翻译 ja→en，在后台线程调用 `releaseAllModels().get()` 确认卸载成功后，再翻译 en→zh。仅仅顺序调用两次 `translate` 不会立即卸载第一个模型。同时驻留两个模型的 `translatePivot` 通常更快，但峰值内存更高。
+`download` 会复用已校验的完整模型目录；离线再次使用时无需重新联网。
+文本不会发送到服务器。模型索引固定在 SDK 内，来自 `registry.json`，可以通过 `ModelCatalog.models` 查看语向及下载大小。
 
-## 4. 生命周期与线程
+连续交互应在应用层长期持有一个 engine，避免每次加载；上面的短函数用于说明完整流程。
+同一进程同时只能有一个 engine，重复创建会报错。关闭后才可以创建下一个。
 
-- 同一进程同时只创建一个 `BergamotEngine`。底层 Marian 运行时持有进程级全局状态。
-- `EngineConfig()` 默认 1 个线程，适合一次一句的交互式调用；大批量文本使用 `EngineConfig.forDevice(context, Workload.BATCH)`。
-- 模型首次使用时加载，默认空闲 60 秒自动卸载；下一次翻译会透明重载。
-- 在 `onTrimMemory` 中调用 `releaseAllModels()`；它返回 `Future<Boolean>`，需要确认释放完成时再等待结果。
-- `close()` 会等待原生资源销毁，应放在后台线程调用，不要阻塞主线程。
+## 4. 已有文件、自定义模型与中转
 
-## 5. 常见边界
+已有 Mozilla 模型可用 `ModelFiles.fromDirectory(directory)`，首次加载自动检查是否匹配 SDK 内固定模型索引。
+该方法要求一套完整、不歧义的文件；模型、词表和 shortlist 必须来自同一语向/版本。
 
-- 当前发布 ABI 为 `arm64-v8a`，最低 Android API 为 28。
-- 支持 HTML 感知翻译，但 HTML 模式仍属于实验能力，宿主应自行覆盖 DOM、脚本和特殊节点场景。
-- `cacheSize = 0` 时，同一输入、模型和配置具备跨进程的稳定输出契约；开启缓存后，缓存碰撞可能使重新计算的句子进入不同 batch。
-- `workspaceMb` 为保留兼容参数，当前没有实际效果；新代码不要继续依赖它。
+自定义模型需要显式传入来自可信发布者的完整 `expectedSha256: Map<String, String>`，以文件名为键。不能用刚下载文件自身算出的 hash 充当信任依据。结构校验不能保证任意第三方模型的架构或推理逻辑安全；本库的公开入口面向可信模型，不能把模型上传接口直接暴露给不可信用户。
+
+模型目录在使用期间必须保持不可变。更新时下载到新目录，再切换 ModelFiles；不要覆写正在使用的文件。缓存标识包括模型、两侧词表、shortlist、源语言、自供前缀和文件元数据；覆盖旧文件并保留原长度/时间戳不受支持。
+
+```kotlin
+val jaEn = ModelCatalog.download(modelRoot, "ja", "en")
+val enZh = ModelCatalog.download(modelRoot, "en", "zh-Hans")
+val result = engine.translatePivot(listOf("こんにちは。"), jaEn, enZh)
+```
+
+中转会同时驻留两个模型。内存较少时可顺序翻译，并在中间等待 `releaseAllModels().get()` 完成。仅顺序调用两次 translate 不会立即卸载第一套模型。
+
+无前缀表 AAR 可通过 `files.copy(nonbreakingPrefixFile = myUtf8PrefixFile)` 使用自有前缀数据；文件最多 1 MiB。`EngineConfig(nonbreakingPrefixes = false)` 完全关闭前缀读取。
+
+## 5. 生命周期、失败与限制
+
+- `translate` / `translatePivot` 是 suspend API，结果与输入顺序一致。默认一个推理线程；批量处理可用 `EngineConfig.forDevice(context, Workload.BATCH)`。
+- 默认空闲 60 秒卸载模型。`releaseAllModels()` 返回 Future，可接 `onTrimMemory`；等待 Future 或 `close()` 应放在后台线程。
+- 关闭开始后拒绝新翻译；close 可重复调用，会等待资源释放完成。协程取消无法中断正在执行的单个原生批次，只有该批结束后才能释放资源。
+- 下载的尺寸/hash 不符、缺文件、目录有歧义等会报错，下载失败不会发布半套模型；保留错误提示并允许重试。
+- 非法 UTF-16 代理项会报错。emoji、扩展汉字和空字符在 JNI 边界按标准 UTF-8 转换；译文是否保留这些字符仍由分词器/模型决定。
+- HTML 翻译仍属实验能力，宿主负责 DOM、脚本和特殊节点处理。
+- 自定义线程限 1–64、miniBatchWords 限 256–65536、cacheSize 限 0–1000000。较大设置可能需要大量内存。
+- SHA-256 与结构校验会增加首次加载开销；README 的 v0.3.0 性能数据属于该历史版本，不能当作新版耗时承诺。
+
+## 6. 许可与再分发
+
+AAR 的 `io/github/yinvoker/foxlet/licenses/` 包含 NOTICE、完整第三方许可及 SOURCE.txt。可在宿主“开源许可”页面展示，demo 已提供示例。保留适用声明和 MPL 源码取得方式；源码和源码修改可从相应发布版本取得。
+
+默认 AAR 含 LGPL-2.1 的 Moses 数据；无前缀版本不含这些数据。模型单独受 MPL-2.0 约束。FLORES-200 仅用于评测，AAR/demo 不含它；源码评测材料的出处和 BibTeX 见 [评测引用](../benchmarks/CITATION.md)。

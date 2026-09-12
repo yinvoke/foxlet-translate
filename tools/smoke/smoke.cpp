@@ -25,7 +25,7 @@
 //                   to get the engine's own event trace interleaved.
 //   --release-mode M  how the scenarios hand a model back: "release" (default,
 //                   the service's release() closure) or "reset" (drop the
-//                   shared_ptr only -- the pre-D0 behaviour, for A/B).
+//                   shared_ptr only).
 #include <chrono>
 #include <condition_variable>
 #include <cstdio>
@@ -262,7 +262,7 @@ std::vector<Response> collectAll(std::vector<std::string> &&sources, Submit subm
 }
 
 // ---------------------------------------------------------------------------
-// D0: release-lifecycle scenarios.
+// release-lifecycle scenarios.
 // ---------------------------------------------------------------------------
 
 std::vector<Response> asyncTranslateAll(AsyncService &service, const std::shared_ptr<TranslationModel> &model,
@@ -304,10 +304,7 @@ std::vector<Response> asyncTranslateAllReleasingMidflight(AsyncService &service,
   return responses;
 }
 
-/// How the scenarios give a model handle back. "reset" is the pre-D0
-/// behaviour (drop the shared_ptr and hope); "release" goes through the
-/// service's release() closure. Kept switchable so a before/after table can be
-/// produced from one binary.
+/// Compare dropping the handle alone with explicit service-level release.
 enum class ReleaseMode { Reset, Release };
 
 int runLifecycleScenario(const std::string &scenario, const std::vector<std::string> &corpus,

@@ -1,5 +1,5 @@
 From 921d6f4a10894b5d13fef62fe461f44e3147bf18 Mon Sep 17 00:00:00 2001
-From: yinvoker <yinvoker@outlook.com>
+From: yinvoker <redacted@example.invalid>
 Date: Mon, 31 Aug 2026 22:45:52 +0800
 Subject: [PATCH] perf: OS-level dotprod detection fallback (2.1x on host,
  engine-wide)
@@ -14,7 +14,6 @@ getauxval(HWCAP_ASIMDDP) / sysctl FEAT_DotProd when cpuinfo says no.
 Host M3, 150 sentences: en-zh 2.42s -> 1.14s, ja-zh pivot 5.18s -> 2.36s,
 byte-identical output (SDOT is exact int8 arithmetic).
 
-Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>
 ---
  .../src/3rd_party/ruy/ruy/cpuinfo.cc          | 31 +++++++++++++++++--
  1 file changed, 29 insertions(+), 2 deletions(-)

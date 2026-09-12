@@ -1,5 +1,5 @@
 From 86a28ee0ec460649250c7f25dc406dfe5ecda720 Mon Sep 17 00:00:00 2001
-From: yinvoker <yinvoker@outlook.com>
+From: yinvoker <redacted@example.invalid>
 Date: Tue, 1 Sep 2026 17:42:58 +0800
 Subject: [PATCH] patch: pin model bytes with shared_ptr during concurrent
  replica loads
@@ -17,7 +17,6 @@ load drops the shared one — same steady-state memory, no serialization
 of loads. Host hashes unchanged (enzh 1728c7c8, ja->zh 58b6667d), w4
 stable, device 4t app run passes.
 
-Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>
 ---
  engine/src/translator/translation_model.cpp | 27 +++++++++++++++------
  engine/src/translator/translation_model.h   |  7 ++++++

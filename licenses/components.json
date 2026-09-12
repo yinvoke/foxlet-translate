@@ -1,0 +1,123 @@
+[
+  {
+    "name": "engine/3rd_party/ssplit-cpp",
+    "license_file": "engine/3rd_party/ssplit-cpp/LICENSE.md"
+  },
+  {
+    "name": "engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39",
+    "license_file": "engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/COPYING"
+  },
+  {
+    "name": "engine/marian-fork",
+    "license_file": "engine/marian-fork/LICENSE.md"
+  },
+  {
+    "name": "engine/marian-fork/src/3rd_party/CLI",
+    "license_file": "engine/marian-fork/src/3rd_party/CLI/LICENSE"
+  },
+  {
+    "name": "engine/marian-fork/src/3rd_party/cnpy",
+    "license_file": "engine/marian-fork/src/3rd_party/cnpy/LICENSE"
+  },
+  {
+    "name": "engine/marian-fork/src/3rd_party/faiss",
+    "license_file": "engine/marian-fork/src/3rd_party/faiss/LICENSE"
+  },
+  {
+    "name": "engine/marian-fork/src/3rd_party/mio",
+    "license_file": "engine/marian-fork/src/3rd_party/mio/LICENSE"
+  },
+  {
+    "name": "engine/marian-fork/src/3rd_party/pathie-cpp",
+    "license_file": "engine/marian-fork/src/3rd_party/pathie-cpp/LICENSE"
+  },
+  {
+    "name": "engine/marian-fork/src/3rd_party/phf",
+    "license_file": "engine/marian-fork/src/3rd_party/phf/LICENSE"
+  },
+  {
+    "name": "engine/marian-fork/src/3rd_party/ruy",
+    "license_file": "engine/marian-fork/src/3rd_party/ruy/LICENSE"
+  },
+  {
+    "name": "engine/marian-fork/src/3rd_party/ruy/third_party/cpuinfo",
+    "license_file": "engine/marian-fork/src/3rd_party/ruy/third_party/cpuinfo/LICENSE"
+  },
+  {
+    "name": "engine/marian-fork/src/3rd_party/ruy/third_party/cpuinfo/deps/clog",
+    "license_file": "engine/marian-fork/src/3rd_party/ruy/third_party/cpuinfo/deps/clog/LICENSE"
+  },
+  {
+    "name": "engine/marian-fork/src/3rd_party/sentencepiece",
+    "license_file": "engine/marian-fork/src/3rd_party/sentencepiece/LICENSE"
+  },
+  {
+    "name": "engine/marian-fork/src/3rd_party/sentencepiece/third_party/absl",
+    "license_file": "engine/marian-fork/src/3rd_party/sentencepiece/third_party/absl/LICENSE"
+  },
+  {
+    "name": "engine/marian-fork/src/3rd_party/sentencepiece/third_party/darts_clone",
+    "license_file": "engine/marian-fork/src/3rd_party/sentencepiece/third_party/darts_clone/LICENSE"
+  },
+  {
+    "name": "engine/marian-fork/src/3rd_party/sentencepiece/third_party/esaxx",
+    "license_file": "engine/marian-fork/src/3rd_party/sentencepiece/third_party/esaxx/LICENSE"
+  },
+  {
+    "name": "engine/marian-fork/src/3rd_party/sentencepiece/third_party/protobuf-lite",
+    "license_file": "engine/marian-fork/src/3rd_party/sentencepiece/third_party/protobuf-lite/LICENSE"
+  },
+  {
+    "name": "engine/marian-fork/src/3rd_party/simd_utils",
+    "license_file": "engine/marian-fork/src/3rd_party/simd_utils/LICENSE"
+  },
+  {
+    "name": "engine/marian-fork/src/3rd_party/spdlog",
+    "license_file": "engine/marian-fork/src/3rd_party/spdlog/LICENSE"
+  },
+  {
+    "name": "engine/marian-fork/src/3rd_party/yaml-cpp",
+    "license_file": "engine/marian-fork/src/3rd_party/yaml-cpp/LICENSE"
+  },
+  {
+    "name": "engine/marian-fork/src/3rd_party/zstr",
+    "license_file": "engine/marian-fork/src/3rd_party/zstr/LICENSE"
+  },
+  {
+    "name": "engine/src/translator",
+    "license_file": "engine/src/translator/LICENSE"
+  },
+  {
+    "name": "Moses nonbreaking prefix data (default AAR only)",
+    "license_file": "licenses/LGPL-2.1.txt",
+    "optional_prefixes": true
+  },
+  {
+    "name": "LLVM libc++ runtime (Android NDK r29)",
+    "license_file": "licenses/libcxx-NDK-r29.txt"
+  },
+  {
+    "name": "half_float",
+    "license_file": "engine/marian-fork/src/3rd_party/half_float/umHalf.h",
+    "first_comment": true
+  },
+  {
+    "name": "zlib",
+    "license_file": "engine/marian-fork/src/3rd_party/zlib/zlib.h",
+    "first_comment": true
+  },
+  {
+    "name": "Microsoft ExceptionWithCallStack",
+    "license_file": "engine/marian-fork/LICENSE.md",
+    "copyright": "Copyright (c) Microsoft. All rights reserved."
+  },
+  {
+    "name": "Moses nonbreaking prefix additional attribution (default AAR only)",
+    "license_file": "engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/README.txt",
+    "optional_prefixes": true
+  },
+  {
+    "name": "Kotlin runtime dependencies (resolved separately; included by demo)",
+    "license_file": "licenses/kotlin-runtime.txt"
+  }
+]

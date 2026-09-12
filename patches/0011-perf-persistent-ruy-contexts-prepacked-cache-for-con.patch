@@ -1,5 +1,5 @@
 From 222a3f26701b6fb05bf78f938ce60abf611c964a Mon Sep 17 00:00:00 2001
-From: yinvoker <yinvoker@outlook.com>
+From: yinvoker <redacted@example.invalid>
 Date: Tue, 1 Sep 2026 11:31:58 +0800
 Subject: [PATCH] perf: persistent ruy contexts + prepacked cache for constant
  weights
@@ -22,7 +22,6 @@ the engine's pre-existing pass-level divergence envelope.
 Untested at runtime: the generation guard's reload path (needs a
 load -> unload -> reload case, ideally on device).
 
-Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>
 ---
  .../src/tensors/cpu/integer_common.cpp        | 12 ++++++
  .../src/tensors/cpu/integer_common.h          | 17 ++++++++

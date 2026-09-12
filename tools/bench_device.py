@@ -5,7 +5,7 @@ and unlocked. Retain only the required state, not notification/window contents.
 """
 import re
 
-PACKAGE = 'io.github.yinvoker.bergamot.bench'
+PACKAGE = 'io.github.yinvoker.foxlet.bench'
 FOREGROUND_CHECKS = 'awake-unlocked-focused-before-after-v1'
 
 

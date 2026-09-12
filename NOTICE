@@ -1,34 +1,56 @@
-Foxlet Translate 自有代码按 MIT 许可(见 LICENSE);仓库同时捆绑了
-以下第三方组件。各组件在其目录内保留自身的
-许可文件,本文件是索引。
+Foxlet Translate
 
-引擎(vendor 自 https://github.com/mozilla/translations 的 inference/
-目录,commit df4ab487;其本身派生自
-https://github.com/browsermt/bergamot-translator):
+本项目原创代码及其修改按 MIT 许可发布（见 LICENSE）。对引入代码的修改
+沿用相应文件的上游许可证；维护和修改这些文件不改变原作者的权利。
+第三方组件与许可文件索引见 licenses/components.json。各 vendor 目录保留
+上游原始版权、许可及适用声明；licenses/ 补充其余许可材料。
+构建脚本按该索引读取原文并生成随包声明，无需重复复制 vendor 中的许可证。
 
-- Bergamot translator(engine/src/translator)— MPL-2.0
-- Marian NMT,browsermt fork(engine/marian-fork)— MIT,
-  见 engine/marian-fork/LICENSE.md
-- SentencePiece(engine/marian-fork/src/3rd_party/sentencepiece)— Apache-2.0
-- ruy(engine/marian-fork/src/3rd_party/ruy)— Apache-2.0
-- cpuinfo(engine/marian-fork/src/3rd_party/ruy/third_party/cpuinfo)— BSD-2-Clause
-- simd_utils(engine/marian-fork/src/3rd_party/simd_utils)— 见其目录
-- ssplit-cpp,裁剪至分句核心
-  (engine/3rd_party/ssplit-cpp)— Apache-2.0;其 nonbreaking_prefixes
-  数据源自 Moses 项目,按其自身条款分发。见
-  engine/3rd_party/ssplit-cpp/LICENSE.md
-- PCRE2 10.39(engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39)— BSD
-- zlib、pathie-cpp、faiss 子集、half_float 等
-  engine/marian-fork/src/3rd_party 下的小型组件——见各自目录
+SDK 发行包
+-----------
+AAR 内 io/github/yinvoker/foxlet/licenses/ 保存完整第三方许可材料、
+本声明及 SOURCE.txt。下游再分发 SDK 或包含它的应用时，应保留适用的版权、
+许可与 NOTICE，并向用户提供 MPL 覆盖代码的对应源码取得方式。
 
-对以上 vendor 代码的全部本地改动存档于 patches/。
+引擎来源：mozilla/translations 的 inference/，
+commit df4ab487a117903b53e62cf3ac4305966fbbd2d6。
+来源记录见 engine/UPSTREAM.md；相应版本源码（包括本项目修改）在
+https://github.com/yinvoke/foxlet-translate 的对应 Release tag 中提供。
 
-数据:
+主要组件（完整许可文本随 AAR 提供）：
+- Bergamot translator — MPL-2.0，engine/src/translator/LICENSE。
+- Marian — MIT，engine/marian-fork/LICENSE.md。
+- SentencePiece、ruy、ssplit-cpp 的 C++ 核心 — Apache-2.0。
+- cpuinfo、simd_utils、PCRE2、CLI11、protobuf-lite、half_float 等 — 各自 BSD 条款。
+- spdlog、yaml-cpp、cnpy、mio、pathie-cpp、faiss、phf、zstr 等 — 各自目录许可。
+- libc++ — Android NDK r29 随附的 Apache-2.0 with LLVM exceptions / 相应历史许可，
+  见 licenses/libcxx-NDK-r29.txt。
+- Kotlin 标准库和 kotlinx.coroutines — Apache-2.0，由宿主 Gradle 解析；
+  AAR 不内嵌其类，demo APK 包含。当前版本声明见 licenses/kotlin-runtime.txt。
 
-- sample/src/main/assets/bench 包含 FLORES-200 devtest 集的前 200 句
-  (https://github.com/facebookresearch/flores),CC-BY-SA 4.0。
-- registry.json 索引 Mozilla 经 Firefox Remote Settings 发布的官方
-  翻译模型(MPL-2.0)。
+默认 AAR 内的 25 张 nonbreaking_prefixes 数据来自 Moses，经 ssplit-cpp 引入，
+采用 LGPL-2.1。原文位于 engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/，
+本项目未修改其内容；许可证全文见 licenses/LGPL-2.1.txt，额外出处说明见
+该目录 README.txt。这些原文资源可取得、修改和替换。
+名称含 no-prefixes 的 AAR 不包含这些数据表；可由宿主自行提供前缀文件。
+仅关闭运行时 nonbreakingPrefixes 选项不会从默认 AAR 删除这些资源。
 
-感谢 Bergamot 项目(EU Horizon 2020,grant 825303)、Mozilla,以及
-上述所有组件的作者。
+模型
+----
+SDK 不捆绑模型权重。registry.json 为 Mozilla 官方 Remote Settings 模型索引，
+包含版本、URL、大小和 SHA-256。模型权重按 MPL-2.0 发布：
+https://github.com/mozilla/firefox-translations-models/blob/main/LICENSE
+https://github.com/mozilla/translations/issues/1434
+自行分发模型的宿主需保留其许可和来源说明。
+
+评测数据（不属于 SDK 或演示 app 的发行内容）
+----------------------------------------
+FLORES-200 仅用于评测，不打包进 AAR，也不打包进 demo APK。
+仓库 sample/src/main/assets/bench/ 保存 devtest 英文、日文前 200 句，
+benchmarks/ 中部分评测记录包含源文、参考文本或译文；数据保持 CC-BY-SA 4.0，
+不适用项目代码的 MIT。sample 是内部评测 app，构建它会包含评测数据，
+不是对外发布的 demo。源码仓库和源码归档仍包含这些评测材料。
+原始出处、许可、截取说明与 NLLB 2022 BibTeX 见 benchmarks/CITATION.md。
+
+Foxlet Translate 是独立项目，未获 Mozilla/Firefox 官方认证或背书。
+感谢 Mozilla、Bergamot 项目（EU Horizon 2020，grant 825303）及各组件作者。

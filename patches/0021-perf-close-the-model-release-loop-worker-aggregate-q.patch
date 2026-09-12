@@ -1,5 +1,5 @@
 From 1e38512c0b5c34803f47c01b61ac03a0ecdf4ea0 Mon Sep 17 00:00:00 2001
-From: yinvoker <yinvoker@outlook.com>
+From: yinvoker <redacted@example.invalid>
 Date: Sat, 5 Sep 2026 21:27:45 +0800
 Subject: [PATCH] =?UTF-8?q?perf:=20close=20the=20model=20release=20loop=20?=
  =?UTF-8?q?=E2=80=94=20worker,=20aggregate=20queue=20and=20per-thread=20pa?=
@@ -9,7 +9,6 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
 ---
  engine/marian-fork/src/CMakeLists.txt         |  1 +
  engine/marian-fork/src/common/lifecycle.cpp   | 76 ++++++++++++++++

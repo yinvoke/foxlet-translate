@@ -20,7 +20,7 @@ import uuid
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from bench_device import FOREGROUND_CHECKS, capture_foreground, foreground_ready
-PACKAGE = "io.github.yinvoker.bergamot.bench"
+PACKAGE = "io.github.yinvoker.foxlet.bench"
 REPO = Path(__file__).resolve().parents[2]
 SCENARIOS = [(direction, engine, threads) for direction in ("enzh", "jazh")
              for engine, threads in (("mlkit", 1), ("bergamot", 1), ("bergamot", 2), ("bergamot", 4))]

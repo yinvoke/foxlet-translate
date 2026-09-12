@@ -1,5 +1,5 @@
 From 801f9bf3b4ff7a6b9fe7325afe20ec605ab6f115 Mon Sep 17 00:00:00 2001
-From: yinvoker <yinvoker@outlook.com>
+From: yinvoker <redacted@example.invalid>
 Date: Mon, 31 Aug 2026 22:30:18 +0800
 Subject: [PATCH] perf: restore ruy SDOT kernels lost in bazel_to_cmake
  conversion
@@ -12,7 +12,6 @@ symbol was preprocessed out -- int8 GEMM silently ran on the generic NEON
 path on all ARM devices. Also: EngineConfig.workspaceMb, bench baseline
 sampling, 2-thread round support.
 
-Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>
 ---
  .../github/yinvoker/bergamot/BergamotEngine.kt  |  8 +++++---
  engine/marian-fork/src/3rd_party/CMakeLists.txt | 10 ++++++++++

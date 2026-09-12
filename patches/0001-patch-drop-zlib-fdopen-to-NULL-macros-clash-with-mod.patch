@@ -1,10 +1,9 @@
 From 7719cf90ccb054b6053c5aa796c8a14324f5005e Mon Sep 17 00:00:00 2001
-From: yinvoker <yinvoker@outlook.com>
+From: yinvoker <redacted@example.invalid>
 Date: Mon, 31 Aug 2026 20:19:56 +0800
 Subject: [PATCH] patch: drop zlib fdopen-to-NULL macros (clash with modern SDK
  _stdio.h)
 
-Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>
 ---
  engine/marian-fork/src/3rd_party/zlib/zutil.h | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)

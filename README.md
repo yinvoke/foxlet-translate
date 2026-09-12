@@ -56,14 +56,14 @@ Foxlet Translate 是面向 Android 的高性能离线翻译库，基于 Mozilla 
 
 小米 14（骁龙 8 Gen 3），FLORES-200 前 200 条源文，相同模型、各版本默认单线程配置。首次翻译包含模型加载，内存为原生进程峰值 RSS；数据为系统动态调频下三轮交替测量的中位数，仅作性能参考。
 
-| 场景 | 未优化版本 v0.1.0 | 最新版 v0.3.0（参考） | 改善 |
+| 场景 | 未优化版本 v0.1.0 | v0.3.0（参考） | 改善 |
 |---|---:|---:|---:|
 | 英→中，首次翻译速度 | 27.97 条/秒 | 56.61 条/秒 | **2.02×（+102.4%）** |
 | 英→中，峰值 RSS | 348 MiB | 207 MiB | **−40.6%** |
 | 日→英→中，首次翻译速度 | 12.79 条/秒 | 27.11 条/秒 | **2.12×（+111.9%）** |
 | 日→英→中，峰值 RSS | 530 MiB | 308 MiB | **−41.8%** |
 
-测试方法与原始数据见[小米 14 基准报告](benchmarks/v0.3.0/mi14-2026-09-09/initial-to-current/ungated/README.md)，各版本完整对比保存在 [benchmarks/](benchmarks/README.md)。
+测试方法与原始数据见[小米 14 基准报告](benchmarks/v0.3.0/mi14/initial-comparison/README.md)，各版本完整对比保存在 [benchmarks/](benchmarks/README.md)。
 
 ### 与 Google ML Kit 端侧翻译对比
 
@@ -91,7 +91,7 @@ Foxlet Translate 是面向 Android 的高性能离线翻译库，基于 Mozilla 
 
 单线程首次翻译速度中位数为 ML Kit 的 **4.54×（英→中）/ 6.48×（日→中）**，首次峰值 PSS 为 **1.41× / 1.49×**。
 
-> † 标记项的极差 / 中位数超过 10%（速度按耗时计算，最高约 41%），上述性能数据及倍率仅供参考。测试方法与原始数据见[基准报告](benchmarks/v0.3.0/mi14-2026-09-09/charged/README.md)。
+> † 标记项的极差 / 中位数超过 10%（速度按耗时计算，最高约 41%），上述性能数据及倍率仅供参考。测试方法与原始数据见[基准报告](benchmarks/v0.3.0/mi14/performance/README.md)。
 
 ## 🌍 支持的语言模型
 
@@ -220,7 +220,8 @@ bergamot/      Android 库与 Kotlin API
 jni/           JNI 胶水层
 engine/        Bergamot / Marian 引擎与第三方组件
 patches/       上游引擎的 Android 适配补丁
-sample/        示例与基准测试 app
+demo/          最小 SDK 消费与离线翻译演示
+sample/        内部基准测试 app（含评测数据）
 tools/         构建、测试与性能分析工具
 benchmarks/    版本基准与原始数据
 docs/          集成、架构与开发文档
@@ -231,61 +232,78 @@ registry.json  Mozilla 模型下载索引
 
 ## 🚀 快速开始
 
-### 引入 AAR
+以下示例适用于 **v0.3.1**，包含模型下载、校验和 demo API。
+SDK 包名已改为 `io.github.yinvoker.foxlet`，升级时需更新 imports。
+[v0.3.0 Release](https://github.com/yinvoke/foxlet-translate/releases/tag/v0.3.0) 保持原 API，
+请使用[对应版本文档](https://github.com/yinvoke/foxlet-translate/blob/v0.3.0/docs/getting-started.md)。
 
-从 [v0.3.0 Release](https://github.com/yinvoke/foxlet-translate/releases/tag/v0.3.0) 下载 `bergamot-v0.3.0.aar`，放入应用模块的 `libs/` 目录：
+```bash
+./gradlew :demo:assembleRelease
+adb install -r demo/build/outputs/apk/release/demo-release.apk
+```
+
+打开 demo，下载并校验模型后即可断网翻译。demo 直接消费 AAR、开启 R8，
+不包含评测语料。
+
+自行构建 SDK：
+
+```bash
+./gradlew :bergamot:assembleRelease :bergamot:packageWithoutPrefixes
+```
+
+默认 AAR 和不含 LGPL 分句数据的 `bergamot-no-prefixes-release.aar` 位于
+`bergamot/build/outputs/aar/`。两种版本二选一，宿主另行声明 Kotlin 协程依赖。
+
+### 下载模型并翻译
+
+将默认 AAR 复制到 app 的 `libs/`，添加依赖：
 
 ```kotlin
+// app/build.gradle.kts
+android { defaultConfig { minSdk = 28 } }
 dependencies {
-    implementation(files("libs/bergamot-v0.3.0.aar"))
-    // 本地 AAR 不携带传递依赖,须自行声明:
+    implementation(files("libs/bergamot-release.aar"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
 }
 ```
 
-也可运行 `./gradlew :bergamot:assembleRelease` 从源码构建 AAR，产物为 `bergamot/build/outputs/aar/bergamot-release.aar`，依赖文件名需相应调整。
+在 `AndroidManifest.xml` 的 `<manifest>` 下声明模型下载所需的网络权限：
 
-### 获取模型
-
-模型是 Mozilla 为 Firefox 发布的官方翻译模型(MPL-2.0),经
-Firefox Remote Settings 分发;`registry.json` 是其索引快照,记录每个
-语向的文件 URL、sha256 与大小。每个方向 3–4 个文件(模型、
-SentencePiece 词表、lexical shortlist),合计 21–55 MB,下载到同一个
-目录即可——`ModelFiles.fromDirectory` 按文件名识别,目录名随意:
-
-```bash
-python3 - <<'EOF'
-import json, hashlib, urllib.request, pathlib
-src, dst = 'en', 'zh-Hans'                    # 语向,取值见 registry.json
-m = next(x for x in json.load(open('registry.json'))['models']
-         if x['from'] == src and x['to'] == dst)
-out = pathlib.Path('models/enzh'); out.mkdir(parents=True, exist_ok=True)
-for f in m['files']:
-    p = out / f['name']
-    urllib.request.urlretrieve(f['url'], p)
-    assert hashlib.sha256(p.read_bytes()).hexdigest() == f['sha256'], f['name']
-    print('ok', f['name'])
-EOF
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
 ```
 
-集成到 app 时同理:运行时下载到应用私有目录,按 sha256 校验后交给
-`ModelFiles.fromDirectory`。
-
-### 调用
+下面的函数将英文翻译为简体中文，可从生命周期协程中调用：
 
 ```kotlin
-// 在后台协程中调用；实际应用可长期持有 engine，在宿主销毁时关闭。
-BergamotEngine(EngineConfig()).use { engine ->
-    val model = ModelFiles.fromDirectory(File(modelsDir, "enzh"))
-    val translated = engine.translate(listOf("Hello, world."), model)
+import android.content.Context
+import io.github.yinvoker.foxlet.BergamotEngine
+import io.github.yinvoker.foxlet.ModelCatalog
+import java.io.File
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+
+suspend fun translateEnglish(context: Context, text: String): String {
+    val model = ModelCatalog.download(
+        root = File(context.filesDir, "translation-models"),
+        from = "en",
+        to = "zh-Hans",
+    )
+    return withContext(Dispatchers.IO) {
+        BergamotEngine().use { engine ->
+            engine.translate(listOf(text), model).single()
+        }
+    }
 }
 ```
 
-`releaseAllModels()` 的 Future 完成后可确认释放结果;如需等待,请在后台线程调用
-`get()`,不要阻塞主线程。从 v0.1.0 升级需重新编译调用方。
+首次调用会下载并校验模型；之后复用本地模型，可离线调用，待翻译文本不会上传。
+`translate` 支持批量文本，结果顺序与输入一致。连续翻译时应复用一个 engine，
+使用结束后调用 `close()`；同一进程同时只能有一个 engine，上面的函数适用于单次调用。
+下载进度、错误处理及中转翻译见[集成指南](docs/getting-started.md)。
 
-**同一时刻只能有一个 `BergamotEngine`**(底层 marian 运行时持有进程级
-全局状态)。`close()` 等原生侧释放完毕才返回,之后可以再建一个。
+模型首次加载前会检查可信 SHA-256；自定义模型需显式提供可信 hash。
+模型文件在引擎使用期间应保持不可变，更新时使用新目录。
 
 ### 分句与前缀表
 
@@ -332,7 +350,8 @@ NDK r29、CMake 3.31.6。
 
 ```bash
 ./gradlew :bergamot:assembleRelease          # AAR
-./gradlew :sample:assembleDebug              # 基准 app
+./gradlew :demo:assembleRelease             # 对外演示 app（消费 AAR，开启 R8）
+./gradlew :sample:assembleDebug              # 内部基准 app（含评测数据）
 cmake -B build-host -DCMAKE_BUILD_TYPE=Release -DSSPLIT_USE_INTERNAL_PCRE2=ON \
   -DCOMPILE_TESTS=OFF && cmake --build build-host --target smoke   # 主机 CLI
 ```
@@ -340,7 +359,7 @@ cmake -B build-host -DCMAKE_BUILD_TYPE=Release -DSSPLIT_USE_INTERNAL_PCRE2=ON \
 真机一键基准(结果写入 app files 目录的 JSON,含每阶段内存/CPU 曲线):
 
 ```bash
-adb shell am start -n io.github.yinvoker.bergamot.bench/.MainActivity \
+adb shell am start -n io.github.yinvoker.foxlet.bench/.MainActivity \
   --ez autorun true --ei threads 2
 ```
 
@@ -349,13 +368,7 @@ adb shell am start -n io.github.yinvoker.bergamot.bench/.MainActivity \
 - 仅 arm64-v8a,minSdk 28,支持 16 KB page size。
 - int8 矩阵乘按 CPU 能力选择 i8mm SMMLA 或 ruy(含 SDOT)内核。
   已验证设备见 [兼容性清单](docs/smmla-compatibility.md)。
-- 分句前缀表取自 ssplit-cpp 上游,覆盖 25 种源语言;`etc.`、`Approx.`、`Jan. 4`
-  这类不在表里的缩写仍会被切句。
-- 输出与输入一一对应,库不做「翻过就跳过」的去重:同一句每次调用都会重翻。
-  网页 / 文档场景的已译状态由宿主按「节点身份 + 源文版本 + 目标语言 + 模型版本」
-  维护(重新加载可复用、节点改动与切换语言必须重译),不要用全局译文字符串集合跳过输入。
-- 输出一致性：`cacheSize = 0` 时，相同输入列表、模型与线程配置可在不同进程中得到一致输出。
-  改变线程数可能影响短批次的组批方式；开启缓存后，部分译文也可能与未命中缓存时不同。
+
 
 ## 🗺️ Roadmap
 
@@ -367,9 +380,14 @@ adb shell am start -n io.github.yinvoker.bergamot.bench/.MainActivity \
 - [x] 内存占用与模型释放优化
 - [x] 多线程与调度优化
 - [x] 参数与批处理调优
+- [ ] 减少产物体积
+- [ ] 模型更新检测
+- [ ] 本地模型管理
+- [ ] 下载与更新增强
 - [ ] HTML 模式验证
 - [ ] SME2 指令集支持
 - [x] 构建优化
+
 
 ## 🤝 参与贡献
 
@@ -377,9 +395,9 @@ adb shell am start -n io.github.yinvoker.bergamot.bench/.MainActivity \
 
 ## 📦 库、第三方组件与模型
 
-本项目的 Android 封装、JNI 胶水层、sample、工具和构建脚本由本项目维护，按
-[MIT](LICENSE) 许可发布。下面列出随仓库构建或打包的主要开源组件；更完整的来源与许可
-索引见 [NOTICE](NOTICE) 和各 vendor 目录中的许可文件。
+本项目原创代码及其修改按 [MIT](LICENSE) 许可发布；对引入代码的修改沿用相应
+上游许可证。来源与许可范围见 [NOTICE](NOTICE) 和各 vendor 目录中的许可文件。
+AAR 内附带许可文本及对应源码取得说明。
 
 ### 引擎与运行时
 
@@ -387,14 +405,14 @@ adb shell am start -n io.github.yinvoker.bergamot.bench/.MainActivity \
 - [Marian NMT](https://github.com/marian-nmt/marian)：C++ 神经机器翻译运行时，MIT；本仓库使用 Bergamot 维护的 fork。
 - [ruy](https://github.com/google/ruy)：ARM CPU 矩阵乘后端，Apache-2.0；用于非 SMMLA 设备的 int8/SDOT 回退路径。
 - [SentencePiece](https://github.com/google/sentencepiece)：模型分词与词表处理，Apache-2.0。
-- [ssplit-cpp](https://github.com/browsermt/ssplit-cpp)：句子切分与 non-breaking prefix 数据，Apache-2.0 及其数据源对应条款。
+- [ssplit-cpp](https://github.com/browsermt/ssplit-cpp)：句子切分 C++ 核心为 Apache-2.0；Moses 前缀数据为 LGPL-2.1，可选择不含这些数据的 AAR。
 - [PCRE2](https://github.com/PCRE2Project/pcre2)、cpuinfo、zlib、pathie-cpp、faiss 子集和 `half_float`：分别按各自目录中的 BSD/MIT/Apache 或其他许可分发。
 
 ### Android 依赖与基准工具
 
 - [Kotlin Coroutines](https://github.com/Kotlin/kotlinx.coroutines)：Android suspend API 的协程调度，Apache-2.0。
 - [Google ML Kit Translate](https://developers.google.com/ml-kit/language/translation)：只用于 `sample/` 基准 app 的对比评测，不是 Bergamot AAR 的翻译后端；依赖其自身服务条款。
-- [FLORES-200](https://github.com/facebookresearch/flores)：sample 基准语料，按 CC-BY-SA 4.0 使用；它只用于测量，不随库运行时提供。
+- [FLORES-200](https://github.com/facebookresearch/flores)：仅用于评测，采用 CC-BY-SA 4.0，不包含在 SDK AAR 或 demo APK 中。源码评测数据保留[出处和 NLLB 2022 引用](benchmarks/CITATION.md)。
 
 ### 翻译模型
 
@@ -402,10 +420,10 @@ adb shell am start -n io.github.yinvoker.bergamot.bench/.MainActivity \
 
 ## 📄 许可
 
-本仓库自有代码(jni/、bergamot/、sample/、tools/、构建脚本)为 **MIT**。
+本仓库原创代码为 **MIT**，对第三方文件的修改仍遵守其原许可。
 `engine/` 内捆绑的第三方组件各按其自身许可分发(含 MPL-2.0 的
 Bergamot 翻译层文件),见 [NOTICE](NOTICE) 与各 vendor 目录内的
-LICENSE 文件。模型为 Mozilla 官方发布,MPL-2.0。
+LICENSE 文件。模型为 Mozilla 官方发布，MPL-2.0。FLORES-200 等评测数据独立遵守数据许可。
 
 ---
 

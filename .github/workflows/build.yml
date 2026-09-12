@@ -13,6 +13,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Native parser and Unicode safety tests (ASan/UBSan)
+        run: |
+          clang++ -std=c++17 -O1 -g -fsanitize=address,undefined -I . tools/safety-tests/native_safety_test.cpp -o /tmp/foxlet-native-safety
+          /tmp/foxlet-native-safety
       - name: Benchmark checker tests (no device timings on shared CI runners)
         run: python3 -B -m unittest discover -s tools/version-bench -p 'test_*.py' -v
       - name: App benchmark evidence checks (synthetic data only)
@@ -30,8 +34,14 @@ jobs:
       - uses: android-actions/setup-android@v3
       - name: Install NDK and CMake
         run: sdkmanager "ndk;29.0.13113456" "cmake;3.31.6"
-      - name: Unit tests + AAR + benchmark app
-        run: ./gradlew :bergamot:test :bergamot:assembleRelease :sample:assembleDebug
+      - name: Validate pinned model catalog
+        run: python3 tools/distribution/sync_catalog.py --check
+      - name: Unit tests, final AAR, R8 consumer and device-test APK
+        run: ./gradlew :bergamot:test :bergamot:packageWithoutPrefixes :demo:assembleRelease :demo:assembleReleaseAndroidTest :sample:assembleDebug
+      - name: Check delivered bytes and hardening
+        run: |
+          python3 tools/distribution/check_hardening.py
+          python3 tools/distribution/verify_artifacts.py --aar bergamot/build/outputs/aar/bergamot-release.aar --no-prefixes bergamot/build/outputs/aar/bergamot-no-prefixes-release.aar --apk demo/build/outputs/apk/release/demo-release.apk
       - uses: actions/upload-artifact@v4
         with:
           name: bergamot-release-aar
@@ -86,11 +96,13 @@ jobs:
         run: |
           mkdir -p models/enzh
           python3 - <<'EOF'
-          import json, urllib.request
+          import json, urllib.request, hashlib
           reg = json.load(open('registry.json'))
           m = next(x for x in reg['models'] if x['from'] == 'en' and x['to'] == 'zh-Hans')
           for f in m['files']:
-              urllib.request.urlretrieve(f['url'], 'models/enzh/' + f['name'])
+              path = 'models/enzh/' + f['name']
+              urllib.request.urlretrieve(f['url'], path)
+              assert hashlib.sha256(open(path, 'rb').read()).hexdigest() == f['sha256']
           EOF
           printf 'Hello world.\nThis is a smoke test.\n' | \
             ./build-host/tools/smoke/smoke <(cat <<EOF
@@ -101,7 +113,7 @@ jobs:
             - $PWD/models/enzh/trgvocab.enzh.spm
           shortlist:
             - $PWD/models/enzh/lex.50.50.enzh.s2t.bin
-            - false
+            - 1
           beam-size: 1
           normalize: 1.0
           word-penalty: 0

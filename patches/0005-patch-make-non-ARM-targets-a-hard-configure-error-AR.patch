@@ -1,5 +1,5 @@
 From de1f3c206e935936f2b0a46d5f687e5e49de90b8 Mon Sep 17 00:00:00 2001
-From: yinvoker <yinvoker@outlook.com>
+From: yinvoker <redacted@example.invalid>
 Date: Mon, 31 Aug 2026 20:20:25 +0800
 Subject: [PATCH] patch: make non-ARM targets a hard configure error (ARM-only
  by design)
@@ -8,7 +8,6 @@ intgemm (x86 int8 GEMM) is deliberately not vendored; ruy is the sole GEMM
 backend. CI runs on ARM runners so the smoke test exercises the same NEON
 code path as devices.
 
-Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>
 ---
  engine/marian-fork/CMakeLists.txt | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)

@@ -1,5 +1,5 @@
 From b0e2b2839260d73cdf3b5afa0900abb331137fd8 Mon Sep 17 00:00:00 2001
-From: yinvoker <yinvoker@outlook.com>
+From: yinvoker <redacted@example.invalid>
 Date: Tue, 1 Sep 2026 11:52:40 +0800
 Subject: [PATCH] patch: order RequestSentences by request id, not by heap
  address
@@ -26,7 +26,6 @@ of the variants the unfixed code already produced, and timing is
 unchanged. Upstream mozilla/translations main carries the same
 comparator.
 
-Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>
 ---
  engine/src/translator/request.cpp | 6 +++++-
  1 file changed, 5 insertions(+), 1 deletion(-)

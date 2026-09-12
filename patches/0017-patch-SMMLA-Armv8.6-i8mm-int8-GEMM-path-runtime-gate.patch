@@ -1,5 +1,5 @@
 From 995088a5729bac31c95b1921d344f36563f2a272 Mon Sep 17 00:00:00 2001
-From: yinvoker <yinvoker@outlook.com>
+From: yinvoker <redacted@example.invalid>
 Date: Thu, 3 Sep 2026 16:01:45 +0800
 Subject: [PATCH] patch: SMMLA (Armv8.6 i8mm) int8 GEMM path, runtime-gated,
  ruy fallback
@@ -29,7 +29,6 @@ issue sdot and smmla at the same rate) and is not the judge.
 Test set, hash regression and device list: tools/smmla-test,
 tools/regress-hash.sh, docs/smmla-compatibility.md.
 
-Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>
 ---
  engine/marian-fork/src/CMakeLists.txt         |   8 +
  .../src/tensors/cpu/ruy_interface.h           |  16 +

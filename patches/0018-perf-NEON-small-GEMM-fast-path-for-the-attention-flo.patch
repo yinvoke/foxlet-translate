@@ -1,5 +1,5 @@
 From 751bd62c84d97f9754a48f5614bc8fb1facd80fe Mon Sep 17 00:00:00 2001
-From: yinvoker <yinvoker@outlook.com>
+From: yinvoker <redacted@example.invalid>
 Date: Sat, 5 Sep 2026 00:01:57 +0800
 Subject: [PATCH] perf: NEON small-GEMM fast path for the attention float bdot
  (bit-exact vs ruy)
@@ -31,7 +31,6 @@ BERGAMOT_NO_SMALLGEMM=1 disables the path for same-binary A/B.
 Microbench and bit sweep: tools/float-bench (-DBUILD_FLOAT_BENCH=ON,
 FLOAT_BENCH_SWEEP=1).
 
-Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
 ---
  engine/marian-fork/src/CMakeLists.txt         |   1 +
  engine/marian-fork/src/tensors/cpu/prod.cpp   |  29 ++

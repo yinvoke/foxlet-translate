@@ -1,5 +1,5 @@
 From 561b9f420188e2936798dd58bb45dc279bcdbe2c Mon Sep 17 00:00:00 2001
-From: yinvoker <yinvoker@outlook.com>
+From: yinvoker <redacted@example.invalid>
 Date: Mon, 7 Sep 2026 00:23:11 +0800
 Subject: [PATCH] =?UTF-8?q?patch:=20AsyncService::translateMultiple=20/=20?=
  =?UTF-8?q?pivotMultiple=20=E2=80=94=20one-step=20submission,=20batches=20?=
@@ -17,7 +17,6 @@ by a deterministic sentence cap so it still runs in parallel; anything larger
 is byte-identical to BlockingService at every worker count. requestId_ was a
 plain size_t written from worker threads in pivot callbacks.
 
-Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
 ---
  .../translator/aggregate_batching_pool.cpp    |   9 ++
  .../src/translator/aggregate_batching_pool.h  |  14 +++

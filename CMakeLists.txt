@@ -73,9 +73,9 @@ if(ANDROID)
   # second identical -D is a no-op, so this is applied to the whole Android
   # tree rather than being surgically aimed at the marian subtree.
   #
-  # Deliberately NOT restored here: -D_FORTIFY_SOURCE=2 and
-  # -fstack-protector-strong, the other two casualties of the same overwrite.
-  # They are a hardening question with their own cost, not a performance one.
+  # Keep NDK hardening even when a vendored subdirectory replaces CMAKE_*_FLAGS.
+  add_compile_options(-fstack-protector-strong)
+  add_compile_definitions(_FORTIFY_SOURCE=2)
   add_compile_definitions($<$<CONFIG:Release>:NDEBUG>)
 
   # bionic ships pthreads inside libc; the ancient FindThreads invocations in

@@ -13,6 +13,9 @@
 # Kotlin/JVM 单元测试
 ./gradlew :foxlet:test
 
+# 模型索引离线回归（与 Kotlin 共用 changeset 样本）
+python3 -B -m unittest discover -s tools/distribution -p 'test_*.py' -v
+
 # 发布 AAR
 ./gradlew :foxlet:assembleRelease
 
@@ -79,13 +82,17 @@ python3 tools/distribution/check_hardening.py
 python3 tools/distribution/verify_artifacts.py --aar foxlet/build/outputs/aar/foxlet-release.aar --no-prefixes foxlet/build/outputs/aar/foxlet-no-prefixes-release.aar --apk demo/build/outputs/apk/release/demo-release.apk
 ```
 
+`python3 tools/distribution/fetch_registry.py --check` 会报告 `registry.json` 与 Mozilla 当前面向 Android 正式版发布的模型之间的差异（新增或移除的语向、版本变化、哈希变化）；不带 `--check` 运行则刷新快照，之后需重新运行 `sync_catalog.py` 生成 `models.tsv`。
+
 设备解锁并首次联网下载 Mozilla 模型，设置 adb 设备序列号后运行：
+
+脚本会依次安装 Demo 和测试 APK。MIUI 等系统若显示 USB 安装确认，需要分别允许两个包；`INSTALL_FAILED_USER_RESTRICTED` 表示安装被手机限制或确认已取消，应处理手机提示后重试。首次测试还会下载约 52 MB 的英译中模型，耗时取决于设备到 Mozilla CDN 的网络速度。
 
 ```bash
 python3 tools/distribution/run_device_tests.py --serial YOUR_DEVICE_SERIAL --apk demo/build/outputs/apk/release/demo-release.apk --test-apk demo/build/outputs/apk/androidTest/release/demo-release-androidTest.apk --output build/device-result.json
 ```
 
-该测试没有缺模型时的跳过分支，必须完成真实翻译、Unicode 输入、损坏模型拒绝、释放后重建及许可资源读取。
+该测试没有缺模型时的跳过分支，必须完成真实翻译、Unicode 输入、损坏模型拒绝、释放后重建、许可资源读取，以及模型枚举/复用/占用保护/删除。更新检查会请求真实索引；不要求历史模型始终被上游保留，精确版本筛选和撤回行为由离线样本测试覆盖。
 测试目标是经过 R8 的最终 AAR 消费 app。ARM64 模拟器可做功能验证，但不能用于真机性能结论。
 发布工作流要求 `android-arm64` 标签的隔离 self-hosted runner（可以是连接 ARM64 设备/模拟器的 macOS/Linux 主机），
 配置仓库变量 `FOXLET_ANDROID_SERIAL` 并确保 Python 3/adb 在 PATH；该门禁通过前不会发布 Release。
@@ -100,3 +107,24 @@ clang++ -std=c++17 -O1 -g -fsanitize=address,undefined -I . tools/safety-tests/n
 
 FLORES-200 仅是评测集，引用和许可见 [CITATION](../benchmarks/CITATION.md)。
 发行 AAR/demo 的包检查会拒绝混入 benchmark 文件或已知评测原文样本。
+
+## v0.4.0 功能审查记录
+
+以下记录对应 2026-09-12 至 13 日的模型管理功能审查构件，尚未写入 0.4.0 版本号。最终发行构件另由 v0.4.0 标签触发的 CI 构建并完成设备测试；其结果随 Release 附件提供。
+
+- Kotlin/JVM：132 项通过，无失败或跳过；Python：索引工具 4 项、版本基准工具 36 项、App 基准工具 26 项通过。
+- Release AAR、无前缀 AAR、R8 Demo、Release 测试 APK 和 sample Debug APK 构建通过；foxlet/demo Release Lint 无错误，分别有 5/25 条警告。
+- 产物许可、源码说明、前缀资源、评测数据隔离及 Android hardening 检查通过。
+- 当前路径下的 `build-host-audit` 主机 smoke 构建通过，固定 SHA-256 的 en→zh-Hans 模型完成两句真实翻译。指向仓库改名前路径的 `build-host`、`build-host-ruy` 和 `build-android` 旧缓存已在发布整理时删除。
+- `sync_catalog.py --check`、上游索引只读比对、106 个语向的 README 版本表、文档相对链接和 `git diff --check` 通过。
+
+2026-09-13 补充真机验证：Xiaomi 12（2201123C，Android 13 / API 33，arm64-v8a）安装并运行本次经过 R8 的 Release Demo 和测试 APK。安装后读取手机上的 APK SHA-256，与本地构件逐一比对一致；`DeliveryTest` 返回 `OK (1 test)`，无失败或跳过。验证覆盖真实翻译、Unicode、损坏模型拒绝、释放后重建、许可资源、模型枚举/复用/清理、占用时拒绝删除、释放后删除及真实远端索引请求。
+
+总耗时约 20 分 41 秒，包含首次联网下载约 52 MB 模型，不能作为推理性能数据。原始结果保存在本地 `build/review-device-result.json`（不提交构建目录），构件指纹如下：
+
+| 构件 | SHA-256 |
+| --- | --- |
+| Demo Release APK | `186be9d797d4bae31c2a7c9f7d2949f337594f0463d9e526e8dc9ac6cf1e0a97` |
+| Release 测试 APK | `134f91b342455a363705d538d78479e0563f35272fdfd38a9f9f442e236c5077` |
+
+本次工作区的真机验证已完成。正式发布时仍由 CI 对当次构建产物重新执行设备门禁。

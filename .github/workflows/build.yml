@@ -19,6 +19,8 @@ jobs:
           /tmp/foxlet-native-safety
       - name: Benchmark checker tests (no device timings on shared CI runners)
         run: python3 -B -m unittest discover -s tools/version-bench -p 'test_*.py' -v
+      - name: Model registry selection tests (offline fixtures)
+        run: python3 -B -m unittest discover -s tools/distribution -p 'test_*.py' -v
       - name: App benchmark evidence checks (synthetic data only)
         run: python3 -B -m unittest discover -s tools/app-bench -p 'test_*.py' -v
 

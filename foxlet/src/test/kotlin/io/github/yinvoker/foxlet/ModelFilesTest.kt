@@ -240,7 +240,7 @@ class ModelFilesTest {
     }
 
     @Test fun `catalog resolves complete pinned bundles`() {
-        assertEquals(104, ModelCatalog.models.size)
+        assertEquals(106, ModelCatalog.models.size)
         val m = ModelCatalog.find("en", "zh-Hans")
         assertEquals(4, m.assets.size)
         assertTrue(m.assets.all { it.url.startsWith("https://") && it.sha256.length == 64 && it.size > 0 })

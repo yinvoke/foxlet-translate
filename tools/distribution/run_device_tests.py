@@ -14,14 +14,21 @@ parser.add_argument('--output', type=Path, default=Path('device-test-result.json
 a = parser.parse_args()
 
 def adb(*args):
-    return subprocess.check_output(['adb', '-s', a.serial, *args], text=True, stderr=subprocess.STDOUT)
+    try:
+        return subprocess.check_output(['adb', '-s', a.serial, *args], text=True, stderr=subprocess.STDOUT)
+    except subprocess.CalledProcessError as error:
+        # Surface device-side errors such as MIUI's installation confirmation
+        # timeout; a Python traceback alone hides the action the user needs.
+        raise SystemExit(error.output.strip() or f'adb failed with exit code {error.returncode}')
 
 abi = adb('shell', 'getprop', 'ro.product.cpu.abilist').strip()
 if 'arm64-v8a' not in abi: raise SystemExit(f'ARM64 device required, got {abi}')
 for apk in [a.apk, a.test_apk]:
     if not apk.is_file(): raise SystemExit(f'Missing {apk}')
+    print(f'Installing {apk.name}; allow the prompt on the device if shown.', flush=True)
     print(adb('install', '-r', '-t', str(apk)))
 # Device must be unlocked and able to reach Mozilla for the first pinned model download.
+print('Running DeliveryTest (including model download and live index check)...', flush=True)
 result = adb('shell', 'am', 'instrument', '-w', '-r',
              'io.github.yinvoker.foxlet.demo.test/androidx.test.runner.AndroidJUnitRunner')
 print(result)

@@ -11,11 +11,14 @@ import io.github.yinvoker.foxlet.ModelFiles
 import java.io.File
 import kotlinx.coroutines.*
 
-/** Minimal consumer: model download, integrity check, offline translation, error/retry. */
+/** Minimal consumer: model download, integrity check, offline translation, error/retry, local model management. */
 class MainActivity : Activity() {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private var operation: Job? = null
     private var model: ModelFiles? = null
+    // Kept under filesDir so existing installs keep their models. A production app should
+    // use File(noBackupFilesDir, ...) instead; see docs/getting-started.md §3.
+    private val root: File by lazy { File(filesDir, "models") }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         @Suppress("DEPRECATION")
@@ -31,7 +34,7 @@ class MainActivity : Activity() {
         }
         label("Foxlet Translate", 28f)
         label("英译中 · 在你的手机上翻译", 18f)
-        label("首次使用需要下载模型。准备完成后可关闭网络，输入文本不会上传。", 15f)
+        label("首次使用需要下载模型。准备完成后可关闭网络，输入文本不会上传。只有下载模型和点击“检查更新”时才联网，后者向 Mozilla 请求一次模型索引。", 15f)
         val input = EditText(this).apply {
             hint = "输入英文"; setText("Hello, world! Have a great day. 😀")
             minLines = 4; gravity = android.view.Gravity.TOP
@@ -50,17 +53,28 @@ class MainActivity : Activity() {
         val cancel = Button(this).apply { text = "取消"; visibility = View.GONE }
         column.addView(cancel)
         val output = label("译文会显示在这里", 20f).apply { setTextIsSelectable(true) }
+        // Model management: created here so busy() can reach them, added to the column below.
+        val manageRow = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
+        fun rowButton(value: String) = Button(this).apply {
+            text = value
+            manageRow.addView(this, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f))
+        }
+        val listInstalled = rowButton("已安装")
+        val checkUpdates = rowButton("检查更新")
+        val cleanup = rowButton("清理")
         fun busy(value: Boolean) {
             prepare.isEnabled = !value
             translate.isEnabled = !value && model != null
             cancel.visibility = if (value) View.VISIBLE else View.GONE
+            listInstalled.isEnabled = !value; checkUpdates.isEnabled = !value; cleanup.isEnabled = !value
         }
         prepare.setOnClickListener {
             busy(true); progress.visibility = View.VISIBLE; status.text = "正在准备模型…"
             operation = scope.launch {
                 try {
                     var lastUpdate = 0L
-                    model = ModelCatalog.download(File(filesDir, "models"), "en", "zh-Hans") { done, total ->
+                    model = ModelCatalog.installedFor(root, "en", "zh-Hans")
+                        ?: ModelCatalog.download(root, "en", "zh-Hans") { done, total ->
                         val now = System.nanoTime()
                         if (done == total || now - lastUpdate > 100_000_000) {
                             lastUpdate = now
@@ -93,6 +107,87 @@ class MainActivity : Activity() {
             }
         }
         cancel.setOnClickListener { operation?.cancel() }
+
+        // ---- 模型管理：枚举本地模型、显式检查 Mozilla 更新、回收旧版本。除“检查更新”外都不联网。
+        label("模型管理", 18f)
+        val manageStatus = label("点击“已安装”查看本地模型；“检查更新”只在点击时向 Mozilla 请求一次索引，不会自动联网。", 14f)
+        column.addView(manageRow)
+        fun mb(bytes: Long) = "%.1f MB".format(bytes / 1_000_000.0)
+        fun describe(models: List<ModelCatalog.InstalledModel>) =
+            if (models.isEmpty()) "本地没有模型" else models.joinToString("\n") { m ->
+                "${m.from}→${m.to} ${m.version} · ${mb(m.sizeBytes)} · ${if (m.isCurrentCatalogVersion) "SDK 内置版本" else "其他版本"}"
+            }
+        /** Runs [block] on IO and shows its text (or the error) in the management status line. */
+        fun manage(start: String, block: suspend () -> String) {
+            busy(true); manageStatus.text = start
+            operation = scope.launch {
+                try { manageStatus.text = withContext(Dispatchers.IO) { block() } }
+                catch (e: CancellationException) { manageStatus.text = "已取消"; throw e }
+                catch (e: Exception) { manageStatus.text = "失败：${e.message}" }
+                finally { busy(false) }
+            }
+        }
+        fun downloadUpdate(candidate: ModelCatalog.Model) {
+            busy(true); progress.visibility = View.VISIBLE; manageStatus.text = "正在下载 ${candidate.from}→${candidate.to} ${candidate.version}…"
+            operation = scope.launch {
+                try {
+                    var lastUpdate = 0L
+                    val files = withContext(Dispatchers.IO) {
+                        ModelCatalog.download(root, candidate, ModelCatalog.DownloadPolicy(maxRetries = 5)) { p ->
+                            val now = System.nanoTime()
+                            if (p.downloaded == p.total || now - lastUpdate > 100_000_000) {
+                                lastUpdate = now
+                                runOnUiThread {
+                                    if (p.total > 0) progress.progress = (p.downloaded * 100 / p.total).toInt()
+                                    if (p.attempt > 1) manageStatus.text = "正在重试 ${p.assetName}（第 ${p.attempt} 次）"
+                                }
+                            }
+                        }
+                    }
+                    model = files   // Later translations use the new directory; the old one is left for "清理".
+                    manageStatus.text = "已切换到 ${candidate.version}；旧版本可用“清理”回收"
+                    status.text = "模型已校验，可断网翻译"
+                } catch (e: CancellationException) { manageStatus.text = "已取消，已下载的部分会在下次继续"; throw e }
+                catch (e: Exception) { manageStatus.text = "更新失败：${e.message}" }
+                finally { progress.visibility = View.GONE; busy(false) }
+            }
+        }
+        listInstalled.setOnClickListener {
+            manage("正在扫描本地模型…") { describe(ModelCatalog.installed(root)) }
+        }
+        cleanup.setOnClickListener {
+            val keep = setOfNotNull(model?.model?.parentFile)
+            manage("正在清理…") {
+                val r = ModelCatalog.cleanup(root, keep = keep)
+                "清理完成：临时目录 ${r.removedTempDirs.size}，旧版本 ${r.removedSuperseded.size}，释放 ${mb(r.bytesFreed)}，使用中跳过 ${r.skippedInUse.size}"
+            }
+        }
+        checkUpdates.setOnClickListener {
+            busy(true); manageStatus.text = "正在向 Mozilla 请求模型索引…"
+            operation = scope.launch {
+                try {
+                    val report = withContext(Dispatchers.IO) { ModelCatalog.checkForUpdates(root) }
+                    val enZh = report.candidates.firstOrNull { it.from == "en" && it.to == "zh-Hans" }
+                    val available = enZh?.available
+                    manageStatus.text = "可更新 ${report.updates.size} 个，未安装 ${report.notInstalled.size} 个；en→zh-Hans：" + when {
+                        enZh == null || available == null -> "上游未列出"
+                        enZh.updateAvailable -> "有更新 ${available.version}（${mb(enZh.downloadSizeBytes)}）"
+                        enZh.installed == null -> "未安装"
+                        else -> "已是最新"
+                    } + (enZh?.newerMajorVersion?.let { "；上游已有 $it，需升级 SDK" } ?: "") +
+                        (if (enZh != null && !enZh.installedStillListed) "；已安装版本已不在 Mozilla 列表中" else "")
+                    if (enZh != null && enZh.updateAvailable && available != null) {
+                        AlertDialog.Builder(this@MainActivity).setTitle("下载更新")
+                            .setMessage("en→zh-Hans ${available.version}，约 ${mb(enZh.downloadSizeBytes)}。下载到新目录，当前模型不受影响。")
+                            .setPositiveButton("下载") { _, _ -> downloadUpdate(available) }
+                            .setNegativeButton("稍后", null).show()
+                    }
+                } catch (e: CancellationException) { manageStatus.text = "已取消"; throw e }
+                catch (e: Exception) { manageStatus.text = "检查失败：${e.message}" }
+                finally { busy(false) }
+            }
+        }
+
         column.addView(Button(this).apply {
             text = "开源许可与源码"
             setOnClickListener {

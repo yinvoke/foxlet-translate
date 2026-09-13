@@ -48,5 +48,38 @@ class DeliveryTest {
         for (name in listOf("SOURCE.txt", "NOTICE.txt", "THIRD_PARTY_NOTICES.txt")) {
             assertNotNull(javaClass.getResourceAsStream("/io/github/yinvoker/foxlet/licenses/$name"))
         }
+
+        // Local model management on the real download: the directory is listed, current and
+        // verifiable, a repeat download reuses it, cleanup leaves it alone, and delete is refused
+        // while an engine holds it and works once the engine let go.
+        val root = File(context.filesDir, "delivery-test-models")
+        val listed = ModelCatalog.installed(root, verify = true)
+        val current = listed.single { it.from == "en" && it.to == "zh-Hans" }
+        assertTrue(current.isCurrentCatalogVersion)
+        assertEquals(true, current.verified)
+        assertEquals(model.model.parentFile!!.canonicalFile, current.directory.canonicalFile)
+        assertEquals(ModelCatalog.find("en", "zh-Hans").directoryName, current.directory.name)
+        assertNotNull(ModelCatalog.installedFor(root, "en", "zh-Hans"))
+        assertEquals(model.model.canonicalPath, ModelCatalog.download(root, "en", "zh-Hans").model.canonicalPath)
+        val cleaned = ModelCatalog.cleanup(root)
+        assertTrue(cleaned.removedSuperseded.isEmpty() && cleaned.skippedInUse.isEmpty())
+        assertTrue(File(root, current.directory.name).isDirectory)
+        // The live index may retire pinned bytes. Validate the report shape;
+        // exact selection and retirement behavior use the offline fixtures.
+        val updates = ModelCatalog.checkForUpdates(root, pairs = setOf("en" to "zh-Hans"))
+        assertTrue(updates.indexTimestamp > 0)
+        val candidate = updates.candidates.single()
+        assertNotNull(candidate.installed)
+        assertEquals(current.identity, candidate.installed!!.identity)
+        assertEquals(candidate.available?.sizeBytes ?: 0L, candidate.downloadSizeBytes)
+        FoxletEngine().use { engine ->
+            assertTrue(engine.translate(listOf("Hello."), model).single().isNotBlank())
+            try { ModelCatalog.delete(root, current); fail("deleted a model directory held by a live engine") }
+            catch (_: IllegalStateException) { /* required: the engine reloads from disk after idle unload */ }
+            assertTrue(engine.releaseAllModels().get())
+            assertTrue(ModelCatalog.delete(root, current) > 0)
+        }
+        assertTrue(ModelCatalog.installed(root).none { it.from == "en" && it.to == "zh-Hans" })
+        assertNull(ModelCatalog.installedFor(root, "en", "zh-Hans"))
     }
 }

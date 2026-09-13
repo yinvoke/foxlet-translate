@@ -44,15 +44,22 @@ data class ModelFiles(
         fun fromDirectory(dir: File): ModelFiles {
             require(dir.isDirectory) { "not a model directory: $dir" }
             val files = requireNotNull(dir.listFiles()) { "cannot read $dir" }
+            return fromNames(dir, files.map { it.name }).also { resolved ->
+                require(resolved.files().all { it.isFile }) { "expected regular model files in $dir" }
+            }
+        }
+
+        /** Resolve the layout before downloading; the same rules as fromDirectory. */
+        internal fun fromNames(dir: File, names: List<String>): ModelFiles {
             fun pick(what: String, predicate: (String) -> Boolean): File {
-                val matches = files.filter { predicate(it.name) }
-                require(matches.size == 1 && matches.single().isFile) { "expected one $what file in $dir" }
-                return matches.single()
+                val matches = names.filter(predicate)
+                require(matches.size == 1) { "expected one $what file in $dir" }
+                return File(dir, matches.single())
             }
             val model = pick("model") { it.startsWith("model.") && it.endsWith(".bin") }
             val shortlist = pick("shortlist") { it.startsWith("lex.") && it.endsWith(".bin") }
             val srcVocab = pick("vocab") { it.contains("vocab") && it.endsWith(".spm") && !it.startsWith("trg") }
-            val targets = files.filter { it.name.startsWith("trgvocab") && it.name.endsWith(".spm") }
+            val targets = names.filter { it.startsWith("trgvocab") && it.endsWith(".spm") }
             val trgVocab = if (targets.isEmpty()) srcVocab else pick("target vocab") { it.startsWith("trgvocab") && it.endsWith(".spm") }
             return ModelFiles(model, srcVocab, trgVocab, shortlist, sourceLanguageOf(model.name))
         }
@@ -273,8 +280,15 @@ class FoxletEngine(private val config: EngineConfig = EngineConfig()) : Closeabl
 
     private var service: Long = 0
 
-    /** Model key -> native handle. Read and written on the engine thread only. */
-    private val models = HashMap<String, Long>()
+    /** Model key -> resident model. Read and written on the engine thread only. */
+    private val models = HashMap<String, Loaded>()
+
+    /**
+     * A resident model: its native handle and the files it was loaded from.
+     * The files are kept so [ActiveModels] can be told, on unload, that the
+     * directory is free again — [ModelFiles] is what the guard is keyed on.
+     */
+    private class Loaded(val handle: Long, val files: ModelFiles)
 
     private val sweeper = IdleSweeper(
         idleMillis = config.idleUnloadMillis,
@@ -420,25 +434,34 @@ class FoxletEngine(private val config: EngineConfig = EngineConfig()) : Closeabl
 
     /** Load [model] if it is not resident, and mark it used. */
     private fun acquire(model: ModelFiles, key: String): Long {
-        val handle = models.getOrPut(key) {
-            model.verify()
-            NativeBridge.loadModel(
-                serviceHandle(),
-                model.toConfigYaml(config.miniBatchWords),
-                if (!config.nonbreakingPrefixes) null else model.nonbreakingPrefixFile?.let {
-                    require(it.length() <= 1024 * 1024) { "prefix file exceeds 1 MiB" }
-                    it.readBytes()
-                } ?: NonbreakingPrefixes.bytesFor(model.sourceLanguage),
-            )
+        val loaded = models.getOrPut(key) {
+            ActiveModels.load(model) {
+                model.verify()
+                val handle = NativeBridge.loadModel(
+                    serviceHandle(),
+                    model.toConfigYaml(config.miniBatchWords),
+                    if (!config.nonbreakingPrefixes) null else model.nonbreakingPrefixFile?.let {
+                        require(it.length() <= 1024 * 1024) { "prefix file exceeds 1 MiB" }
+                        it.readBytes()
+                    } ?: NonbreakingPrefixes.bytesFor(model.sourceLanguage),
+                )
+                Loaded(handle, model)
+            }
         }
         sweeper.touch(key)
-        return handle
+        return loaded.handle
     }
 
     /** Returns true when every model was actually destroyed. */
     private fun releaseAll(): Boolean {
         var allDestroyed = true
-        models.values.forEach { allDestroyed = NativeBridge.releaseModel(service, it) && allDestroyed }
+        models.values.forEach { loaded ->
+            try {
+                allDestroyed = NativeBridge.releaseModel(service, loaded.handle) && allDestroyed
+            } finally {
+                ActiveModels.release(loaded.files)
+            }
+        }
         models.clear()
         sweeper.forgetAll()
         return allDestroyed
@@ -446,9 +469,13 @@ class FoxletEngine(private val config: EngineConfig = EngineConfig()) : Closeabl
 
     /** One model has been idle long enough. Called from a sweep. */
     private fun unload(key: String) {
-        val handle = models.remove(key) ?: return
+        val loaded = models.remove(key) ?: return
         // Safe here: a sweep runs on the engine thread, never on an engine
         // worker, and the thread is single — no batch can be in flight.
-        NativeBridge.releaseModel(service, handle)
+        try {
+            NativeBridge.releaseModel(service, loaded.handle)
+        } finally {
+            ActiveModels.release(loaded.files)
+        }
     }
 }

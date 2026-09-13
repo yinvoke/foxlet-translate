@@ -4,7 +4,7 @@
 
 ## 使用者
 
-- [快速开始](getting-started.md)：引入 AAR、准备模型、调用 Kotlin API、处理生命周期。
+- [快速开始](getting-started.md)：引入 AAR、准备与更新模型、管理本地版本、调用 Kotlin API、处理生命周期。
 - [支持的语言模型](../registry.json)：Mozilla 模型索引，包含下载地址、SHA-256 和文件大小。
 - [第三方许可说明](../NOTICE)：代码、运行库、模型和评测数据的许可范围及随包声明。
 - [SMMLA 兼容性清单](smmla-compatibility.md)：已经验证过 i8mm/SMMLA 路径的设备。

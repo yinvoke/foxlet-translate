@@ -11,7 +11,7 @@ android {
         applicationId = "io.github.yinvoker.foxlet.bench"
         minSdk = 28
         targetSdk = 36
-        versionCode = 2
+        versionCode = 3
         versionName = project.version.toString()
         ndk { abiFilters += "arm64-v8a" }
     }

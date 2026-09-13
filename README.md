@@ -30,8 +30,11 @@ Foxlet Translate 是面向 Android 的高性能离线翻译库，基于 Mozilla 
 
 ## ✨ 特性
 
-- **离线推理**:全程无网络请求,模型来自 Mozilla 官方(MPL-2.0)
+v0.4.0 新增模型管理、远端更新检测和下载增强。可从 [Releases](https://github.com/yinvoke/foxlet-translate/releases/tag/v0.4.0) 下载 SDK 与 Demo。
+
+- **离线推理**:翻译全程无网络请求，联网仅发生在下载模型与显式检查更新时，模型来自 Mozilla 官方(MPL-2.0)
 - **Mozilla 模型**:沿用 Firefox Translations 的官方模型，优化 Android 运行效率；引擎源码、模型与训练流程公开
+- **模型管理**:本地模型枚举/删除/清理，断点续传与重试，可选的 Mozilla 模型更新检测
 - **Kotlin suspend API**:批量翻译、pivot 中转、HTML 感知翻译（实验性）
 - **移动端适配**:i8mm / NEON 内核加速,不支持 i8mm 的设备自动回退 ruy
 - **性能优化**:相较初版 Android 移植，首次翻译速度提升约 **102–112%**，峰值 RSS 降低约 **41–42%**（小米 14、默认单线程参考测量，见[性能参考](#-性能结果)）
@@ -95,17 +98,19 @@ Foxlet Translate 是面向 Android 的高性能离线翻译库，基于 Mozilla 
 
 ## 🌍 支持的语言模型
 
-`registry.json` 当前索引 **104 个模型、53 种语言**,全部以英语为轴:
-51 种语言与英语互译,阿塞拜疆语仅英→阿、阿尔巴尼亚语仅阿→英。
+`registry.json` 当前索引 **106 个模型、54 种语言**,全部以英语为轴:
+52 种语言与英语互译,阿塞拜疆语仅英→阿、阿尔巴尼亚语仅阿→英。
 具备“源语言→英语”和“英语→目标语言”两个模型时，可用 `translatePivot` 经英语中转（如日→中）。
 模型由 Mozilla 随 Firefox 持续更新。`from` / `to` 为 `registry.json`
 中的语向代码,可直接用于下载脚本(见[快速开始](#-快速开始))。
 
 <details>
-<summary>展开完整模型列表(104 个)</summary>
+<summary>展开完整模型列表(106 个)</summary>
 
 | 源语言 | 目标语言 | from | to | 版本 | 大小 |
 |---|---|---|---|---|---|
+| 英语 | 南非荷兰语 | `en` | `af` | 2.0 | 36 MB |
+| 南非荷兰语 | 英语 | `af` | `en` | 2.0 | 36 MB |
 | 英语 | 阿拉伯语 | `en` | `ar` | 2.2 | 36 MB |
 | 阿拉伯语 | 英语 | `ar` | `en` | 2.2 | 37 MB |
 | 英语 | 阿塞拜疆语 | `en` | `az` | 1.0 | 21 MB |
@@ -147,8 +152,8 @@ Foxlet Translate 是面向 Android 的高性能离线翻译库，基于 Mozilla 
 | 印地语 | 英语 | `hi` | `en` | 1.0 | 23 MB |
 | 英语 | 克罗地亚语 | `en` | `hr` | 1.0 | 21 MB |
 | 克罗地亚语 | 英语 | `hr` | `en` | 1.0 | 22 MB |
-| 英语 | 匈牙利语 | `en` | `hu` | 2.0 | 36 MB |
-| 匈牙利语 | 英语 | `hu` | `en` | 1.0 | 23 MB |
+| 英语 | 匈牙利语 | `en` | `hu` | 2.1 | 36 MB |
+| 匈牙利语 | 英语 | `hu` | `en` | 2.1 | 37 MB |
 | 英语 | 印尼语 | `en` | `id` | 1.0 | 21 MB |
 | 印尼语 | 英语 | `id` | `en` | 1.0 | 22 MB |
 | 英语 | 冰岛语 | `en` | `is` | 2.0 | 36 MB |
@@ -182,7 +187,7 @@ Foxlet Translate 是面向 Android 的高性能离线翻译库，基于 Mozilla 
 | 英语 | 罗马尼亚语 | `en` | `ro` | 1.0 | 22 MB |
 | 罗马尼亚语 | 英语 | `ro` | `en` | 1.0 | 23 MB |
 | 英语 | 俄语 | `en` | `ru` | 2.1 | 35 MB |
-| 俄语 | 英语 | `ru` | `en` | 1.1 | 23 MB |
+| 俄语 | 英语 | `ru` | `en` | 2.1 | 37 MB |
 | 英语 | 斯洛伐克语 | `en` | `sk` | 2.1 | 36 MB |
 | 斯洛伐克语 | 英语 | `sk` | `en` | 1.0 | 23 MB |
 | 英语 | 斯洛文尼亚语 | `en` | `sl` | 2.1 | 36 MB |
@@ -203,7 +208,7 @@ Foxlet Translate 是面向 Android 的高性能离线翻译库，基于 Mozilla 
 | 英语 | 乌克兰语 | `en` | `uk` | 2.2 | 36 MB |
 | 乌克兰语 | 英语 | `uk` | `en` | 1.1 | 22 MB |
 | 英语 | 乌尔都语 | `en` | `ur` | 2.0 | 35 MB |
-| 乌尔都语 | 英语 | `ur` | `en` | 2.0 | 36 MB |
+| 乌尔都语 | 英语 | `ur` | `en` | 2.1 | 36 MB |
 | 英语 | 越南语 | `en` | `vi` | 2.0 | 37 MB |
 | 越南语 | 英语 | `vi` | `en` | 1.0 | 22 MB |
 | 英语 | 中文(简体) | `en` | `zh-Hans` | 2.2 | 52 MB |
@@ -232,9 +237,9 @@ registry.json  Mozilla 模型下载索引
 
 ## 🚀 快速开始
 
-以下示例适用于 **v0.3.2**。模块、AAR 和入口类已统一为 Foxlet，
+以下示例适用于 **v0.4.0**。模块、AAR 和入口类已统一为 Foxlet，
 升级时将 `BergamotEngine` 改为 `FoxletEngine`，并更新 AAR 文件名；包名仍为 `io.github.yinvoker.foxlet`。
-v0.3.1 用户请使用[对应版本文档](https://github.com/yinvoke/foxlet-translate/blob/v0.3.1/docs/getting-started.md)。
+旧版本集成请参考对应 tag 的文档；从 v0.3.0 / v0.3.1 升级时需重新编译宿主。
 
 ```bash
 ./gradlew :demo:assembleRelease
@@ -299,10 +304,10 @@ suspend fun translateEnglish(context: Context, text: String): String {
 首次调用会下载并校验模型；之后复用本地模型，可离线调用，待翻译文本不会上传。
 `translate` 支持批量文本，结果顺序与输入一致。连续翻译时应复用一个 engine，
 使用结束后调用 `close()`；同一进程同时只能有一个 engine，上面的函数适用于单次调用。
-下载进度、错误处理及中转翻译见[集成指南](docs/getting-started.md)。
+下载进度、错误处理、中转翻译、本地模型管理与更新检测见[集成指南](docs/getting-started.md)。
 
 模型首次加载前会检查可信 SHA-256；自定义模型需显式提供可信 hash。
-模型文件在引擎使用期间应保持不可变，更新时使用新目录。
+模型文件在引擎使用期间应保持不可变，更新时 `download` 发布到新目录，切换后旧版本由 `ModelCatalog.cleanup` 回收。
 
 ### 分句与前缀表
 
@@ -380,9 +385,9 @@ adb shell am start -n io.github.yinvoker.foxlet.bench/.MainActivity \
 - [x] 多线程与调度优化
 - [x] 参数与批处理调优
 - [ ] 减少产物体积
-- [ ] 模型更新检测
-- [ ] 本地模型管理
-- [ ] 下载与更新增强
+- [x] 模型更新检测
+- [x] 本地模型管理
+- [x] 下载与更新增强
 - [ ] HTML 模式验证
 - [ ] SME2 指令集支持
 - [x] 构建优化
@@ -415,7 +420,7 @@ AAR 内附带许可文本及对应源码取得说明。
 
 ### 翻译模型
 
-模型来自 Mozilla Firefox Remote Settings 发布的 [Bergamot 模型索引](registry.json)，模型文件按 Mozilla 对应发布许可（当前索引为 MPL-2.0）分发。模型不内置在 AAR 中，应用需要自行下载或随应用部署，并使用 `registry.json` 中的 SHA-256 校验。
+模型来自 Mozilla Firefox Remote Settings 发布的 [Bergamot 模型索引](registry.json)，模型文件按 Mozilla 对应发布许可（当前索引为 MPL-2.0）分发。模型不内置在 AAR 中，应用需要自行下载或随应用部署，并使用 `registry.json` 中的 SHA-256 校验。索引由 `tools/distribution/fetch_registry.py` 从 Mozilla Remote Settings 刷新（`--check` 只比对不改写）；运行时可用 `ModelCatalog.checkForUpdates` 与上游当前发布比对，是否下载由应用决定。
 
 ## 📄 许可
 

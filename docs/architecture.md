@@ -23,8 +23,8 @@ engine/marian-fork/       vendored Marian runtime and ARM tensor backends
 
 | 目录 | 职责 | 变更注意事项 |
 | --- | --- | --- |
-| `foxlet/src/main/kotlin` | 对外 Kotlin API、模型文件识别、线程档位、空闲卸载 | API 兼容性和 KDoc 是发布契约 |
-| `foxlet/src/test` | 不依赖设备的模型识别、配置和调度单元测试 | 新增配置边界先在这里覆盖 |
+| `foxlet/src/main/kotlin` | 对外 Kotlin API、模型下载/更新/本地管理、线程档位、空闲卸载 | API 兼容性和 KDoc 是发布契约 |
+| `foxlet/src/test` | 不依赖设备的模型管理、HTTP 续传/重试、更新筛选、配置和调度测试 | 新增配置边界先在这里覆盖 |
 | `foxlet/src/androidTest` | 真机 native smoke、模型加载和 JNI 路径 | 需要设备与模型，不能当作普通 JVM 测试 |
 | `jni/` | Kotlin/NativeBridge 与引擎之间的窄接口 | 保持句柄、数组和释放顺序清晰；修改后必须跑 smoke |
 | `engine/src/translator` | Bergamot 翻译服务和批处理实现 | 不是独立上游；本地改动应有 patch 记录 |
@@ -43,6 +43,14 @@ engine/marian-fork/       vendored Marian runtime and ARM tensor backends
 4. JNI 把输入数组交给 `engine/src/translator`，引擎完成分句、batch、模型推理和结果构造。
 5. Kotlin 层按输入顺序返回结果，并重置该模型的 idle-unload 计时器。
 6. 空闲 sweep、`releaseAllModels()` 和 `close()` 都在同一个 engine thread 上执行，避免与 native batch 并发释放。
+
+## 模型管理边界
+
+`ModelCatalog` 是公开 suspend API；下载、删除和清理共用进程级 Mutex，在 IO 线程运行。`ModelDownloader` 先检查模型布局与 HTTPS 域名，再向 `.download-<directoryName>` 写入可续传文件；尺寸和 SHA-256 校验通过后写 manifest 并通过 rename 发布。完整目录及修复产生的 UUID 后缀目录可直接复用。
+
+`ModelStore` 从目录名、manifest 或内置索引识别模型；查询最新可用版本时执行校验，清理只有在较新版本通过校验后才回收旧版本。`ActiveModels` 在校验和 native 加载前登记路径，失败时撤销，卸载时释放；删除的占用检查与文件操作共用同一把锁，覆盖嵌套前缀文件。应用保存的 `ModelFiles` 本身不构成占用，仍需使用的目录通过 `keep` 保留。同一模型根目录仅支持单个应用进程管理。
+
+`RemoteIndex` 只在显式调用时读取 changeset，使用保守的 Android/正式版过滤并按完整文件集选择版本。远程信任边界为 HTTPS 加附件大小和 SHA-256，尚未实现集合签名验证。`tools/distribution/fetch_registry.py` 使用相同筛选规则刷新 `registry.json`，再由 `sync_catalog.py` 生成内置 TSV；Python 与 Kotlin 测试共用 changeset 样本。
 
 ## 构建边界
 

@@ -25,6 +25,7 @@ jobs:
           test "$GITHUB_REF_NAME" = "v$version"
           test -s ".github/releases/${GITHUB_REF_NAME}.md"
           python3 tools/distribution/sync_catalog.py --check
+          python3 -B -m unittest discover -s tools/distribution -p 'test_*.py' -v
           clang++ -std=c++17 -O1 -g -fsanitize=address,undefined -I . tools/safety-tests/native_safety_test.cpp -o /tmp/foxlet-native-safety
           /tmp/foxlet-native-safety
       - name: Build and test delivered SDK and R8 consumer

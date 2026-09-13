@@ -1,6 +1,6 @@
 # Kotlin API 审查与统一设计
 
-状态：核心实现与本地验证已完成，重构后的真机验收待执行，发布保持撤回。审查日期：2026-09-13。重构前基线：`e699e1c`，实现提交：`fa351ed`，开发版本 `0.4.0`。推送与发布步骤见 [发布准备](releasing.md)。
+状态：核心实现与本地验证已完成，发行工作流对最终构件执行 Android 设备验收。审查日期：2026-09-13。重构前基线：`e699e1c`，实现提交：`fa351ed`，版本 `0.4.0`。流程见 [发布准备](releasing.md)，最终构件与设备结果见 [v0.4.0 Release](https://github.com/yinvoke/foxlet-translate/releases/tag/v0.4.0)。
 
 本文审查 Android SDK 的全部公开 Kotlin 类型与操作，并结合下载、存储、更新、JNI 生命周期和 Demo 的使用方式核对行为。`engine/` 的 vendor C++ 接口、内部 JNI 及评测 CLI 不作为应用接入 API 重新设计。后续实施经确认采用不兼容重构：移除旧公开入口，不提供兼容别名或旧 ABI。本文保留设计推导，实际接口与用法以 [接入指南](getting-started.md) 为准。
 

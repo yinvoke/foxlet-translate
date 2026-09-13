@@ -122,7 +122,7 @@ FLORES-200 仅是评测集，引用和许可见 [CITATION](../benchmarks/CITATIO
 - Python：索引工具 4 项、版本基准工具 36 项、App 基准工具 26 项通过。
 - 主机 SMMLA 测试、禁用后端探针及 ASan/UBSan 原生输入安全测试通过。固定 SHA-256 模型的 200 句输出回归通过：en→zh-Hans 为 `16537889a77b25db`，ja→en→zh-Hans 为 `e9d84f82b99250ee`，两种 GEMM 路径均与既有正典一致。这验证输出一致性，不构成新的性能结论。
 
-**新 API 的真机验收尚未执行。** 新 Demo 与测试 APK 已构建，等待设备安装确认；下方历史真机记录不证明本次重构后的构件。v0.4.0 标签与发布流程保持撤回，v0.3.0 Release 已撤下，v0.3.0 历史标签仍保留。当前没有重新发布。
+以上为 `fa351ed` 的本地预检记录；记录时新 API 的真机验收尚未执行。最终发行构件由 v0.4.0 工作流重新构建，并通过该工作流的 Android 设备任务验收；实际结果及 APK 指纹以 [Release](https://github.com/yinvoke/foxlet-translate/releases/tag/v0.4.0) 中的 `device-result.json` 为准。下方历史真机记录不证明本次重构后的构件。v0.3.0 Release 已撤下，历史标签保留。
 
 ## 统一 API 前的模型管理审查记录（历史）
 

@@ -31,7 +31,7 @@ Foxlet Translate 是面向 Android 的高性能离线翻译库，基于 Mozilla 
 
 ## ✨ 特性
 
-0.4.0 开发版统一为 `Foxlet.models` 与 `Foxlet.translator`，覆盖模型管理、更新检测、下载和翻译。0.4.0 标签及发布已撤回，0.3.0 Release 已撤下；当前请从源码构建。
+0.4.0 统一为 `Foxlet.models` 与 `Foxlet.translator`，覆盖模型管理、更新检测、下载和翻译，不保留旧公开接口。发行构件见 [v0.4.0 Release](https://github.com/yinvoke/foxlet-translate/releases/tag/v0.4.0)；也可按下方步骤从源码构建。
 
 - **离线推理**:翻译全程无网络请求，联网仅发生在下载模型与显式检查更新时，模型来自 Mozilla 官方(MPL-2.0)
 - **Mozilla 模型**:沿用 Firefox Translations 的官方模型，优化 Android 运行效率；引擎源码、模型与训练流程公开
@@ -238,7 +238,7 @@ registry.json  Mozilla 模型下载索引
 
 ## 🚀 快速开始
 
-以下示例适用于 **0.4.0 开发版**。本次统一 API 不保留旧接口，宿主需重新编译；发布标签已撤回，请先从源码构建。
+以下示例适用于 **0.4.0**。本次统一 API 不保留旧接口，宿主需更新调用代码并重新编译。
 
 ```bash
 ./gradlew :foxlet:packageWithoutPrefixes :demo:assembleRelease

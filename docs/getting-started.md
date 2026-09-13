@@ -1,6 +1,6 @@
 # 快速开始
 
-本文对应正在开发的 0.4.0 统一 API。0.4.0 标签与发布已撤回，0.3.0 Release 也已撤下；当前请从源码构建。本次是**不兼容重构**，不提供旧入口的兼容层，包名仍为 `io.github.yinvoker.foxlet`。
+本文对应 0.4.0 统一 API。本次是**不兼容重构**，不提供旧入口的兼容层，包名仍为 `io.github.yinvoker.foxlet`。发行 AAR 与 Demo 见 [v0.4.0 Release](https://github.com/yinvoke/foxlet-translate/releases/tag/v0.4.0)，也可按下方步骤从源码构建。
 
 支持 Android 9+、arm64-v8a。使用 JDK 17、Android SDK 36、NDK 29.0.13113456 与 CMake 3.31.6。
 

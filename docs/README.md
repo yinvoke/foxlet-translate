@@ -12,6 +12,8 @@
 ## 开发者
 
 - [代码结构与运行时架构](architecture.md)：Android、JNI、Bergamot/Marian 引擎、工具和模型之间的边界。
+- [Kotlin API 审查与统一设计](api-design-review.md)：统一客户端的设计推导、行为契约和破坏性迁移对照。
+- [公开 API 快照](../api/README.md)：新入口的 JVM 签名检查、旧入口移除门禁及更新方法。
 - [构建与测试](benchmarking.md)：本地构建、单元测试、主机 smoke 和真机验证入口。
 - [贡献指南](../CONTRIBUTING.md)：改动范围、上游 vendor 规则、验证要求和文档约定。
 - [上游来源与升级](../engine/UPSTREAM.md)：引擎 vendor 来源、裁剪范围和 re-vendor 流程。

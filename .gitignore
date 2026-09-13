@@ -32,5 +32,6 @@ docs/*
 !docs/README.md
 !docs/getting-started.md
 !docs/architecture.md
+!docs/api-design-review.md
 !docs/benchmarking.md
 !docs/smmla-compatibility.md

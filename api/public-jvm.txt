@@ -1,0 +1,1889 @@
+public final class io.github.yinvoker.foxlet.AssetVerification {
+  public io.github.yinvoker.foxlet.AssetVerification(java.lang.String, io.github.yinvoker.foxlet.VerificationStatus, long, java.lang.Long, java.lang.String, java.lang.String, java.lang.String);
+    descriptor: (Ljava/lang/String;Lio/github/yinvoker/foxlet/VerificationStatus;JLjava/lang/Long;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+
+  public io.github.yinvoker.foxlet.AssetVerification(java.lang.String, io.github.yinvoker.foxlet.VerificationStatus, long, java.lang.Long, java.lang.String, java.lang.String, java.lang.String, int, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (Ljava/lang/String;Lio/github/yinvoker/foxlet/VerificationStatus;JLjava/lang/Long;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+
+  public final java.lang.String getAssetName();
+    descriptor: ()Ljava/lang/String;
+
+  public final io.github.yinvoker.foxlet.VerificationStatus getStatus();
+    descriptor: ()Lio/github/yinvoker/foxlet/VerificationStatus;
+
+  public final long getExpectedSizeBytes();
+    descriptor: ()J
+
+  public final java.lang.Long getActualSizeBytes();
+    descriptor: ()Ljava/lang/Long;
+
+  public final java.lang.String getExpectedSha256();
+    descriptor: ()Ljava/lang/String;
+
+  public final java.lang.String getActualSha256();
+    descriptor: ()Ljava/lang/String;
+
+  public final java.lang.String getDetail();
+    descriptor: ()Ljava/lang/String;
+
+  public final java.lang.String component1();
+    descriptor: ()Ljava/lang/String;
+
+  public final io.github.yinvoker.foxlet.VerificationStatus component2();
+    descriptor: ()Lio/github/yinvoker/foxlet/VerificationStatus;
+
+  public final long component3();
+    descriptor: ()J
+
+  public final java.lang.Long component4();
+    descriptor: ()Ljava/lang/Long;
+
+  public final java.lang.String component5();
+    descriptor: ()Ljava/lang/String;
+
+  public final java.lang.String component6();
+    descriptor: ()Ljava/lang/String;
+
+  public final java.lang.String component7();
+    descriptor: ()Ljava/lang/String;
+
+  public final io.github.yinvoker.foxlet.AssetVerification copy(java.lang.String, io.github.yinvoker.foxlet.VerificationStatus, long, java.lang.Long, java.lang.String, java.lang.String, java.lang.String);
+    descriptor: (Ljava/lang/String;Lio/github/yinvoker/foxlet/VerificationStatus;JLjava/lang/Long;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lio/github/yinvoker/foxlet/AssetVerification;
+
+  public static io.github.yinvoker.foxlet.AssetVerification copy$default(io.github.yinvoker.foxlet.AssetVerification, java.lang.String, io.github.yinvoker.foxlet.VerificationStatus, long, java.lang.Long, java.lang.String, java.lang.String, java.lang.String, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/AssetVerification;Ljava/lang/String;Lio/github/yinvoker/foxlet/VerificationStatus;JLjava/lang/Long;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lio/github/yinvoker/foxlet/AssetVerification;
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public int hashCode();
+    descriptor: ()I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+}
+public final class io.github.yinvoker.foxlet.CleanupOptions {
+  public io.github.yinvoker.foxlet.CleanupOptions(long, boolean, java.util.Set, int, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (JZLjava/util/Set;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+
+  public final long getStaleTempAge-UwyO8pc();
+    descriptor: ()J
+
+  public final boolean getRemoveSuperseded();
+    descriptor: ()Z
+
+  public final java.util.Set<java.io.File> getKeepDirectories();
+    descriptor: ()Ljava/util/Set;
+
+  public final long component1-UwyO8pc();
+    descriptor: ()J
+
+  public final boolean component2();
+    descriptor: ()Z
+
+  public final java.util.Set<java.io.File> component3();
+    descriptor: ()Ljava/util/Set;
+
+  public final io.github.yinvoker.foxlet.CleanupOptions copy-KLykuaI(long, boolean, java.util.Set<? extends java.io.File>);
+    descriptor: (JZLjava/util/Set;)Lio/github/yinvoker/foxlet/CleanupOptions;
+
+  public static io.github.yinvoker.foxlet.CleanupOptions copy-KLykuaI$default(io.github.yinvoker.foxlet.CleanupOptions, long, boolean, java.util.Set, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/CleanupOptions;JZLjava/util/Set;ILjava/lang/Object;)Lio/github/yinvoker/foxlet/CleanupOptions;
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public int hashCode();
+    descriptor: ()I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+
+  public io.github.yinvoker.foxlet.CleanupOptions(long, boolean, java.util.Set, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (JZLjava/util/Set;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+public final class io.github.yinvoker.foxlet.CleanupReport {
+  public io.github.yinvoker.foxlet.CleanupReport(java.util.List<? extends java.io.File>, java.util.List<io.github.yinvoker.foxlet.InstalledModel>, java.util.List<? extends java.io.File>, java.util.List<io.github.yinvoker.foxlet.DeleteResult>, long);
+    descriptor: (Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;J)V
+
+  public final java.util.List<java.io.File> getRemovedTempDirectories();
+    descriptor: ()Ljava/util/List;
+
+  public final java.util.List<io.github.yinvoker.foxlet.InstalledModel> getRemovedSuperseded();
+    descriptor: ()Ljava/util/List;
+
+  public final java.util.List<java.io.File> getSkippedInUse();
+    descriptor: ()Ljava/util/List;
+
+  public final java.util.List<io.github.yinvoker.foxlet.DeleteResult> getFailures();
+    descriptor: ()Ljava/util/List;
+
+  public final long getFreedBytes();
+    descriptor: ()J
+
+  public final java.util.List<java.io.File> component1();
+    descriptor: ()Ljava/util/List;
+
+  public final java.util.List<io.github.yinvoker.foxlet.InstalledModel> component2();
+    descriptor: ()Ljava/util/List;
+
+  public final java.util.List<java.io.File> component3();
+    descriptor: ()Ljava/util/List;
+
+  public final java.util.List<io.github.yinvoker.foxlet.DeleteResult> component4();
+    descriptor: ()Ljava/util/List;
+
+  public final long component5();
+    descriptor: ()J
+
+  public final io.github.yinvoker.foxlet.CleanupReport copy(java.util.List<? extends java.io.File>, java.util.List<io.github.yinvoker.foxlet.InstalledModel>, java.util.List<? extends java.io.File>, java.util.List<io.github.yinvoker.foxlet.DeleteResult>, long);
+    descriptor: (Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;J)Lio/github/yinvoker/foxlet/CleanupReport;
+
+  public static io.github.yinvoker.foxlet.CleanupReport copy$default(io.github.yinvoker.foxlet.CleanupReport, java.util.List, java.util.List, java.util.List, java.util.List, long, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/CleanupReport;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;JILjava/lang/Object;)Lio/github/yinvoker/foxlet/CleanupReport;
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public int hashCode();
+    descriptor: ()I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+}
+public final class io.github.yinvoker.foxlet.ClientClosedException extends java.lang.IllegalStateException {
+  public io.github.yinvoker.foxlet.ClientClosedException();
+    descriptor: ()V
+}
+public final class io.github.yinvoker.foxlet.DeleteReport {
+  public io.github.yinvoker.foxlet.DeleteReport(java.util.List<io.github.yinvoker.foxlet.DeleteResult>);
+    descriptor: (Ljava/util/List;)V
+
+  public final java.util.List<io.github.yinvoker.foxlet.DeleteResult> getResults();
+    descriptor: ()Ljava/util/List;
+
+  public final long getFreedBytes();
+    descriptor: ()J
+
+  public final java.util.List<io.github.yinvoker.foxlet.DeleteResult> component1();
+    descriptor: ()Ljava/util/List;
+
+  public final io.github.yinvoker.foxlet.DeleteReport copy(java.util.List<io.github.yinvoker.foxlet.DeleteResult>);
+    descriptor: (Ljava/util/List;)Lio/github/yinvoker/foxlet/DeleteReport;
+
+  public static io.github.yinvoker.foxlet.DeleteReport copy$default(io.github.yinvoker.foxlet.DeleteReport, java.util.List, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/DeleteReport;Ljava/util/List;ILjava/lang/Object;)Lio/github/yinvoker/foxlet/DeleteReport;
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public int hashCode();
+    descriptor: ()I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+}
+public final class io.github.yinvoker.foxlet.DeleteResult {
+  public io.github.yinvoker.foxlet.DeleteResult(io.github.yinvoker.foxlet.InstallationId, java.io.File, io.github.yinvoker.foxlet.DeleteStatus, long, io.github.yinvoker.foxlet.ModelStorageException);
+    descriptor: (Lio/github/yinvoker/foxlet/InstallationId;Ljava/io/File;Lio/github/yinvoker/foxlet/DeleteStatus;JLio/github/yinvoker/foxlet/ModelStorageException;)V
+
+  public io.github.yinvoker.foxlet.DeleteResult(io.github.yinvoker.foxlet.InstallationId, java.io.File, io.github.yinvoker.foxlet.DeleteStatus, long, io.github.yinvoker.foxlet.ModelStorageException, int, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (Lio/github/yinvoker/foxlet/InstallationId;Ljava/io/File;Lio/github/yinvoker/foxlet/DeleteStatus;JLio/github/yinvoker/foxlet/ModelStorageException;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+
+  public final io.github.yinvoker.foxlet.InstallationId getId();
+    descriptor: ()Lio/github/yinvoker/foxlet/InstallationId;
+
+  public final java.io.File getDirectory();
+    descriptor: ()Ljava/io/File;
+
+  public final io.github.yinvoker.foxlet.DeleteStatus getStatus();
+    descriptor: ()Lio/github/yinvoker/foxlet/DeleteStatus;
+
+  public final long getFreedBytes();
+    descriptor: ()J
+
+  public final io.github.yinvoker.foxlet.ModelStorageException getFailure();
+    descriptor: ()Lio/github/yinvoker/foxlet/ModelStorageException;
+
+  public final io.github.yinvoker.foxlet.InstallationId component1();
+    descriptor: ()Lio/github/yinvoker/foxlet/InstallationId;
+
+  public final java.io.File component2();
+    descriptor: ()Ljava/io/File;
+
+  public final io.github.yinvoker.foxlet.DeleteStatus component3();
+    descriptor: ()Lio/github/yinvoker/foxlet/DeleteStatus;
+
+  public final long component4();
+    descriptor: ()J
+
+  public final io.github.yinvoker.foxlet.ModelStorageException component5();
+    descriptor: ()Lio/github/yinvoker/foxlet/ModelStorageException;
+
+  public final io.github.yinvoker.foxlet.DeleteResult copy(io.github.yinvoker.foxlet.InstallationId, java.io.File, io.github.yinvoker.foxlet.DeleteStatus, long, io.github.yinvoker.foxlet.ModelStorageException);
+    descriptor: (Lio/github/yinvoker/foxlet/InstallationId;Ljava/io/File;Lio/github/yinvoker/foxlet/DeleteStatus;JLio/github/yinvoker/foxlet/ModelStorageException;)Lio/github/yinvoker/foxlet/DeleteResult;
+
+  public static io.github.yinvoker.foxlet.DeleteResult copy$default(io.github.yinvoker.foxlet.DeleteResult, io.github.yinvoker.foxlet.InstallationId, java.io.File, io.github.yinvoker.foxlet.DeleteStatus, long, io.github.yinvoker.foxlet.ModelStorageException, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/DeleteResult;Lio/github/yinvoker/foxlet/InstallationId;Ljava/io/File;Lio/github/yinvoker/foxlet/DeleteStatus;JLio/github/yinvoker/foxlet/ModelStorageException;ILjava/lang/Object;)Lio/github/yinvoker/foxlet/DeleteResult;
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public int hashCode();
+    descriptor: ()I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+}
+public final class io.github.yinvoker.foxlet.DeleteStatus extends java.lang.Enum<io.github.yinvoker.foxlet.DeleteStatus> {
+  public static final io.github.yinvoker.foxlet.DeleteStatus Deleted;
+    descriptor: Lio/github/yinvoker/foxlet/DeleteStatus;
+  public static final io.github.yinvoker.foxlet.DeleteStatus AlreadyAbsent;
+    descriptor: Lio/github/yinvoker/foxlet/DeleteStatus;
+  public static final io.github.yinvoker.foxlet.DeleteStatus PartiallyDeleted;
+    descriptor: Lio/github/yinvoker/foxlet/DeleteStatus;
+  public static final io.github.yinvoker.foxlet.DeleteStatus Failed;
+    descriptor: Lio/github/yinvoker/foxlet/DeleteStatus;
+  public static io.github.yinvoker.foxlet.DeleteStatus[] values();
+    descriptor: ()[Lio/github/yinvoker/foxlet/DeleteStatus;
+
+  public static io.github.yinvoker.foxlet.DeleteStatus valueOf(java.lang.String);
+    descriptor: (Ljava/lang/String;)Lio/github/yinvoker/foxlet/DeleteStatus;
+
+  public static kotlin.enums.EnumEntries<io.github.yinvoker.foxlet.DeleteStatus> getEntries();
+    descriptor: ()Lkotlin/enums/EnumEntries;
+}
+public final class io.github.yinvoker.foxlet.DeviceThreadingInfo {
+  public io.github.yinvoker.foxlet.DeviceThreadingInfo(long, boolean, int, io.github.yinvoker.foxlet.Workload);
+    descriptor: (JZILio/github/yinvoker/foxlet/Workload;)V
+
+  public final long getTotalRamBytes();
+    descriptor: ()J
+
+  public final boolean isLowRam();
+    descriptor: ()Z
+
+  public final int getBigCoreCount();
+    descriptor: ()I
+
+  public final io.github.yinvoker.foxlet.Workload getWorkload();
+    descriptor: ()Lio/github/yinvoker/foxlet/Workload;
+
+  public final long component1();
+    descriptor: ()J
+
+  public final boolean component2();
+    descriptor: ()Z
+
+  public final int component3();
+    descriptor: ()I
+
+  public final io.github.yinvoker.foxlet.Workload component4();
+    descriptor: ()Lio/github/yinvoker/foxlet/Workload;
+
+  public final io.github.yinvoker.foxlet.DeviceThreadingInfo copy(long, boolean, int, io.github.yinvoker.foxlet.Workload);
+    descriptor: (JZILio/github/yinvoker/foxlet/Workload;)Lio/github/yinvoker/foxlet/DeviceThreadingInfo;
+
+  public static io.github.yinvoker.foxlet.DeviceThreadingInfo copy$default(io.github.yinvoker.foxlet.DeviceThreadingInfo, long, boolean, int, io.github.yinvoker.foxlet.Workload, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/DeviceThreadingInfo;JZILio/github/yinvoker/foxlet/Workload;ILjava/lang/Object;)Lio/github/yinvoker/foxlet/DeviceThreadingInfo;
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public int hashCode();
+    descriptor: ()I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+}
+public final class io.github.yinvoker.foxlet.DownloadOptions {
+  public io.github.yinvoker.foxlet.DownloadOptions(int, boolean, long, long, io.github.yinvoker.foxlet.NetworkOptions, int, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (IZJJLio/github/yinvoker/foxlet/NetworkOptions;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+
+  public final int getMaxRetries();
+    descriptor: ()I
+
+  public final boolean getResume();
+    descriptor: ()Z
+
+  public final long getInitialBackoff-UwyO8pc();
+    descriptor: ()J
+
+  public final long getMaxBackoff-UwyO8pc();
+    descriptor: ()J
+
+  public final io.github.yinvoker.foxlet.NetworkOptions getNetworkOptions();
+    descriptor: ()Lio/github/yinvoker/foxlet/NetworkOptions;
+
+  public final int component1();
+    descriptor: ()I
+
+  public final boolean component2();
+    descriptor: ()Z
+
+  public final long component3-UwyO8pc();
+    descriptor: ()J
+
+  public final long component4-UwyO8pc();
+    descriptor: ()J
+
+  public final io.github.yinvoker.foxlet.NetworkOptions component5();
+    descriptor: ()Lio/github/yinvoker/foxlet/NetworkOptions;
+
+  public final io.github.yinvoker.foxlet.DownloadOptions copy-ck1zr5g(int, boolean, long, long, io.github.yinvoker.foxlet.NetworkOptions);
+    descriptor: (IZJJLio/github/yinvoker/foxlet/NetworkOptions;)Lio/github/yinvoker/foxlet/DownloadOptions;
+
+  public static io.github.yinvoker.foxlet.DownloadOptions copy-ck1zr5g$default(io.github.yinvoker.foxlet.DownloadOptions, int, boolean, long, long, io.github.yinvoker.foxlet.NetworkOptions, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/DownloadOptions;IZJJLio/github/yinvoker/foxlet/NetworkOptions;ILjava/lang/Object;)Lio/github/yinvoker/foxlet/DownloadOptions;
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public int hashCode();
+    descriptor: ()I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+
+  public io.github.yinvoker.foxlet.DownloadOptions(int, boolean, long, long, io.github.yinvoker.foxlet.NetworkOptions, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (IZJJLio/github/yinvoker/foxlet/NetworkOptions;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+public final class io.github.yinvoker.foxlet.DownloadProgress {
+  public io.github.yinvoker.foxlet.DownloadProgress(io.github.yinvoker.foxlet.DownloadStage, long, long, java.lang.String, java.lang.Integer, java.lang.Integer, java.lang.Long, java.lang.Long, int);
+    descriptor: (Lio/github/yinvoker/foxlet/DownloadStage;JJLjava/lang/String;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Long;Ljava/lang/Long;I)V
+
+  public io.github.yinvoker.foxlet.DownloadProgress(io.github.yinvoker.foxlet.DownloadStage, long, long, java.lang.String, java.lang.Integer, java.lang.Integer, java.lang.Long, java.lang.Long, int, int, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (Lio/github/yinvoker/foxlet/DownloadStage;JJLjava/lang/String;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Long;Ljava/lang/Long;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+
+  public final io.github.yinvoker.foxlet.DownloadStage getStage();
+    descriptor: ()Lio/github/yinvoker/foxlet/DownloadStage;
+
+  public final long getDownloadedBytes();
+    descriptor: ()J
+
+  public final long getTotalBytes();
+    descriptor: ()J
+
+  public final java.lang.String getAssetName();
+    descriptor: ()Ljava/lang/String;
+
+  public final java.lang.Integer getAssetIndex();
+    descriptor: ()Ljava/lang/Integer;
+
+  public final java.lang.Integer getAssetCount();
+    descriptor: ()Ljava/lang/Integer;
+
+  public final java.lang.Long getAssetDownloadedBytes();
+    descriptor: ()Ljava/lang/Long;
+
+  public final java.lang.Long getAssetTotalBytes();
+    descriptor: ()Ljava/lang/Long;
+
+  public final int getAttempt();
+    descriptor: ()I
+
+  public final io.github.yinvoker.foxlet.DownloadStage component1();
+    descriptor: ()Lio/github/yinvoker/foxlet/DownloadStage;
+
+  public final long component2();
+    descriptor: ()J
+
+  public final long component3();
+    descriptor: ()J
+
+  public final java.lang.String component4();
+    descriptor: ()Ljava/lang/String;
+
+  public final java.lang.Integer component5();
+    descriptor: ()Ljava/lang/Integer;
+
+  public final java.lang.Integer component6();
+    descriptor: ()Ljava/lang/Integer;
+
+  public final java.lang.Long component7();
+    descriptor: ()Ljava/lang/Long;
+
+  public final java.lang.Long component8();
+    descriptor: ()Ljava/lang/Long;
+
+  public final int component9();
+    descriptor: ()I
+
+  public final io.github.yinvoker.foxlet.DownloadProgress copy(io.github.yinvoker.foxlet.DownloadStage, long, long, java.lang.String, java.lang.Integer, java.lang.Integer, java.lang.Long, java.lang.Long, int);
+    descriptor: (Lio/github/yinvoker/foxlet/DownloadStage;JJLjava/lang/String;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Long;Ljava/lang/Long;I)Lio/github/yinvoker/foxlet/DownloadProgress;
+
+  public static io.github.yinvoker.foxlet.DownloadProgress copy$default(io.github.yinvoker.foxlet.DownloadProgress, io.github.yinvoker.foxlet.DownloadStage, long, long, java.lang.String, java.lang.Integer, java.lang.Integer, java.lang.Long, java.lang.Long, int, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/DownloadProgress;Lio/github/yinvoker/foxlet/DownloadStage;JJLjava/lang/String;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Long;Ljava/lang/Long;IILjava/lang/Object;)Lio/github/yinvoker/foxlet/DownloadProgress;
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public int hashCode();
+    descriptor: ()I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+}
+public final class io.github.yinvoker.foxlet.DownloadStage extends java.lang.Enum<io.github.yinvoker.foxlet.DownloadStage> {
+  public static final io.github.yinvoker.foxlet.DownloadStage CheckingLocal;
+    descriptor: Lio/github/yinvoker/foxlet/DownloadStage;
+  public static final io.github.yinvoker.foxlet.DownloadStage Downloading;
+    descriptor: Lio/github/yinvoker/foxlet/DownloadStage;
+  public static final io.github.yinvoker.foxlet.DownloadStage Verifying;
+    descriptor: Lio/github/yinvoker/foxlet/DownloadStage;
+  public static final io.github.yinvoker.foxlet.DownloadStage Ready;
+    descriptor: Lio/github/yinvoker/foxlet/DownloadStage;
+  public static io.github.yinvoker.foxlet.DownloadStage[] values();
+    descriptor: ()[Lio/github/yinvoker/foxlet/DownloadStage;
+
+  public static io.github.yinvoker.foxlet.DownloadStage valueOf(java.lang.String);
+    descriptor: (Ljava/lang/String;)Lio/github/yinvoker/foxlet/DownloadStage;
+
+  public static kotlin.enums.EnumEntries<io.github.yinvoker.foxlet.DownloadStage> getEntries();
+    descriptor: ()Lkotlin/enums/EnumEntries;
+}
+public final class io.github.yinvoker.foxlet.ExternalModel implements io.github.yinvoker.foxlet.LocalModel {
+  public io.github.yinvoker.foxlet.ExternalModel(io.github.yinvoker.foxlet.LanguagePair, io.github.yinvoker.foxlet.ModelFiles);
+    descriptor: (Lio/github/yinvoker/foxlet/LanguagePair;Lio/github/yinvoker/foxlet/ModelFiles;)V
+
+  public io.github.yinvoker.foxlet.LanguagePair getPair();
+    descriptor: ()Lio/github/yinvoker/foxlet/LanguagePair;
+
+  public final io.github.yinvoker.foxlet.ModelFiles getFiles();
+    descriptor: ()Lio/github/yinvoker/foxlet/ModelFiles;
+}
+public final class io.github.yinvoker.foxlet.Foxlet {
+  public static final io.github.yinvoker.foxlet.Foxlet$Companion Companion;
+    descriptor: Lio/github/yinvoker/foxlet/Foxlet$Companion;
+  public final io.github.yinvoker.foxlet.FoxletConfig getConfig();
+    descriptor: ()Lio/github/yinvoker/foxlet/FoxletConfig;
+
+  public final io.github.yinvoker.foxlet.FoxletCapabilities getCapabilities();
+    descriptor: ()Lio/github/yinvoker/foxlet/FoxletCapabilities;
+
+  public final io.github.yinvoker.foxlet.ModelManager getModels();
+    descriptor: ()Lio/github/yinvoker/foxlet/ModelManager;
+
+  public final io.github.yinvoker.foxlet.Translator getTranslator();
+    descriptor: ()Lio/github/yinvoker/foxlet/Translator;
+
+  public final java.lang.Object shutdown(kotlin.coroutines.Continuation<? super kotlin.Unit>);
+    descriptor: (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+
+  public io.github.yinvoker.foxlet.Foxlet(io.github.yinvoker.foxlet.FoxletConfig, io.github.yinvoker.foxlet.FoxletCapabilities, io.github.yinvoker.foxlet.ClientLifecycle, io.github.yinvoker.foxlet.ModelManager, io.github.yinvoker.foxlet.Translator, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (Lio/github/yinvoker/foxlet/FoxletConfig;Lio/github/yinvoker/foxlet/FoxletCapabilities;Lio/github/yinvoker/foxlet/ClientLifecycle;Lio/github/yinvoker/foxlet/ModelManager;Lio/github/yinvoker/foxlet/Translator;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+public final class io.github.yinvoker.foxlet.Foxlet$Companion {
+  public final java.lang.Object create(android.content.Context, kotlin.jvm.functions.Function1<? super io.github.yinvoker.foxlet.FoxletConfigBuilder, kotlin.Unit>, kotlin.coroutines.Continuation<? super io.github.yinvoker.foxlet.Foxlet>);
+    descriptor: (Landroid/content/Context;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+
+  public final java.lang.Object create(android.content.Context, io.github.yinvoker.foxlet.FoxletConfig, kotlin.coroutines.Continuation<? super io.github.yinvoker.foxlet.Foxlet>);
+    descriptor: (Landroid/content/Context;Lio/github/yinvoker/foxlet/FoxletConfig;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+
+  public static java.lang.Object create$default(io.github.yinvoker.foxlet.Foxlet$Companion, android.content.Context, io.github.yinvoker.foxlet.FoxletConfig, kotlin.coroutines.Continuation, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/Foxlet$Companion;Landroid/content/Context;Lio/github/yinvoker/foxlet/FoxletConfig;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+
+  public final io.github.yinvoker.foxlet.Foxlet assemble$foxlet(io.github.yinvoker.foxlet.FoxletConfig, io.github.yinvoker.foxlet.ThreadingInfo, io.github.yinvoker.foxlet.TranslationBackend, io.github.yinvoker.foxlet.ModelTransport);
+    descriptor: (Lio/github/yinvoker/foxlet/FoxletConfig;Lio/github/yinvoker/foxlet/ThreadingInfo;Lio/github/yinvoker/foxlet/TranslationBackend;Lio/github/yinvoker/foxlet/ModelTransport;)Lio/github/yinvoker/foxlet/Foxlet;
+
+  public static io.github.yinvoker.foxlet.Foxlet assemble$foxlet$default(io.github.yinvoker.foxlet.Foxlet$Companion, io.github.yinvoker.foxlet.FoxletConfig, io.github.yinvoker.foxlet.ThreadingInfo, io.github.yinvoker.foxlet.TranslationBackend, io.github.yinvoker.foxlet.ModelTransport, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/Foxlet$Companion;Lio/github/yinvoker/foxlet/FoxletConfig;Lio/github/yinvoker/foxlet/ThreadingInfo;Lio/github/yinvoker/foxlet/TranslationBackend;Lio/github/yinvoker/foxlet/ModelTransport;ILjava/lang/Object;)Lio/github/yinvoker/foxlet/Foxlet;
+
+  public io.github.yinvoker.foxlet.Foxlet$Companion(kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+public final class io.github.yinvoker.foxlet.FoxletCapabilities {
+  public io.github.yinvoker.foxlet.FoxletCapabilities(kotlin.ranges.IntRange, java.util.Set<java.lang.String>);
+    descriptor: (Lkotlin/ranges/IntRange;Ljava/util/Set;)V
+
+  public final kotlin.ranges.IntRange getSupportedModelMajorVersions();
+    descriptor: ()Lkotlin/ranges/IntRange;
+
+  public final java.util.Set<java.lang.String> getPrefixLanguages();
+    descriptor: ()Ljava/util/Set;
+
+  public final kotlin.ranges.IntRange component1();
+    descriptor: ()Lkotlin/ranges/IntRange;
+
+  public final java.util.Set<java.lang.String> component2();
+    descriptor: ()Ljava/util/Set;
+
+  public final io.github.yinvoker.foxlet.FoxletCapabilities copy(kotlin.ranges.IntRange, java.util.Set<java.lang.String>);
+    descriptor: (Lkotlin/ranges/IntRange;Ljava/util/Set;)Lio/github/yinvoker/foxlet/FoxletCapabilities;
+
+  public static io.github.yinvoker.foxlet.FoxletCapabilities copy$default(io.github.yinvoker.foxlet.FoxletCapabilities, kotlin.ranges.IntRange, java.util.Set, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/FoxletCapabilities;Lkotlin/ranges/IntRange;Ljava/util/Set;ILjava/lang/Object;)Lio/github/yinvoker/foxlet/FoxletCapabilities;
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public int hashCode();
+    descriptor: ()I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+}
+public final class io.github.yinvoker.foxlet.FoxletConfig {
+  public io.github.yinvoker.foxlet.FoxletConfig(io.github.yinvoker.foxlet.ModelsConfig, io.github.yinvoker.foxlet.TranslationConfig);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelsConfig;Lio/github/yinvoker/foxlet/TranslationConfig;)V
+
+  public io.github.yinvoker.foxlet.FoxletConfig(io.github.yinvoker.foxlet.ModelsConfig, io.github.yinvoker.foxlet.TranslationConfig, int, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelsConfig;Lio/github/yinvoker/foxlet/TranslationConfig;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+
+  public final io.github.yinvoker.foxlet.ModelsConfig getModels();
+    descriptor: ()Lio/github/yinvoker/foxlet/ModelsConfig;
+
+  public final io.github.yinvoker.foxlet.TranslationConfig getTranslation();
+    descriptor: ()Lio/github/yinvoker/foxlet/TranslationConfig;
+
+  public final io.github.yinvoker.foxlet.ModelsConfig component1();
+    descriptor: ()Lio/github/yinvoker/foxlet/ModelsConfig;
+
+  public final io.github.yinvoker.foxlet.TranslationConfig component2();
+    descriptor: ()Lio/github/yinvoker/foxlet/TranslationConfig;
+
+  public final io.github.yinvoker.foxlet.FoxletConfig copy(io.github.yinvoker.foxlet.ModelsConfig, io.github.yinvoker.foxlet.TranslationConfig);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelsConfig;Lio/github/yinvoker/foxlet/TranslationConfig;)Lio/github/yinvoker/foxlet/FoxletConfig;
+
+  public static io.github.yinvoker.foxlet.FoxletConfig copy$default(io.github.yinvoker.foxlet.FoxletConfig, io.github.yinvoker.foxlet.ModelsConfig, io.github.yinvoker.foxlet.TranslationConfig, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/FoxletConfig;Lio/github/yinvoker/foxlet/ModelsConfig;Lio/github/yinvoker/foxlet/TranslationConfig;ILjava/lang/Object;)Lio/github/yinvoker/foxlet/FoxletConfig;
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public int hashCode();
+    descriptor: ()I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+
+  public io.github.yinvoker.foxlet.FoxletConfig();
+    descriptor: ()V
+}
+public final class io.github.yinvoker.foxlet.FoxletConfigBuilder {
+  public io.github.yinvoker.foxlet.FoxletConfigBuilder();
+    descriptor: ()V
+
+  public final void models(kotlin.jvm.functions.Function1<? super io.github.yinvoker.foxlet.ModelsConfigBuilder, kotlin.Unit>);
+    descriptor: (Lkotlin/jvm/functions/Function1;)V
+
+  public final void translation(kotlin.jvm.functions.Function1<? super io.github.yinvoker.foxlet.TranslationConfigBuilder, kotlin.Unit>);
+    descriptor: (Lkotlin/jvm/functions/Function1;)V
+
+  public final io.github.yinvoker.foxlet.FoxletConfig build();
+    descriptor: ()Lio/github/yinvoker/foxlet/FoxletConfig;
+}
+public interface io.github.yinvoker.foxlet.FoxletDsl extends java.lang.annotation.Annotation {
+}
+public abstract class io.github.yinvoker.foxlet.FoxletException extends java.lang.Exception {
+  public io.github.yinvoker.foxlet.FoxletException(java.lang.String, java.lang.Throwable, int, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+
+  public io.github.yinvoker.foxlet.FoxletException(java.lang.String, java.lang.Throwable, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (Ljava/lang/String;Ljava/lang/Throwable;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+public final class io.github.yinvoker.foxlet.InstallationId {
+  public io.github.yinvoker.foxlet.InstallationId(java.lang.String);
+    descriptor: (Ljava/lang/String;)V
+
+  public final java.lang.String getValue();
+    descriptor: ()Ljava/lang/String;
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+
+  public int hashCode();
+    descriptor: ()I
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+}
+public final class io.github.yinvoker.foxlet.InstalledModel implements io.github.yinvoker.foxlet.LocalModel {
+  public io.github.yinvoker.foxlet.InstalledModel(io.github.yinvoker.foxlet.Catalog$InstalledModel, java.io.File, io.github.yinvoker.foxlet.VerificationStatus);
+    descriptor: (Lio/github/yinvoker/foxlet/Catalog$InstalledModel;Ljava/io/File;Lio/github/yinvoker/foxlet/VerificationStatus;)V
+
+  public final io.github.yinvoker.foxlet.Catalog$InstalledModel getRecord$foxlet();
+    descriptor: ()Lio/github/yinvoker/foxlet/Catalog$InstalledModel;
+
+  public final java.io.File getStore$foxlet();
+    descriptor: ()Ljava/io/File;
+
+  public io.github.yinvoker.foxlet.LanguagePair getPair();
+    descriptor: ()Lio/github/yinvoker/foxlet/LanguagePair;
+
+  public final io.github.yinvoker.foxlet.InstallationId getId();
+    descriptor: ()Lio/github/yinvoker/foxlet/InstallationId;
+
+  public final java.lang.String getVersion();
+    descriptor: ()Ljava/lang/String;
+
+  public final java.lang.String getIdentity();
+    descriptor: ()Ljava/lang/String;
+
+  public final java.io.File getDirectory();
+    descriptor: ()Ljava/io/File;
+
+  public final long getSizeBytes();
+    descriptor: ()J
+
+  public final io.github.yinvoker.foxlet.ModelDescriptor getDescriptor();
+    descriptor: ()Lio/github/yinvoker/foxlet/ModelDescriptor;
+
+  public final io.github.yinvoker.foxlet.VerificationStatus getVerificationStatus();
+    descriptor: ()Lio/github/yinvoker/foxlet/VerificationStatus;
+
+  public final boolean isBundledVersion();
+    descriptor: ()Z
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+}
+public final class io.github.yinvoker.foxlet.LanguagePair {
+  public io.github.yinvoker.foxlet.LanguagePair(java.lang.String, java.lang.String);
+    descriptor: (Ljava/lang/String;Ljava/lang/String;)V
+
+  public final java.lang.String getSource();
+    descriptor: ()Ljava/lang/String;
+
+  public final java.lang.String getTarget();
+    descriptor: ()Ljava/lang/String;
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+
+  public int hashCode();
+    descriptor: ()I
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+}
+public interface io.github.yinvoker.foxlet.LocalModel {
+  public abstract io.github.yinvoker.foxlet.LanguagePair getPair();
+    descriptor: ()Lio/github/yinvoker/foxlet/LanguagePair;
+}
+public final class io.github.yinvoker.foxlet.ModelAsset {
+  public io.github.yinvoker.foxlet.ModelAsset(java.lang.String, long, java.lang.String, java.lang.String);
+    descriptor: (Ljava/lang/String;JLjava/lang/String;Ljava/lang/String;)V
+
+  public final java.lang.String getName();
+    descriptor: ()Ljava/lang/String;
+
+  public final long getSizeBytes();
+    descriptor: ()J
+
+  public final java.lang.String getSha256();
+    descriptor: ()Ljava/lang/String;
+
+  public final java.lang.String getUrl();
+    descriptor: ()Ljava/lang/String;
+
+  public final java.lang.String component1();
+    descriptor: ()Ljava/lang/String;
+
+  public final long component2();
+    descriptor: ()J
+
+  public final java.lang.String component3();
+    descriptor: ()Ljava/lang/String;
+
+  public final java.lang.String component4();
+    descriptor: ()Ljava/lang/String;
+
+  public final io.github.yinvoker.foxlet.ModelAsset copy(java.lang.String, long, java.lang.String, java.lang.String);
+    descriptor: (Ljava/lang/String;JLjava/lang/String;Ljava/lang/String;)Lio/github/yinvoker/foxlet/ModelAsset;
+
+  public static io.github.yinvoker.foxlet.ModelAsset copy$default(io.github.yinvoker.foxlet.ModelAsset, java.lang.String, long, java.lang.String, java.lang.String, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelAsset;Ljava/lang/String;JLjava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lio/github/yinvoker/foxlet/ModelAsset;
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public int hashCode();
+    descriptor: ()I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+}
+public final class io.github.yinvoker.foxlet.ModelDescriptor {
+  public io.github.yinvoker.foxlet.ModelDescriptor(io.github.yinvoker.foxlet.LanguagePair, java.lang.String, java.util.List<io.github.yinvoker.foxlet.ModelAsset>);
+    descriptor: (Lio/github/yinvoker/foxlet/LanguagePair;Ljava/lang/String;Ljava/util/List;)V
+
+  public final io.github.yinvoker.foxlet.LanguagePair getPair();
+    descriptor: ()Lio/github/yinvoker/foxlet/LanguagePair;
+
+  public final java.lang.String getVersion();
+    descriptor: ()Ljava/lang/String;
+
+  public final java.util.List<io.github.yinvoker.foxlet.ModelAsset> getAssets();
+    descriptor: ()Ljava/util/List;
+
+  public final long getSizeBytes();
+    descriptor: ()J
+
+  public final java.lang.String getIdentity();
+    descriptor: ()Ljava/lang/String;
+
+  public final io.github.yinvoker.foxlet.Catalog$Model asCatalog$foxlet();
+    descriptor: ()Lio/github/yinvoker/foxlet/Catalog$Model;
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+
+  public int hashCode();
+    descriptor: ()I
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+}
+public final class io.github.yinvoker.foxlet.ModelFiles {
+  public static final io.github.yinvoker.foxlet.ModelFiles$Companion Companion;
+    descriptor: Lio/github/yinvoker/foxlet/ModelFiles$Companion;
+  public static final int MAX_LENGTH_BREAK;
+    descriptor: I
+  public io.github.yinvoker.foxlet.ModelFiles(java.io.File, java.io.File, java.io.File, java.io.File, java.lang.String, java.util.Map<java.lang.String, java.lang.String>, java.io.File);
+    descriptor: (Ljava/io/File;Ljava/io/File;Ljava/io/File;Ljava/io/File;Ljava/lang/String;Ljava/util/Map;Ljava/io/File;)V
+
+  public io.github.yinvoker.foxlet.ModelFiles(java.io.File, java.io.File, java.io.File, java.io.File, java.lang.String, java.util.Map, java.io.File, int, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (Ljava/io/File;Ljava/io/File;Ljava/io/File;Ljava/io/File;Ljava/lang/String;Ljava/util/Map;Ljava/io/File;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+
+  public final java.io.File getModel();
+    descriptor: ()Ljava/io/File;
+
+  public final java.io.File getSrcVocab();
+    descriptor: ()Ljava/io/File;
+
+  public final java.io.File getTrgVocab();
+    descriptor: ()Ljava/io/File;
+
+  public final java.io.File getShortlist();
+    descriptor: ()Ljava/io/File;
+
+  public final java.lang.String getSourceLanguage();
+    descriptor: ()Ljava/lang/String;
+
+  public final java.util.Map<java.lang.String, java.lang.String> getExpectedSha256();
+    descriptor: ()Ljava/util/Map;
+
+  public final java.io.File getNonbreakingPrefixFile();
+    descriptor: ()Ljava/io/File;
+
+  public final java.lang.String toConfigYaml$foxlet(int);
+    descriptor: (I)Ljava/lang/String;
+
+  public static java.lang.String toConfigYaml$foxlet$default(io.github.yinvoker.foxlet.ModelFiles, int, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelFiles;IILjava/lang/Object;)Ljava/lang/String;
+
+  public final java.util.List<java.io.File> files$foxlet();
+    descriptor: ()Ljava/util/List;
+
+  public final java.lang.String cacheKey$foxlet();
+    descriptor: ()Ljava/lang/String;
+
+  public final void verify$foxlet();
+    descriptor: ()V
+
+  public final java.io.File component1();
+    descriptor: ()Ljava/io/File;
+
+  public final java.io.File component2();
+    descriptor: ()Ljava/io/File;
+
+  public final java.io.File component3();
+    descriptor: ()Ljava/io/File;
+
+  public final java.io.File component4();
+    descriptor: ()Ljava/io/File;
+
+  public final java.lang.String component5();
+    descriptor: ()Ljava/lang/String;
+
+  public final java.util.Map<java.lang.String, java.lang.String> component6();
+    descriptor: ()Ljava/util/Map;
+
+  public final java.io.File component7();
+    descriptor: ()Ljava/io/File;
+
+  public final io.github.yinvoker.foxlet.ModelFiles copy(java.io.File, java.io.File, java.io.File, java.io.File, java.lang.String, java.util.Map<java.lang.String, java.lang.String>, java.io.File);
+    descriptor: (Ljava/io/File;Ljava/io/File;Ljava/io/File;Ljava/io/File;Ljava/lang/String;Ljava/util/Map;Ljava/io/File;)Lio/github/yinvoker/foxlet/ModelFiles;
+
+  public static io.github.yinvoker.foxlet.ModelFiles copy$default(io.github.yinvoker.foxlet.ModelFiles, java.io.File, java.io.File, java.io.File, java.io.File, java.lang.String, java.util.Map, java.io.File, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelFiles;Ljava/io/File;Ljava/io/File;Ljava/io/File;Ljava/io/File;Ljava/lang/String;Ljava/util/Map;Ljava/io/File;ILjava/lang/Object;)Lio/github/yinvoker/foxlet/ModelFiles;
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public int hashCode();
+    descriptor: ()I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+
+  public static final kotlin.text.Regex access$getMODEL_NAME$cp();
+    descriptor: ()Lkotlin/text/Regex;
+}
+public final class io.github.yinvoker.foxlet.ModelFiles$Companion {
+  public final io.github.yinvoker.foxlet.ModelFiles fromDirectory(java.io.File);
+    descriptor: (Ljava/io/File;)Lio/github/yinvoker/foxlet/ModelFiles;
+
+  public final io.github.yinvoker.foxlet.ModelFiles fromNames$foxlet(java.io.File, java.util.List<java.lang.String>);
+    descriptor: (Ljava/io/File;Ljava/util/List;)Lio/github/yinvoker/foxlet/ModelFiles;
+
+  public final java.lang.String sourceLanguageOf(java.lang.String);
+    descriptor: (Ljava/lang/String;)Ljava/lang/String;
+
+  public io.github.yinvoker.foxlet.ModelFiles$Companion(kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+public final class io.github.yinvoker.foxlet.ModelInUseException extends io.github.yinvoker.foxlet.FoxletException {
+  public io.github.yinvoker.foxlet.ModelInUseException(io.github.yinvoker.foxlet.InstallationId, io.github.yinvoker.foxlet.LanguagePair);
+    descriptor: (Lio/github/yinvoker/foxlet/InstallationId;Lio/github/yinvoker/foxlet/LanguagePair;)V
+
+  public io.github.yinvoker.foxlet.ModelInUseException(io.github.yinvoker.foxlet.InstallationId, io.github.yinvoker.foxlet.LanguagePair, int, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (Lio/github/yinvoker/foxlet/InstallationId;Lio/github/yinvoker/foxlet/LanguagePair;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+
+  public final io.github.yinvoker.foxlet.InstallationId getInstallationId();
+    descriptor: ()Lio/github/yinvoker/foxlet/InstallationId;
+
+  public final io.github.yinvoker.foxlet.LanguagePair getPair();
+    descriptor: ()Lio/github/yinvoker/foxlet/LanguagePair;
+
+  public io.github.yinvoker.foxlet.ModelInUseException();
+    descriptor: ()V
+}
+public final class io.github.yinvoker.foxlet.ModelIndexException extends io.github.yinvoker.foxlet.FoxletException {
+  public io.github.yinvoker.foxlet.ModelIndexException(java.lang.String, java.lang.Throwable);
+    descriptor: (Ljava/lang/String;Ljava/lang/Throwable;)V
+
+  public io.github.yinvoker.foxlet.ModelIndexException(java.lang.String, java.lang.Throwable, int, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+public final class io.github.yinvoker.foxlet.ModelIntegrityException extends io.github.yinvoker.foxlet.FoxletException {
+  public io.github.yinvoker.foxlet.ModelIntegrityException(java.lang.String, io.github.yinvoker.foxlet.InstallationId, java.lang.String, java.lang.Throwable);
+    descriptor: (Ljava/lang/String;Lio/github/yinvoker/foxlet/InstallationId;Ljava/lang/String;Ljava/lang/Throwable;)V
+
+  public io.github.yinvoker.foxlet.ModelIntegrityException(java.lang.String, io.github.yinvoker.foxlet.InstallationId, java.lang.String, java.lang.Throwable, int, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (Ljava/lang/String;Lio/github/yinvoker/foxlet/InstallationId;Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+
+  public final io.github.yinvoker.foxlet.InstallationId getInstallationId();
+    descriptor: ()Lio/github/yinvoker/foxlet/InstallationId;
+
+  public final java.lang.String getAssetName();
+    descriptor: ()Ljava/lang/String;
+}
+public final class io.github.yinvoker.foxlet.ModelManager {
+  public io.github.yinvoker.foxlet.ModelManager(java.io.File, io.github.yinvoker.foxlet.ModelsConfig, io.github.yinvoker.foxlet.ClientLifecycle, io.github.yinvoker.foxlet.ModelTransport);
+    descriptor: (Ljava/io/File;Lio/github/yinvoker/foxlet/ModelsConfig;Lio/github/yinvoker/foxlet/ClientLifecycle;Lio/github/yinvoker/foxlet/ModelTransport;)V
+
+  public final java.lang.Object listBundled(kotlin.coroutines.Continuation<? super java.util.List<io.github.yinvoker.foxlet.ModelDescriptor>>);
+    descriptor: (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+
+  public final java.lang.Object findBundled(io.github.yinvoker.foxlet.LanguagePair, kotlin.coroutines.Continuation<? super io.github.yinvoker.foxlet.ModelDescriptor>);
+    descriptor: (Lio/github/yinvoker/foxlet/LanguagePair;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+
+  public final java.lang.Object listInstalled(io.github.yinvoker.foxlet.LanguagePair, io.github.yinvoker.foxlet.VerificationMode, kotlin.coroutines.Continuation<? super java.util.List<io.github.yinvoker.foxlet.InstalledModel>>);
+    descriptor: (Lio/github/yinvoker/foxlet/LanguagePair;Lio/github/yinvoker/foxlet/VerificationMode;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+
+  public static java.lang.Object listInstalled$default(io.github.yinvoker.foxlet.ModelManager, io.github.yinvoker.foxlet.LanguagePair, io.github.yinvoker.foxlet.VerificationMode, kotlin.coroutines.Continuation, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelManager;Lio/github/yinvoker/foxlet/LanguagePair;Lio/github/yinvoker/foxlet/VerificationMode;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+
+  public final java.lang.Object findUsable(io.github.yinvoker.foxlet.LanguagePair, kotlin.coroutines.Continuation<? super io.github.yinvoker.foxlet.InstalledModel>);
+    descriptor: (Lio/github/yinvoker/foxlet/LanguagePair;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+
+  public final java.lang.Object verify(io.github.yinvoker.foxlet.InstalledModel, kotlin.coroutines.Continuation<? super io.github.yinvoker.foxlet.VerificationReport>);
+    descriptor: (Lio/github/yinvoker/foxlet/InstalledModel;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+
+  public final java.lang.Object prepare(io.github.yinvoker.foxlet.LanguagePair, io.github.yinvoker.foxlet.PreparePolicy, io.github.yinvoker.foxlet.DownloadOptions, kotlin.jvm.functions.Function1<? super io.github.yinvoker.foxlet.DownloadProgress, kotlin.Unit>, kotlin.coroutines.Continuation<? super io.github.yinvoker.foxlet.InstalledModel>);
+    descriptor: (Lio/github/yinvoker/foxlet/LanguagePair;Lio/github/yinvoker/foxlet/PreparePolicy;Lio/github/yinvoker/foxlet/DownloadOptions;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+
+  public static java.lang.Object prepare$default(io.github.yinvoker.foxlet.ModelManager, io.github.yinvoker.foxlet.LanguagePair, io.github.yinvoker.foxlet.PreparePolicy, io.github.yinvoker.foxlet.DownloadOptions, kotlin.jvm.functions.Function1, kotlin.coroutines.Continuation, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelManager;Lio/github/yinvoker/foxlet/LanguagePair;Lio/github/yinvoker/foxlet/PreparePolicy;Lio/github/yinvoker/foxlet/DownloadOptions;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+
+  public final java.lang.Object download(io.github.yinvoker.foxlet.ModelDescriptor, io.github.yinvoker.foxlet.DownloadOptions, kotlin.jvm.functions.Function1<? super io.github.yinvoker.foxlet.DownloadProgress, kotlin.Unit>, kotlin.coroutines.Continuation<? super io.github.yinvoker.foxlet.InstalledModel>);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelDescriptor;Lio/github/yinvoker/foxlet/DownloadOptions;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+
+  public static java.lang.Object download$default(io.github.yinvoker.foxlet.ModelManager, io.github.yinvoker.foxlet.ModelDescriptor, io.github.yinvoker.foxlet.DownloadOptions, kotlin.jvm.functions.Function1, kotlin.coroutines.Continuation, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelManager;Lio/github/yinvoker/foxlet/ModelDescriptor;Lio/github/yinvoker/foxlet/DownloadOptions;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+
+  public final java.lang.Object checkUpdates(java.util.Set<io.github.yinvoker.foxlet.LanguagePair>, io.github.yinvoker.foxlet.UpdateOptions, kotlin.coroutines.Continuation<? super io.github.yinvoker.foxlet.UpdateReport>);
+    descriptor: (Ljava/util/Set;Lio/github/yinvoker/foxlet/UpdateOptions;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+
+  public static java.lang.Object checkUpdates$default(io.github.yinvoker.foxlet.ModelManager, java.util.Set, io.github.yinvoker.foxlet.UpdateOptions, kotlin.coroutines.Continuation, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelManager;Ljava/util/Set;Lio/github/yinvoker/foxlet/UpdateOptions;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+
+  public final java.lang.Object delete(io.github.yinvoker.foxlet.InstalledModel, kotlin.coroutines.Continuation<? super io.github.yinvoker.foxlet.DeleteReport>);
+    descriptor: (Lio/github/yinvoker/foxlet/InstalledModel;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+
+  public final java.lang.Object deleteAll(io.github.yinvoker.foxlet.LanguagePair, kotlin.coroutines.Continuation<? super io.github.yinvoker.foxlet.DeleteReport>);
+    descriptor: (Lio/github/yinvoker/foxlet/LanguagePair;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+
+  public final java.lang.Object cleanup(io.github.yinvoker.foxlet.CleanupOptions, java.util.Set<io.github.yinvoker.foxlet.InstallationId>, kotlin.coroutines.Continuation<? super io.github.yinvoker.foxlet.CleanupReport>);
+    descriptor: (Lio/github/yinvoker/foxlet/CleanupOptions;Ljava/util/Set;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+
+  public static java.lang.Object cleanup$default(io.github.yinvoker.foxlet.ModelManager, io.github.yinvoker.foxlet.CleanupOptions, java.util.Set, kotlin.coroutines.Continuation, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelManager;Lio/github/yinvoker/foxlet/CleanupOptions;Ljava/util/Set;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+
+  public static final io.github.yinvoker.foxlet.ModelDescriptor access$bundledDescriptor(io.github.yinvoker.foxlet.ModelManager, io.github.yinvoker.foxlet.Catalog$Model);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelManager;Lio/github/yinvoker/foxlet/Catalog$Model;)Lio/github/yinvoker/foxlet/ModelDescriptor;
+
+  public static final io.github.yinvoker.foxlet.ModelDescriptor access$bundled(io.github.yinvoker.foxlet.ModelManager, io.github.yinvoker.foxlet.LanguagePair);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelManager;Lio/github/yinvoker/foxlet/LanguagePair;)Lio/github/yinvoker/foxlet/ModelDescriptor;
+
+  public static final java.util.List access$records(io.github.yinvoker.foxlet.ModelManager, io.github.yinvoker.foxlet.LanguagePair);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelManager;Lio/github/yinvoker/foxlet/LanguagePair;)Ljava/util/List;
+
+  public static final io.github.yinvoker.foxlet.InstalledModel access$installed(io.github.yinvoker.foxlet.ModelManager, io.github.yinvoker.foxlet.Catalog$InstalledModel);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelManager;Lio/github/yinvoker/foxlet/Catalog$InstalledModel;)Lio/github/yinvoker/foxlet/InstalledModel;
+
+  public static final java.lang.Object access$checked(io.github.yinvoker.foxlet.ModelManager, io.github.yinvoker.foxlet.InstalledModel, kotlin.coroutines.Continuation);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelManager;Lio/github/yinvoker/foxlet/InstalledModel;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+
+  public static final java.lang.Object access$usable(io.github.yinvoker.foxlet.ModelManager, io.github.yinvoker.foxlet.LanguagePair, kotlin.coroutines.Continuation);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelManager;Lio/github/yinvoker/foxlet/LanguagePair;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+
+  public static final void access$requireOwned(io.github.yinvoker.foxlet.ModelManager, io.github.yinvoker.foxlet.InstalledModel);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelManager;Lio/github/yinvoker/foxlet/InstalledModel;)V
+
+  public static final kotlin.jvm.functions.Function1 access$observer(io.github.yinvoker.foxlet.ModelManager, kotlin.jvm.functions.Function1);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelManager;Lkotlin/jvm/functions/Function1;)Lkotlin/jvm/functions/Function1;
+
+  public static final java.lang.Object access$downloadExact(io.github.yinvoker.foxlet.ModelManager, io.github.yinvoker.foxlet.ModelDescriptor, io.github.yinvoker.foxlet.DownloadOptions, kotlin.jvm.functions.Function1, kotlin.coroutines.Continuation);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelManager;Lio/github/yinvoker/foxlet/ModelDescriptor;Lio/github/yinvoker/foxlet/DownloadOptions;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+
+  public static final io.github.yinvoker.foxlet.ModelsConfig access$getConfig$p(io.github.yinvoker.foxlet.ModelManager);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelManager;)Lio/github/yinvoker/foxlet/ModelsConfig;
+
+  public static final io.github.yinvoker.foxlet.ModelTransport access$getTransport$p(io.github.yinvoker.foxlet.ModelManager);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelManager;)Lio/github/yinvoker/foxlet/ModelTransport;
+
+  public static final java.lang.Object access$retryIndex(io.github.yinvoker.foxlet.ModelManager, io.github.yinvoker.foxlet.UpdateOptions, kotlin.jvm.functions.Function0, kotlin.coroutines.Continuation);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelManager;Lio/github/yinvoker/foxlet/UpdateOptions;Lkotlin/jvm/functions/Function0;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+
+  public static final void access$validateIdentity(io.github.yinvoker.foxlet.ModelManager, io.github.yinvoker.foxlet.InstalledModel);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelManager;Lio/github/yinvoker/foxlet/InstalledModel;)V
+
+  public static final java.io.File access$getRoot$p(io.github.yinvoker.foxlet.ModelManager);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelManager;)Ljava/io/File;
+
+  public static final java.lang.Object access$operation(io.github.yinvoker.foxlet.ModelManager, kotlin.jvm.functions.Function1, kotlin.coroutines.Continuation);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelManager;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+public final class io.github.yinvoker.foxlet.ModelNotInstalledException extends io.github.yinvoker.foxlet.FoxletException {
+  public io.github.yinvoker.foxlet.ModelNotInstalledException(io.github.yinvoker.foxlet.LanguagePair);
+    descriptor: (Lio/github/yinvoker/foxlet/LanguagePair;)V
+
+  public final io.github.yinvoker.foxlet.LanguagePair getPair();
+    descriptor: ()Lio/github/yinvoker/foxlet/LanguagePair;
+}
+public interface io.github.yinvoker.foxlet.ModelRetention {
+}
+public final class io.github.yinvoker.foxlet.ModelRetention$AfterRequest implements io.github.yinvoker.foxlet.ModelRetention {
+  public static final io.github.yinvoker.foxlet.ModelRetention$AfterRequest INSTANCE;
+    descriptor: Lio/github/yinvoker/foxlet/ModelRetention$AfterRequest;
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public int hashCode();
+    descriptor: ()I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+}
+public final class io.github.yinvoker.foxlet.ModelRetention$Idle implements io.github.yinvoker.foxlet.ModelRetention {
+  public io.github.yinvoker.foxlet.ModelRetention$Idle(long, int, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (JILkotlin/jvm/internal/DefaultConstructorMarker;)V
+
+  public final long getDuration-UwyO8pc();
+    descriptor: ()J
+
+  public final long component1-UwyO8pc();
+    descriptor: ()J
+
+  public final io.github.yinvoker.foxlet.ModelRetention$Idle copy-LRDsOJo(long);
+    descriptor: (J)Lio/github/yinvoker/foxlet/ModelRetention$Idle;
+
+  public static io.github.yinvoker.foxlet.ModelRetention$Idle copy-LRDsOJo$default(io.github.yinvoker.foxlet.ModelRetention$Idle, long, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelRetention$Idle;JILjava/lang/Object;)Lio/github/yinvoker/foxlet/ModelRetention$Idle;
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public int hashCode();
+    descriptor: ()I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+
+  public io.github.yinvoker.foxlet.ModelRetention$Idle(long, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (JLkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+public final class io.github.yinvoker.foxlet.ModelRetention$UntilShutdown implements io.github.yinvoker.foxlet.ModelRetention {
+  public static final io.github.yinvoker.foxlet.ModelRetention$UntilShutdown INSTANCE;
+    descriptor: Lio/github/yinvoker/foxlet/ModelRetention$UntilShutdown;
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public int hashCode();
+    descriptor: ()I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+}
+public final class io.github.yinvoker.foxlet.ModelSource {
+  public static final io.github.yinvoker.foxlet.ModelSource$Companion Companion;
+    descriptor: Lio/github/yinvoker/foxlet/ModelSource$Companion;
+  public io.github.yinvoker.foxlet.ModelSource(java.lang.String, java.lang.String, java.util.Set<java.lang.String>, java.lang.String);
+    descriptor: (Ljava/lang/String;Ljava/lang/String;Ljava/util/Set;Ljava/lang/String;)V
+
+  public io.github.yinvoker.foxlet.ModelSource(java.lang.String, java.lang.String, java.util.Set, java.lang.String, int, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (Ljava/lang/String;Ljava/lang/String;Ljava/util/Set;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+
+  public final java.lang.String getIndexUrl();
+    descriptor: ()Ljava/lang/String;
+
+  public final java.lang.String getAttachmentBaseUrl();
+    descriptor: ()Ljava/lang/String;
+
+  public final java.lang.String getUserAgent();
+    descriptor: ()Ljava/lang/String;
+
+  public final java.util.Set<java.lang.String> getAllowedAttachmentHosts();
+    descriptor: ()Ljava/util/Set;
+
+  public final io.github.yinvoker.foxlet.Catalog$UpdateSource asSource$foxlet();
+    descriptor: ()Lio/github/yinvoker/foxlet/Catalog$UpdateSource;
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+
+  public int hashCode();
+    descriptor: ()I
+
+  public static final io.github.yinvoker.foxlet.ModelSource access$getMozilla$cp();
+    descriptor: ()Lio/github/yinvoker/foxlet/ModelSource;
+}
+public final class io.github.yinvoker.foxlet.ModelSource$Companion {
+  public final io.github.yinvoker.foxlet.ModelSource getMozilla();
+    descriptor: ()Lio/github/yinvoker/foxlet/ModelSource;
+
+  public io.github.yinvoker.foxlet.ModelSource$Companion(kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+public final class io.github.yinvoker.foxlet.ModelStorageException extends io.github.yinvoker.foxlet.FoxletException {
+  public io.github.yinvoker.foxlet.ModelStorageException(java.lang.String, java.io.File, java.lang.Throwable);
+    descriptor: (Ljava/lang/String;Ljava/io/File;Ljava/lang/Throwable;)V
+
+  public io.github.yinvoker.foxlet.ModelStorageException(java.lang.String, java.io.File, java.lang.Throwable, int, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (Ljava/lang/String;Ljava/io/File;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+
+  public final java.io.File getDirectory();
+    descriptor: ()Ljava/io/File;
+}
+public final class io.github.yinvoker.foxlet.ModelUpdate {
+  public io.github.yinvoker.foxlet.ModelUpdate(io.github.yinvoker.foxlet.InstalledModel, io.github.yinvoker.foxlet.ModelDescriptor, io.github.yinvoker.foxlet.UpdateReason);
+    descriptor: (Lio/github/yinvoker/foxlet/InstalledModel;Lio/github/yinvoker/foxlet/ModelDescriptor;Lio/github/yinvoker/foxlet/UpdateReason;)V
+
+  public final io.github.yinvoker.foxlet.InstalledModel getInstalled();
+    descriptor: ()Lio/github/yinvoker/foxlet/InstalledModel;
+
+  public final io.github.yinvoker.foxlet.ModelDescriptor getTarget();
+    descriptor: ()Lio/github/yinvoker/foxlet/ModelDescriptor;
+
+  public final io.github.yinvoker.foxlet.UpdateReason getReason();
+    descriptor: ()Lio/github/yinvoker/foxlet/UpdateReason;
+
+  public final io.github.yinvoker.foxlet.InstalledModel component1();
+    descriptor: ()Lio/github/yinvoker/foxlet/InstalledModel;
+
+  public final io.github.yinvoker.foxlet.ModelDescriptor component2();
+    descriptor: ()Lio/github/yinvoker/foxlet/ModelDescriptor;
+
+  public final io.github.yinvoker.foxlet.UpdateReason component3();
+    descriptor: ()Lio/github/yinvoker/foxlet/UpdateReason;
+
+  public final io.github.yinvoker.foxlet.ModelUpdate copy(io.github.yinvoker.foxlet.InstalledModel, io.github.yinvoker.foxlet.ModelDescriptor, io.github.yinvoker.foxlet.UpdateReason);
+    descriptor: (Lio/github/yinvoker/foxlet/InstalledModel;Lio/github/yinvoker/foxlet/ModelDescriptor;Lio/github/yinvoker/foxlet/UpdateReason;)Lio/github/yinvoker/foxlet/ModelUpdate;
+
+  public static io.github.yinvoker.foxlet.ModelUpdate copy$default(io.github.yinvoker.foxlet.ModelUpdate, io.github.yinvoker.foxlet.InstalledModel, io.github.yinvoker.foxlet.ModelDescriptor, io.github.yinvoker.foxlet.UpdateReason, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelUpdate;Lio/github/yinvoker/foxlet/InstalledModel;Lio/github/yinvoker/foxlet/ModelDescriptor;Lio/github/yinvoker/foxlet/UpdateReason;ILjava/lang/Object;)Lio/github/yinvoker/foxlet/ModelUpdate;
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public int hashCode();
+    descriptor: ()I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+}
+public final class io.github.yinvoker.foxlet.ModelsConfig {
+  public io.github.yinvoker.foxlet.ModelsConfig(java.io.File, io.github.yinvoker.foxlet.ModelSource, io.github.yinvoker.foxlet.NetworkOptions, io.github.yinvoker.foxlet.DownloadOptions, io.github.yinvoker.foxlet.UpdateOptions);
+    descriptor: (Ljava/io/File;Lio/github/yinvoker/foxlet/ModelSource;Lio/github/yinvoker/foxlet/NetworkOptions;Lio/github/yinvoker/foxlet/DownloadOptions;Lio/github/yinvoker/foxlet/UpdateOptions;)V
+
+  public io.github.yinvoker.foxlet.ModelsConfig(java.io.File, io.github.yinvoker.foxlet.ModelSource, io.github.yinvoker.foxlet.NetworkOptions, io.github.yinvoker.foxlet.DownloadOptions, io.github.yinvoker.foxlet.UpdateOptions, int, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (Ljava/io/File;Lio/github/yinvoker/foxlet/ModelSource;Lio/github/yinvoker/foxlet/NetworkOptions;Lio/github/yinvoker/foxlet/DownloadOptions;Lio/github/yinvoker/foxlet/UpdateOptions;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+
+  public final java.io.File getDirectory();
+    descriptor: ()Ljava/io/File;
+
+  public final io.github.yinvoker.foxlet.ModelSource getSource();
+    descriptor: ()Lio/github/yinvoker/foxlet/ModelSource;
+
+  public final io.github.yinvoker.foxlet.NetworkOptions getNetworkOptions();
+    descriptor: ()Lio/github/yinvoker/foxlet/NetworkOptions;
+
+  public final io.github.yinvoker.foxlet.DownloadOptions getDownloadOptions();
+    descriptor: ()Lio/github/yinvoker/foxlet/DownloadOptions;
+
+  public final io.github.yinvoker.foxlet.UpdateOptions getUpdateOptions();
+    descriptor: ()Lio/github/yinvoker/foxlet/UpdateOptions;
+
+  public final java.io.File component1();
+    descriptor: ()Ljava/io/File;
+
+  public final io.github.yinvoker.foxlet.ModelSource component2();
+    descriptor: ()Lio/github/yinvoker/foxlet/ModelSource;
+
+  public final io.github.yinvoker.foxlet.NetworkOptions component3();
+    descriptor: ()Lio/github/yinvoker/foxlet/NetworkOptions;
+
+  public final io.github.yinvoker.foxlet.DownloadOptions component4();
+    descriptor: ()Lio/github/yinvoker/foxlet/DownloadOptions;
+
+  public final io.github.yinvoker.foxlet.UpdateOptions component5();
+    descriptor: ()Lio/github/yinvoker/foxlet/UpdateOptions;
+
+  public final io.github.yinvoker.foxlet.ModelsConfig copy(java.io.File, io.github.yinvoker.foxlet.ModelSource, io.github.yinvoker.foxlet.NetworkOptions, io.github.yinvoker.foxlet.DownloadOptions, io.github.yinvoker.foxlet.UpdateOptions);
+    descriptor: (Ljava/io/File;Lio/github/yinvoker/foxlet/ModelSource;Lio/github/yinvoker/foxlet/NetworkOptions;Lio/github/yinvoker/foxlet/DownloadOptions;Lio/github/yinvoker/foxlet/UpdateOptions;)Lio/github/yinvoker/foxlet/ModelsConfig;
+
+  public static io.github.yinvoker.foxlet.ModelsConfig copy$default(io.github.yinvoker.foxlet.ModelsConfig, java.io.File, io.github.yinvoker.foxlet.ModelSource, io.github.yinvoker.foxlet.NetworkOptions, io.github.yinvoker.foxlet.DownloadOptions, io.github.yinvoker.foxlet.UpdateOptions, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelsConfig;Ljava/io/File;Lio/github/yinvoker/foxlet/ModelSource;Lio/github/yinvoker/foxlet/NetworkOptions;Lio/github/yinvoker/foxlet/DownloadOptions;Lio/github/yinvoker/foxlet/UpdateOptions;ILjava/lang/Object;)Lio/github/yinvoker/foxlet/ModelsConfig;
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public int hashCode();
+    descriptor: ()I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+
+  public io.github.yinvoker.foxlet.ModelsConfig();
+    descriptor: ()V
+}
+public final class io.github.yinvoker.foxlet.ModelsConfigBuilder {
+  public io.github.yinvoker.foxlet.ModelsConfigBuilder();
+    descriptor: ()V
+
+  public final java.io.File getDirectory();
+    descriptor: ()Ljava/io/File;
+
+  public final void setDirectory(java.io.File);
+    descriptor: (Ljava/io/File;)V
+
+  public final io.github.yinvoker.foxlet.ModelSource getSource();
+    descriptor: ()Lio/github/yinvoker/foxlet/ModelSource;
+
+  public final void setSource(io.github.yinvoker.foxlet.ModelSource);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelSource;)V
+
+  public final io.github.yinvoker.foxlet.NetworkOptions getNetworkOptions();
+    descriptor: ()Lio/github/yinvoker/foxlet/NetworkOptions;
+
+  public final void setNetworkOptions(io.github.yinvoker.foxlet.NetworkOptions);
+    descriptor: (Lio/github/yinvoker/foxlet/NetworkOptions;)V
+
+  public final io.github.yinvoker.foxlet.DownloadOptions getDownloadOptions();
+    descriptor: ()Lio/github/yinvoker/foxlet/DownloadOptions;
+
+  public final void setDownloadOptions(io.github.yinvoker.foxlet.DownloadOptions);
+    descriptor: (Lio/github/yinvoker/foxlet/DownloadOptions;)V
+
+  public final io.github.yinvoker.foxlet.UpdateOptions getUpdateOptions();
+    descriptor: ()Lio/github/yinvoker/foxlet/UpdateOptions;
+
+  public final void setUpdateOptions(io.github.yinvoker.foxlet.UpdateOptions);
+    descriptor: (Lio/github/yinvoker/foxlet/UpdateOptions;)V
+
+  public final io.github.yinvoker.foxlet.ModelsConfig build();
+    descriptor: ()Lio/github/yinvoker/foxlet/ModelsConfig;
+}
+public final class io.github.yinvoker.foxlet.NetworkException extends io.github.yinvoker.foxlet.FoxletException {
+  public io.github.yinvoker.foxlet.NetworkException(java.lang.String, java.lang.String, java.lang.Integer, int, java.lang.String, java.lang.Throwable);
+    descriptor: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;ILjava/lang/String;Ljava/lang/Throwable;)V
+
+  public io.github.yinvoker.foxlet.NetworkException(java.lang.String, java.lang.String, java.lang.Integer, int, java.lang.String, java.lang.Throwable, int, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;ILjava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+
+  public final java.lang.String getUrl();
+    descriptor: ()Ljava/lang/String;
+
+  public final java.lang.Integer getHttpStatus();
+    descriptor: ()Ljava/lang/Integer;
+
+  public final int getAttempt();
+    descriptor: ()I
+
+  public final java.lang.String getAssetName();
+    descriptor: ()Ljava/lang/String;
+}
+public final class io.github.yinvoker.foxlet.NetworkOptions {
+  public io.github.yinvoker.foxlet.NetworkOptions(long, long, int, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (JJILkotlin/jvm/internal/DefaultConstructorMarker;)V
+
+  public final long getConnectTimeout-UwyO8pc();
+    descriptor: ()J
+
+  public final long getReadTimeout-UwyO8pc();
+    descriptor: ()J
+
+  public final long component1-UwyO8pc();
+    descriptor: ()J
+
+  public final long component2-UwyO8pc();
+    descriptor: ()J
+
+  public final io.github.yinvoker.foxlet.NetworkOptions copy-QTBD994(long, long);
+    descriptor: (JJ)Lio/github/yinvoker/foxlet/NetworkOptions;
+
+  public static io.github.yinvoker.foxlet.NetworkOptions copy-QTBD994$default(io.github.yinvoker.foxlet.NetworkOptions, long, long, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/NetworkOptions;JJILjava/lang/Object;)Lio/github/yinvoker/foxlet/NetworkOptions;
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public int hashCode();
+    descriptor: ()I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+
+  public io.github.yinvoker.foxlet.NetworkOptions(long, long, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (JJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+public final class io.github.yinvoker.foxlet.PreparePolicy extends java.lang.Enum<io.github.yinvoker.foxlet.PreparePolicy> {
+  public static final io.github.yinvoker.foxlet.PreparePolicy LocalOnly;
+    descriptor: Lio/github/yinvoker/foxlet/PreparePolicy;
+  public static final io.github.yinvoker.foxlet.PreparePolicy LocalOrBundled;
+    descriptor: Lio/github/yinvoker/foxlet/PreparePolicy;
+  public static io.github.yinvoker.foxlet.PreparePolicy[] values();
+    descriptor: ()[Lio/github/yinvoker/foxlet/PreparePolicy;
+
+  public static io.github.yinvoker.foxlet.PreparePolicy valueOf(java.lang.String);
+    descriptor: (Ljava/lang/String;)Lio/github/yinvoker/foxlet/PreparePolicy;
+
+  public static kotlin.enums.EnumEntries<io.github.yinvoker.foxlet.PreparePolicy> getEntries();
+    descriptor: ()Lkotlin/enums/EnumEntries;
+}
+public final class io.github.yinvoker.foxlet.TextFormat extends java.lang.Enum<io.github.yinvoker.foxlet.TextFormat> {
+  public static final io.github.yinvoker.foxlet.TextFormat Plain;
+    descriptor: Lio/github/yinvoker/foxlet/TextFormat;
+  public static final io.github.yinvoker.foxlet.TextFormat Html;
+    descriptor: Lio/github/yinvoker/foxlet/TextFormat;
+  public static io.github.yinvoker.foxlet.TextFormat[] values();
+    descriptor: ()[Lio/github/yinvoker/foxlet/TextFormat;
+
+  public static io.github.yinvoker.foxlet.TextFormat valueOf(java.lang.String);
+    descriptor: (Ljava/lang/String;)Lio/github/yinvoker/foxlet/TextFormat;
+
+  public static kotlin.enums.EnumEntries<io.github.yinvoker.foxlet.TextFormat> getEntries();
+    descriptor: ()Lkotlin/enums/EnumEntries;
+}
+public interface io.github.yinvoker.foxlet.Threading {
+}
+public final class io.github.yinvoker.foxlet.Threading$Auto implements io.github.yinvoker.foxlet.Threading {
+  public io.github.yinvoker.foxlet.Threading$Auto(io.github.yinvoker.foxlet.Workload);
+    descriptor: (Lio/github/yinvoker/foxlet/Workload;)V
+
+  public final io.github.yinvoker.foxlet.Workload getWorkload();
+    descriptor: ()Lio/github/yinvoker/foxlet/Workload;
+
+  public final io.github.yinvoker.foxlet.Workload component1();
+    descriptor: ()Lio/github/yinvoker/foxlet/Workload;
+
+  public final io.github.yinvoker.foxlet.Threading$Auto copy(io.github.yinvoker.foxlet.Workload);
+    descriptor: (Lio/github/yinvoker/foxlet/Workload;)Lio/github/yinvoker/foxlet/Threading$Auto;
+
+  public static io.github.yinvoker.foxlet.Threading$Auto copy$default(io.github.yinvoker.foxlet.Threading$Auto, io.github.yinvoker.foxlet.Workload, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/Threading$Auto;Lio/github/yinvoker/foxlet/Workload;ILjava/lang/Object;)Lio/github/yinvoker/foxlet/Threading$Auto;
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public int hashCode();
+    descriptor: ()I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+}
+public final class io.github.yinvoker.foxlet.Threading$Fixed implements io.github.yinvoker.foxlet.Threading {
+  public io.github.yinvoker.foxlet.Threading$Fixed(int);
+    descriptor: (I)V
+
+  public io.github.yinvoker.foxlet.Threading$Fixed(int, int, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+
+  public final int getThreads();
+    descriptor: ()I
+
+  public final int component1();
+    descriptor: ()I
+
+  public final io.github.yinvoker.foxlet.Threading$Fixed copy(int);
+    descriptor: (I)Lio/github/yinvoker/foxlet/Threading$Fixed;
+
+  public static io.github.yinvoker.foxlet.Threading$Fixed copy$default(io.github.yinvoker.foxlet.Threading$Fixed, int, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/Threading$Fixed;IILjava/lang/Object;)Lio/github/yinvoker/foxlet/Threading$Fixed;
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public int hashCode();
+    descriptor: ()I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+
+  public io.github.yinvoker.foxlet.Threading$Fixed();
+    descriptor: ()V
+}
+public final class io.github.yinvoker.foxlet.ThreadingInfo {
+  public io.github.yinvoker.foxlet.ThreadingInfo(io.github.yinvoker.foxlet.Threading, int, io.github.yinvoker.foxlet.DeviceThreadingInfo);
+    descriptor: (Lio/github/yinvoker/foxlet/Threading;ILio/github/yinvoker/foxlet/DeviceThreadingInfo;)V
+
+  public io.github.yinvoker.foxlet.ThreadingInfo(io.github.yinvoker.foxlet.Threading, int, io.github.yinvoker.foxlet.DeviceThreadingInfo, int, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (Lio/github/yinvoker/foxlet/Threading;ILio/github/yinvoker/foxlet/DeviceThreadingInfo;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+
+  public final io.github.yinvoker.foxlet.Threading getRequested();
+    descriptor: ()Lio/github/yinvoker/foxlet/Threading;
+
+  public final int getThreads();
+    descriptor: ()I
+
+  public final io.github.yinvoker.foxlet.DeviceThreadingInfo getDevice();
+    descriptor: ()Lio/github/yinvoker/foxlet/DeviceThreadingInfo;
+
+  public final io.github.yinvoker.foxlet.Threading component1();
+    descriptor: ()Lio/github/yinvoker/foxlet/Threading;
+
+  public final int component2();
+    descriptor: ()I
+
+  public final io.github.yinvoker.foxlet.DeviceThreadingInfo component3();
+    descriptor: ()Lio/github/yinvoker/foxlet/DeviceThreadingInfo;
+
+  public final io.github.yinvoker.foxlet.ThreadingInfo copy(io.github.yinvoker.foxlet.Threading, int, io.github.yinvoker.foxlet.DeviceThreadingInfo);
+    descriptor: (Lio/github/yinvoker/foxlet/Threading;ILio/github/yinvoker/foxlet/DeviceThreadingInfo;)Lio/github/yinvoker/foxlet/ThreadingInfo;
+
+  public static io.github.yinvoker.foxlet.ThreadingInfo copy$default(io.github.yinvoker.foxlet.ThreadingInfo, io.github.yinvoker.foxlet.Threading, int, io.github.yinvoker.foxlet.DeviceThreadingInfo, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/ThreadingInfo;Lio/github/yinvoker/foxlet/Threading;ILio/github/yinvoker/foxlet/DeviceThreadingInfo;ILjava/lang/Object;)Lio/github/yinvoker/foxlet/ThreadingInfo;
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public int hashCode();
+    descriptor: ()I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+}
+public final class io.github.yinvoker.foxlet.TranslationConfig {
+  public io.github.yinvoker.foxlet.TranslationConfig(io.github.yinvoker.foxlet.Threading, io.github.yinvoker.foxlet.ModelRetention, int, int, boolean);
+    descriptor: (Lio/github/yinvoker/foxlet/Threading;Lio/github/yinvoker/foxlet/ModelRetention;IIZ)V
+
+  public io.github.yinvoker.foxlet.TranslationConfig(io.github.yinvoker.foxlet.Threading, io.github.yinvoker.foxlet.ModelRetention, int, int, boolean, int, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (Lio/github/yinvoker/foxlet/Threading;Lio/github/yinvoker/foxlet/ModelRetention;IIZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+
+  public final io.github.yinvoker.foxlet.Threading getThreading();
+    descriptor: ()Lio/github/yinvoker/foxlet/Threading;
+
+  public final io.github.yinvoker.foxlet.ModelRetention getRetention();
+    descriptor: ()Lio/github/yinvoker/foxlet/ModelRetention;
+
+  public final int getMiniBatchWords();
+    descriptor: ()I
+
+  public final int getCacheSize();
+    descriptor: ()I
+
+  public final boolean getNonbreakingPrefixes();
+    descriptor: ()Z
+
+  public final io.github.yinvoker.foxlet.EngineOptions engineOptions$foxlet(int);
+    descriptor: (I)Lio/github/yinvoker/foxlet/EngineOptions;
+
+  public final io.github.yinvoker.foxlet.Threading component1();
+    descriptor: ()Lio/github/yinvoker/foxlet/Threading;
+
+  public final io.github.yinvoker.foxlet.ModelRetention component2();
+    descriptor: ()Lio/github/yinvoker/foxlet/ModelRetention;
+
+  public final int component3();
+    descriptor: ()I
+
+  public final int component4();
+    descriptor: ()I
+
+  public final boolean component5();
+    descriptor: ()Z
+
+  public final io.github.yinvoker.foxlet.TranslationConfig copy(io.github.yinvoker.foxlet.Threading, io.github.yinvoker.foxlet.ModelRetention, int, int, boolean);
+    descriptor: (Lio/github/yinvoker/foxlet/Threading;Lio/github/yinvoker/foxlet/ModelRetention;IIZ)Lio/github/yinvoker/foxlet/TranslationConfig;
+
+  public static io.github.yinvoker.foxlet.TranslationConfig copy$default(io.github.yinvoker.foxlet.TranslationConfig, io.github.yinvoker.foxlet.Threading, io.github.yinvoker.foxlet.ModelRetention, int, int, boolean, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/TranslationConfig;Lio/github/yinvoker/foxlet/Threading;Lio/github/yinvoker/foxlet/ModelRetention;IIZILjava/lang/Object;)Lio/github/yinvoker/foxlet/TranslationConfig;
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public int hashCode();
+    descriptor: ()I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+
+  public io.github.yinvoker.foxlet.TranslationConfig();
+    descriptor: ()V
+}
+public final class io.github.yinvoker.foxlet.TranslationConfigBuilder {
+  public io.github.yinvoker.foxlet.TranslationConfigBuilder();
+    descriptor: ()V
+
+  public final io.github.yinvoker.foxlet.Threading getThreading();
+    descriptor: ()Lio/github/yinvoker/foxlet/Threading;
+
+  public final void setThreading(io.github.yinvoker.foxlet.Threading);
+    descriptor: (Lio/github/yinvoker/foxlet/Threading;)V
+
+  public final io.github.yinvoker.foxlet.ModelRetention getRetention();
+    descriptor: ()Lio/github/yinvoker/foxlet/ModelRetention;
+
+  public final void setRetention(io.github.yinvoker.foxlet.ModelRetention);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelRetention;)V
+
+  public final int getMiniBatchWords();
+    descriptor: ()I
+
+  public final void setMiniBatchWords(int);
+    descriptor: (I)V
+
+  public final int getCacheSize();
+    descriptor: ()I
+
+  public final void setCacheSize(int);
+    descriptor: (I)V
+
+  public final boolean getNonbreakingPrefixes();
+    descriptor: ()Z
+
+  public final void setNonbreakingPrefixes(boolean);
+    descriptor: (Z)V
+
+  public final io.github.yinvoker.foxlet.TranslationConfig build();
+    descriptor: ()Lio/github/yinvoker/foxlet/TranslationConfig;
+}
+public final class io.github.yinvoker.foxlet.TranslationException extends io.github.yinvoker.foxlet.FoxletException {
+  public io.github.yinvoker.foxlet.TranslationException(java.lang.String, java.lang.Throwable);
+    descriptor: (Ljava/lang/String;Ljava/lang/Throwable;)V
+
+  public io.github.yinvoker.foxlet.TranslationException(java.lang.String, java.lang.Throwable, int, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+public final class io.github.yinvoker.foxlet.Translator {
+  public io.github.yinvoker.foxlet.Translator(io.github.yinvoker.foxlet.ThreadingInfo, io.github.yinvoker.foxlet.ClientLifecycle, io.github.yinvoker.foxlet.TranslationBackend);
+    descriptor: (Lio/github/yinvoker/foxlet/ThreadingInfo;Lio/github/yinvoker/foxlet/ClientLifecycle;Lio/github/yinvoker/foxlet/TranslationBackend;)V
+
+  public final io.github.yinvoker.foxlet.ThreadingInfo getThreadingInfo();
+    descriptor: ()Lio/github/yinvoker/foxlet/ThreadingInfo;
+
+  public final java.lang.Object translate(java.lang.String, io.github.yinvoker.foxlet.LocalModel, io.github.yinvoker.foxlet.TextFormat, kotlin.coroutines.Continuation<? super java.lang.String>);
+    descriptor: (Ljava/lang/String;Lio/github/yinvoker/foxlet/LocalModel;Lio/github/yinvoker/foxlet/TextFormat;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+
+  public static java.lang.Object translate$default(io.github.yinvoker.foxlet.Translator, java.lang.String, io.github.yinvoker.foxlet.LocalModel, io.github.yinvoker.foxlet.TextFormat, kotlin.coroutines.Continuation, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/Translator;Ljava/lang/String;Lio/github/yinvoker/foxlet/LocalModel;Lio/github/yinvoker/foxlet/TextFormat;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+
+  public final java.lang.Object translate(java.util.List<java.lang.String>, io.github.yinvoker.foxlet.LocalModel, io.github.yinvoker.foxlet.TextFormat, kotlin.coroutines.Continuation<? super java.util.List<java.lang.String>>);
+    descriptor: (Ljava/util/List;Lio/github/yinvoker/foxlet/LocalModel;Lio/github/yinvoker/foxlet/TextFormat;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+
+  public static java.lang.Object translate$default(io.github.yinvoker.foxlet.Translator, java.util.List, io.github.yinvoker.foxlet.LocalModel, io.github.yinvoker.foxlet.TextFormat, kotlin.coroutines.Continuation, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/Translator;Ljava/util/List;Lio/github/yinvoker/foxlet/LocalModel;Lio/github/yinvoker/foxlet/TextFormat;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+
+  public final java.lang.Object translatePivot(java.lang.String, io.github.yinvoker.foxlet.LocalModel, io.github.yinvoker.foxlet.LocalModel, io.github.yinvoker.foxlet.TextFormat, kotlin.coroutines.Continuation<? super java.lang.String>);
+    descriptor: (Ljava/lang/String;Lio/github/yinvoker/foxlet/LocalModel;Lio/github/yinvoker/foxlet/LocalModel;Lio/github/yinvoker/foxlet/TextFormat;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+
+  public static java.lang.Object translatePivot$default(io.github.yinvoker.foxlet.Translator, java.lang.String, io.github.yinvoker.foxlet.LocalModel, io.github.yinvoker.foxlet.LocalModel, io.github.yinvoker.foxlet.TextFormat, kotlin.coroutines.Continuation, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/Translator;Ljava/lang/String;Lio/github/yinvoker/foxlet/LocalModel;Lio/github/yinvoker/foxlet/LocalModel;Lio/github/yinvoker/foxlet/TextFormat;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+
+  public final java.lang.Object translatePivot(java.util.List<java.lang.String>, io.github.yinvoker.foxlet.LocalModel, io.github.yinvoker.foxlet.LocalModel, io.github.yinvoker.foxlet.TextFormat, kotlin.coroutines.Continuation<? super java.util.List<java.lang.String>>);
+    descriptor: (Ljava/util/List;Lio/github/yinvoker/foxlet/LocalModel;Lio/github/yinvoker/foxlet/LocalModel;Lio/github/yinvoker/foxlet/TextFormat;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+
+  public static java.lang.Object translatePivot$default(io.github.yinvoker.foxlet.Translator, java.util.List, io.github.yinvoker.foxlet.LocalModel, io.github.yinvoker.foxlet.LocalModel, io.github.yinvoker.foxlet.TextFormat, kotlin.coroutines.Continuation, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/Translator;Ljava/util/List;Lio/github/yinvoker/foxlet/LocalModel;Lio/github/yinvoker/foxlet/LocalModel;Lio/github/yinvoker/foxlet/TextFormat;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+
+  public final java.lang.Object getState(kotlin.coroutines.Continuation<? super io.github.yinvoker.foxlet.TranslatorState>);
+    descriptor: (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+
+  public final java.lang.Object unloadModels(kotlin.coroutines.Continuation<? super io.github.yinvoker.foxlet.UnloadReport>);
+    descriptor: (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+
+  public static final java.lang.Object access$translation(io.github.yinvoker.foxlet.Translator, io.github.yinvoker.foxlet.LocalModel, kotlin.jvm.functions.Function1, kotlin.coroutines.Continuation);
+    descriptor: (Lio/github/yinvoker/foxlet/Translator;Lio/github/yinvoker/foxlet/LocalModel;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+
+  public static final io.github.yinvoker.foxlet.TranslationBackend access$getBackend$p(io.github.yinvoker.foxlet.Translator);
+    descriptor: (Lio/github/yinvoker/foxlet/Translator;)Lio/github/yinvoker/foxlet/TranslationBackend;
+
+  public static final java.lang.Object access$control(io.github.yinvoker.foxlet.Translator, kotlin.jvm.functions.Function1, kotlin.coroutines.Continuation);
+    descriptor: (Lio/github/yinvoker/foxlet/Translator;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+public final class io.github.yinvoker.foxlet.TranslatorState {
+  public io.github.yinvoker.foxlet.TranslatorState(int, int);
+    descriptor: (II)V
+
+  public io.github.yinvoker.foxlet.TranslatorState(int, int, int, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (IIILkotlin/jvm/internal/DefaultConstructorMarker;)V
+
+  public final int getLoadedModelCount();
+    descriptor: ()I
+
+  public final int getUnconfirmedReleaseCount();
+    descriptor: ()I
+
+  public final int component1();
+    descriptor: ()I
+
+  public final int component2();
+    descriptor: ()I
+
+  public final io.github.yinvoker.foxlet.TranslatorState copy(int, int);
+    descriptor: (II)Lio/github/yinvoker/foxlet/TranslatorState;
+
+  public static io.github.yinvoker.foxlet.TranslatorState copy$default(io.github.yinvoker.foxlet.TranslatorState, int, int, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/TranslatorState;IIILjava/lang/Object;)Lio/github/yinvoker/foxlet/TranslatorState;
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public int hashCode();
+    descriptor: ()I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+}
+public final class io.github.yinvoker.foxlet.UnloadReport {
+  public io.github.yinvoker.foxlet.UnloadReport(int, boolean, int);
+    descriptor: (IZI)V
+
+  public io.github.yinvoker.foxlet.UnloadReport(int, boolean, int, int, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (IZIILkotlin/jvm/internal/DefaultConstructorMarker;)V
+
+  public final int getUnloadedModelCount();
+    descriptor: ()I
+
+  public final boolean getAllReleased();
+    descriptor: ()Z
+
+  public final int getUnconfirmedReleaseCount();
+    descriptor: ()I
+
+  public final int component1();
+    descriptor: ()I
+
+  public final boolean component2();
+    descriptor: ()Z
+
+  public final int component3();
+    descriptor: ()I
+
+  public final io.github.yinvoker.foxlet.UnloadReport copy(int, boolean, int);
+    descriptor: (IZI)Lio/github/yinvoker/foxlet/UnloadReport;
+
+  public static io.github.yinvoker.foxlet.UnloadReport copy$default(io.github.yinvoker.foxlet.UnloadReport, int, boolean, int, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/UnloadReport;IZIILjava/lang/Object;)Lio/github/yinvoker/foxlet/UnloadReport;
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public int hashCode();
+    descriptor: ()I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+}
+public final class io.github.yinvoker.foxlet.UnsupportedLanguagePairException extends io.github.yinvoker.foxlet.FoxletException {
+  public io.github.yinvoker.foxlet.UnsupportedLanguagePairException(io.github.yinvoker.foxlet.LanguagePair);
+    descriptor: (Lio/github/yinvoker/foxlet/LanguagePair;)V
+
+  public final io.github.yinvoker.foxlet.LanguagePair getPair();
+    descriptor: ()Lio/github/yinvoker/foxlet/LanguagePair;
+}
+public final class io.github.yinvoker.foxlet.UpdateAssessment {
+  public io.github.yinvoker.foxlet.UpdateAssessment(io.github.yinvoker.foxlet.LanguagePair, io.github.yinvoker.foxlet.UpdateState, io.github.yinvoker.foxlet.InstalledModel, io.github.yinvoker.foxlet.ModelDescriptor, boolean, java.lang.String);
+    descriptor: (Lio/github/yinvoker/foxlet/LanguagePair;Lio/github/yinvoker/foxlet/UpdateState;Lio/github/yinvoker/foxlet/InstalledModel;Lio/github/yinvoker/foxlet/ModelDescriptor;ZLjava/lang/String;)V
+
+  public final io.github.yinvoker.foxlet.LanguagePair getPair();
+    descriptor: ()Lio/github/yinvoker/foxlet/LanguagePair;
+
+  public final io.github.yinvoker.foxlet.UpdateState getState();
+    descriptor: ()Lio/github/yinvoker/foxlet/UpdateState;
+
+  public final io.github.yinvoker.foxlet.InstalledModel getInstalled();
+    descriptor: ()Lio/github/yinvoker/foxlet/InstalledModel;
+
+  public final io.github.yinvoker.foxlet.ModelDescriptor getTarget();
+    descriptor: ()Lio/github/yinvoker/foxlet/ModelDescriptor;
+
+  public final boolean getInstalledStillListed();
+    descriptor: ()Z
+
+  public final java.lang.String getNewerMajorVersion();
+    descriptor: ()Ljava/lang/String;
+
+  public final io.github.yinvoker.foxlet.LanguagePair component1();
+    descriptor: ()Lio/github/yinvoker/foxlet/LanguagePair;
+
+  public final io.github.yinvoker.foxlet.UpdateState component2();
+    descriptor: ()Lio/github/yinvoker/foxlet/UpdateState;
+
+  public final io.github.yinvoker.foxlet.InstalledModel component3();
+    descriptor: ()Lio/github/yinvoker/foxlet/InstalledModel;
+
+  public final io.github.yinvoker.foxlet.ModelDescriptor component4();
+    descriptor: ()Lio/github/yinvoker/foxlet/ModelDescriptor;
+
+  public final boolean component5();
+    descriptor: ()Z
+
+  public final java.lang.String component6();
+    descriptor: ()Ljava/lang/String;
+
+  public final io.github.yinvoker.foxlet.UpdateAssessment copy(io.github.yinvoker.foxlet.LanguagePair, io.github.yinvoker.foxlet.UpdateState, io.github.yinvoker.foxlet.InstalledModel, io.github.yinvoker.foxlet.ModelDescriptor, boolean, java.lang.String);
+    descriptor: (Lio/github/yinvoker/foxlet/LanguagePair;Lio/github/yinvoker/foxlet/UpdateState;Lio/github/yinvoker/foxlet/InstalledModel;Lio/github/yinvoker/foxlet/ModelDescriptor;ZLjava/lang/String;)Lio/github/yinvoker/foxlet/UpdateAssessment;
+
+  public static io.github.yinvoker.foxlet.UpdateAssessment copy$default(io.github.yinvoker.foxlet.UpdateAssessment, io.github.yinvoker.foxlet.LanguagePair, io.github.yinvoker.foxlet.UpdateState, io.github.yinvoker.foxlet.InstalledModel, io.github.yinvoker.foxlet.ModelDescriptor, boolean, java.lang.String, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/UpdateAssessment;Lio/github/yinvoker/foxlet/LanguagePair;Lio/github/yinvoker/foxlet/UpdateState;Lio/github/yinvoker/foxlet/InstalledModel;Lio/github/yinvoker/foxlet/ModelDescriptor;ZLjava/lang/String;ILjava/lang/Object;)Lio/github/yinvoker/foxlet/UpdateAssessment;
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public int hashCode();
+    descriptor: ()I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+}
+public final class io.github.yinvoker.foxlet.UpdateOptions {
+  public io.github.yinvoker.foxlet.UpdateOptions(int, long, long, io.github.yinvoker.foxlet.NetworkOptions, int, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (IJJLio/github/yinvoker/foxlet/NetworkOptions;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+
+  public final int getMaxRetries();
+    descriptor: ()I
+
+  public final long getInitialBackoff-UwyO8pc();
+    descriptor: ()J
+
+  public final long getMaxBackoff-UwyO8pc();
+    descriptor: ()J
+
+  public final io.github.yinvoker.foxlet.NetworkOptions getNetworkOptions();
+    descriptor: ()Lio/github/yinvoker/foxlet/NetworkOptions;
+
+  public final int component1();
+    descriptor: ()I
+
+  public final long component2-UwyO8pc();
+    descriptor: ()J
+
+  public final long component3-UwyO8pc();
+    descriptor: ()J
+
+  public final io.github.yinvoker.foxlet.NetworkOptions component4();
+    descriptor: ()Lio/github/yinvoker/foxlet/NetworkOptions;
+
+  public final io.github.yinvoker.foxlet.UpdateOptions copy-vLdBGDU(int, long, long, io.github.yinvoker.foxlet.NetworkOptions);
+    descriptor: (IJJLio/github/yinvoker/foxlet/NetworkOptions;)Lio/github/yinvoker/foxlet/UpdateOptions;
+
+  public static io.github.yinvoker.foxlet.UpdateOptions copy-vLdBGDU$default(io.github.yinvoker.foxlet.UpdateOptions, int, long, long, io.github.yinvoker.foxlet.NetworkOptions, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/UpdateOptions;IJJLio/github/yinvoker/foxlet/NetworkOptions;ILjava/lang/Object;)Lio/github/yinvoker/foxlet/UpdateOptions;
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public int hashCode();
+    descriptor: ()I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+
+  public io.github.yinvoker.foxlet.UpdateOptions(int, long, long, io.github.yinvoker.foxlet.NetworkOptions, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (IJJLio/github/yinvoker/foxlet/NetworkOptions;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+public final class io.github.yinvoker.foxlet.UpdateReason extends java.lang.Enum<io.github.yinvoker.foxlet.UpdateReason> {
+  public static final io.github.yinvoker.foxlet.UpdateReason NewerVersion;
+    descriptor: Lio/github/yinvoker/foxlet/UpdateReason;
+  public static final io.github.yinvoker.foxlet.UpdateReason Repackaged;
+    descriptor: Lio/github/yinvoker/foxlet/UpdateReason;
+  public static io.github.yinvoker.foxlet.UpdateReason[] values();
+    descriptor: ()[Lio/github/yinvoker/foxlet/UpdateReason;
+
+  public static io.github.yinvoker.foxlet.UpdateReason valueOf(java.lang.String);
+    descriptor: (Ljava/lang/String;)Lio/github/yinvoker/foxlet/UpdateReason;
+
+  public static kotlin.enums.EnumEntries<io.github.yinvoker.foxlet.UpdateReason> getEntries();
+    descriptor: ()Lkotlin/enums/EnumEntries;
+}
+public final class io.github.yinvoker.foxlet.UpdateReport {
+  public io.github.yinvoker.foxlet.UpdateReport(io.github.yinvoker.foxlet.ModelSource, java.time.Instant, java.time.Instant, java.util.List<io.github.yinvoker.foxlet.UpdateAssessment>, java.util.List<io.github.yinvoker.foxlet.ModelUpdate>);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelSource;Ljava/time/Instant;Ljava/time/Instant;Ljava/util/List;Ljava/util/List;)V
+
+  public final io.github.yinvoker.foxlet.ModelSource getSource();
+    descriptor: ()Lio/github/yinvoker/foxlet/ModelSource;
+
+  public final java.time.Instant getCheckedAt();
+    descriptor: ()Ljava/time/Instant;
+
+  public final java.time.Instant getIndexUpdatedAt();
+    descriptor: ()Ljava/time/Instant;
+
+  public final java.util.List<io.github.yinvoker.foxlet.UpdateAssessment> getAssessments();
+    descriptor: ()Ljava/util/List;
+
+  public final java.util.List<io.github.yinvoker.foxlet.ModelUpdate> getUpdates();
+    descriptor: ()Ljava/util/List;
+
+  public final java.util.List<io.github.yinvoker.foxlet.UpdateAssessment> getNotInstalled();
+    descriptor: ()Ljava/util/List;
+
+  public final io.github.yinvoker.foxlet.ModelSource component1();
+    descriptor: ()Lio/github/yinvoker/foxlet/ModelSource;
+
+  public final java.time.Instant component2();
+    descriptor: ()Ljava/time/Instant;
+
+  public final java.time.Instant component3();
+    descriptor: ()Ljava/time/Instant;
+
+  public final java.util.List<io.github.yinvoker.foxlet.UpdateAssessment> component4();
+    descriptor: ()Ljava/util/List;
+
+  public final java.util.List<io.github.yinvoker.foxlet.ModelUpdate> component5();
+    descriptor: ()Ljava/util/List;
+
+  public final io.github.yinvoker.foxlet.UpdateReport copy(io.github.yinvoker.foxlet.ModelSource, java.time.Instant, java.time.Instant, java.util.List<io.github.yinvoker.foxlet.UpdateAssessment>, java.util.List<io.github.yinvoker.foxlet.ModelUpdate>);
+    descriptor: (Lio/github/yinvoker/foxlet/ModelSource;Ljava/time/Instant;Ljava/time/Instant;Ljava/util/List;Ljava/util/List;)Lio/github/yinvoker/foxlet/UpdateReport;
+
+  public static io.github.yinvoker.foxlet.UpdateReport copy$default(io.github.yinvoker.foxlet.UpdateReport, io.github.yinvoker.foxlet.ModelSource, java.time.Instant, java.time.Instant, java.util.List, java.util.List, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/UpdateReport;Lio/github/yinvoker/foxlet/ModelSource;Ljava/time/Instant;Ljava/time/Instant;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lio/github/yinvoker/foxlet/UpdateReport;
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public int hashCode();
+    descriptor: ()I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+}
+public final class io.github.yinvoker.foxlet.UpdateState extends java.lang.Enum<io.github.yinvoker.foxlet.UpdateState> {
+  public static final io.github.yinvoker.foxlet.UpdateState NotInstalled;
+    descriptor: Lio/github/yinvoker/foxlet/UpdateState;
+  public static final io.github.yinvoker.foxlet.UpdateState UpdateAvailable;
+    descriptor: Lio/github/yinvoker/foxlet/UpdateState;
+  public static final io.github.yinvoker.foxlet.UpdateState Current;
+    descriptor: Lio/github/yinvoker/foxlet/UpdateState;
+  public static final io.github.yinvoker.foxlet.UpdateState LocalAhead;
+    descriptor: Lio/github/yinvoker/foxlet/UpdateState;
+  public static final io.github.yinvoker.foxlet.UpdateState NoCompatibleRelease;
+    descriptor: Lio/github/yinvoker/foxlet/UpdateState;
+  public static io.github.yinvoker.foxlet.UpdateState[] values();
+    descriptor: ()[Lio/github/yinvoker/foxlet/UpdateState;
+
+  public static io.github.yinvoker.foxlet.UpdateState valueOf(java.lang.String);
+    descriptor: (Ljava/lang/String;)Lio/github/yinvoker/foxlet/UpdateState;
+
+  public static kotlin.enums.EnumEntries<io.github.yinvoker.foxlet.UpdateState> getEntries();
+    descriptor: ()Lkotlin/enums/EnumEntries;
+}
+public final class io.github.yinvoker.foxlet.VerificationMode extends java.lang.Enum<io.github.yinvoker.foxlet.VerificationMode> {
+  public static final io.github.yinvoker.foxlet.VerificationMode Skip;
+    descriptor: Lio/github/yinvoker/foxlet/VerificationMode;
+  public static final io.github.yinvoker.foxlet.VerificationMode Check;
+    descriptor: Lio/github/yinvoker/foxlet/VerificationMode;
+  public static io.github.yinvoker.foxlet.VerificationMode[] values();
+    descriptor: ()[Lio/github/yinvoker/foxlet/VerificationMode;
+
+  public static io.github.yinvoker.foxlet.VerificationMode valueOf(java.lang.String);
+    descriptor: (Ljava/lang/String;)Lio/github/yinvoker/foxlet/VerificationMode;
+
+  public static kotlin.enums.EnumEntries<io.github.yinvoker.foxlet.VerificationMode> getEntries();
+    descriptor: ()Lkotlin/enums/EnumEntries;
+}
+public final class io.github.yinvoker.foxlet.VerificationReport {
+  public io.github.yinvoker.foxlet.VerificationReport(io.github.yinvoker.foxlet.InstalledModel, io.github.yinvoker.foxlet.VerificationStatus, java.util.List<io.github.yinvoker.foxlet.AssetVerification>);
+    descriptor: (Lio/github/yinvoker/foxlet/InstalledModel;Lio/github/yinvoker/foxlet/VerificationStatus;Ljava/util/List;)V
+
+  public final io.github.yinvoker.foxlet.InstalledModel getModel();
+    descriptor: ()Lio/github/yinvoker/foxlet/InstalledModel;
+
+  public final io.github.yinvoker.foxlet.VerificationStatus getStatus();
+    descriptor: ()Lio/github/yinvoker/foxlet/VerificationStatus;
+
+  public final java.util.List<io.github.yinvoker.foxlet.AssetVerification> getAssets();
+    descriptor: ()Ljava/util/List;
+
+  public final io.github.yinvoker.foxlet.InstalledModel component1();
+    descriptor: ()Lio/github/yinvoker/foxlet/InstalledModel;
+
+  public final io.github.yinvoker.foxlet.VerificationStatus component2();
+    descriptor: ()Lio/github/yinvoker/foxlet/VerificationStatus;
+
+  public final java.util.List<io.github.yinvoker.foxlet.AssetVerification> component3();
+    descriptor: ()Ljava/util/List;
+
+  public final io.github.yinvoker.foxlet.VerificationReport copy(io.github.yinvoker.foxlet.InstalledModel, io.github.yinvoker.foxlet.VerificationStatus, java.util.List<io.github.yinvoker.foxlet.AssetVerification>);
+    descriptor: (Lio/github/yinvoker/foxlet/InstalledModel;Lio/github/yinvoker/foxlet/VerificationStatus;Ljava/util/List;)Lio/github/yinvoker/foxlet/VerificationReport;
+
+  public static io.github.yinvoker.foxlet.VerificationReport copy$default(io.github.yinvoker.foxlet.VerificationReport, io.github.yinvoker.foxlet.InstalledModel, io.github.yinvoker.foxlet.VerificationStatus, java.util.List, int, java.lang.Object);
+    descriptor: (Lio/github/yinvoker/foxlet/VerificationReport;Lio/github/yinvoker/foxlet/InstalledModel;Lio/github/yinvoker/foxlet/VerificationStatus;Ljava/util/List;ILjava/lang/Object;)Lio/github/yinvoker/foxlet/VerificationReport;
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public int hashCode();
+    descriptor: ()I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+}
+public final class io.github.yinvoker.foxlet.VerificationStatus extends java.lang.Enum<io.github.yinvoker.foxlet.VerificationStatus> {
+  public static final io.github.yinvoker.foxlet.VerificationStatus NotChecked;
+    descriptor: Lio/github/yinvoker/foxlet/VerificationStatus;
+  public static final io.github.yinvoker.foxlet.VerificationStatus Verified;
+    descriptor: Lio/github/yinvoker/foxlet/VerificationStatus;
+  public static final io.github.yinvoker.foxlet.VerificationStatus Invalid;
+    descriptor: Lio/github/yinvoker/foxlet/VerificationStatus;
+  public static final io.github.yinvoker.foxlet.VerificationStatus Unverifiable;
+    descriptor: Lio/github/yinvoker/foxlet/VerificationStatus;
+  public static io.github.yinvoker.foxlet.VerificationStatus[] values();
+    descriptor: ()[Lio/github/yinvoker/foxlet/VerificationStatus;
+
+  public static io.github.yinvoker.foxlet.VerificationStatus valueOf(java.lang.String);
+    descriptor: (Ljava/lang/String;)Lio/github/yinvoker/foxlet/VerificationStatus;
+
+  public static kotlin.enums.EnumEntries<io.github.yinvoker.foxlet.VerificationStatus> getEntries();
+    descriptor: ()Lkotlin/enums/EnumEntries;
+}
+public final class io.github.yinvoker.foxlet.Workload extends java.lang.Enum<io.github.yinvoker.foxlet.Workload> {
+  public static final io.github.yinvoker.foxlet.Workload SINGLE;
+    descriptor: Lio/github/yinvoker/foxlet/Workload;
+  public static final io.github.yinvoker.foxlet.Workload BATCH;
+    descriptor: Lio/github/yinvoker/foxlet/Workload;
+  public static final io.github.yinvoker.foxlet.Workload PIVOT;
+    descriptor: Lio/github/yinvoker/foxlet/Workload;
+  public static io.github.yinvoker.foxlet.Workload[] values();
+    descriptor: ()[Lio/github/yinvoker/foxlet/Workload;
+
+  public static io.github.yinvoker.foxlet.Workload valueOf(java.lang.String);
+    descriptor: (Ljava/lang/String;)Lio/github/yinvoker/foxlet/Workload;
+
+  public static kotlin.enums.EnumEntries<io.github.yinvoker.foxlet.Workload> getEntries();
+    descriptor: ()Lkotlin/enums/EnumEntries;
+}

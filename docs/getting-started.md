@@ -1,31 +1,21 @@
 # 快速开始
 
-本文对应 v0.4.0，包含模型管理、更新检测和断点续传 API。发行 AAR 与 Demo 见 [v0.4.0 下载页](https://github.com/yinvoke/foxlet-translate/releases/tag/v0.4.0)。
-从 v0.3.0 / v0.3.1 升级时，将 `BergamotEngine` 改为 `FoxletEngine`，AAR 文件名前缀改为 `foxlet`，构建模块改为 `:foxlet`。包名仍为 `io.github.yinvoker.foxlet`，需重新编译宿主；不要混用新旧 AAR 或 JNI 动态库。
-支持 Android 9+、arm64-v8a。开发环境为 JDK 17、Android SDK 36、NDK 29.0.13113456、CMake 3.31.6；Gradle wrapper 固定工具链。
+本文对应正在开发的 0.4.0 统一 API。0.4.0 标签与发布已撤回，0.3.0 Release 也已撤下；当前请从源码构建。本次是**不兼容重构**，不提供旧入口的兼容层，包名仍为 `io.github.yinvoker.foxlet`。
 
-## 1. 先体验完整示例
+支持 Android 9+、arm64-v8a。使用 JDK 17、Android SDK 36、NDK 29.0.13113456 与 CMake 3.31.6。
+
+## 1. 构建与接入
 
 ```bash
-./gradlew :demo:assembleRelease
+./gradlew :foxlet:packageWithoutPrefixes :demo:assembleRelease
 adb install -r demo/build/outputs/apk/release/demo-release.apk
 ```
 
-打开 Foxlet Translate，点击“下载 / 检查模型”，优先使用本地最新且校验通过的版本，没有可用版本时再下载 SDK 内置版本；完成后可断网输入英文并翻译。
-下载支持进度、取消、断点续传、失败重试和 SHA-256 校验；“已安装 / 检查更新 / 清理”演示本地模型管理，其中只有“检查更新”会向 Mozilla 发一次请求。演示 APK 用开发签名，仅供体验。
-`demo/` 直接依赖构建完成的 AAR，并开启 R8；不包含 ML Kit 或 FLORES-200。
-`sample/` 是单独的内部评测 app，不是此演示。
+`demo/` 消费最终 AAR 并启用 R8，演示模型准备、翻译、更新检查和清理。首次准备需要联网；准备完成后可断网翻译。`sample/` 是独立评测 app。
 
-## 2. 集成 AAR
-
-```bash
-./gradlew :foxlet:assembleRelease :foxlet:packageWithoutPrefixes
-```
-
-默认产物为 `foxlet/build/outputs/aar/foxlet-release.aar`，将其复制到宿主模块的 `libs/`：
+默认产物 `foxlet/build/outputs/aar/foxlet-release.aar` 包含 25 种语言的分句前缀表。`foxlet-no-prefixes-release.aar` 不包含 LGPL-2.1 前缀数据；两者二选一。将 AAR 复制到宿主的 `libs/` 并显式声明协程依赖：
 
 ```kotlin
-// app/build.gradle.kts
 android { defaultConfig { minSdk = 28 } }
 dependencies {
     implementation(files("libs/foxlet-release.aar"))
@@ -33,144 +23,187 @@ dependencies {
 }
 ```
 
-AAR 不携带传递依赖，请显式声明协程依赖。已验证仓库当前 AGP/Kotlin 工具链；旧 Kotlin 编译器可能无法读取新版 Kotlin 元数据，建议使用同等或更新版本。
-
-`foxlet-no-prefixes-release.aar` 不包含 LGPL-2.1 分句前缀表。两种 AAR 二选一，不要同时引入；默认版本会保护 `Dr.` 等缩写，无表版本使用基础分句，也可以由宿主提供自有前缀表。
-
-## 3. 下载模型并翻译
-
-宿主只在下载模型和显式检查更新时需要网络权限：
+下载和更新检查需要网络权限；翻译不会上传文本：
 
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
 ```
 
-下面是包含 imports、模型目录和后台线程的完整调用函数。可从 Activity 的生命周期协程中调用；界面及错误处理参考 `demo/`。
+## 2. 创建一个长期持有的客户端
+
+配置对象和 DSL 使用同一套验证。`create` 是挂起函数，内部处理设备探测；初始化不下载、不扫描模型，也不预先创建模型目录。
 
 ```kotlin
 import android.content.Context
-import io.github.yinvoker.foxlet.FoxletEngine
-import io.github.yinvoker.foxlet.ModelCatalog
-import java.io.File
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import io.github.yinvoker.foxlet.*
+import kotlin.time.Duration.Companion.seconds
 
-suspend fun translateEnglish(context: Context, text: String): String {
-    val files = ModelCatalog.download(
-        root = File(context.filesDir, "translation-models"),
-        from = "en",
-        to = "zh-Hans",
-        onProgress = { downloaded, total ->
-            // 回调在 IO 线程执行；更新 UI 时请切换到主线程。
-        },
-    )
-    return withContext(Dispatchers.IO) {
-        FoxletEngine().use { engine ->
-            engine.translate(listOf(text), files).single()
-        }
+suspend fun openFoxlet(context: Context): Foxlet = Foxlet.create(context) {
+    models {
+        source = ModelSource.Mozilla
+        networkOptions = NetworkOptions(readTimeout = 20.seconds)
+        downloadOptions = DownloadOptions(maxRetries = 3, resume = true)
+    }
+    translation {
+        threading = Threading.Auto(Workload.BATCH)
+        retention = ModelRetention.Idle(60.seconds)
     }
 }
+
+// 等价的配置对象入口：
+suspend fun openWithConfig(context: Context): Foxlet =
+    Foxlet.create(context, FoxletConfig(
+        translation = TranslationConfig(threading = Threading.Auto(Workload.BATCH)),
+    ))
 ```
 
-`download(root, from, to)` 选择 SDK 内置版本，并复用已校验的完整目录（包含损坏目录修复后生成的带 UUID 后缀的目录）；离线再次使用时无需重新联网。若希望保留此前安装的远端新版本，先调用 `installedFor`，仅在返回 null 时下载内置版本。
-被中断的下载会从断点继续，超时和 HTTP 408/429/5xx 会自动重试（默认 3 次，带抖动的指数退避）；尺寸或 SHA-256 不符不重试，直接报错。需要调整重试、超时或查看逐文件进度时，用带 `DownloadPolicy` 的重载：
+默认目录为 `context.noBackupFilesDir/translation-models`。复用已有安装时，在 `models { directory = existingDirectory }` 中指定原目录；SDK 不搬迁文件。目录应由单个应用进程专用。客户端不持有 Activity context。
+
+同一进程只能有一个活动客户端。应用应让页面共享它；一个页面销毁时不要关闭其他页面仍在使用的客户端。所有使用者结束后调用 `shutdown()`，等待结束才能创建下一个。
+
+## 3. 准备模型与翻译
 
 ```kotlin
-val files = ModelCatalog.download(root, "en", "zh-Hans", ModelCatalog.DownloadPolicy(maxRetries = 5)) { p ->
-    // p.downloaded / p.total 为整套模型进度；p.assetName 为当前文件；p.attempt > 1 表示正在重试
+suspend fun translateEnglish(foxlet: Foxlet, text: String): String {
+    val pair = LanguagePair("en", "zh-Hans")
+    val model = foxlet.models.prepare(pair) { progress ->
+        // 回调在 SDK 的 IO 上下文执行；UI 更新需切回主线程。
+        // Ready 才表示模型已校验并可用，下载字节到达总量不代表完成。
+    }
+    return foxlet.translator.translate(text, model)
 }
 ```
 
-模型根目录建议用 `File(context.noBackupFilesDir, "translation-models")`：Android Auto Backup 的配额只有 25 MB，单个模型 20–55 MB，不应进入备份。示例中的 `filesDir` 仍然可用，但要自行在备份规则中排除该目录。根目录只交给本 SDK 管理，不要在其中放别的文件。同一个根目录只由一个应用进程管理；下载互斥和引擎占用保护均为进程内机制。
-文本不会发送到服务器。模型索引固定在 SDK 内，来自 `registry.json`，可用 `checkForUpdates` 与 Mozilla 当前发布比对（见第 6 节）；可以通过 `ModelCatalog.models` 查看语向及下载大小。
-
-连续交互应在应用层长期持有一个 engine，避免每次加载；上面的短函数用于说明完整流程。
-同一进程同时只能有一个 engine，重复创建会报错。关闭后才可以创建下一个。
-
-## 4. 已有文件、自定义模型与中转
-
-已有 Mozilla 模型可用 `ModelFiles.fromDirectory(directory)`，首次加载自动检查是否匹配 SDK 内固定模型索引。
-该方法要求一套完整、不歧义的文件；模型、词表和 shortlist 必须来自同一语向/版本。
-
-自定义模型需要显式传入来自可信发布者的完整 `expectedSha256: Map<String, String>`，以文件名为键。不能用刚下载文件自身算出的 hash 充当信任依据。结构校验不能保证任意第三方模型的架构或推理逻辑安全；本库的公开入口面向可信模型，不能把模型上传接口直接暴露给不可信用户。
-
-模型目录在使用期间必须保持不可变。更新时下载到新目录，再切换 ModelFiles；不要覆写正在使用的文件。`download` 复用已校验目录，或将新下载发布到独立目录；旧目录之后由 `cleanup` 或 `delete` 回收（第 5 节）。缓存标识包括模型、两侧词表、shortlist、源语言、自供前缀和文件元数据；覆盖旧文件并保留原长度/时间戳不受支持。
+`prepare` 优先选择本地最新且校验通过的安装；没有才下载内置版本。它不查询远端“最新版本”，也不会把本地可用的新版本降为内置旧版本。纯离线使用 `PreparePolicy.LocalOnly`；缺模型时抛 `ModelNotInstalledException`，不联网。
 
 ```kotlin
-val jaEn = ModelCatalog.download(modelRoot, "ja", "en")
-val enZh = ModelCatalog.download(modelRoot, "en", "zh-Hans")
-val result = engine.translatePivot(listOf("こんにちは。"), jaEn, enZh)
+val pair = LanguagePair("en", "zh-Hans")
+val model = foxlet.models.prepare(pair, PreparePolicy.LocalOnly)
+val single: String = foxlet.translator.translate("Hello.", model)
+val batch: List<String> = foxlet.translator.translate(listOf("Hello.", "Thank you."), model)
 ```
 
-中转会同时驻留两个模型。内存较少时可顺序翻译，并在中间等待 `releaseAllModels().get()` 完成。仅顺序调用两次 translate 不会立即卸载第一套模型。
+单条输入返回字符串，列表返回同序列表。空列表直接返回空列表，不加载模型；空字符串不会被自动过滤。`LanguagePair` 保留完整语言标签，规范化大小写，但不会把 `zh` 猜成 `zh-Hans` 或 `zh-Hant`。
 
-无前缀表 AAR 可通过 `files.copy(nonbreakingPrefixFile = myUtf8PrefixFile)` 使用自有前缀数据；文件最多 1 MiB。`EngineConfig(nonbreakingPrefixes = false)` 完全关闭前缀读取。
+## 4. 模型查询与下载
 
-## 5. 本地模型管理
+| 方法 | 结果与行为 |
+| --- | --- |
+| `listBundled()` / `findBundled(pair)` | 查询 SDK 固定快照；find 缺失返回 null |
+| `listInstalled(pair, verification)` | 列出安装；默认只读元数据，Check 会校验文件 |
+| `findUsable(pair)` | 从新到旧校验候选，返回第一份可用安装或 null |
+| `verify(model)` | 返回整体及逐文件校验报告，不修复、不下载 |
+| `download(descriptor)` | 下载指定内容；校验后复用完整目录或发布新目录 |
 
-以下函数只读写 `root`，不联网；都是 suspend 函数，内部切到 IO 线程。`root` 下只有本 SDK 发布的模型目录（`<from>-<to>-<version>-<identity>`）和它的临时目录。
+`download`、`prepare`、`findUsable` 都返回 `InstalledModel`。它是只读快照，可以直接传给翻译和删除。`id` 区分存储目录与修复副本；`identity` 标识内容，二者用途不同。
 
-- `installed(root)`：列出每个已发布的模型目录，按语向、版本从新到旧排序。`InstalledModel` 含语向、版本、目录、占用字节和 `isCurrentCatalogVersion`（是否就是 SDK 内置索引当前指向的字节）。默认只扫描目录，不做 hash；`installed(root, verify = true)` 会对每个能识别的目录做 SHA-256 校验（每个语向几十 MB 的读取开销），`verified` 为 true/false，无法识别的目录保持 null。
-- `installedFor(root, from, to)`：返回该语向最新且通过校验的 `ModelFiles`，没有可用目录时返回 null。这是离线场景“先用本地已有模型”的入口，之后再决定是否 `download` 或 `checkForUpdates`。
-- `delete(root, model)` / `delete(root, from, to)`：删除一个目录或该语向的全部版本，返回释放的字节数。目录正在加载或被 engine 持有时抛 `IllegalStateException`，该次删除不执行；先停止向旧模型提交翻译，等待 `releaseAllModels().get()` 或 `close()` 完成后再删。
-- `cleanup(root)`：回收超过 7 天没有动过的下载临时目录（`staleTempAgeMillis` 可调，进行中的续传不受影响）、中断删除留下的残余，以及在更新版本已安装并通过校验后被取代的旧版本（`removeSuperseded = false` 关闭）。正在加载或驻留于 engine 的目录被跳过，并记录在 `CleanupReport.skippedInUse`；`keep` 中的目录直接保留，不计入该列表；报告还包含删掉的临时目录、被取代的版本和释放的字节数。不下载任何东西。
+校验状态分为 `NotChecked`、`Verified`、`Invalid` 和 `Unverifiable`。未知清单的目录可以列出、删除，不能当作可用模型。目录读取失败会报 `ModelStorageException`，不会伪装成空库存。快照不绕过首次 native 加载时的文件校验。
 
 ```kotlin
-val root = File(context.noBackupFilesDir, "translation-models")
-val files = ModelCatalog.installedFor(root, "en", "zh-Hans")   // 离线：本地有就直接用
-    ?: ModelCatalog.download(root, "en", "zh-Hans")            // 没有再下载
-for (m in ModelCatalog.installed(root)) {
-    println("${m.from}→${m.to} ${m.version} ${m.sizeBytes / 1_000_000} MB " + if (m.isCurrentCatalogVersion) "SDK 内置版本" else "其他版本")
+val descriptor = foxlet.models.findBundled(LanguagePair("en", "zh-Hans"))
+    ?: error("没有内置模型")
+val model = foxlet.models.download(
+    descriptor,
+    options = DownloadOptions(maxRetries = 5),
+) { progress ->
+    // stage: CheckingLocal / Downloading / Verifying / Ready
+    // downloadedBytes / totalBytes: 含续传字节的模型进度，不是网络流量
+    // assetIndex 从 0 开始；attempt 从 1 开始；非文件阶段的资产字段可为空
 }
-engine.releaseAllModels().get()                                 // 后台线程；删除前先释放 engine 持有的目录
-ModelCatalog.delete(root, "ja", "en")
-val report = ModelCatalog.cleanup(root, keep = setOf(files.model.parentFile!!)) // 保留应用仍选中的目录
 ```
 
-仅保存 `ModelFiles` 不会保留占用；空闲卸载后引擎也会解除占用。应用仍计划使用的目录应加入 `cleanup(keep = ...)`，Demo 的“清理”按钮会保留当前选中的目录。目录中嵌套的自供前缀文件同样受到占用保护，清理不会沿符号链接遍历外部目录。
+所有下载路径使用同一个 `DownloadProgress`。默认断点续传、最多 3 次重试，重试仅覆盖传输失败与 HTTP 408/429/5xx。大小或 SHA-256 不符不会重试；回调异常也不会作为网络错误重试。回调应轻量执行，不要阻塞等待或重入同一个模型管理操作。
 
-## 6. 模型更新检测
+下载中断时，`resume = true` 保留临时文件供续传；false 会清理该次临时目录。服务端拒绝 Range 时进度可以回退。正式模型不会原地覆盖，修复会产生独立安装目录。
 
-更新检测分两层：
-
-- 离线：`installed(root)` 返回的 `isCurrentCatalogVersion` 表示该目录是否就是 SDK 内置索引当前指向的字节。false 仅表示字节与内置索引不同，也可能是更高版本或同版本重打包，不能据此判定“旧版”。下载内置版本用 `download(root, from, to)`；判断上游是否有更新用 `checkForUpdates`。
-- 显式联网：`checkForUpdates(root)` 对 Mozilla Remote Settings 的 `translations-models` changeset 做一次 HTTPS GET（约 80 KB，gzip），请求头里除 User-Agent 外不带任何标识；不下载、不删除任何文件，也不会定时运行——何时检查由宿主决定，例如用户点“检查更新”时。索引取不到抛 `IOException`，解析不了抛 `IllegalStateException`。
-
-版本排序沿用 Mozilla 规则：每个语向取 `supportedMajorVersions`（当前 1.x–2.x）内最高的完整正式版本。过滤仅接受空表达式或精确的 Android 表达式；不求值通用 JEXL。缺文件、重名或文件布局无法识别的版本会跳过，尝试下一个完整版本。
+## 5. 查询和安装更新
 
 ```kotlin
-val root = File(context.noBackupFilesDir, "translation-models")
-val report = ModelCatalog.checkForUpdates(root)                          // 唯一的联网点之一
-for (candidate in report.updates) {                                      // 已安装且上游有更新的语向
-    val newer = ModelCatalog.download(root, candidate.available!!)       // 下载到新目录，旧目录不动
-    if (candidate.from == "en" && candidate.to == "zh-Hans") enZh = newer // 之后的 translate 改用新 ModelFiles
+val pair = LanguagePair("en", "zh-Hans")
+val report = foxlet.models.checkUpdates(setOf(pair))
+val update = report.updates.firstOrNull()
+if (update != null) {
+    val model = foxlet.models.download(update.target)
+    val text = foxlet.translator.translate("Welcome back.", model)
 }
-// 停止向旧目录提交翻译，再等待释放；仅换一个 ModelFiles 不会立即卸载旧模型：
-withContext(Dispatchers.IO) { engine.releaseAllModels().get() }
-ModelCatalog.cleanup(root, keep = setOf(enZh.model.parentFile!!))
 ```
 
-`UpdateReport.updates` 是已安装且可更新的语向（版本号相同但字节不同也算），`notInstalled` 是上游有、本地没有的语向，`candidates` 是全部语向，每项带 `downloadSizeBytes`；`indexTimestamp` 是上游索引的时间戳。`checkForUpdates(root, pairs = setOf("en" to "zh-Hans"))` 只报告指定语向。
-`UpdateCandidate.newerMajorVersion` 非空表示上游存在本引擎版本无法加载的新大版本模型，需要升级 SDK；`installedStillListed = false` 表示 Mozilla 已不再发布本地安装的这组字节（Firefox 会删除，本 SDK 只报告，删不删由宿主决定）。
+`updates` 中每项的 `installed` 和 `target` 都非空；`reason` 区分更高版本与同版本重打包。`assessments` 完整列出 `NotInstalled`、`UpdateAvailable`、`Current`、`LocalAhead` 和 `NoCompatibleRelease`。`installedStillListed` 与 `newerMajorVersion` 独立表达撤回和不兼容大版本。`checkedAt` 与 `indexUpdatedAt` 使用 `Instant`。
 
-自建镜像可传 `ModelCatalog.UpdateSource(changesetUrl, attachmentBaseUrl)`，两个地址都必须是 HTTPS，并把附件域名加入 `DownloadPolicy.allowedHosts` 后再 `download`。
-内置索引的 hash 在构建时固定；远程索引依赖 HTTPS 与记录中的 SHA-256、大小。本 SDK 未实现 Remote Settings 集合签名验证；Firefox/Gecko 还会验证集合签名，具体步骤见 [Mozilla 客户端规范](https://remote-settings.readthedocs.io/en/latest/client-specifications.html#signature-verification)。
+更新比较读取本地元数据，不隐含全盘 hash。`isBundledVersion` 只表示匹配内置快照，不表示远端最新。索引默认不重试；可显式传 `UpdateOptions(maxRetries = 2)`。更新查询不安装、不删除，也没有定时联网任务。
 
-## 7. 生命周期、失败与限制
+`NetworkOptions` 的连接和读取超时默认都是 15 秒。模型配置中的 `networkOptions` 供两类请求共用，`DownloadOptions` / `UpdateOptions` 内的非空 `networkOptions` 会替换它。单次传入非空 options 时，替换对应的整个选项组，不按字段合并。
 
-- `translate` / `translatePivot` 是 suspend API，结果与输入顺序一致。默认一个推理线程；批量处理可用 `EngineConfig.forDevice(context, Workload.BATCH)`。
-- 默认空闲 60 秒卸载模型。`releaseAllModels()` 返回 Future，可接 `onTrimMemory`；等待 Future 或 `close()` 应放在后台线程。
-- 关闭开始后拒绝新翻译；close 可重复调用，会等待资源释放完成。协程取消无法中断正在执行的单个原生批次，只有该批结束后才能释放资源。
-- 下载会断点续传，并对超时和 HTTP 408/429/5xx 自动重试（`DownloadPolicy`）；尺寸/hash 不符、缺文件、目录有歧义等直接报错、不重试，失败仍不会发布半套模型。保留错误提示并允许用户重试；默认 `resume = true` 时已下载的部分留在 `root` 下供续传，超过 7 天未续传由 `cleanup` 回收。
-- `delete` / `cleanup` 不会动 engine 正在加载或持有的目录：`delete` 抛 `IllegalStateException`，`cleanup` 记入 `skippedInUse`。停止提交旧模型的翻译，等待 `releaseAllModels().get()` 或 `close()` 完成后再删。
-- 唯一联网点：`download` 与 `checkForUpdates`。`installed`、`installedFor`、`delete`、`cleanup` 和翻译都不发请求，SDK 内没有定时任务。
-- 非法 UTF-16 代理项会报错。emoji、扩展汉字和空字符在 JNI 边界按标准 UTF-8 转换；译文是否保留这些字符仍由分词器/模型决定。
-- HTML 翻译仍属实验能力，宿主负责 DOM、脚本和特殊节点处理。
-- 自定义线程限 1–64、miniBatchWords 限 256–65536、cacheSize 限 0–1000000。较大设置可能需要大量内存。
-- SHA-256 与结构校验会增加首次加载开销；README 的 v0.3.0 性能数据属于该历史版本，不能当作新版耗时承诺。
+自建镜像使用 `ModelSource(indexUrl, attachmentBaseUrl, allowedAttachmentHosts, userAgent)`。地址必须是 HTTPS，附件基地址以 / 结尾，域名统一声明；不跟随重定向。内置描述符保留内容身份，将 Mozilla 附件基地址替换为镜像基地址，因此镜像应提供相同相对路径。
 
-## 8. 许可与再分发
+远端索引依赖 HTTPS 和记录中的大小、SHA-256，**未实现 Remote Settings 集合签名验证**。模型大版本能力从 `foxlet.capabilities.supportedModelMajorVersions` 查询，当前为 1.x–2.x。
 
-AAR 的 `io/github/yinvoker/foxlet/licenses/` 包含 NOTICE、完整第三方许可及 SOURCE.txt。可在宿主“开源许可”页面展示，demo 已提供示例。保留适用声明和 MPL 源码取得方式；源码和源码修改可从相应发布版本取得。
+## 6. 删除、清理与内存卸载
 
-默认 AAR 含 LGPL-2.1 的 Moses 数据；无前缀版本不含这些数据。模型单独受 MPL-2.0 约束。FLORES-200 仅用于评测，AAR/demo 不含它；源码评测材料的出处和 BibTeX 见 [评测引用](../benchmarks/CITATION.md)。
+```kotlin
+val model = foxlet.models.prepare(LanguagePair("en", "zh-Hans"))
+val cleanup = foxlet.models.cleanup(keep = setOf(model.id))
+
+// 先停止提交使用该模型的新翻译，再等待卸载。
+val unload = foxlet.translator.unloadModels()
+if (unload.allReleased) {
+    val deletion = foxlet.models.delete(model)
+}
+// 删除某语向的全部版本：
+val all = foxlet.models.deleteAll(LanguagePair("ja", "en"))
+```
+
+模型正在加载或驻留时，删除抛 `ModelInUseException`。`deleteAll` 在占用检查阶段全有或全无；实际文件系统删除不承诺事务回滚。每个 `DeleteResult` 区分 `Deleted`、`AlreadyAbsent`、`PartiallyDeleted`、`Failed`，并记录实际 `freedBytes` 和失败信息。
+
+`cleanup` 默认回收超过 7 天未写入的下载临时目录、删除残留，以及有已验证较新版本替代的旧安装。`CleanupOptions` 可调整保留期、关闭旧版本清理或保留额外临时目录。报告包含移除、占用跳过、失败与释放字节；不会沿目录内符号链接清理外部文件。
+
+保存 `InstalledModel` 引用不会保留磁盘目录，仍要使用的安装须传入 `keep`。`unloadModels` 释放内存，不删除安装，也不是阻止后续翻译的屏障。释放未确认时，`unconfirmedReleaseCount` 会报告数量，文件保持占用保护，直至 `shutdown` 销毁服务。
+
+## 7. 翻译策略、外部模型与关闭
+
+默认 `Threading.Fixed(1)`；自动策略使用 `Threading.Auto(Workload.SINGLE/BATCH/PIVOT)`，沿用 1/2/4/6 档位，固定线程允许 1–64。`translator.threadingInfo` 提供只读实际配置及设备依据；固定配置不伪造推荐依据。
+
+保留策略包括 `Idle(duration)`、`AfterRequest`、`UntilShutdown`。默认空闲 60 秒；AfterRequest 在本次请求结束、下一次翻译开始前卸载。批次参数允许 `miniBatchWords = 256..65536`、`cacheSize = 0..1000000`，默认 512 / 0。缓存、输入组合和过短批次可能影响输出，历史性能结论不能当作新版本耗时承诺。
+
+外部模型显式声明语向，不进入 SDK 删除/清理接口：
+
+```kotlin
+val external = ExternalModel(
+    LanguagePair("en", "zh-Hans"),
+    ModelFiles.fromDirectory(directory).copy(expectedSha256 = trustedPublisherHashes),
+)
+val translated = foxlet.translator.translate("Hello.", external)
+```
+
+`expectedSha256` 必须来自可信发布者，不能把现下载文件自身的 hash 当成信任依据。完整匹配内置模型的文件可省略该映射。模型、词表、shortlist 和自供前缀在使用期间必须保持不可变。自供 UTF-8 前缀文件使用 `ModelFiles.nonbreakingPrefixFile`，最多 1 MiB；`translation { nonbreakingPrefixes = false }` 禁用前缀读取，仍会进行基础分句。
+
+中转显式传两个方向相连的模型，不自动下载或猜测路由：
+
+```kotlin
+val first = foxlet.models.prepare(LanguagePair("ja", "en"))
+val second = foxlet.models.prepare(LanguagePair("en", "zh-Hans"))
+val translated = foxlet.translator.translatePivot("こんにちは。", first, second)
+```
+
+中转同时驻留两个模型；节省内存时分两次 translate，在中间等待 `unloadModels`。HTML 使用 `TextFormat.Html`，仍属实验能力。非法 UTF-16 代理项会报错；emoji、扩展汉字和空字符按 UTF-8 转换，最终保留与否由分词器和模型决定。
+
+```kotlin
+val foxlet = Foxlet.create(context)
+try {
+    // 运行应用所需的模型操作和翻译。
+} finally {
+    foxlet.shutdown()
+}
+```
+
+`shutdown` 拒绝新操作，取消 SDK 登记的子任务，等待不可中断的 native 批次，再释放模型、计时器和执行器。它不取消宿主整个协程作用域；重复调用等待同一次终止，调用方取消也不会打断清理。阻塞网络读取的取消仍受传输栈和配置超时约束。
+
+## 8. 错误与迁移
+
+正常结果直接返回；业务失败使用 `FoxletException` 子类：`ModelNotInstalledException`、`UnsupportedLanguagePairException`、`ModelInUseException`、`ModelIntegrityException`、`NetworkException`、`ModelStorageException`、`ModelIndexException`、`TranslationException`。保留 cause 和适用的 installationId、assetName、HTTP status、attempt 等字段。参数错误仍为 `IllegalArgumentException`；关闭后的调用为 `ClientClosedException`。`CancellationException` 继续传播。
+
+旧 `ModelCatalog`、`FoxletEngine`、`EngineConfig`、`ThreadTuning`、`NonbreakingPrefixes` 入口已移除。宿主需重新编译并迁移到 `Foxlet`；没有废弃别名或旧 ABI 保留。删除了无效 `workspaceMb` 参数、Future 生命周期方法及多种进度 lambda。`ModelFiles` 仅保留为外部模型文件描述。完整设计与变更映射见 [统一 API 设计](api-design-review.md)。
+
+## 9. 许可
+
+AAR 中的 `io/github/yinvoker/foxlet/licenses/` 包含 NOTICE、第三方许可和 SOURCE.txt，Demo 提供展示入口。默认 AAR 含 LGPL-2.1 的 Moses 数据；无前缀版不含这些数据。模型单独受 MPL-2.0 约束。AAR/Demo 不含 FLORES-200，评测材料出处见 [评测引用](../benchmarks/CITATION.md)。

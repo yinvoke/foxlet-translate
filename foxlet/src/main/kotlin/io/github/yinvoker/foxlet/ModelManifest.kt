@@ -4,7 +4,7 @@ import java.io.File
 
 /**
  * Asset manifest a download leaves next to the model files, in the column
- * layout of the bundled `models.tsv`. It is what lets [ModelCatalog.installed]
+ * layout of the bundled `models.tsv`. It is what lets [Catalog.installed]
  * identify and later re-verify a directory whose model came from a remote
  * index rather than the bundled catalog. The name matches none of the
  * patterns [ModelFiles.fromDirectory] resolves, so the engine never sees it.
@@ -16,7 +16,7 @@ internal object ModelManifest {
     private const val HEADER = "# from\tto\tversion\tname\tsize\tsha256\turl"
     private val SHA256 = Regex("[0-9a-f]{64}")
 
-    fun write(directory: File, model: ModelCatalog.Model) {
+    fun write(directory: File, model: Catalog.Model) {
         require(directory.isDirectory) { "not a directory: $directory" }
         val text = buildString {
             appendLine(HEADER)
@@ -35,7 +35,7 @@ internal object ModelManifest {
     }
 
     /** Null when the directory has no manifest; [IllegalArgumentException] when it has a malformed one. */
-    fun read(directory: File): ModelCatalog.Model? {
+    fun read(directory: File): Catalog.Model? {
         val file = File(directory, FILE_NAME)
         if (!file.isFile) return null
         require(file.length() in 1..(64L * 1024)) { "manifest has an implausible size: $file" }
@@ -43,9 +43,9 @@ internal object ModelManifest {
         require(rows.isNotEmpty() && rows.all { it.size == 7 && it.all(String::isNotBlank) }) { "malformed manifest: $file" }
         val key = rows.first().take(3)
         require(rows.all { it.take(3) == key }) { "manifest mixes models: $file" }
-        val assets = rows.map { ModelCatalog.Asset(it[3], it[4].toLong(), it[5].lowercase(), it[6]) }.sortedBy { it.name }
+        val assets = rows.map { Catalog.Asset(it[3], it[4].toLong(), it[5].lowercase(), it[6]) }.sortedBy { it.name }
         require(assets.map { it.name }.toSet().size == assets.size) { "manifest repeats a file name: $file" }
         require(assets.all { it.size > 0 && SHA256.matches(it.sha256) && it.url.startsWith("https://") }) { "malformed manifest row: $file" }
-        return ModelCatalog.Model(key[0], key[1], key[2], assets)
+        return Catalog.Model(key[0], key[1], key[2], assets)
     }
 }

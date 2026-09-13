@@ -2,7 +2,7 @@ package io.github.yinvoker.foxlet
 
 /**
  * Raw JNI surface. Blocking, batch-in/batch-out; no threading or lifecycle
- * here — [FoxletEngine] owns both. Handles are opaque native pointers.
+ * here — [NativeEngine] owns both. Handles are opaque native pointers.
  *
  * Every call for a given service handle must be made from one and the same
  * thread: at `workers <= 1` the native side is a BlockingService, which is not
@@ -15,7 +15,7 @@ internal object NativeBridge {
 
     /**
      * Cores that are *not* in the slowest CPU cluster — the "big core" count
-     * [ThreadTuning.recommend] wants. 0 means the topology gave no usable
+     * [ThreadPlanner.recommend] wants. 0 means the topology gave no usable
      * answer (single cluster, near-uniform clusters, sysfs unreadable), not
      * "no fast cores": callers fall back to their own estimate.
      *

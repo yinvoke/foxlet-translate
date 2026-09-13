@@ -79,6 +79,7 @@ tools/regress-hash.sh build-host/tools/smoke/smoke \
 python3 tools/distribution/sync_catalog.py --check
 ./gradlew :foxlet:test :foxlet:packageWithoutPrefixes :demo:assembleRelease :demo:assembleReleaseAndroidTest
 python3 tools/distribution/check_hardening.py
+python3 tools/distribution/check_public_api.py
 python3 tools/distribution/verify_artifacts.py --aar foxlet/build/outputs/aar/foxlet-release.aar --no-prefixes foxlet/build/outputs/aar/foxlet-no-prefixes-release.aar --apk demo/build/outputs/apk/release/demo-release.apk
 ```
 
@@ -108,9 +109,22 @@ clang++ -std=c++17 -O1 -g -fsanitize=address,undefined -I . tools/safety-tests/n
 FLORES-200 仅是评测集，引用和许可见 [CITATION](../benchmarks/CITATION.md)。
 发行 AAR/demo 的包检查会拒绝混入 benchmark 文件或已知评测原文样本。
 
-## v0.4.0 功能审查记录
+## v0.4.0 统一 API 验证记录
 
-以下记录对应 2026-09-12 至 13 日的模型管理功能审查构件，尚未写入 0.4.0 版本号。最终发行构件另由 v0.4.0 标签触发的 CI 构建并完成设备测试；其结果随 Release 附件提供。
+2026-09-13 在 `codex/unified-api` 实施破坏性重构，基线为 `e699e1c`。移除旧公开入口，统一客户端、配置、模型引用、网络选项、报告、异常和生命周期；Demo、sample 和设备测试同步迁移。实现契约见 [API 设计](api-design-review.md)，用法见 [接入指南](getting-started.md)。
+
+- Kotlin/JVM：153 项通过，无失败、错误或跳过。新增测试覆盖配置一致性、安装对象贯穿完整流程、本地优先与纯离线选择、四种校验状态、更新重试、回调异常、部分删除、客户端取消/关闭竞争，以及实际引擎队列上的 AfterRequest 与未确认释放保护。
+- Release AAR、无前缀 AAR、R8 Demo、Release 测试 APK、sample Debug APK 和库的 Debug instrumentation APK 构建通过；foxlet/demo Lint 无错误。
+- 公开 API 检查通过：58 个公开顶层类型生成 JVM 签名快照；最终 AAR 不含旧入口类。构建与发布 CI 已接入检查，快照范围见 [说明](../api/README.md)。
+- 产物许可、源码说明、前缀资源、评测数据隔离及 Android hardening 检查通过；内置模型索引同步检查通过。
+- Python：索引工具 4 项、版本基准工具 36 项、App 基准工具 26 项通过。
+- 主机 SMMLA 测试、禁用后端探针及 ASan/UBSan 原生输入安全测试通过。固定 SHA-256 模型的 200 句输出回归通过：en→zh-Hans 为 `16537889a77b25db`，ja→en→zh-Hans 为 `e9d84f82b99250ee`，两种 GEMM 路径均与既有正典一致。这验证输出一致性，不构成新的性能结论。
+
+**新 API 的真机验收尚未执行。** 新 Demo 与测试 APK 已构建，等待设备安装确认；下方历史真机记录不证明本次重构后的构件。v0.4.0 标签与发布流程保持撤回，v0.3.0 Release 已撤下，v0.3.0 历史标签仍保留。当前没有重新发布。
+
+## 统一 API 前的模型管理审查记录（历史）
+
+以下记录对应 2026-09-12 至 13 日的模型管理功能审查构件，尚未写入 0.4.0 版本号。随后旧 v0.4.0 CI 完成构建，但设备验收中断，发布流程已取消；这些记录均早于统一 API 重构。
 
 - Kotlin/JVM：132 项通过，无失败或跳过；Python：索引工具 4 项、版本基准工具 36 项、App 基准工具 26 项通过。
 - Release AAR、无前缀 AAR、R8 Demo、Release 测试 APK 和 sample Debug APK 构建通过；foxlet/demo Release Lint 无错误，分别有 5/25 条警告。
@@ -127,4 +141,4 @@ FLORES-200 仅是评测集，引用和许可见 [CITATION](../benchmarks/CITATIO
 | Demo Release APK | `186be9d797d4bae31c2a7c9f7d2949f337594f0463d9e526e8dc9ac6cf1e0a97` |
 | Release 测试 APK | `134f91b342455a363705d538d78479e0563f35272fdfd38a9f9f442e236c5077` |
 
-本次工作区的真机验证已完成。正式发布时仍由 CI 对当次构建产物重新执行设备门禁。
+上述旧构件的真机验证已完成。统一 API 后须重新验收；正式发布时还须由 CI 对当次构建产物执行设备门禁。

@@ -38,7 +38,7 @@ import org.junit.Test
 class ModelDownloaderTest {
 
     private companion object {
-        const val HOST = ModelCatalog.MOZILLA_ATTACHMENT_HOST
+        const val HOST = Catalog.MOZILLA_ATTACHMENT_HOST
         const val LEX = "lex.50.50.enzh.s2t.bin"
         const val MODEL = "model.enzh.intgemm.alphas.bin"
         const val VOCAB = "vocab.enzh.spm"
@@ -143,8 +143,8 @@ class ModelDownloaderTest {
     private val cdn = Cdn()
     private val root = createTempDirectory("foxlet-dl").toFile()
     private val sleeps = mutableListOf<Long>()
-    private val events = mutableListOf<ModelCatalog.DownloadProgress>()
-    private val policy = ModelCatalog.DownloadPolicy(
+    private val events = mutableListOf<Catalog.DownloadProgress>()
+    private val policy = Catalog.DownloadPolicy(
         connectTimeoutMillis = 2_000,
         readTimeoutMillis = 2_000,
         maxRetries = 3,
@@ -163,23 +163,23 @@ class ModelDownloaderTest {
         root.deleteRecursively()
     }
 
-    private fun downloader(policy: ModelCatalog.DownloadPolicy = this.policy) =
+    private fun downloader(policy: Catalog.DownloadPolicy = this.policy) =
         ModelDownloader(policy, cdn::open, { sleeps += it }, Random(42))
 
-    private fun download(model: ModelCatalog.Model, policy: ModelCatalog.DownloadPolicy = this.policy): ModelFiles =
+    private fun download(model: Catalog.Model, policy: Catalog.DownloadPolicy = this.policy): ModelFiles =
         runBlocking { downloader(policy).download(root, model) { events += it } }
 
     /** A three-file model served by [cdn]; URLs point at the production host unless a test says otherwise. */
-    private fun model(host: String = HOST, scheme: String = "https", files: Map<String, ByteArray> = payloads): ModelCatalog.Model {
+    private fun model(host: String = HOST, scheme: String = "https", files: Map<String, ByteArray> = payloads): Catalog.Model {
         files.forEach { (name, data) -> cdn.add(name, data) }
         val assets = files.map { (name, data) ->
-            ModelCatalog.Asset(name, data.size.toLong(), ModelCatalog.digest(data), "$scheme://$host/x/$name")
+            Catalog.Asset(name, data.size.toLong(), Catalog.digest(data), "$scheme://$host/x/$name")
         }
-        return ModelCatalog.Model("en", "zh-Hans", "2.2", assets.sortedBy { it.name })
+        return Catalog.Model("en", "zh-Hans", "2.2", assets.sortedBy { it.name })
     }
 
-    private fun temp(model: ModelCatalog.Model) = File(root, ".download-${model.directoryName}")
-    private fun destination(model: ModelCatalog.Model) = File(root, model.directoryName)
+    private fun temp(model: Catalog.Model) = File(root, ".download-${model.directoryName}")
+    private fun destination(model: Catalog.Model) = File(root, model.directoryName)
 
     // ---------------------------------------------------------------- happy path and reuse
 
@@ -297,9 +297,9 @@ class ModelDownloaderTest {
         val part = File(temp, "$MODEL.part")
         part.writeBytes(bytes(99, 30_000))
 
-        val error = assertThrows(IllegalArgumentException::class.java) { download(model) }
+        val error = assertThrows(ModelIntegrityException::class.java) { download(model) }
 
-        assertEquals("Model checksum mismatch: $MODEL", error.message)
+        assertEquals(MODEL, error.assetName)
         assertEquals(listOf("bytes=30000-"), cdn.requestsFor(MODEL).map { it.range })
         assertFalse(part.exists())
         assertTrue("the temp dir survives for the next call", temp.isDirectory)
@@ -361,11 +361,13 @@ class ModelDownloaderTest {
         val model = model()
         cdn.script(MODEL, status(503), status(503), status(503), status(503))
 
-        val error = assertThrows(IllegalStateException::class.java) {
+        val error = assertThrows(NetworkException::class.java) {
             download(model, policy.copy(maxBackoffMillis = 2_500))
         }
 
-        assertEquals("Model download returned HTTP 503", error.message)
+        assertEquals(503, error.httpStatus)
+        assertEquals(4, error.attempt)
+        assertEquals(MODEL, error.assetName)
         assertEquals(policy.maxRetries + 1, cdn.requestsFor(MODEL).size)
         assertEquals(policy.maxRetries, sleeps.size)
         assertTrue(sleeps[0] in 0L..1_000L)
@@ -376,21 +378,23 @@ class ModelDownloaderTest {
     }
 
     @Test
-    fun `exhausted retries rethrow the last transport failure unwrapped`() {
+    fun `exhausted retries retain the last transport failure as cause`() {
         val model = model()
         cdn.script(MODEL, dropAfter(0), dropAfter(0), dropAfter(0), dropAfter(0))
 
         // The JDK client returns EOF on a short fixed-length body, so the downloader's own
         // EOFException is what surfaces here; another client may throw its own IOException,
-        // and either satisfies the contract (an IOException, unwrapped, after every attempt).
-        assertThrows(IOException::class.java) { download(model) }
+        // the structured public failure retains it after every attempt.
+        val error = assertThrows(NetworkException::class.java) { download(model) }
+        assertTrue(error.cause is IOException)
+        assertEquals(4, error.attempt)
 
         assertEquals(4, cdn.requestsFor(MODEL).size)
         assertEquals(3, sleeps.size)
     }
 
     @Test
-    fun `a refused connection is retried and then propagates as an IOException`() {
+    fun `a refused connection is retried and then propagates with network details`() {
         val model = model()
         val unreachable = ModelDownloader(
             policy,
@@ -399,7 +403,7 @@ class ModelDownloaderTest {
             Random(42),
         )
 
-        assertThrows(IOException::class.java) { runBlocking { unreachable.download(root, model) {} } }
+        assertThrows(NetworkException::class.java) { runBlocking { unreachable.download(root, model) {} } }
 
         assertEquals(3, sleeps.size)
         assertTrue(cdn.requests.isEmpty())
@@ -410,7 +414,7 @@ class ModelDownloaderTest {
         val model = model()
         cdn.script(LEX, status(404))
 
-        val error = assertThrows(IllegalStateException::class.java) { download(model) }
+        val error = assertThrows(NetworkException::class.java) { download(model) }
 
         assertEquals("Model download returned HTTP 404", error.message)
         assertEquals(1, cdn.requests.size)
@@ -422,7 +426,7 @@ class ModelDownloaderTest {
         val model = model()
         cdn.script(LEX, status(302, "Location" to "https://$HOST/x/$MODEL"))
 
-        val error = assertThrows(IllegalStateException::class.java) { download(model) }
+        val error = assertThrows(NetworkException::class.java) { download(model) }
 
         assertEquals("Model download returned HTTP 302", error.message)
         assertEquals(listOf("/x/$LEX"), cdn.requests.map { it.path })
@@ -435,9 +439,9 @@ class ModelDownloaderTest {
         val model = model()
         cdn.script(MODEL, content(bytes(99, 150_000)))
 
-        val error = assertThrows(IllegalArgumentException::class.java) { download(model) }
+        val error = assertThrows(ModelIntegrityException::class.java) { download(model) }
 
-        assertEquals("Model checksum mismatch: $MODEL", error.message)
+        assertEquals(MODEL, error.assetName)
         assertEquals(1, cdn.requestsFor(MODEL).size)
         assertTrue(sleeps.isEmpty())
         val temp = temp(model)
@@ -453,7 +457,7 @@ class ModelDownloaderTest {
         val model = model()
         cdn.script(MODEL, content(bytes(99, 150_000)))
 
-        assertThrows(IllegalArgumentException::class.java) { download(model, policy.copy(resume = false)) }
+        assertThrows(ModelIntegrityException::class.java) { download(model, policy.copy(resume = false)) }
 
         assertFalse(temp(model).exists())
         assertFalse(destination(model).exists())
@@ -464,9 +468,9 @@ class ModelDownloaderTest {
         val model = model()
         cdn.script(VOCAB, content(bytes(3, 20_001)))
 
-        val error = assertThrows(IllegalArgumentException::class.java) { download(model) }
+        val error = assertThrows(ModelIntegrityException::class.java) { download(model) }
 
-        assertEquals("Model download exceeds expected size: $VOCAB", error.message)
+        assertEquals(VOCAB, error.assetName)
         assertEquals(1, cdn.requestsFor(VOCAB).size)
         assertTrue(sleeps.isEmpty())
         assertFalse(File(temp(model), "$VOCAB.part").exists())

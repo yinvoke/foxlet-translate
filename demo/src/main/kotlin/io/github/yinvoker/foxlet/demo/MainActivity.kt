@@ -5,9 +5,7 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.*
-import io.github.yinvoker.foxlet.FoxletEngine
-import io.github.yinvoker.foxlet.ModelCatalog
-import io.github.yinvoker.foxlet.ModelFiles
+import io.github.yinvoker.foxlet.*
 import java.io.File
 import kotlinx.coroutines.*
 
@@ -15,10 +13,9 @@ import kotlinx.coroutines.*
 class MainActivity : Activity() {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private var operation: Job? = null
-    private var model: ModelFiles? = null
-    // Kept under filesDir so existing installs keep their models. A production app should
-    // use File(noBackupFilesDir, ...) instead; see docs/getting-started.md §3.
-    private val root: File by lazy { File(filesDir, "models") }
+    private var model: InstalledModel? = null
+    private val pair = LanguagePair("en", "zh-Hans")
+    private suspend fun client(): Foxlet = DemoClient.get(applicationContext)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         @Suppress("DEPRECATION")
@@ -73,12 +70,13 @@ class MainActivity : Activity() {
             operation = scope.launch {
                 try {
                     var lastUpdate = 0L
-                    model = ModelCatalog.installedFor(root, "en", "zh-Hans")
-                        ?: ModelCatalog.download(root, "en", "zh-Hans") { done, total ->
+                    model = client().models.prepare(pair) { p ->
+                        val done = p.downloadedBytes
+                        val total = p.totalBytes
                         val now = System.nanoTime()
                         if (done == total || now - lastUpdate > 100_000_000) {
                             lastUpdate = now
-                            runOnUiThread { progress.progress = (done * 100 / total).toInt() }
+                            runOnUiThread { progress.progress = if (total > 0) (done * 100 / total).toInt() else 0 }
                         }
                     }
                     status.text = "模型已校验，可断网翻译"
@@ -96,9 +94,7 @@ class MainActivity : Activity() {
                 try {
                     val ready = checkNotNull(model)
                     val start = System.nanoTime()
-                    val result = withContext(Dispatchers.IO) {
-                        FoxletEngine().use { it.translate(listOf(text), ready).single() }
-                    }
+                    val result = client().translator.translate(text, ready)
                     output.text = result
                     status.text = "翻译完成 · ${(System.nanoTime() - start) / 1_000_000} ms（含加载）"
                 } catch (e: CancellationException) { status.text = "已取消，当前批次结束后释放资源"; throw e }
@@ -113,36 +109,34 @@ class MainActivity : Activity() {
         val manageStatus = label("点击“已安装”查看本地模型；“检查更新”只在点击时向 Mozilla 请求一次索引，不会自动联网。", 14f)
         column.addView(manageRow)
         fun mb(bytes: Long) = "%.1f MB".format(bytes / 1_000_000.0)
-        fun describe(models: List<ModelCatalog.InstalledModel>) =
+        fun describe(models: List<InstalledModel>) =
             if (models.isEmpty()) "本地没有模型" else models.joinToString("\n") { m ->
-                "${m.from}→${m.to} ${m.version} · ${mb(m.sizeBytes)} · ${if (m.isCurrentCatalogVersion) "SDK 内置版本" else "其他版本"}"
+                "${m.pair.source}→${m.pair.target} ${m.version} · ${mb(m.sizeBytes)} · ${if (m.isBundledVersion) "SDK 内置版本" else "其他版本"}"
             }
         /** Runs [block] on IO and shows its text (or the error) in the management status line. */
         fun manage(start: String, block: suspend () -> String) {
             busy(true); manageStatus.text = start
             operation = scope.launch {
-                try { manageStatus.text = withContext(Dispatchers.IO) { block() } }
+                try { manageStatus.text = block() }
                 catch (e: CancellationException) { manageStatus.text = "已取消"; throw e }
                 catch (e: Exception) { manageStatus.text = "失败：${e.message}" }
                 finally { busy(false) }
             }
         }
-        fun downloadUpdate(candidate: ModelCatalog.Model) {
-            busy(true); progress.visibility = View.VISIBLE; manageStatus.text = "正在下载 ${candidate.from}→${candidate.to} ${candidate.version}…"
+        fun downloadUpdate(candidate: ModelDescriptor) {
+            busy(true); progress.visibility = View.VISIBLE; manageStatus.text = "正在下载 ${candidate.pair.source}→${candidate.pair.target} ${candidate.version}…"
             operation = scope.launch {
                 try {
                     var lastUpdate = 0L
-                    val files = withContext(Dispatchers.IO) {
-                        ModelCatalog.download(root, candidate, ModelCatalog.DownloadPolicy(maxRetries = 5)) { p ->
+                    val files = client().models.download(candidate, DownloadOptions(maxRetries = 5)) { p ->
                             val now = System.nanoTime()
-                            if (p.downloaded == p.total || now - lastUpdate > 100_000_000) {
+                            if (p.downloadedBytes == p.totalBytes || now - lastUpdate > 100_000_000) {
                                 lastUpdate = now
                                 runOnUiThread {
-                                    if (p.total > 0) progress.progress = (p.downloaded * 100 / p.total).toInt()
+                                    if (p.totalBytes > 0) progress.progress = (p.downloadedBytes * 100 / p.totalBytes).toInt()
                                     if (p.attempt > 1) manageStatus.text = "正在重试 ${p.assetName}（第 ${p.attempt} 次）"
                                 }
                             }
-                        }
                     }
                     model = files   // Later translations use the new directory; the old one is left for "清理".
                     manageStatus.text = "已切换到 ${candidate.version}；旧版本可用“清理”回收"
@@ -153,32 +147,33 @@ class MainActivity : Activity() {
             }
         }
         listInstalled.setOnClickListener {
-            manage("正在扫描本地模型…") { describe(ModelCatalog.installed(root)) }
+            manage("正在扫描本地模型…") { describe(client().models.listInstalled()) }
         }
         cleanup.setOnClickListener {
-            val keep = setOfNotNull(model?.model?.parentFile)
+            val keep = setOfNotNull(model?.id)
             manage("正在清理…") {
-                val r = ModelCatalog.cleanup(root, keep = keep)
-                "清理完成：临时目录 ${r.removedTempDirs.size}，旧版本 ${r.removedSuperseded.size}，释放 ${mb(r.bytesFreed)}，使用中跳过 ${r.skippedInUse.size}"
+                val r = client().models.cleanup(keep = keep)
+                "清理完成：临时目录 ${r.removedTempDirectories.size}，旧版本 ${r.removedSuperseded.size}，释放 ${mb(r.freedBytes)}，使用中跳过 ${r.skippedInUse.size}"
             }
         }
         checkUpdates.setOnClickListener {
             busy(true); manageStatus.text = "正在向 Mozilla 请求模型索引…"
             operation = scope.launch {
                 try {
-                    val report = withContext(Dispatchers.IO) { ModelCatalog.checkForUpdates(root) }
-                    val enZh = report.candidates.firstOrNull { it.from == "en" && it.to == "zh-Hans" }
-                    val available = enZh?.available
+                    val report = client().models.checkUpdates()
+                    val enZh = report.assessments.firstOrNull { it.pair == pair }
+                    val available = enZh?.target
                     manageStatus.text = "可更新 ${report.updates.size} 个，未安装 ${report.notInstalled.size} 个；en→zh-Hans：" + when {
                         enZh == null || available == null -> "上游未列出"
-                        enZh.updateAvailable -> "有更新 ${available.version}（${mb(enZh.downloadSizeBytes)}）"
+                        enZh.state == UpdateState.UpdateAvailable -> "有更新 ${available.version}（${mb(available.sizeBytes)}）"
                         enZh.installed == null -> "未安装"
-                        else -> "已是最新"
+                        enZh.state == UpdateState.LocalAhead -> "本地版本较新"
+                        else -> "与上游一致"
                     } + (enZh?.newerMajorVersion?.let { "；上游已有 $it，需升级 SDK" } ?: "") +
                         (if (enZh != null && !enZh.installedStillListed) "；已安装版本已不在 Mozilla 列表中" else "")
-                    if (enZh != null && enZh.updateAvailable && available != null) {
+                    if (enZh != null && enZh.state == UpdateState.UpdateAvailable && available != null) {
                         AlertDialog.Builder(this@MainActivity).setTitle("下载更新")
-                            .setMessage("en→zh-Hans ${available.version}，约 ${mb(enZh.downloadSizeBytes)}。下载到新目录，当前模型不受影响。")
+                            .setMessage("en→zh-Hans ${available.version}，约 ${mb(available.sizeBytes)}。下载到新目录，当前模型不受影响。")
                             .setPositiveButton("下载") { _, _ -> downloadUpdate(available) }
                             .setNegativeButton("稍后", null).show()
                     }
@@ -205,4 +200,18 @@ class MainActivity : Activity() {
         setContentView(ScrollView(this).apply { addView(column) })
     }
     override fun onDestroy() { scope.cancel(); super.onDestroy() }
+}
+
+/** Application lifetime ownership: Activity recreation/cancellation does not tear down another page's client. */
+private object DemoClient {
+    private val mutex = kotlinx.coroutines.sync.Mutex()
+    private var value: Foxlet? = null
+    suspend fun get(context: android.content.Context): Foxlet {
+        mutex.lock()
+        return try {
+            value ?: Foxlet.create(context) {
+                models { directory = File(context.filesDir, "models") }
+            }.also { value = it }
+        } finally { mutex.unlock() }
+    }
 }

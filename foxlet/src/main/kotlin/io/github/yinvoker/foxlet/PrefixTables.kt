@@ -20,7 +20,7 @@ package io.github.yinvoker.foxlet
  * Loaded as a Java resource, so no `Context` is needed and the lookup works
  * identically in JVM unit tests and on device.
  */
-object NonbreakingPrefixes {
+internal object PrefixTables {
 
     /** Language tags that have a table. Two-letter ISO 639-1, plus `yue`. */
     val languages: Set<String> = setOf(

@@ -92,17 +92,17 @@ class ModelFilesTest {
     fun `engine config rejects mini-batch-words below 2x max-length-break`() {
         // 2 * MAX_LENGTH_BREAK is the documented floor: below it the engine
         // SIGABRTs the whole process instead of throwing.
-        EngineConfig(miniBatchWords = 2 * ModelFiles.MAX_LENGTH_BREAK) // boundary OK
+        EngineOptions(miniBatchWords = 2 * ModelFiles.MAX_LENGTH_BREAK) // boundary OK
         assertThrows(IllegalArgumentException::class.java) {
-            EngineConfig(miniBatchWords = 2 * ModelFiles.MAX_LENGTH_BREAK - 1)
+            EngineOptions(miniBatchWords = 2 * ModelFiles.MAX_LENGTH_BREAK - 1)
         }
     }
 
     @Test
     fun `engine config rejects negative cache size`() {
-        EngineConfig(cacheSize = 0)
-        EngineConfig(cacheSize = 4096)
-        assertThrows(IllegalArgumentException::class.java) { EngineConfig(cacheSize = -1) }
+        EngineOptions(cacheSize = 0)
+        EngineOptions(cacheSize = 4096)
+        assertThrows(IllegalArgumentException::class.java) { EngineOptions(cacheSize = -1) }
     }
 
     @Test
@@ -133,9 +133,9 @@ class ModelFilesTest {
 
     @Test
     fun `every advertised prefix table is on the classpath and parses as one`() {
-        assertEquals(25, NonbreakingPrefixes.languages.size)
-        for (language in NonbreakingPrefixes.languages) {
-            val bytes = NonbreakingPrefixes.bytesFor(language)
+        assertEquals(25, PrefixTables.languages.size)
+        for (language in PrefixTables.languages) {
+            val bytes = PrefixTables.bytesFor(language)
             assertNotNull("no table for $language", bytes)
             assertTrue("empty table for $language", bytes!!.isNotEmpty())
             // A prefix table is a line-oriented text file; anything else means we
@@ -147,7 +147,7 @@ class ModelFilesTest {
 
     @Test
     fun `english table protects the abbreviations that break sentence splitting`() {
-        val text = String(NonbreakingPrefixes.bytesFor("en")!!, Charsets.UTF_8).lines().map { it.trim() }
+        val text = String(PrefixTables.bytesFor("en")!!, Charsets.UTF_8).lines().map { it.trim() }
         for (prefix in listOf("Dr", "Mr", "Mrs", "Prof", "St", "e.g", "i.e")) {
             assertTrue("en table is missing $prefix", text.any { it == prefix || it.startsWith("$prefix ") })
         }
@@ -157,11 +157,11 @@ class ModelFilesTest {
 
     @Test
     fun `language tags resolve on their primary subtag`() {
-        val zh = NonbreakingPrefixes.bytesFor("zh")!!
-        assertArrayEquals(zh, NonbreakingPrefixes.bytesFor("zh-Hans"))
-        assertArrayEquals(zh, NonbreakingPrefixes.bytesFor("zh-Hant"))
-        assertArrayEquals(zh, NonbreakingPrefixes.bytesFor("ZH"))
-        assertArrayEquals(NonbreakingPrefixes.bytesFor("en"), NonbreakingPrefixes.bytesFor("en_GB"))
+        val zh = PrefixTables.bytesFor("zh")!!
+        assertArrayEquals(zh, PrefixTables.bytesFor("zh-Hans"))
+        assertArrayEquals(zh, PrefixTables.bytesFor("zh-Hant"))
+        assertArrayEquals(zh, PrefixTables.bytesFor("ZH"))
+        assertArrayEquals(PrefixTables.bytesFor("en"), PrefixTables.bytesFor("en_GB"))
     }
 
     @Test
@@ -169,36 +169,14 @@ class ModelFilesTest {
         // Japanese ends sentences with a character the regex already handles, so
         // ssplit-cpp ships no ja table; nor one for ko, th or ar.
         for (language in listOf("ja", "ko", "th", "ar", "xx", "", "  ", null)) {
-            assertNull("unexpected table for $language", NonbreakingPrefixes.bytesFor(language))
+            assertNull("unexpected table for $language", PrefixTables.bytesFor(language))
         }
     }
 
     @Test
-    @Suppress("DEPRECATION")
-    fun `the deprecated workspaceMb argument still compiles and is inert`() {
-        // Source compatibility gate: this call is what an already-published
-        // caller writes. It must keep compiling (a warning is fine, an error is
-        // not) until the parameter is removed in a major version.
-        // EngineConfig.forDevice(context, workload, workspaceMb = 64) is the
-        // other published form; it needs a Context, so it is exercised by
-        // androidTest rather than here.
-        val config = EngineConfig(workspaceMb = 64)
-        assertEquals(64, config.workspaceMb)
-        // Inert: the value reaches no config key.
-        val d = dir(
-            "model.enzh.intgemm.alphas.bin",
-            "srcvocab.enzh.spm",
-            "trgvocab.enzh.spm",
-            "lex.50.50.enzh.s2t.bin",
-        )
-        val files = ModelFiles.fromDirectory(d)
-        assertFalse(files.toConfigYaml(miniBatchWords = config.miniBatchWords).contains("workspace"))
-    }
-
-    @Test
     fun `nonbreaking prefixes are on by default and can be turned off`() {
-        assertTrue(EngineConfig().nonbreakingPrefixes)
-        assertFalse(EngineConfig(nonbreakingPrefixes = false).nonbreakingPrefixes)
+        assertTrue(EngineOptions().nonbreakingPrefixes)
+        assertFalse(EngineOptions(nonbreakingPrefixes = false).nonbreakingPrefixes)
     }
 
     @Test fun `ambiguous bundle and directories masquerading as files are rejected`() {
@@ -232,7 +210,7 @@ class ModelFilesTest {
         val d = dir("model.enzh.a.bin", "vocab.spm", "lex.bin")
         val base = ModelFiles.fromDirectory(d)
         assertThrows(IllegalArgumentException::class.java) { base.verify() }
-        val hashes = base.files().associate { it.name to ModelCatalog.sha256(it) }
+        val hashes = base.files().associate { it.name to Catalog.sha256(it) }
         val trusted = base.copy(expectedSha256 = hashes)
         trusted.verify()
         trusted.model.appendText("corrupt")
@@ -240,18 +218,18 @@ class ModelFilesTest {
     }
 
     @Test fun `catalog resolves complete pinned bundles`() {
-        assertEquals(106, ModelCatalog.models.size)
-        val m = ModelCatalog.find("en", "zh-Hans")
+        assertEquals(106, Catalog.models.size)
+        val m = Catalog.find("en", "zh-Hans")
         assertEquals(4, m.assets.size)
         assertTrue(m.assets.all { it.url.startsWith("https://") && it.sha256.length == 64 && it.size > 0 })
     }
 
     @Test fun `engine lease is exclusive and close is repeatable`() {
-        val engine = FoxletEngine()
-        try { assertThrows(IllegalStateException::class.java) { FoxletEngine() } }
+        val engine = NativeEngine()
+        try { assertThrows(IllegalStateException::class.java) { NativeEngine() } }
         finally { engine.close() }
         engine.close()
         assertThrows(IllegalStateException::class.java) { engine.loadedModelCount() }
-        FoxletEngine().close()
+        NativeEngine().close()
     }
 }

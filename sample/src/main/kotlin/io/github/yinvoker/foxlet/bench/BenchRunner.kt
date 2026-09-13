@@ -8,11 +8,7 @@ import com.google.mlkit.common.model.DownloadConditions
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.TranslatorOptions
-import io.github.yinvoker.foxlet.FoxletEngine
-import io.github.yinvoker.foxlet.EngineConfig
-import io.github.yinvoker.foxlet.ModelFiles
-import io.github.yinvoker.foxlet.ThreadTuning
-import io.github.yinvoker.foxlet.Workload
+import io.github.yinvoker.foxlet.*
 import java.io.File
 import java.util.concurrent.TimeUnit
 import org.json.JSONArray
@@ -36,7 +32,7 @@ class BenchRunner(
     private fun asset(name: String): List<String> =
         context.assets.open("bench/$name").bufferedReader().readLines().filter { it.isNotBlank() }
 
-    private fun deviceInfo(): JSONObject {
+    private suspend fun deviceInfo(): JSONObject {
         val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val mem = ActivityManager.MemoryInfo().also { am.getMemoryInfo(it) }
         val soc = if (Build.VERSION.SDK_INT >= 31) Build.SOC_MODEL else Build.HARDWARE
@@ -59,14 +55,16 @@ class BenchRunner(
      * measure every tier — this is the column that lets host-side scoring say
      * which of those tiers the picker would have chosen.
      */
-    private fun tuningInfo(): JSONObject {
+    private suspend fun tuningInfo(): JSONObject {
         val tuning = JSONObject()
         for (workload in Workload.entries) {
-            val d = ThreadTuning.forDevice(context, workload)
+            val client = Foxlet.create(context) { translation { threading = Threading.Auto(workload) } }
+            val info = try { client.translator.threadingInfo } finally { client.shutdown() }
+            val d = checkNotNull(info.device)
             tuning.put(
                 workload.name.lowercase(),
                 JSONObject()
-                    .put("threads", d.threads)
+                    .put("threads", info.threads)
                     .put("bigCoreCount", d.bigCoreCount)
                     .put("totalRamMb", d.totalRamBytes / 1024 / 1024)
                     .put("isLowRam", d.isLowRam),
@@ -115,31 +113,27 @@ class BenchRunner(
             // One engine per process run: marian keeps process-global state and a
             // second AsyncService in the same process fails (known engine limit).
             val t = foxletThreads
-            // idleUnloadMillis < 0: no automatic unloading. The phases below
-            // decide themselves when a model goes away, and a timer firing
-            // mid-phase would land in the memory curve.
-            // workspaceMb is deprecated and inert; the bench still threads it
-            // through so the `--ei workspace` switch and the result-file suffix
-            // keep working against older result sets.
-            @Suppress("DEPRECATION")
-            val engine = FoxletEngine(EngineConfig(threads = t, workspaceMb = workspaceMb, idleUnloadMillis = -1))
+            // workspace is retained only as benchmark result metadata; it is not an SDK option.
+            val engine = Foxlet.create(context) {
+                translation { threading = Threading.Fixed(t); retention = ModelRetention.UntilShutdown }
+            }
             try {
                 phases.put(foxletPhase("bergamot-enzh-${t}t", engine) {
-                    it.translate(eng, ModelFiles.fromDirectory(enzh))
+                    it.translate(eng, ExternalModel(LanguagePair("en", "zh-Hans"), ModelFiles.fromDirectory(enzh)))
                 })
-                engine.releaseAllModels()
+                engine.translator.unloadModels()
                 phases.put(foxletPhase("bergamot-jazh-pivot-${t}t", engine) {
-                    it.translatePivot(jpn, ModelFiles.fromDirectory(jaen), ModelFiles.fromDirectory(enzh))
+                    it.translatePivot(jpn, ExternalModel(LanguagePair("ja", "en"), ModelFiles.fromDirectory(jaen)), ExternalModel(LanguagePair("en", "zh-Hans"), ModelFiles.fromDirectory(enzh)))
                 })
-                engine.releaseAllModels()
+                engine.translator.unloadModels()
                 phases.put(foxletPhase("bergamot-jazh-seq-${t}t", engine) {
                     // RAM-capped variant: one model resident at a time.
-                    val english = it.translate(jpn, ModelFiles.fromDirectory(jaen))
-                    it.releaseAllModels()
-                    it.translate(english, ModelFiles.fromDirectory(enzh))
+                    val english = it.translate(jpn, ExternalModel(LanguagePair("ja", "en"), ModelFiles.fromDirectory(jaen)))
+                    it.unloadModels()
+                    it.translate(english, ExternalModel(LanguagePair("en", "zh-Hans"), ModelFiles.fromDirectory(enzh)))
                 })
             } finally {
-                engine.close()
+                engine.shutdown()
             }
         }
 
@@ -208,8 +202,8 @@ class BenchRunner(
 
     private suspend fun foxletPhase(
         name: String,
-        engine: FoxletEngine,
-        block: suspend (FoxletEngine) -> List<String>,
+        engine: Foxlet,
+        block: suspend (io.github.yinvoker.foxlet.Translator) -> List<String>,
     ): JSONObject {
         val displayName = name.replace("bergamot", "Foxlet")
         log("[$displayName] starting")
@@ -217,7 +211,7 @@ class BenchRunner(
         val phase = JSONObject().put("name", name).put("engine", "bergamot").put("threads", foxletThreads)
         try {
             val t0 = System.nanoTime()
-            val outputs = block(engine)
+            val outputs = block(engine.translator)
             phase.put("totalMs", (System.nanoTime() - t0) / 1_000_000)
             phase.put("outputs", JSONArray().also { arr -> outputs.forEach { arr.put(it) } })
         } catch (e: Exception) {

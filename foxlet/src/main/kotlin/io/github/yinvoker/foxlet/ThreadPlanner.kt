@@ -23,16 +23,16 @@ enum class Workload {
 
 /**
  * Recommends a thread ceiling from RAM and fast-core count. [recommend] is pure;
- * [forDevice] reads the Android device. Explicit [EngineConfig] values take precedence.
+ * [forDevice] reads the Android device. Explicit [EngineOptions] values take precedence.
  */
-object ThreadTuning {
+internal object ThreadPlanner {
 
     private const val MB = 1024L * 1024L
     private const val GB = 1024L * MB
 
     /** Recommended thread count and the device inputs used to select it. */
     data class Decision(
-        /** 1, 2, 4 or 6. Feed straight to `EngineConfig(threads = ...)`. */
+        /** 1, 2, 4 or 6. Feed straight to `EngineOptions(threads = ...)`. */
         val threads: Int,
         val workload: Workload,
         /** `ActivityManager.MemoryInfo.totalMem`, or whatever the caller modelled. */

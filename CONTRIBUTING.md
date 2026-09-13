@@ -6,7 +6,7 @@
 
 ## 改动规则
 
-- Kotlin API 的行为、线程、生命周期和兼容参数必须同步更新 KDoc 与 `docs/getting-started.md`。
+- Kotlin API 的行为、线程和生命周期必须同步更新 KDoc 与 `docs/getting-started.md`；公开签名变化还需按 [API 快照说明](api/README.md) 审阅和更新。
 - JNI 改动要同时检查句柄所有权、异常/错误边界、数组顺序和释放时机。
 - `engine/` 内的上游代码不要直接编辑。每个本地逻辑改动使用一个可解释的 commit，并按 `engine/UPSTREAM.md` 刷新 `patches/`。
 - 产品构建选项在根 CMake 或对应模块入口维护；版本比较工具显式记录固定 flags，不能把它们当成 AAR 全链路构建的替代。
@@ -17,6 +17,7 @@
 
 ```bash
 ./gradlew :foxlet:test :foxlet:assembleRelease :sample:assembleDebug
+python3 tools/distribution/check_public_api.py
 cmake -B build-host -DCMAKE_BUILD_TYPE=Release \
   -DSSPLIT_USE_INTERNAL_PCRE2=ON -DCOMPILE_TESTS=OFF
 cmake --build build-host --target smoke

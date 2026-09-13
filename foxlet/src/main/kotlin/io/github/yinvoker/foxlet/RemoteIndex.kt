@@ -57,9 +57,9 @@ internal object MozillaVersion {
 }
 
 /**
- * The remote half of [ModelCatalog.checkForUpdates]: one GET of a Remote
+ * The remote half of [Catalog.checkForUpdates]: one GET of a Remote
  * Settings changeset, the record parse, and Firefox's selection rule turned
- * into [ModelCatalog.Model]s the downloader can take as they are.
+ * into [Catalog.Model]s the downloader can take as they are.
  *
  * The selection mirrors `TranslationsParent.sys.mjs`
  * (`getMaxSupportedVersionRecords` + `#filterByModelVersion`): records are
@@ -71,7 +71,7 @@ internal object MozillaVersion {
  * expression (nightly-only, desktop-only) counts as "not for us". And Firefox
  * picks per file and then reconciles; here a version counts only when it
  * ships a complete set, which is what the engine can load and what
- * [ModelCatalog.Model.identity] is defined over.
+ * [Catalog.Model.identity] is defined over.
  *
  * Nothing here retries, sleeps or caches. [open] is the test seam that lets a
  * local HTTP server stand in for the HTTPS endpoint.
@@ -107,7 +107,7 @@ internal class RemoteIndex(
     data class PairAvailability(
         val from: String,
         val to: String,
-        val eligible: List<ModelCatalog.Model>,
+        val eligible: List<Catalog.Model>,
         val newerMajorVersion: String?,
     )
 
@@ -122,24 +122,24 @@ internal class RemoteIndex(
      * one is ~380 KB) is an [IllegalStateException], like any other malformed
      * index.
      */
-    fun fetch(source: ModelCatalog.UpdateSource): Changeset {
+    fun fetch(source: Catalog.UpdateSource, network: NetworkOptions = NetworkOptions()): Changeset {
         val separator = if ('?' in source.changesetUrl) '&' else '?'
         val url = URL("${source.changesetUrl}${separator}_expected=0")
         require(url.protocol == "https") { "Model index requires HTTPS" }
         val connection = open(url)
         try {
-            connection.connectTimeout = TIMEOUT_MILLIS
-            connection.readTimeout = TIMEOUT_MILLIS
+            connection.connectTimeout = network.connectTimeout.timeoutMillis()
+            connection.readTimeout = network.readTimeout.timeoutMillis()
             connection.instanceFollowRedirects = false
             connection.setRequestProperty("User-Agent", source.userAgent)
             connection.setRequestProperty("Accept-Encoding", "gzip")
             connection.setRequestProperty("Accept", "application/json")
             val code = connection.responseCode
             if (code != HttpURLConnection.HTTP_OK) {
-                val wait = listOf("Retry-After", "Backoff").firstNotNullOfOrNull { header ->
-                    connection.getHeaderField(header)?.let { "$header: ${it.trim()}" }
+                val seconds = listOf("Retry-After", "Backoff").firstNotNullOfOrNull {
+                    connection.getHeaderField(it)?.trim()?.toLongOrNull()
                 }
-                throw IOException("Model index returned HTTP $code" + (wait?.let { " ($it)" } ?: ""))
+                throw HttpStatusException(url.toString(), code, seconds?.coerceIn(0, 120)?.times(1000))
             }
             // We asked for gzip explicitly, so no HTTP stack decodes it for us.
             val gzip = connection.contentEncoding?.trim().equals("gzip", ignoreCase = true)
@@ -188,7 +188,7 @@ internal class RemoteIndex(
             version = item.string("version") ?: return null,
             fileType = item.string("fileType") ?: return null,
             // A non-string expression is kept as text: it will not equal the Android one, so the record is ineligible.
-            filterExpression = if (item.isNull("filter_expression")) null else item.opt("filter_expression").toString(),
+            filterExpression = if (item.isNull("filter_expression")) null else item.opt("filter_expression")?.toString(),
             size = size,
             sha256 = sha256,
             location = attachment.string("location") ?: return null,
@@ -199,15 +199,15 @@ internal class RemoteIndex(
     /**
      * Firefox's selection over [changeset], keyed by (from, to) and sorted by
      * it. Pairs with nothing eligible in any major are absent. Asset URLs are
-     * [ModelCatalog.UpdateSource.attachmentBaseUrl] (one trailing slash) plus
+     * [Catalog.UpdateSource.attachmentBaseUrl] (one trailing slash) plus
      * the record's location — the mapping the bundled catalog was built with,
      * so a remote model that matches a catalog entry matches it byte for byte,
      * URL included.
      */
     fun availability(
         changeset: Changeset,
-        source: ModelCatalog.UpdateSource,
-        supportedMajors: IntRange = ModelCatalog.supportedMajorVersions,
+        source: Catalog.UpdateSource,
+        supportedMajors: IntRange = Catalog.supportedMajorVersions,
     ): Map<Pair<String, String>, PairAvailability> {
         val base = source.attachmentBaseUrl.trimEnd('/') + "/"
         val result = LinkedHashMap<Pair<String, String>, PairAvailability>()
@@ -239,12 +239,12 @@ internal class RemoteIndex(
      * engine's own directory resolver would refuse the result — so it is
      * skipped in favour of the next lower complete one.
      */
-    private fun completeSet(from: String, to: String, version: String, files: List<Record>, base: String): ModelCatalog.Model? {
+    private fun completeSet(from: String, to: String, version: String, files: List<Record>, base: String): Catalog.Model? {
         val byType = files.groupBy { it.fileType }
         if (byType.values.any { it.size != 1 }) return null
         val vocabulary = if ("vocab" in byType) setOf("vocab") else setOf("srcvocab", "trgvocab")
         if (byType.keys != setOf("model", "lex") + vocabulary) return null
-        val assets = files.map { ModelCatalog.Asset(it.name, it.size, it.sha256, base + it.location) }.sortedBy { it.name }
+        val assets = files.map { Catalog.Asset(it.name, it.size, it.sha256, base + it.location) }.sortedBy { it.name }
         if (assets.map { it.name }.toSet().size != assets.size) return null
         if (assets.any { it.name != File(it.name).name || it.name.any { c -> c <= ' ' } }) return null
         val resolved = try {
@@ -253,30 +253,30 @@ internal class RemoteIndex(
             return null
         }
         if (resolved.files().map { it.name }.toSet() != assets.map { it.name }.toSet()) return null
-        return ModelCatalog.Model(from, to, version, assets)
+        return Catalog.Model(from, to, version, assets)
     }
 
     private fun major(version: String): Int = checkNotNull(MozillaVersion.parse(version)) { "unparsable version survived eligibility: $version" }.major
 
     /**
      * Compare what is installed with what is available, one
-     * [ModelCatalog.UpdateCandidate] per pair that is installed or offered
+     * [Catalog.UpdateCandidate] per pair that is installed or offered
      * (restricted to [pairs] when given), sorted by (from, to). The installed
      * side is the highest version on disk for the pair — an unsuffixed
      * directory before a collision-suffixed twin — without hashing anything:
-     * this is a listing, verification is [ModelCatalog.installedFor]'s job.
+     * this is a listing, verification is [Catalog.installedFor]'s job.
      * An update is a different identity at the same or a higher version; an
      * installed model that upstream no longer lists at all is reported through
      * `installedStillListed`, never acted on.
      */
     fun report(
-        installed: List<ModelCatalog.InstalledModel>,
+        installed: List<Catalog.InstalledModel>,
         availability: Map<Pair<String, String>, PairAvailability>,
-        source: ModelCatalog.UpdateSource,
+        source: Catalog.UpdateSource,
         indexTimestamp: Long,
         pairs: Set<Pair<String, String>>?,
         now: Long = System.currentTimeMillis(),
-    ): ModelCatalog.UpdateReport {
+    ): Catalog.UpdateReport {
         val candidatePairs = (installed.map { it.from to it.to } + availability.keys).toSet()
             .filter { pairs == null || it in pairs }
             .sortedWith(compareBy({ it.first }, { it.second }))
@@ -285,7 +285,7 @@ internal class RemoteIndex(
             val offered = availability[pair]
             val eligible = offered?.eligible.orEmpty()
             val available = eligible.firstOrNull()
-            ModelCatalog.UpdateCandidate(
+            Catalog.UpdateCandidate(
                 from = pair.first,
                 to = pair.second,
                 installed = best,
@@ -297,7 +297,7 @@ internal class RemoteIndex(
                 newerMajorVersion = offered?.newerMajorVersion,
             )
         }
-        return ModelCatalog.UpdateReport(source, now, indexTimestamp, candidates)
+        return Catalog.UpdateReport(source, now, indexTimestamp, candidates)
     }
 
     private fun readCapped(input: InputStream): ByteArray {
@@ -314,10 +314,13 @@ internal class RemoteIndex(
 
     // org.json's optString turns a JSON null into the text "null" on Android; go through opt() and type-check instead.
     private fun JSONObject.string(key: String): String? = (opt(key) as? String)?.takeIf { it.isNotBlank() }
-    private fun JSONObject.long(key: String): Long? = when (val value = opt(key)) {
-        is Long -> value
-        is Int -> value.toLong()
-        else -> null
+    private fun JSONObject.long(key: String): Long? {
+        val value: Any? = opt(key)
+        return when (value) {
+            is Long -> value
+            is Int -> value.toLong()
+            else -> null
+        }
     }
 
     companion object {
@@ -329,7 +332,7 @@ internal class RemoteIndex(
         private val ASSET_TYPES = setOf("model", "lex", "vocab", "srcvocab", "trgvocab")
         private val SHA256 = Regex("[0-9a-f]{64}")
         /** Highest version first, then an unsuffixed directory before a collision-suffixed one, then by name for determinism. */
-        private val INSTALLED_ORDER = Comparator<ModelCatalog.InstalledModel> { a, b -> MozillaVersion.compare(b.version, a.version) }
+        private val INSTALLED_ORDER = Comparator<Catalog.InstalledModel> { a, b -> MozillaVersion.compare(b.version, a.version) }
             .thenBy { it.directory.name != "${it.from}-${it.to}-${it.version}-${it.identity}" }
             .thenBy { it.directory.name }
     }

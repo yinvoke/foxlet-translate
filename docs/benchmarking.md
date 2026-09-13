@@ -124,6 +124,12 @@ FLORES-200 仅是评测集，引用和许可见 [CITATION](../benchmarks/CITATIO
 
 以上为 `fa351ed` 的本地预检记录；记录时新 API 的真机验收尚未执行。最终发行构件由 v0.4.0 工作流重新构建，并通过该工作流的 Android 设备任务验收；实际结果及 APK 指纹以 [Release](https://github.com/yinvoke/foxlet-translate/releases/tag/v0.4.0) 中的 `device-result.json` 为准。下方历史真机记录不证明本次重构后的构件。v0.3.0 Release 已撤下，历史标签保留。
 
+### 发行设备门禁补充
+
+独立测试 APK 首次运行时发现 Demo 的 R8 规则仍引用旧 SDK 类型，新配置的默认参数构造器因此被裁剪，导致 `NoSuchMethodError`。Demo 现从公开 API 快照生成测试调用边界的保留规则，允许实现优化与混淆；AAR 面向普通宿主的 consumer rules 不扩大保留范围。
+
+2026-09-13，修复后的本地 Release Demo 与测试包在 Android 15 / API 35、arm64-v8a 模拟器上返回 `OK (1 test)`，无失败或跳过。覆盖首次真实下载、翻译、Unicode/HTML、模型验证与复用、占用保护、清理和删除、关闭后重建及远端索引请求。耗时约 7.8 秒，包含下载与完整功能测试，不作为真机性能数据。结果位于本地 `build/unified-api-r8-local-device-result.json`；正式发布仍由工作流对同一套最终 CI APK 重新验收。
+
 ## 统一 API 前的模型管理审查记录（历史）
 
 以下记录对应 2026-09-12 至 13 日的模型管理功能审查构件，尚未写入 0.4.0 版本号。随后旧 v0.4.0 CI 完成构建，但设备验收中断，发布流程已取消；这些记录均早于统一 API 重构。

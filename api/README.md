@@ -18,3 +18,5 @@ python3 tools/distribution/check_public_api.py
 ```
 
 这是一份编译产物签名快照，不是完整 Kotlin 元数据兼容性分析：它包含编译器生成的默认参数方法，也可能包含在字节码中可见、在 Kotlin 元数据中标记为 internal 的成员。它不赋予这些成员公共使用契约。可空性、默认值和行为契约仍需结合源代码、消费者编译与回归测试审查。使用方法以接入指南为准。
+
+Demo 的 instrumentation 测试位于独立 APK，目标 app 的 R8 无法看到这些调用。`generateSdkDeviceTestRules` 从快照中的类型生成 Demo 专用规则，保留公开调用边界，同时允许实现优化与混淆，防止默认参数构造器等入口被裁剪。普通宿主使用的 AAR consumer rules 仍只保护 JNI 入口。更新快照后应重新构建并运行设备测试，不能只验证两个 APK 各自编译成功。

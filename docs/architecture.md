@@ -47,8 +47,8 @@ engine/marian-fork/       vendored Marian runtime and ARM tensor backends
 2. `ModelFiles.fromDirectory` 根据文件名找到模型、词表和 shortlist；加载时可附带源语言的 non-breaking prefix 表。
 3. `threads = 1` 使用 blocking 路径；`threads >= 2` 创建 worker 并行处理 batch。
 4. JNI 把输入数组交给 `engine/src/translator`，引擎完成分句、batch、模型推理和结果构造。
-5. Kotlin 层按输入顺序返回结果，并重置该模型的 idle-unload 计时器。
-6. 空闲 sweep、`translator.unloadModels()` 和 `shutdown()` 都在同一个 engine thread 上执行，避免与 native batch 并发释放。
+5. 请求结束时按驻留策略处理模型：`Idle` 更新空闲期限，`AfterRequest` 在下一批翻译开始前卸载，`UntilShutdown` 保持驻留，直到主动卸载或关闭。Kotlin 层按输入顺序返回结果。
+6. 空闲 sweep、`translator.unloadModels()` 和 `shutdown()` 的 native 释放都在同一个 engine thread 上执行，避免与 native batch 并发释放。未确认销毁的模型继续保留磁盘占用保护，直到服务销毁。
 
 ## 模型管理边界
 

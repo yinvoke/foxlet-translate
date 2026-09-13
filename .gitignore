@@ -34,4 +34,5 @@ docs/*
 !docs/architecture.md
 !docs/api-design-review.md
 !docs/benchmarking.md
+!docs/releasing.md
 !docs/smmla-compatibility.md

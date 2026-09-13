@@ -70,6 +70,8 @@ tools/regress-hash.sh build-host/tools/smoke/smoke \
 
 `.github/workflows/build.yml` 在 Ubuntu 上构建 AAR、运行 JVM 测试和构建 sample；在 macOS ARM 与 Linux ARM 上运行主机 smoke、SMMLA 测试及指令隔离检查。macOS 兼容不支持 i8mm 的设备，Linux ARM 必须实际执行 i8mm 测试，不能跳过。发布由 `.github/workflows/release.yml` 的 `v*` tag 触发，并要求存在对应的 `.github/releases/<tag>.md`。
 
+普通构建工作流在 `main` 推送或 Pull Request 时运行；单独推送开发分支不会触发它。当前分支、推送预检与重新发布的步骤见 [推送与发布准备](releasing.md)。
+
 不要提交 `build/`、下载模型或临时 logcat；经检查的版本基准原始 JSON 应保存在 `benchmarks/<version>/` 并挂到索引。CI 验证基准检查器自身的测试，固定设备上的实测仍需单独运行。
 
 
@@ -111,7 +113,7 @@ FLORES-200 仅是评测集，引用和许可见 [CITATION](../benchmarks/CITATIO
 
 ## v0.4.0 统一 API 验证记录
 
-2026-09-13 在 `codex/unified-api` 实施破坏性重构，基线为 `e699e1c`。移除旧公开入口，统一客户端、配置、模型引用、网络选项、报告、异常和生命周期；Demo、sample 和设备测试同步迁移。实现契约见 [API 设计](api-design-review.md)，用法见 [接入指南](getting-started.md)。
+2026-09-13 在 `codex/unified-api` 实施破坏性重构，基线为 `e699e1c`，实现提交为 `fa351ed`。移除旧公开入口，统一客户端、配置、模型引用、网络选项、报告、异常和生命周期；Demo、sample 和设备测试同步迁移。实现契约见 [API 设计](api-design-review.md)，用法见 [接入指南](getting-started.md)。
 
 - Kotlin/JVM：153 项通过，无失败、错误或跳过。新增测试覆盖配置一致性、安装对象贯穿完整流程、本地优先与纯离线选择、四种校验状态、更新重试、回调异常、部分删除、客户端取消/关闭竞争，以及实际引擎队列上的 AfterRequest 与未确认释放保护。
 - Release AAR、无前缀 AAR、R8 Demo、Release 测试 APK、sample Debug APK 和库的 Debug instrumentation APK 构建通过；foxlet/demo Lint 无错误。

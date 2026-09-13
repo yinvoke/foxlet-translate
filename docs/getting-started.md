@@ -53,6 +53,7 @@ suspend fun openFoxlet(context: Context): Foxlet = Foxlet.create(context) {
 // 等价的配置对象入口：
 suspend fun openWithConfig(context: Context): Foxlet =
     Foxlet.create(context, FoxletConfig(
+        models = ModelsConfig(networkOptions = NetworkOptions(readTimeout = 20.seconds)),
         translation = TranslationConfig(threading = Threading.Auto(Workload.BATCH)),
     ))
 ```
@@ -203,6 +204,8 @@ try {
 正常结果直接返回；业务失败使用 `FoxletException` 子类：`ModelNotInstalledException`、`UnsupportedLanguagePairException`、`ModelInUseException`、`ModelIntegrityException`、`NetworkException`、`ModelStorageException`、`ModelIndexException`、`TranslationException`。保留 cause 和适用的 installationId、assetName、HTTP status、attempt 等字段。参数错误仍为 `IllegalArgumentException`；关闭后的调用为 `ClientClosedException`。`CancellationException` 继续传播。
 
 旧 `ModelCatalog`、`FoxletEngine`、`EngineConfig`、`ThreadTuning`、`NonbreakingPrefixes` 入口已移除。宿主需重新编译并迁移到 `Foxlet`；没有废弃别名或旧 ABI 保留。删除了无效 `workspaceMb` 参数、Future 生命周期方法及多种进度 lambda。`ModelFiles` 仅保留为外部模型文件描述。完整设计与变更映射见 [统一 API 设计](api-design-review.md)。
+
+本地验证、分支推送与重新发布的步骤见 [推送与发布准备](releasing.md)。旧版本的 APK 或设备结果不能作为新 API 构件的验收记录。
 
 ## 9. 许可
 

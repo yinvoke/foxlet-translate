@@ -26,6 +26,7 @@ Foxlet Translate 是面向 Android 的高性能离线翻译库，基于 Mozilla 
 | 集成 AAR、下载模型、调用 Kotlin API | [快速开始](docs/getting-started.md) |
 | 了解 Android/JNI/引擎/工具边界 | [代码结构与运行时架构](docs/architecture.md) |
 | 本地构建、测试和真机基准 | [构建、测试与基准](docs/benchmarking.md) |
+| 检查推送条件与 0.4.0 发布待办 | [推送与发布准备](docs/releasing.md) |
 | 每版性能、原始数据与回归检查 | [benchmarks/](benchmarks/README.md) |
 
 ## ✨ 特性
@@ -40,7 +41,7 @@ Foxlet Translate 是面向 Android 的高性能离线翻译库，基于 Mozilla 
 - **性能优化**:相较初版 Android 移植，首次翻译速度提升约 **102–112%**，峰值 RSS 降低约 **41–42%**（小米 14、默认单线程参考测量，见[性能参考](#-性能结果)）
 - **智能分句**:按源语言自带 Moses 前缀表(25 种语言),`Dr.`、`U.S.`、`No. 5` 的句号不再被当成句尾
 - **内存管理**:int8 embedding、模型按需加载、空闲自动卸载与释放确认,可挂 `onTrimMemory`
-- **线程与调度**:单句走同步路径,批量按机型内存与快核数自动定档(`Threading.Auto`)
+- **线程与调度**：默认单线程使用同步路径；`Threading.Auto` 按设备能力和指定工作负载在创建客户端时定档
 
 ## 🚀 Android 性能优化
 
@@ -48,7 +49,7 @@ Foxlet Translate 是面向 Android 的高性能离线翻译库，基于 Mozilla 
 
 - **ARM 内核适配**：支持具备 i8mm 的设备使用 SMMLA，其他 ARM64 设备自动回退到 ruy/SDOT，覆盖骁龙 865、8 Gen 1、8 Gen 3 等不同代际。
 - **推理计算优化**：使用 int8 embedding/权重路径，优化 Attention 小矩阵计算、shortlist 和 batch 形状，默认 `mini-batch-words` 为 512。
-- **低延迟路径**：一次一句的交互式翻译默认使用 BlockingService，减少 worker 派发和同步开销；批量任务才启用并行 worker。
+- **低延迟路径**：单线程配置使用 BlockingService，减少 worker 派发和同步开销；配置两个及以上线程时使用并行 worker。
 - **设备感知调度**：根据内存、低内存标记和快核数量，在 1/2/4/6 个线程档位中自动选择，并支持显式覆盖。
 - **内存生命周期**：模型按需加载，支持空闲自动卸载、`onTrimMemory` 主动释放和双模型 pivot 的内存权衡。
 - **构建与兼容性**：通过链接裁剪与非 JNI 符号隐藏减小原生库体积，支持 16 KB page size，兼容具备和不具备 i8mm 的 ARM64 设备。
@@ -330,6 +331,7 @@ adb shell am start -n io.github.yinvoker.foxlet.bench/.MainActivity \
 - [x] 模型更新检测
 - [x] 本地模型管理
 - [x] 下载与更新增强
+- [x] 统一模型管理与翻译 API
 - [ ] HTML 模式验证
 - [ ] SME2 指令集支持
 - [x] 构建优化

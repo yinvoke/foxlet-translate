@@ -25,3 +25,5 @@ python3 -B -m unittest discover -s tools/version-bench -p 'test_*.py' -v
 ```
 
 如果改动触及 native kernel、batch、模型加载或线程调度，再运行对应的 SMMLA、smoke、哈希和真机测试，并在提交说明中列出结果。性能结果按 [基准约定](benchmarks/README.md) 存档，回归检查退出码 1/2 均不能视为通过；不要覆盖基线来隐藏退步。文档改动至少检查相对链接、命令路径和示例版本是否与代码一致。
+
+提交后的源码标识、分支推送和 tag 发布步骤见 [推送与发布准备](docs/releasing.md)。只改文档时不重复运行已经通过且不受影响的 native 性能/输出回归；需要交付产物时仍应从最终提交重新打包，使 `SOURCE.txt` 对应实际源码。

@@ -23,7 +23,7 @@ import org.junit.Test
  * roots holding byte-sized fake models. The hashes are real — the store
  * hashes whatever it verifies — only the bytes are tiny.
  *
- * [FoxletEngine] cannot load a model on the JVM, so the "in use" guard is
+ * [NativeEngine] cannot load a model on the JVM, so the "in use" guard is
  * driven through [ActiveModels] directly, the same calls the engine makes
  * around a native load and release.
  */
@@ -36,7 +36,7 @@ class ModelStoreTest {
         val FILE_NAMES = listOf("model.enzh.intgemm.alphas.bin", "srcvocab.enzh.spm", "trgvocab.enzh.spm", "lex.50.50.enzh.s2t.bin")
     }
 
-    private class Fake(val dir: File, val model: ModelCatalog.Model)
+    private class Fake(val dir: File, val model: Catalog.Model)
 
     private lateinit var root: File
 
@@ -73,10 +73,10 @@ class ModelStoreTest {
         return Fake(dir, model)
     }
 
-    private fun modelOf(dir: File, from: String, to: String, version: String) = ModelCatalog.Model(
+    private fun modelOf(dir: File, from: String, to: String, version: String) = Catalog.Model(
         from, to, version,
         dir.listFiles()!!.filter { it.isFile && it.name != ModelManifest.FILE_NAME }
-            .map { ModelCatalog.Asset(it.name, it.length(), ModelCatalog.sha256(it), HOST + it.name) }
+            .map { Catalog.Asset(it.name, it.length(), Catalog.sha256(it), HOST + it.name) }
             .sortedBy { it.name },
     )
 
@@ -120,7 +120,7 @@ class ModelStoreTest {
 
     @Test
     fun `every bundled catalog directory name parses back to its model`() {
-        for (model in ModelCatalog.models) {
+        for (model in Catalog.models) {
             assertEquals(
                 model.directoryName,
                 ModelStore.ParsedName(model.from, model.to, model.version, model.identity, null),
@@ -143,10 +143,10 @@ class ModelStoreTest {
     fun `a manifest decides the pair split ahead of the heuristic, but only for its own pair`() {
         // Both halves pass the tag shape at the first dash, so the heuristic alone reads (foo, bar-baz).
         assertEquals("foo" to "bar-baz", ModelStore.parseName("foo-bar-baz-1.0-$ID")!!.let { it.from to it.to })
-        val manifest = ModelCatalog.Model("foo-bar", "baz", "1.0", emptyList())
+        val manifest = Catalog.Model("foo-bar", "baz", "1.0", emptyList())
         assertEquals("foo-bar" to "baz", ModelStore.parseName("foo-bar-baz-1.0-$ID", manifest)!!.let { it.from to it.to })
         // A manifest for some other pair is not trusted over the name.
-        val other = ModelCatalog.Model("de", "en", "1.0", emptyList())
+        val other = Catalog.Model("de", "en", "1.0", emptyList())
         assertEquals("foo" to "bar-baz", ModelStore.parseName("foo-bar-baz-1.0-$ID", other)!!.let { it.from to it.to })
     }
 
@@ -187,7 +187,7 @@ class ModelStoreTest {
 
     @Test
     fun `a directory without a manifest resolves through the bundled catalog by identity`() {
-        val model = ModelCatalog.find("en", "zh-Hans")
+        val model = Catalog.find("en", "zh-Hans")
         val dir = File(root, model.directoryName).apply { check(mkdir()) }
         for (asset in model.assets) File(dir, asset.name).writeText("not the real bytes")
         val listed = ModelStore.installed(root, verify = false).single()
@@ -246,7 +246,7 @@ class ModelStoreTest {
 
     @Test
     fun `a root that does not exist yet has nothing installed`() {
-        assertEquals(emptyList<ModelCatalog.InstalledModel>(), ModelStore.installed(File(root, "missing"), verify = true))
+        assertEquals(emptyList<Catalog.InstalledModel>(), ModelStore.installed(File(root, "missing"), verify = true))
     }
 
     // ---------------------------------------------------------------- installedFor
@@ -282,8 +282,8 @@ class ModelStoreTest {
         val files = ModelFiles.fromDirectory(fake.dir)
 
         ActiveModels.acquire(files)
-        val error = assertThrows(IllegalStateException::class.java) { ModelStore.delete(root, listed) }
-        assertTrue(error.message!!.contains("releaseAllModels"))
+        val error = assertThrows(ModelInUseException::class.java) { ModelStore.delete(root, listed) }
+        assertTrue(error.installationId != null)
         assertTrue(fake.dir.isDirectory)
 
         ActiveModels.release(files)
@@ -319,7 +319,7 @@ class ModelStoreTest {
         val files = ModelFiles.fromDirectory(a.dir)
 
         ActiveModels.acquire(files)
-        assertThrows(IllegalStateException::class.java) { ModelStore.delete(root, "de", "en") }
+        assertThrows(ModelInUseException::class.java) { ModelStore.delete(root, "de", "en") }
         assertTrue(a.dir.isDirectory && b.dir.isDirectory)
 
         ActiveModels.release(files)
@@ -504,7 +504,7 @@ class ModelStoreTest {
         ActiveModels.acquire(files)
         try {
             val entry = ModelStore.installed(root, false).single { it.directory == old.dir }
-            assertThrows(IllegalStateException::class.java) { ModelStore.delete(root, entry) }
+            assertThrows(ModelInUseException::class.java) { ModelStore.delete(root, entry) }
             assertTrue(cleanup().skippedInUse.contains(old.dir))
             assertTrue(table.isFile)
         } finally {
@@ -522,7 +522,7 @@ class ModelStoreTest {
             assertThrows(IllegalArgumentException::class.java) {
                 ActiveModels.load(files) {
                     pool.submit {
-                        assertThrows(IllegalStateException::class.java) { ModelStore.delete(root, entry) }
+                        assertThrows(ModelInUseException::class.java) { ModelStore.delete(root, entry) }
                     }.get(5, TimeUnit.SECONDS)
                     throw IllegalArgumentException("native load failed")
                 }

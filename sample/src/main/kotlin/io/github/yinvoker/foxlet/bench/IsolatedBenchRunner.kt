@@ -9,9 +9,7 @@ import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.Translator
 import com.google.mlkit.nl.translate.TranslatorOptions
-import io.github.yinvoker.foxlet.FoxletEngine
-import io.github.yinvoker.foxlet.EngineConfig
-import io.github.yinvoker.foxlet.ModelFiles
+import io.github.yinvoker.foxlet.*
 import java.io.File
 import java.security.MessageDigest
 import java.util.concurrent.TimeUnit
@@ -86,7 +84,7 @@ class IsolatedBenchRunner(
         fun save() = output.writeText(report.toString(2) + "\n")
         save()
         var translator: Translator? = null
-        var engine: FoxletEngine? = null
+        var engine: Foxlet? = null
         try {
             if (prepare) {
                 translator = newTranslator()
@@ -113,12 +111,12 @@ class IsolatedBenchRunner(
                             val client = translator ?: newTranslator().also { translator = it }
                             inputs.map { Tasks.await(client.translate(it), 120, TimeUnit.SECONDS) }
                         } else {
-                            val client = engine ?: FoxletEngine(EngineConfig(
-                                threads = threads, cacheSize = 0, idleUnloadMillis = -1,
-                            )).also { engine = it }
-                            val enzh = ModelFiles.fromDirectory(File(models!!, "enzh"))
-                            if (direction == "enzh") client.translate(inputs, enzh)
-                            else client.translatePivot(inputs, ModelFiles.fromDirectory(File(models, "jaen")), enzh)
+                            val client = engine ?: Foxlet.create(context) {
+                                translation { threading = Threading.Fixed(threads); retention = ModelRetention.UntilShutdown; cacheSize = 0 }
+                            }.also { engine = it }
+                            val enzh = ExternalModel(LanguagePair("en", "zh-Hans"), ModelFiles.fromDirectory(File(models!!, "enzh")))
+                            if (direction == "enzh") client.translator.translate(inputs, enzh)
+                            else client.translator.translatePivot(inputs, ExternalModel(LanguagePair("ja", "en"), ModelFiles.fromDirectory(File(models, "jaen"))), enzh)
                         }
                         val elapsedMs = (System.nanoTime() - start) / 1_000_000.0
                         require(translated.size == inputs.size)
@@ -143,7 +141,7 @@ class IsolatedBenchRunner(
         } finally {
             try {
                 translator?.close()
-                engine?.close()
+                engine?.shutdown()
             } catch (error: Exception) {
                 report.put("status", "failed").put("cleanup_error", error.toString())
             }

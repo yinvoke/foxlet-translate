@@ -15,7 +15,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.ensureActive
 
 /**
- * Fetches one [ModelCatalog.Model] into a fresh directory under a root:
+ * Fetches one [Catalog.Model] into a fresh directory under a root:
  * resumable, retrying, verified, published atomically.
  *
  * Layout under the root while a download runs: `.download-<directoryName>`
@@ -29,13 +29,13 @@ import kotlinx.coroutines.ensureActive
  *
  * Trust is the TLS connection plus the size and SHA-256 the model record
  * carries: every asset URL must be HTTPS to a host in
- * [ModelCatalog.DownloadPolicy.allowedHosts], redirects are not followed, and
+ * [Catalog.DownloadPolicy.allowedHosts], redirects are not followed, and
  * a resumed prefix is re-hashed so the final digest covers every byte on disk,
  * not only the bytes this attempt received. A size or digest mismatch is a data
- * problem and fails at once ([IllegalArgumentException], offending file removed);
+ * problem and fails at once ([ModelIntegrityException], offending file removed);
  * transport failures ([IOException]) and HTTP 408/429/5xx are retried with
  * full-jitter backoff; any other status is a protocol failure
- * ([IllegalStateException]) that retrying would not fix.
+ * ([NetworkException]) that retrying would not fix.
  *
  * The CDN's fixed-length responses matter for one subtle case: when the peer
  * closes early, OkHttp (Android's `HttpURLConnection`) throws, but the JDK
@@ -47,27 +47,27 @@ import kotlinx.coroutines.ensureActive
  * The three seams exist for tests: [open] rewrites URLs to a local server after
  * the production HTTPS/host checks have run, [sleep] records delays instead of
  * waiting, [random] makes the jitter reproducible. The caller holds
- * [ModelCatalog]'s download mutex and is on an IO dispatcher.
+ * [Catalog]'s download mutex and is on an IO dispatcher.
  */
 internal class ModelDownloader(
-    private val policy: ModelCatalog.DownloadPolicy,
+    private val policy: Catalog.DownloadPolicy,
     private val open: (URL) -> HttpURLConnection = { it.openConnection() as HttpURLConnection },
     private val sleep: suspend (Long) -> Unit = { delay(it) },
     private val random: Random = Random.Default,
 ) {
     /** An asset with its parsed, allow-listed URL, built before any I/O so the trust check cannot be skipped. */
-    private class Target(val asset: ModelCatalog.Asset, val url: URL)
+    private class Target(val asset: Catalog.Asset, val url: URL)
 
     /** Where one asset sits in the whole download; builds the progress events for it. */
     private class Slot(
-        val asset: ModelCatalog.Asset,
+        val asset: Catalog.Asset,
         val index: Int,
         val count: Int,
         /** Bytes of the assets before this one, all finished. */
         val before: Long,
         val total: Long,
     ) {
-        fun at(done: Long, attempt: Int) = ModelCatalog.DownloadProgress(
+        fun at(done: Long, attempt: Int) = Catalog.DownloadProgress(
             assetName = asset.name,
             assetIndex = index,
             assetCount = count,
@@ -104,15 +104,15 @@ internal class ModelDownloader(
      * after a real download. A published directory that fails verification is
      * left alone and the model is downloaded beside it.
      *
-     * Failure and cancellation with [ModelCatalog.DownloadPolicy.resume] keep
+     * Failure and cancellation with [Catalog.DownloadPolicy.resume] keep
      * the temp directory — finished assets and the partial file — for the next
      * call; without it the temp directory is removed, as before resume existed.
      * Other `.download-*` directories are never touched; that is cleanup's job.
      */
     suspend fun download(
         root: File,
-        model: ModelCatalog.Model,
-        onProgress: (ModelCatalog.DownloadProgress) -> Unit,
+        model: Catalog.Model,
+        onProgress: (Catalog.DownloadProgress) -> Unit,
     ): ModelFiles {
         val targets = validate(root, model)
         val hashes = model.assets.associate { it.name to it.sha256 }
@@ -128,7 +128,7 @@ internal class ModelDownloader(
             return existing
         }
         val temp = File(root, TEMP_PREFIX + model.directoryName)
-        check(temp.isDirectory || temp.mkdir()) { "Cannot create download directory: $temp" }
+        if (!temp.isDirectory && !temp.mkdir()) throw ModelStorageException("Cannot create download directory", temp)
         val published = try {
             var before = 0L
             for ((index, target) in targets.withIndex()) {
@@ -139,15 +139,17 @@ internal class ModelDownloader(
             currentCoroutineContext().ensureActive()
             // A resumed directory may contain leftovers. Resolve it before the
             // publishing rename, just as a caller will resolve the finished bundle.
-            val staged = ModelFiles.fromDirectory(temp)
-            require(staged.files().map { it.name }.toSet() == hashes.keys) { "Downloaded model layout does not match its assets" }
+            val staged = try { ModelFiles.fromDirectory(temp) } catch (e: IllegalArgumentException) {
+                throw ModelIntegrityException("Downloaded model layout is invalid", cause = e)
+            }
+            if (staged.files().map { it.name }.toSet() != hashes.keys) throw ModelIntegrityException("Downloaded model layout does not match its assets")
             // Written last so a temp directory never carries a manifest for
             // files that are not all there yet.
             ModelManifest.write(temp, model)
             // A concurrent installer (another process) may have published the
             // same name meanwhile; rename never merges, so publish beside it.
             val target = if (!destination.exists()) destination else File(root, "${destination.name}-${UUID.randomUUID()}")
-            check(temp.renameTo(target)) { "Cannot publish downloaded model directory: $target" }
+            if (!temp.renameTo(target)) throw ModelStorageException("Cannot publish downloaded model", target)
             target
         } catch (e: Throwable) {
             if (!policy.resume) temp.deleteRecursively()
@@ -161,10 +163,10 @@ internal class ModelDownloader(
      * touched and before any request: the allow-list is the trust boundary, so
      * it is applied to every asset even when the download will end up skipping
      * it. Names are constrained to what the manifest can round-trip and what
-     * [ModelCatalog.installed] can parse back — a model that downloads but
+     * [Catalog.installed] can parse back — a model that downloads but
      * cannot be identified afterwards is worse than one rejected here.
      */
-    private fun validate(root: File, model: ModelCatalog.Model): List<Target> {
+    private fun validate(root: File, model: Catalog.Model): List<Target> {
         for (field in listOf(model.from, model.to, model.version)) {
             require(field.isNotEmpty() && field.none { it <= ' ' || it == '/' || it == '\\' }) { "Model from/to/version must be plain tokens: '$field'" }
         }
@@ -176,7 +178,7 @@ internal class ModelDownloader(
         require(
             parsed != null && parsed.collisionSuffix == null && parsed.from == model.from && parsed.to == model.to &&
                 parsed.version == model.version && parsed.identity == model.identity,
-        ) { "Model from/to/version do not form a directory name ModelCatalog.installed can read back: '${model.directoryName}'" }
+        ) { "Model from/to/version do not form a directory name Catalog.installed can read back: '${model.directoryName}'" }
         require(model.assets.isNotEmpty()) { "Model has no assets" }
         require(model.assets.map { it.name }.toSet().size == model.assets.size) { "Model repeats an asset name" }
         // identity is a digest over the hashes in list order; a list that is not
@@ -200,7 +202,7 @@ internal class ModelDownloader(
         }
         val resolved = ModelFiles.fromNames(File(root, model.directoryName), model.assets.map { it.name })
         require(resolved.files().map { it.name }.toSet() == model.assets.map { it.name }.toSet()) { "Model assets do not form one complete model layout" }
-        require(root.isDirectory || root.mkdirs()) { "Cannot create model directory: $root" }
+        if (!root.isDirectory && !root.mkdirs()) throw ModelStorageException("Cannot create model directory", root)
         return targets
     }
 
@@ -221,12 +223,12 @@ internal class ModelDownloader(
      * per [policy]. A finished file that still hashes is accepted as is (it may
      * be left from an earlier run); one that does not is removed first.
      */
-    private suspend fun fetch(temp: File, slot: Slot, url: URL, onProgress: (ModelCatalog.DownloadProgress) -> Unit) {
+    private suspend fun fetch(temp: File, slot: Slot, url: URL, onProgress: (Catalog.DownloadProgress) -> Unit) {
         val asset = slot.asset
         val complete = File(temp, asset.name)
         val part = File(temp, asset.name + PART_SUFFIX)
         if (complete.exists()) {
-            if (complete.isFile && complete.length() == asset.size && ModelCatalog.sha256(complete) == asset.sha256) {
+            if (complete.isFile && complete.length() == asset.size && Catalog.sha256(complete) == asset.sha256) {
                 discard(part)
                 onProgress(slot.at(asset.size, 1))
                 return
@@ -239,14 +241,17 @@ internal class ModelDownloader(
             currentCoroutineContext().ensureActive()
             val failure: Failure = try {
                 transfer(slot, url, part, attempt, onProgress) ?: run {
-                    check(part.renameTo(complete)) { "Cannot finalise downloaded file: $complete" }
+                    if (!part.renameTo(complete)) throw ModelStorageException("Cannot finalize downloaded file", complete)
                     onProgress(slot.at(asset.size, attempt))
                     return
                 }
             } catch (e: IOException) {
                 Failure.Transport(e)
             }
-            if (attempt > policy.maxRetries) throw failure.error()
+            if (attempt > policy.maxRetries) {
+                val status = (failure as? Failure.Status)?.code
+                throw NetworkException("Model download failed", url.toString(), status, attempt, asset.name, failure.error())
+            }
             val pause = backoff(attempt, failure.retryAfterMillis)
             currentCoroutineContext().ensureActive()
             sleep(pause)
@@ -273,12 +278,12 @@ internal class ModelDownloader(
         url: URL,
         part: File,
         attempt: Int,
-        onProgress: (ModelCatalog.DownloadProgress) -> Unit,
+        onProgress: (Catalog.DownloadProgress) -> Unit,
     ): Failure.Status? {
         val asset = slot.asset
         while (true) {
             val digest = MessageDigest.getInstance("SHA-256")
-            var have = resumePoint(part, asset.size, digest)
+            var have = try { resumePoint(part, asset.size, digest) } catch (e: IOException) { throw ModelStorageException("Cannot read partial download", part, e) }
             // Announces the attempt (a host may show "retrying") and, on a
             // resume, the jump to the prefix already on disk.
             onProgress(slot.at(have, attempt))
@@ -286,7 +291,7 @@ internal class ModelDownloader(
             connection.connectTimeout = policy.connectTimeoutMillis
             connection.readTimeout = policy.readTimeoutMillis
             connection.instanceFollowRedirects = false
-            connection.setRequestProperty("User-Agent", USER_AGENT)
+            connection.setRequestProperty("User-Agent", policy.userAgent)
             if (have > 0) connection.setRequestProperty("Range", "bytes=$have-")
             try {
                 val code = connection.responseCode
@@ -311,41 +316,41 @@ internal class ModelDownloader(
                     }
                     code == HttpURLConnection.HTTP_CLIENT_TIMEOUT || code == HTTP_TOO_MANY_REQUESTS || code in 500..599 ->
                         return Failure.Status(code, retryAfter(connection))
-                    else -> error("Model download returned HTTP $code")
+                    else -> throw NetworkException("Model download returned HTTP " + code, url.toString(), code, attempt, asset.name)
                 }
                 val remaining = asset.size - have
                 val declared = connection.contentLengthLong
                 if (declared > remaining) {
                     discard(part)
-                    throw IllegalArgumentException("Model download exceeds expected size: ${asset.name}")
+                    throw ModelIntegrityException("Model download exceeds expected size", assetName = asset.name)
                 }
                 var received = 0L
                 try {
                     // Raw bytes only: `.spm` vocabularies arrive as text/plain and
                     // must not pass through any charset handling.
                     connection.inputStream.use { input ->
-                        FileOutputStream(part, append).use { out ->
+                        storage(part) { FileOutputStream(part, append) }.use { out ->
                             val buffer = ByteArray(BUFFER_SIZE)
                             while (true) {
                                 currentCoroutineContext().ensureActive()
                                 val n = input.read(buffer)
                                 if (n < 0) break
                                 received += n
-                                require(received <= remaining) { "Model download exceeds expected size: ${asset.name}" }
+                                if (received > remaining) throw ModelIntegrityException("Model download exceeds expected size", assetName = asset.name)
                                 digest.update(buffer, 0, n)
-                                out.write(buffer, 0, n)
+                                storage(part) { out.write(buffer, 0, n) }
                                 onProgress(slot.at(have + received, attempt))
                             }
                             // The bytes must be durable before the rename that
                             // publishes them; a rename is metadata only.
-                            out.fd.sync()
+                            storage(part) { out.fd.sync() }
                         }
                     }
                     if (declared >= 0 && received < declared) {
                         throw EOFException("Model download ended after $received of $declared bytes: ${asset.name}")
                     }
-                    require(have + received == asset.size && ModelCatalog.hex(digest.digest()) == asset.sha256) { "Model checksum mismatch: ${asset.name}" }
-                } catch (e: IllegalArgumentException) {
+                    if (have + received != asset.size || Catalog.hex(digest.digest()) != asset.sha256) throw ModelIntegrityException("Model checksum mismatch", assetName = asset.name)
+                } catch (e: ModelIntegrityException) {
                     discard(part) // Wrong bytes; the next call must start this asset over.
                     throw e
                 }
@@ -361,9 +366,12 @@ internal class ModelDownloader(
      * when there is nothing usable, in which case [part] is gone. Hashing the
      * prefix costs one read of it, which is what makes the final digest cover
      * the file on disk rather than only this attempt's bytes. Without
-     * [ModelCatalog.DownloadPolicy.resume] any partial file is dropped, so a
+     * [Catalog.DownloadPolicy.resume] any partial file is dropped, so a
      * retry in that mode starts from zero too.
      */
+    private fun <T> storage(file: File, action: () -> T): T = try { action() }
+        catch (e: IOException) { throw ModelStorageException("Cannot write model file", file, e) }
+
     private suspend fun resumePoint(part: File, size: Long, digest: MessageDigest): Long {
         if (!part.exists()) return 0
         if (!policy.resume || !part.isFile || part.length() <= 0 || part.length() >= size) {
@@ -427,19 +435,19 @@ internal class ModelDownloader(
     }
 
     private fun discard(file: File) {
-        if (file.exists()) check(file.deleteRecursively()) { "Cannot remove $file" }
+        if (file.exists() && !file.deleteRecursively()) throw ModelStorageException("Cannot remove incomplete model file", file)
     }
 
     private companion object {
         const val TEMP_PREFIX = ".download-"
         const val PART_SUFFIX = ".part"
         const val BUFFER_SIZE = 64 * 1024
-        const val MAX_ASSET_BYTES = 1024L * 1024 * 1024 // what ModelCatalog.verify accepts
+        const val MAX_ASSET_BYTES = 1024L * 1024 * 1024 // what Catalog.verify accepts
         const val MAX_RETRY_AFTER_MILLIS = 120_000L
         const val HTTP_RANGE_NOT_SATISFIABLE = 416
         const val HTTP_TOO_MANY_REQUESTS = 429
-        // Same string as ModelCatalog's private default; Remote Settings asks clients to name themselves.
-        const val USER_AGENT = ModelCatalog.DEFAULT_USER_AGENT
+        // Same string as Catalog's private default; Remote Settings asks clients to name themselves.
+        const val USER_AGENT = Catalog.DEFAULT_USER_AGENT
         val SHA256 = Regex("[0-9a-f]{64}")
         val CONTENT_RANGE = Regex("bytes (\\d+)-(\\d+)/(\\d+)")
     }

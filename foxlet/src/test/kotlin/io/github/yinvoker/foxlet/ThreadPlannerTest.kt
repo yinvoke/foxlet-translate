@@ -5,11 +5,11 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**
- * [ThreadTuning.recommend] is pure, so the whole decision surface fits in a
+ * [ThreadPlanner.recommend] is pure, so the whole decision surface fits in a
  * JVM test: 6 RAM sizes x 3 workloads x low-RAM on/off x 6 core counts = 216
  * cases, enumerated below.
  */
-class ThreadTuningTest {
+class ThreadPlannerTest {
 
     private companion object {
         const val MB = 1024L * 1024L
@@ -27,10 +27,10 @@ class ThreadTuningTest {
         const val MI12_TOTAL_RAM_MB = 7360L
     }
 
-    private fun forEachCase(body: (Long, Workload, Boolean, Int, ThreadTuning.Decision) -> Unit) {
+    private fun forEachCase(body: (Long, Workload, Boolean, Int, ThreadPlanner.Decision) -> Unit) {
         var cases = 0
         for (ram in RAM_SIZES) for (workload in WORKLOADS) for (lowRam in LOW_RAM) for (cores in BIG_CORES) {
-            body(ram, workload, lowRam, cores, ThreadTuning.recommend(ram, lowRam, cores, workload))
+            body(ram, workload, lowRam, cores, ThreadPlanner.recommend(ram, lowRam, cores, workload))
             cases++
         }
         assertEquals("enumeration size changed; update the doc comment", 216, cases)
@@ -71,7 +71,7 @@ class ThreadTuningTest {
     fun `pivot never gets more threads than batch on the same inputs`() {
         forEachCase { ram, w, lowRam, cores, d ->
             if (w == Workload.PIVOT) {
-                val batch = ThreadTuning.recommend(ram, lowRam, cores, Workload.BATCH)
+                val batch = ThreadPlanner.recommend(ram, lowRam, cores, Workload.BATCH)
                 assertTrue("pivot ${d.threads} > batch ${batch.threads} for ${describe(ram, w, lowRam, cores)}", d.threads <= batch.threads)
             }
         }
@@ -87,7 +87,7 @@ class ThreadTuningTest {
             assertEquals(where, w, d.workload)
             // Replaying the recorded inputs is a fixed point — the property the
             // on-device androidTest leans on.
-            assertEquals(where, d, ThreadTuning.recommend(ram, lowRam, cores, w))
+            assertEquals(where, d, ThreadPlanner.recommend(ram, lowRam, cores, w))
         }
     }
 
@@ -96,7 +96,7 @@ class ThreadTuningTest {
         for (ram in RAM_SIZES) for (workload in WORKLOADS) for (lowRam in LOW_RAM) {
             var previous = 0
             for (cores in BIG_CORES) { // already ascending
-                val threads = ThreadTuning.recommend(ram, lowRam, cores, workload).threads
+                val threads = ThreadPlanner.recommend(ram, lowRam, cores, workload).threads
                 assertTrue("bigCores=$cores dropped $previous -> $threads for ${describe(ram, workload, lowRam, cores)}", threads >= previous)
                 previous = threads
             }
@@ -108,7 +108,7 @@ class ThreadTuningTest {
         for (workload in WORKLOADS) for (cores in BIG_CORES) {
             var previous = 0
             for (ram in RAM_SIZES) { // ascending
-                val t = ThreadTuning.recommend(ram, false, cores, workload).threads
+                val t = ThreadPlanner.recommend(ram, false, cores, workload).threads
                 assertTrue("ram $ram cores $cores $workload: $previous -> $t", t >= previous)
                 previous = t
             }
@@ -119,46 +119,46 @@ class ThreadTuningTest {
     fun `ram ladder by nominal size`() {
         // Mi 12: MemTotal 7360 MB reads as a nominal 8 GB phone -> rung 2.
         val mi12 = MI12_TOTAL_RAM_MB * MB
-        assertEquals(2, ThreadTuning.recommend(mi12, false, 4, Workload.BATCH).threads)
-        assertEquals(2, ThreadTuning.recommend(mi12, false, 4, Workload.PIVOT).threads)
-        assertEquals(1, ThreadTuning.recommend(mi12, false, 4, Workload.SINGLE).threads)
+        assertEquals(2, ThreadPlanner.recommend(mi12, false, 4, Workload.BATCH).threads)
+        assertEquals(2, ThreadPlanner.recommend(mi12, false, 4, Workload.PIVOT).threads)
+        assertEquals(1, ThreadPlanner.recommend(mi12, false, 4, Workload.SINGLE).threads)
         // Mi 10: 7608 MB -> also 8 GB -> 2.
-        assertEquals(2, ThreadTuning.recommend(7608L * MB, false, 4, Workload.BATCH).threads)
+        assertEquals(2, ThreadPlanner.recommend(7608L * MB, false, 4, Workload.BATCH).threads)
         // Under 8 GB nominal: 1 whatever the cores.
-        assertEquals(1, ThreadTuning.recommend(6L * GB, false, 8, Workload.BATCH).threads)
-        assertEquals(1, ThreadTuning.recommend(5L * GB, false, 8, Workload.BATCH).threads)
+        assertEquals(1, ThreadPlanner.recommend(6L * GB, false, 8, Workload.BATCH).threads)
+        assertEquals(1, ThreadPlanner.recommend(5L * GB, false, 8, Workload.BATCH).threads)
         // 9.5 GB reads as 10 -> rung 4; 10 GB exactly -> 4.
-        assertEquals(4, ThreadTuning.recommend(9728L * MB, false, 8, Workload.BATCH).threads)
-        assertEquals(4, ThreadTuning.recommend(10L * GB, false, 8, Workload.BATCH).threads)
+        assertEquals(4, ThreadPlanner.recommend(9728L * MB, false, 8, Workload.BATCH).threads)
+        assertEquals(4, ThreadPlanner.recommend(10L * GB, false, 8, Workload.BATCH).threads)
         // 11.2 GB (a "12 GB" phone) -> 6 with six fast cores, 4 with four.
-        assertEquals(6, ThreadTuning.recommend(11468L * MB, false, 6, Workload.BATCH).threads)
-        assertEquals(4, ThreadTuning.recommend(11468L * MB, false, 4, Workload.BATCH).threads)
+        assertEquals(6, ThreadPlanner.recommend(11468L * MB, false, 6, Workload.BATCH).threads)
+        assertEquals(4, ThreadPlanner.recommend(11468L * MB, false, 4, Workload.BATCH).threads)
     }
 
     @Test
     fun `pivot needs sixteen gigabytes for six threads`() {
         val twelve = 11468L * MB
-        assertEquals(6, ThreadTuning.recommend(twelve, false, 6, Workload.BATCH).threads)
-        assertEquals(4, ThreadTuning.recommend(twelve, false, 6, Workload.PIVOT).threads)
+        assertEquals(6, ThreadPlanner.recommend(twelve, false, 6, Workload.BATCH).threads)
+        assertEquals(4, ThreadPlanner.recommend(twelve, false, 6, Workload.PIVOT).threads)
         // Mi 14 (15160 MB MemTotal, six fast cores): both 6.
         val sixteen = 15160L * MB
-        assertEquals(6, ThreadTuning.recommend(sixteen, false, 6, Workload.BATCH).threads)
-        assertEquals(6, ThreadTuning.recommend(sixteen, false, 6, Workload.PIVOT).threads)
+        assertEquals(6, ThreadPlanner.recommend(sixteen, false, 6, Workload.BATCH).threads)
+        assertEquals(6, ThreadPlanner.recommend(sixteen, false, 6, Workload.PIVOT).threads)
         // Six threads need six fast cores; an 8 Gen 1 (four) stays at 4 on any phone.
-        assertEquals(4, ThreadTuning.recommend(sixteen, false, 4, Workload.BATCH).threads)
+        assertEquals(4, ThreadPlanner.recommend(sixteen, false, 4, Workload.BATCH).threads)
     }
 
     @Test
     fun `two or three fast cores cap batch at two threads`() {
         for (cores in listOf(2, 3)) {
-            assertEquals(2, ThreadTuning.recommend(8L * GB, false, cores, Workload.BATCH).threads)
-            assertEquals(2, ThreadTuning.recommend(16L * GB, false, cores, Workload.BATCH).threads)
+            assertEquals(2, ThreadPlanner.recommend(8L * GB, false, cores, Workload.BATCH).threads)
+            assertEquals(2, ThreadPlanner.recommend(16L * GB, false, cores, Workload.BATCH).threads)
         }
     }
 
     @Test
     fun `describe carries the fields a bench record needs`() {
-        val text = ThreadTuning.recommend(MI12_TOTAL_RAM_MB * MB, false, 4, Workload.BATCH).describe()
+        val text = ThreadPlanner.recommend(MI12_TOTAL_RAM_MB * MB, false, 4, Workload.BATCH).describe()
         listOf("threads=2", "workload=BATCH", "bigCores=4", "totalRamMb=7360", "lowRam=false")
             .forEach { assertTrue("`$it` missing from `$text`", text.contains(it)) }
     }

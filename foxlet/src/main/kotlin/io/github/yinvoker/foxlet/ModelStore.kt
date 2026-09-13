@@ -7,15 +7,15 @@ import java.util.UUID
 
 /**
  * Blocking implementation behind the listing, lookup, delete and cleanup
- * functions of [ModelCatalog]. The facade runs these on `Dispatchers.IO`;
- * here everything is a plain function over the model root, so tests drive it
- * without a coroutine and the integrator wires it with one `withContext`.
+ * functions of [ModelManager]. The client runs these on `Dispatchers.IO`;
+ * here everything is a plain function over the model root, so storage tests
+ * can exercise filesystem behavior independently of the client lifecycle.
  *
  * The store trusts nothing about a directory but its name and, when present,
  * the manifest a download left in it. The name says which pair and version
  * the bytes claim to be, the manifest or the bundled catalog says which bytes
  * they should be, and hashing says whether they are. The three stay apart in
- * [ModelCatalog.InstalledModel] so a host can list cheaply and pay for
+ * [Catalog.InstalledModel] so a host can list cheaply and pay for
  * verification only on the directory it is about to use.
  *
  * Downloads publish and removals unpublish with a rename. A listing tolerates
@@ -26,14 +26,14 @@ internal object ModelStore {
     /** The parts of a published directory name, `<from>-<to>-<version>-<identity>[-<uuid>]`. */
     data class ParsedName(val from: String, val to: String, val version: String, val identity: String, val collisionSuffix: String?)
 
-    /** Suffix [ModelCatalog.download] appends when the exact directory name already exists. */
+    /** Suffix [Catalog.download] appends when the exact directory name already exists. */
     private const val UUID_PATTERN = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
     private val NAME = Regex("(.+)-(\\d+\\.\\d+[a-z0-9]*)-([0-9a-f]{20})(?:-($UUID_PATTERN))?")
     private val LANGUAGE_TAG = Regex("[a-z]{2,3}(-[A-Za-z]{2,4})?")
 
     /** Every `<from>-<to>` the bundled catalog knows, for splitting a pair without guessing. */
     private val catalogPairs: Map<String, List<Pair<String, String>>> by lazy {
-        ModelCatalog.models.map { it.from to it.to }.distinct().groupBy { (from, to) -> "$from-$to" }
+        Catalog.models.map { it.from to it.to }.distinct().groupBy { (from, to) -> "$from-$to" }
     }
 
     /**
@@ -47,13 +47,13 @@ internal object ModelStore {
      * the leftmost dash whose two sides both look like a language tag. The
      * heuristic reads `zh-Hant-en` right because `Hant-en` is not a tag.
      */
-    fun parseName(name: String, manifest: ModelCatalog.Model? = null): ParsedName? {
+    fun parseName(name: String, manifest: Catalog.Model? = null): ParsedName? {
         val match = NAME.matchEntire(name) ?: return null
         val (from, to) = splitPair(match.groupValues[1], manifest) ?: return null
         return ParsedName(from, to, match.groupValues[2], match.groupValues[3], match.groups[4]?.value)
     }
 
-    private fun splitPair(pair: String, manifest: ModelCatalog.Model?): Pair<String, String>? {
+    private fun splitPair(pair: String, manifest: Catalog.Model?): Pair<String, String>? {
         if (manifest != null && "${manifest.from}-${manifest.to}" == pair) return manifest.from to manifest.to
         catalogPairs[pair]?.singleOrNull()?.let { return it }
         var dash = pair.indexOf('-')
@@ -82,29 +82,29 @@ internal object ModelStore {
      * only ever suffixes a directory whose exact name is taken, so twins
      * share an identity and this tie-break is the only one that matters.
      */
-    private val newestFirst: Comparator<ModelCatalog.InstalledModel> =
-        compareBy<ModelCatalog.InstalledModel> { it.from }
+    private val newestFirst: Comparator<Catalog.InstalledModel> =
+        compareBy<Catalog.InstalledModel> { it.from }
             .thenBy { it.to }
             .thenComparator { a, b -> compareVersions(b.version, a.version) }
             .thenBy { it.identity }
             .thenBy { isCollisionSuffixed(it) }
             .thenBy { it.directory.name }
 
-    private fun isCollisionSuffixed(model: ModelCatalog.InstalledModel): Boolean =
+    private fun isCollisionSuffixed(model: Catalog.InstalledModel): Boolean =
         model.directory.name != "${model.from}-${model.to}-${model.version}-${model.identity}"
 
     // ---------------------------------------------------------------- installed
 
     /**
-     * Every published directory under [root], see [ModelCatalog.installed].
+     * Every published directory under [root], see [Catalog.installed].
      * A root that does not exist yet has nothing installed rather than being
      * an error: a fresh install asks before its first download. Hidden
      * entries (`.download-*`, `.trash-*`) and anything whose name does not
-     * parse are not models and are left out; [ModelCatalog.cleanup] is the
+     * parse are not models and are left out; [Catalog.cleanup] is the
      * function that looks at those.
      */
-    fun installed(root: File, verify: Boolean): List<ModelCatalog.InstalledModel> {
-        val children = root.listFiles() ?: return emptyList()
+    fun installed(root: File, verify: Boolean): List<Catalog.InstalledModel> {
+        val children = children(root)
         return children
             .filter { it.isDirectory && !it.name.startsWith('.') && !isSymlink(it) }
             .mapNotNull { describe(it, verify) }
@@ -120,16 +120,17 @@ internal object ModelStore {
      * either, so the name is parsed again without it. A directory without a
      * usable manifest is identified through the bundled catalog by identity,
      * which is how directories from older SDKs (no manifest yet) keep working.
-     * [ModelCatalog.InstalledModel.sizeBytes] counts every file in the
+     * [Catalog.InstalledModel.sizeBytes] counts every file in the
      * directory, manifest included: it is what a delete gives back.
      */
-    private fun describe(directory: File, verify: Boolean): ModelCatalog.InstalledModel? {
+    private fun describe(directory: File, verify: Boolean): Catalog.InstalledModel? {
         var manifest = try {
             ModelManifest.read(directory)
         } catch (_: IllegalArgumentException) {
             null // Malformed: nothing to verify against, same as no manifest.
-        } catch (_: IOException) {
-            null // Removed while listing, or an unreadable manifest.
+        } catch (error: IOException) {
+            if (File(directory, ModelManifest.FILE_NAME).exists()) throw error
+            null // Disappeared while listing.
         }
         var parsed = parseName(directory.name, manifest) ?: return null
         if (manifest != null && (manifest.from != parsed.from || manifest.to != parsed.to ||
@@ -137,10 +138,10 @@ internal object ModelStore {
             manifest = null
             parsed = parseName(directory.name) ?: return null
         }
-        val catalog = ModelCatalog.models.firstOrNull { it.from == parsed.from && it.to == parsed.to && it.identity == parsed.identity }
+        val catalog = Catalog.models.firstOrNull { it.from == parsed.from && it.to == parsed.to && it.identity == parsed.identity }
         val model = manifest ?: catalog
         val verified = if (!verify || model == null) null else verifies(directory, model)
-        return ModelCatalog.InstalledModel(
+        return Catalog.InstalledModel(
             from = parsed.from,
             to = parsed.to,
             version = parsed.version,
@@ -154,7 +155,7 @@ internal object ModelStore {
     }
 
     /** True when the directory holds exactly the bytes [model] describes; hashes every file. */
-    private fun verifies(directory: File, model: ModelCatalog.Model): Boolean = try {
+    private fun verifies(directory: File, model: Catalog.Model): Boolean = try {
         filesOf(directory, model).verify()
         true
     } catch (_: IllegalArgumentException) {
@@ -163,14 +164,14 @@ internal object ModelStore {
         false // Vanished under a concurrent delete: not this model either.
     }
 
-    private fun filesOf(directory: File, model: ModelCatalog.Model): ModelFiles =
+    private fun filesOf(directory: File, model: Catalog.Model): ModelFiles =
         ModelFiles.fromDirectory(directory).copy(expectedSha256 = model.assets.associate { it.name to it.sha256 })
 
     /**
-     * See [ModelCatalog.installedFor]. Walks the pair's directories newest
+     * See [Catalog.installedFor]. Walks the pair's directories newest
      * first and stops at the first that hashes clean, so the usual cost is
      * one model's worth of hashing — the same the reuse path of
-     * [ModelCatalog.download] pays. Directories with nothing to check against
+     * [Catalog.download] pays. Directories with nothing to check against
      * are never returned: unverifiable is not the same as usable.
      */
     fun installedFor(root: File, from: String, to: String): ModelFiles? {
@@ -190,113 +191,119 @@ internal object ModelStore {
 
     // ---------------------------------------------------------------- delete / cleanup
 
-    /** See [ModelCatalog.delete]. */
-    fun delete(root: File, model: ModelCatalog.InstalledModel): Long {
-        val directory = model.directory
-        require(canonical(directory).parentFile == canonical(root)) { "not a model directory directly under $root: $directory" }
-        if (!directory.isDirectory) return 0
-        return checkNotNull(ActiveModels.ifInactive(listOf(directory)) {
-            if (directory.isDirectory) remove(root, directory) else 0L
-        }) { "model directory is in use by a FoxletEngine; call releaseAllModels() first: $directory" }
-    }
+    fun delete(root: File, model: Catalog.InstalledModel): Long = deleteDetailed(root, model).freedBytes
 
-    /** See [ModelCatalog.delete]; refuses the whole pair when any version is held. */
     fun delete(root: File, from: String, to: String): Long {
-        val versions = installed(root, verify = false).filter { it.from == from && it.to == to }
-        return checkNotNull(ActiveModels.ifInactive(versions.map { it.directory }) {
-            versions.sumOf { delete(root, it) }
-        }) { "model directory is in use by a FoxletEngine; call releaseAllModels() first: $from → $to" }
+        val versions = installed(root, false).filter { it.from == from && it.to == to }
+        return ActiveModels.ifInactive(versions.map { it.directory }) {
+            versions.sumOf { deleteDetailed(root, it).freedBytes }
+        } ?: throw ModelInUseException(pair = LanguagePair(from, to))
     }
 
-    /**
-     * Unpublish [directory] with a rename, then delete it. The rename is the
-     * atomic step: a concurrent listing sees the model or nothing, never a
-     * directory with half its files. If the delete stops part way, what is
-     * left is a `.trash-*` that the next [cleanup] finishes, and the bytes
-     * reported are only the ones actually gone.
-     */
-    private fun remove(root: File, directory: File): Long {
-        // Belt to delete()'s braces: nothing outside the root is ever unpublished.
-        require(!isSymlink(directory) && canonical(directory).parentFile == canonical(root)) { "not a model directory directly under $root: $directory" }
-        val bytes = sizeOf(directory)
-        val trash = File(root, ".trash-${UUID.randomUUID()}")
-        check(directory.renameTo(trash)) { "cannot unpublish model directory: $directory" }
-        deleteTree(trash)
-        return if (trash.exists()) bytes - sizeOf(trash) else bytes
+    /** Re-check occupancy at the actual mutation, including nested prefix files. */
+    fun deleteDetailed(root: File, model: Catalog.InstalledModel): DeleteResult {
+        val directory = model.directory
+        require(!isSymlink(directory) && directory.canonicalFile.parentFile == root.canonicalFile) { "Installation is outside this store" }
+        val id = installationId(root, directory)
+        return ActiveModels.ifInactive(listOf(directory)) { removeDetailed(root, directory, id) }
+            ?: throw ModelInUseException(id)
     }
 
-    /**
-     * See [ModelCatalog.cleanup]. [now] is the clock for the temp-age rule,
-     * injectable so tests need not wait a week.
-     *
-     * A `.download-*` directory is a paused download until it has gone
-     * [staleTempAgeMillis] without a write — its freshest timestamp counts,
-     * the directory's or any file's — because a resumable download is worth
-     * keeping and a forgotten one is not. A `.trash-*` is an interrupted
-     * delete and goes regardless. Both are skipped when a live engine reads
-     * from them or when the host lists them in [keep].
-     *
-     * Supersession is decided per pair from the newest directory that hashes
-     * clean; only a proven-good newer version makes an older one redundant.
-     * Everything strictly older than it goes, as does a collision-suffixed
-     * twin of it, and nothing else: a rebuild at the same version with other
-     * bytes may be the one the host wants, and a directory nothing can verify
-     * is not this SDK's to judge.
-     */
+    private fun removeDetailed(root: File, directory: File, id: InstallationId): DeleteResult {
+        if (!directory.exists()) return DeleteResult(id, directory, DeleteStatus.AlreadyAbsent, 0)
+        val trash = File(root, ".trash-" + UUID.randomUUID())
+        val renamed = try { directory.renameTo(trash) } catch (e: SecurityException) {
+            return DeleteResult(id, directory, DeleteStatus.Failed, 0, ModelStorageException("Cannot unpublish model directory", directory, e))
+        }
+        if (!renamed) return DeleteResult(id, directory, DeleteStatus.Failed, 0,
+            ModelStorageException("Cannot unpublish model directory", directory))
+        val result = eraseDetailed(trash, id)
+        return result.copy(directory = directory)
+    }
+
+    /** Counts bytes only for files actually deleted, even if another file cannot be removed. */
+    private fun eraseDetailed(directory: File, id: InstallationId?): DeleteResult {
+        var freed = 0L
+        var failure: Throwable? = null
+        fun erase(file: File) {
+            try {
+                if (file.isDirectory && !isSymlink(file)) {
+                    val entries = file.listFiles()
+                    if (entries == null) { failure = IOException("Cannot list " + file); return }
+                    entries.forEach(::erase)
+                }
+                val bytes = if (file.isFile && !isSymlink(file)) file.length() else 0L
+                if (file.delete()) freed += bytes
+                else if (java.nio.file.Files.exists(file.toPath(), java.nio.file.LinkOption.NOFOLLOW_LINKS)) failure = IOException("Cannot delete " + file)
+            } catch (e: SecurityException) { failure = e }
+        }
+        erase(directory)
+        val remains = java.nio.file.Files.exists(directory.toPath(), java.nio.file.LinkOption.NOFOLLOW_LINKS)
+        return DeleteResult(id, directory, if (remains) DeleteStatus.PartiallyDeleted else DeleteStatus.Deleted, freed,
+            if (remains) ModelStorageException("Some model files could not be deleted", directory, failure) else null)
+    }
+
     fun cleanup(
         root: File,
         staleTempAgeMillis: Long,
         removeSuperseded: Boolean,
         keep: Set<File>,
         now: Long = System.currentTimeMillis(),
-    ): ModelCatalog.CleanupReport {
-        require(staleTempAgeMillis >= 0) { "staleTempAgeMillis must not be negative" }
-        val kept = keep.map(::canonical).toSet()
+    ): Catalog.CleanupReport {
+        require(staleTempAgeMillis >= 0)
+        val kept = keep.map { it.canonicalFile }.toSet()
         val removedTempDirs = mutableListOf<File>()
-        val removedSuperseded = mutableListOf<ModelCatalog.InstalledModel>()
+        val removedSuperseded = mutableListOf<Catalog.InstalledModel>()
         val skippedInUse = mutableListOf<File>()
+        val failures = mutableListOf<DeleteResult>()
         var bytesFreed = 0L
-
-        for (directory in root.listFiles().orEmpty()) {
-            if (!directory.isDirectory || isSymlink(directory)) continue
+        fun account(result: DeleteResult) {
+            bytesFreed += result.freedBytes
+            if (result.status == DeleteStatus.PartiallyDeleted || result.status == DeleteStatus.Failed) failures += result
+        }
+        for (directory in children(root)) {
+            if (!directory.isDirectory || isSymlink(directory) || directory.canonicalFile in kept) continue
             val trash = directory.name.startsWith(".trash-")
             if (!trash && !directory.name.startsWith(".download-")) continue
-            if (canonical(directory) in kept) continue
-            val freed = ActiveModels.ifInactive(listOf(directory)) {
-                if (!trash && now - newestWriteIn(directory) <= staleTempAgeMillis) return@ifInactive 0L
-                val bytes = sizeOf(directory)
-                deleteTree(directory)
-                if (!directory.exists()) removedTempDirs += directory
-                bytes - sizeOf(directory)
+            if (!trash && now - newestWriteIn(directory) <= staleTempAgeMillis) continue
+            val result = ActiveModels.ifInactive(listOf(directory)) { eraseDetailed(directory, null) }
+            if (result == null) skippedInUse += directory else {
+                account(result)
+                if (result.status == DeleteStatus.Deleted) removedTempDirs += directory
             }
-            if (freed == null) skippedInUse += directory else bytesFreed += freed
         }
-
         if (removeSuperseded) {
-            for ((_, versions) in installed(root, verify = false).groupBy { it.from to it.to }) {
-                // Newest first, so the first that verifies is the best there is.
+            for ((_, versions) in installed(root, false).groupBy { it.from to it.to }) {
                 val best = versions.firstOrNull { it.model != null && verifies(it.directory, it.model) } ?: continue
                 for (entry in versions) {
-                    if (entry === best || entry.model == null) continue
+                    if (entry === best || entry.model == null || entry.directory.canonicalFile in kept) continue
                     val older = compareVersions(entry.version, best.version) < 0
                     val twin = entry.version == best.version && entry.identity == best.identity && isCollisionSuffixed(entry)
                     if (!older && !twin) continue
-                    if (canonical(entry.directory) in kept) continue
-                    val freed = ActiveModels.ifInactive(listOf(entry.directory)) {
-                        if (!entry.directory.isDirectory) return@ifInactive 0L
-                        remove(root, entry.directory).also { removedSuperseded += entry }
+                    val result = ActiveModels.ifInactive(listOf(entry.directory)) {
+                        removeDetailed(root, entry.directory, installationId(root, entry.directory))
                     }
-                    if (freed == null) skippedInUse += entry.directory else bytesFreed += freed
+                    if (result == null) skippedInUse += entry.directory else {
+                        account(result)
+                        if (result.status == DeleteStatus.Deleted || result.status == DeleteStatus.PartiallyDeleted) removedSuperseded += entry
+                    }
                 }
             }
         }
-        return ModelCatalog.CleanupReport(removedTempDirs, removedSuperseded, bytesFreed, skippedInUse)
+        return Catalog.CleanupReport(removedTempDirs, removedSuperseded, bytesFreed, skippedInUse, failures)
+    }
+
+    private fun children(root: File): Array<File> {
+        if (!java.nio.file.Files.exists(root.toPath(), java.nio.file.LinkOption.NOFOLLOW_LINKS)) return emptyArray()
+        if (!root.isDirectory) throw IOException("Model root is not a directory: " + root)
+        return root.listFiles() ?: throw IOException("Cannot read model directory: " + root)
     }
 
     // ---------------------------------------------------------------- helpers
 
     private fun sizeOf(directory: File): Long = directory.walkTopDown()
-        .onEnter { !isSymlink(it) }.filter { !isSymlink(it) && it.isFile }.sumOf { it.length() }
+        .onEnter { !isSymlink(it) }.onFail { _, error -> throw error }
+        .filter { !isSymlink(it) && it.isFile }.sumOf { it.length() }
 
     private fun isSymlink(file: File): Boolean = Files.isSymbolicLink(file.toPath())
 

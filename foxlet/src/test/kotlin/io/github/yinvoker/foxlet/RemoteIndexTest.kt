@@ -20,7 +20,7 @@ import org.junit.Test
 class RemoteIndexTest {
 
     private val index = RemoteIndex()
-    private val mozilla = ModelCatalog.UpdateSource.MOZILLA
+    private val mozilla = Catalog.UpdateSource.MOZILLA
     private val enZh = "en" to "zh-Hans"
     private val enRu = "en" to "ru"
     private val slEn = "sl" to "en"
@@ -129,7 +129,7 @@ class RemoteIndexTest {
     // ---------------------------------------------------------------- availability
 
     @Test fun `en to zh-Hans selects 2 2 and reproduces the bundled catalog entry exactly`() {
-        val catalog = ModelCatalog.find("en", "zh-Hans")
+        val catalog = Catalog.find("en", "zh-Hans")
         val remote = availability.getValue(enZh).eligible.first()
         assertEquals("2.2", remote.version)
         assertEquals(4, remote.assets.size)
@@ -146,12 +146,12 @@ class RemoteIndexTest {
 
     @Test fun `android-only and shared-vocab pairs also match the catalog`() {
         // en->ru's only release in range is published with the Android-only expression (trailing space upstream).
-        assertEquals(ModelCatalog.find("en", "ru"), availability.getValue(enRu).eligible.first())
-        assertEquals(ModelCatalog.find("sl", "en"), availability.getValue(slEn).eligible.first())
+        assertEquals(Catalog.find("en", "ru"), availability.getValue(enRu).eligible.first())
+        assertEquals(Catalog.find("sl", "en"), availability.getValue(slEn).eligible.first())
         // ca->en 1.0 has filter_expression null; both 1.0 and 2.0 are eligible, 2.0 (the catalog one) first.
         val ca = availability.getValue(caEn).eligible
         assertEquals(listOf("2.0", "1.0"), ca.map { it.version })
-        assertEquals(ModelCatalog.find("ca", "en"), ca.first())
+        assertEquals(Catalog.find("ca", "en"), ca.first())
     }
 
     @Test fun `alphas and foreign filter expressions are never eligible`() {
@@ -233,7 +233,7 @@ class RemoteIndexTest {
     }
 
     @Test fun `asset urls join the base url with one slash regardless of how it is written`() {
-        val expected = ModelCatalog.find("en", "zh-Hans").assets.map { it.url }
+        val expected = Catalog.find("en", "zh-Hans").assets.map { it.url }
         for (base in listOf("https://firefox-settings-attachments.cdn.mozilla.net/", "https://firefox-settings-attachments.cdn.mozilla.net", "https://firefox-settings-attachments.cdn.mozilla.net//")) {
             val source = mozilla.copy(attachmentBaseUrl = base)
             assertEquals(base, expected, index.availability(sample, source).getValue(enZh).eligible.first().assets.map { it.url })
@@ -248,11 +248,11 @@ class RemoteIndexTest {
     private val root = createTempDirectory("ri").toFile()
 
     private fun installed(
-        model: ModelCatalog.Model,
+        model: Catalog.Model,
         version: String = model.version,
         identity: String = model.identity,
         suffix: String? = null,
-    ) = ModelCatalog.InstalledModel(
+    ) = Catalog.InstalledModel(
         from = model.from,
         to = model.to,
         version = version,
@@ -264,7 +264,7 @@ class RemoteIndexTest {
         verified = null,
     )
 
-    private fun candidate(report: ModelCatalog.UpdateReport, pair: Pair<String, String>) =
+    private fun candidate(report: Catalog.UpdateReport, pair: Pair<String, String>) =
         report.candidates.single { it.from == pair.first && it.to == pair.second }
 
     @Test fun `report lists offered pairs that are not installed`() {
@@ -275,9 +275,9 @@ class RemoteIndexTest {
         assertEquals(listOf(caEn, enRu, enZh, slEn), report.candidates.map { it.from to it.to })
         val zh = candidate(report, enZh)
         assertNull(zh.installed)
-        assertEquals(ModelCatalog.find("en", "zh-Hans"), zh.available)
+        assertEquals(Catalog.find("en", "zh-Hans"), zh.available)
         assertFalse(zh.updateAvailable)
-        assertEquals(ModelCatalog.find("en", "zh-Hans").sizeBytes, zh.downloadSizeBytes)
+        assertEquals(Catalog.find("en", "zh-Hans").sizeBytes, zh.downloadSizeBytes)
         assertTrue(zh.installedStillListed)
         assertEquals("3.0", zh.newerMajorVersion)
         assertNull(candidate(report, enRu).newerMajorVersion)
@@ -286,7 +286,7 @@ class RemoteIndexTest {
     }
 
     @Test fun `installed equals available means no update and still listed`() {
-        val current = installed(ModelCatalog.find("en", "zh-Hans"))
+        val current = installed(Catalog.find("en", "zh-Hans"))
         val report = index.report(listOf(current), availability, mozilla, sample.timestamp, pairs = null)
         val zh = candidate(report, enZh)
         assertEquals(current, zh.installed)
@@ -298,7 +298,7 @@ class RemoteIndexTest {
     }
 
     @Test fun `an older installed version is an update whether or not upstream still lists it`() {
-        val catalog = ModelCatalog.find("en", "zh-Hans")
+        val catalog = Catalog.find("en", "zh-Hans")
         val previous = availability.getValue(enZh).eligible[1] // 2.1, still published for Android
         val stillListed = installed(catalog, version = previous.version, identity = previous.identity)
         val vanished = installed(catalog, version = "1.0", identity = "0123456789abcdef0123")
@@ -312,7 +312,7 @@ class RemoteIndexTest {
     }
 
     @Test fun `same version with different bytes is an update and not listed`() {
-        val catalog = ModelCatalog.find("en", "zh-Hans")
+        val catalog = Catalog.find("en", "zh-Hans")
         val reupload = installed(catalog, identity = "ffffffffffffffffffff")
         val zh = candidate(index.report(listOf(reupload), availability, mozilla, sample.timestamp, pairs = null), enZh)
         assertTrue(zh.updateAvailable)
@@ -320,7 +320,7 @@ class RemoteIndexTest {
     }
 
     @Test fun `an installed version newer than upstream is not an update and not listed`() {
-        val catalog = ModelCatalog.find("en", "zh-Hans")
+        val catalog = Catalog.find("en", "zh-Hans")
         val ahead = installed(catalog, version = "2.9", identity = "eeeeeeeeeeeeeeeeeeee")
         val report = index.report(listOf(ahead), availability, mozilla, sample.timestamp, pairs = null)
         val zh = candidate(report, enZh)
@@ -331,7 +331,7 @@ class RemoteIndexTest {
     }
 
     @Test fun `an installed pair upstream does not offer is reported with nothing available`() {
-        val orphan = installed(ModelCatalog.find("en", "zh-Hans").copy(from = "xx", to = "yy"))
+        val orphan = installed(Catalog.find("en", "zh-Hans").copy(from = "xx", to = "yy"))
         val report = index.report(listOf(orphan), availability, mozilla, sample.timestamp, pairs = null)
         val xy = candidate(report, "xx" to "yy")
         assertEquals(orphan, xy.installed)
@@ -344,7 +344,7 @@ class RemoteIndexTest {
     }
 
     @Test fun `the highest installed version is compared, an unsuffixed directory first`() {
-        val catalog = ModelCatalog.find("en", "zh-Hans")
+        val catalog = Catalog.find("en", "zh-Hans")
         val older = installed(catalog, version = "2.1", identity = "1111111111111111111a")
         val olderSuffixed = installed(catalog, version = "2.1", identity = "1111111111111111111a", suffix = "uuid")
         val current = installed(catalog)
@@ -359,7 +359,7 @@ class RemoteIndexTest {
     }
 
     @Test fun `pairs restricts the report to those pairs`() {
-        val current = installed(ModelCatalog.find("en", "zh-Hans"))
+        val current = installed(Catalog.find("en", "zh-Hans"))
         val report = index.report(listOf(current), availability, mozilla, sample.timestamp, pairs = setOf(enRu, "xx" to "yy"))
         assertEquals(listOf(enRu), report.candidates.map { it.from to it.to })
         assertEquals(listOf(enRu), report.notInstalled.map { it.from to it.to })
@@ -440,9 +440,9 @@ class RemoteIndexTest {
             exchange.responseHeaders.add("Retry-After", "7")
             exchange.sendResponseHeaders(503, -1)
         }.use { served ->
-            val e = assertThrows(IOException::class.java) { served.index.fetch(mozilla) }
+            val e = assertThrows(HttpStatusException::class.java) { served.index.fetch(mozilla) }
             assertTrue(e.message, e.message!!.contains("503"))
-            assertTrue(e.message, e.message!!.contains("7"))
+            assertEquals(7000L, e.retryAfterMillis)
         }
     }
 
@@ -451,12 +451,13 @@ class RemoteIndexTest {
             exchange.responseHeaders.add("Backoff", "3600")
             exchange.sendResponseHeaders(429, -1)
         }.use { served ->
-            val e = assertThrows(IOException::class.java) { served.index.fetch(mozilla) }
-            assertTrue(e.message, e.message!!.contains("429") && e.message!!.contains("3600"))
+            val e = assertThrows(HttpStatusException::class.java) { served.index.fetch(mozilla) }
+            assertEquals(429, e.status)
+            assertEquals(120000L, e.retryAfterMillis)
         }
         serve { exchange -> exchange.sendResponseHeaders(404, -1) }.use { served ->
-            val e = assertThrows(IOException::class.java) { served.index.fetch(mozilla) }
-            assertEquals("Model index returned HTTP 404", e.message)
+            val e = assertThrows(HttpStatusException::class.java) { served.index.fetch(mozilla) }
+            assertEquals(404, e.status)
         }
     }
 
@@ -465,7 +466,7 @@ class RemoteIndexTest {
             exchange.responseHeaders.add("Location", "https://example.invalid/elsewhere")
             exchange.sendResponseHeaders(302, -1)
         }.use { served ->
-            val e = assertThrows(IOException::class.java) { served.index.fetch(mozilla) }
+            val e = assertThrows(HttpStatusException::class.java) { served.index.fetch(mozilla) }
             assertTrue(e.message, e.message!!.contains("302"))
             assertEquals(1, served.requests.size)
         }

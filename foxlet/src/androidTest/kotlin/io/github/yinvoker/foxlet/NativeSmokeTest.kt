@@ -49,16 +49,14 @@ class NativeSmokeTest {
         )
 
         for (workload in Workload.entries) {
-            val config = EngineConfig.forDevice(context, workload)
-            val decision = config.tuning!!
+            val decision = ThreadPlanner.forDevice(context, workload)
             Log.i(TAG, "tuning workload=$workload $decision")
 
-            assertEquals("config.threads must mirror the decision", decision.threads, config.threads)
             assertTrue("threads=${decision.threads} has no baseline", decision.threads in setOf(1, 2, 4, 6))
             if (workload == Workload.SINGLE) assertEquals(1, decision.threads)
 
             // 同样的输入 -> 同样的结果。
-            val pure = ThreadTuning.recommend(
+            val pure = ThreadPlanner.recommend(
                 totalRamBytes = decision.totalRamBytes,
                 isLowRam = decision.isLowRam,
                 bigCoreCount = decision.bigCoreCount,
@@ -67,12 +65,7 @@ class NativeSmokeTest {
             assertEquals(decision, pure)
         }
 
-        // 源码兼容门:已发布调用方写的就是这一行。workspaceMb 已 @Deprecated
-        // 且完全无效(见 EngineConfig.workspaceMb),但必须继续编译 —— 警告可以,
-        // 报错不行 —— 直到下个大版本移除。
-        @Suppress("DEPRECATION")
-        val legacy = EngineConfig.forDevice(context, Workload.SINGLE, workspaceMb = 64)
-        assertEquals(1, legacy.threads)
+
     }
 
     @Test
@@ -100,7 +93,7 @@ class NativeSmokeTest {
     @Test
     fun canonicalSentenceWhenModelsPresent() = runBlocking {
         val dir = modelDirOrSkip()
-        FoxletEngine(EngineConfig(threads = 1)).use { engine ->
+        NativeEngine(EngineOptions(threads = 1)).use { engine ->
             val t0 = System.nanoTime()
             val first = engine.translate(listOf(CANONICAL_SOURCE), ModelFiles.fromDirectory(dir))
             val t1 = System.nanoTime()
@@ -120,7 +113,7 @@ class NativeSmokeTest {
     @Test
     fun canonicalSentenceWithWorkersWhenModelsPresent() = runBlocking {
         val dir = modelDirOrSkip()
-        FoxletEngine(EngineConfig(threads = 2)).use { engine ->
+        NativeEngine(EngineOptions(threads = 2)).use { engine ->
             val t0 = System.nanoTime()
             val out = engine.translate(listOf(CANONICAL_SOURCE), ModelFiles.fromDirectory(dir))
             val t1 = System.nanoTime()
@@ -153,7 +146,7 @@ class NativeSmokeTest {
         Assume.assumeTrue("expected $CORPUS_LINES lines, got ${corpus.size}", corpus.size == CORPUS_LINES)
 
         // device/200 正典使用英文前缀表和 batch 512。
-        FoxletEngine(EngineConfig(threads = 1, miniBatchWords = 512)).use { engine ->
+        NativeEngine(EngineOptions(threads = 1, miniBatchWords = 512)).use { engine ->
             val model = ModelFiles.fromDirectory(dir)
             // first_ms includes service creation and the lazy model load;
             // second/third are warm. Logged for the app-path latency record.
@@ -187,7 +180,7 @@ class NativeSmokeTest {
         val corpus = corpusFile.readLines().dropLastWhile { it.isEmpty() }
         Assume.assumeTrue("expected $CORPUS_LINES lines, got ${corpus.size}", corpus.size == CORPUS_LINES)
 
-        FoxletEngine(EngineConfig(threads = 2, miniBatchWords = 512)).use { engine ->
+        NativeEngine(EngineOptions(threads = 2, miniBatchWords = 512)).use { engine ->
             val model = ModelFiles.fromDirectory(dir)
             val t0 = System.nanoTime()
             val first = engine.translate(corpus, model)
@@ -221,10 +214,10 @@ class NativeSmokeTest {
         val model = ModelFiles.fromDirectory(dir)
         assertEquals("en", model.sourceLanguage)
 
-        val withTable = FoxletEngine(EngineConfig(threads = 1)).use { engine ->
+        val withTable = NativeEngine(EngineOptions(threads = 1)).use { engine ->
             engine.translate(ABBREVIATION_LINES, model)
         }
-        val withoutTable = FoxletEngine(EngineConfig(threads = 1, nonbreakingPrefixes = false)).use { engine ->
+        val withoutTable = NativeEngine(EngineOptions(threads = 1, nonbreakingPrefixes = false)).use { engine ->
             engine.translate(ABBREVIATION_LINES, model)
         }
         Log.i(TAG, "ssplit with=$withTable")
@@ -247,7 +240,7 @@ class NativeSmokeTest {
     @Test
     fun idleUnloadReclaimsTheModelAndReloadsOnDemand() = runBlocking {
         val dir = modelDirOrSkip()
-        FoxletEngine(EngineConfig(threads = 1, idleUnloadMillis = IDLE_MILLIS)).use { engine ->
+        NativeEngine(EngineOptions(threads = 1, idleUnloadMillis = IDLE_MILLIS)).use { engine ->
             val model = ModelFiles.fromDirectory(dir)
             assertEquals(CANONICAL_ZH, engine.translate(listOf(CANONICAL_SOURCE), model).single())
             assertEquals("model should be resident right after a translation", 1, engine.loadedModelCount().get())

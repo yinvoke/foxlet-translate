@@ -26,11 +26,12 @@ Foxlet Translate 是面向 Android 的高性能离线翻译库，基于 Mozilla 
 | 集成 AAR、下载模型、调用 Kotlin API | [快速开始](docs/getting-started.md) |
 | 了解 Android/JNI/引擎/工具边界 | [代码结构与运行时架构](docs/architecture.md) |
 | 本地构建、测试和真机基准 | [构建、测试与基准](docs/benchmarking.md) |
+| 检查推送条件与 0.4.0 发布待办 | [推送与发布准备](docs/releasing.md) |
 | 每版性能、原始数据与回归检查 | [benchmarks/](benchmarks/README.md) |
 
 ## ✨ 特性
 
-v0.4.0 新增模型管理、远端更新检测和下载增强。可从 [Releases](https://github.com/yinvoke/foxlet-translate/releases/tag/v0.4.0) 下载 SDK 与 Demo。
+0.4.0 统一为 `Foxlet.models` 与 `Foxlet.translator`，覆盖模型管理、更新检测、下载和翻译，不保留旧公开接口。发行构件见 [v0.4.0 Release](https://github.com/yinvoke/foxlet-translate/releases/tag/v0.4.0)；也可按下方步骤从源码构建。
 
 - **离线推理**:翻译全程无网络请求，联网仅发生在下载模型与显式检查更新时，模型来自 Mozilla 官方(MPL-2.0)
 - **Mozilla 模型**:沿用 Firefox Translations 的官方模型，优化 Android 运行效率；引擎源码、模型与训练流程公开
@@ -40,7 +41,7 @@ v0.4.0 新增模型管理、远端更新检测和下载增强。可从 [Releases
 - **性能优化**:相较初版 Android 移植，首次翻译速度提升约 **102–112%**，峰值 RSS 降低约 **41–42%**（小米 14、默认单线程参考测量，见[性能参考](#-性能结果)）
 - **智能分句**:按源语言自带 Moses 前缀表(25 种语言),`Dr.`、`U.S.`、`No. 5` 的句号不再被当成句尾
 - **内存管理**:int8 embedding、模型按需加载、空闲自动卸载与释放确认,可挂 `onTrimMemory`
-- **线程与调度**:单句走同步路径,批量按机型内存与快核数自动定档(`EngineConfig.forDevice`)
+- **线程与调度**：默认单线程使用同步路径；`Threading.Auto` 按设备能力和指定工作负载在创建客户端时定档
 
 ## 🚀 Android 性能优化
 
@@ -48,7 +49,7 @@ v0.4.0 新增模型管理、远端更新检测和下载增强。可从 [Releases
 
 - **ARM 内核适配**：支持具备 i8mm 的设备使用 SMMLA，其他 ARM64 设备自动回退到 ruy/SDOT，覆盖骁龙 865、8 Gen 1、8 Gen 3 等不同代际。
 - **推理计算优化**：使用 int8 embedding/权重路径，优化 Attention 小矩阵计算、shortlist 和 batch 形状，默认 `mini-batch-words` 为 512。
-- **低延迟路径**：一次一句的交互式翻译默认使用 BlockingService，减少 worker 派发和同步开销；批量任务才启用并行 worker。
+- **低延迟路径**：单线程配置使用 BlockingService，减少 worker 派发和同步开销；配置两个及以上线程时使用并行 worker。
 - **设备感知调度**：根据内存、低内存标记和快核数量，在 1/2/4/6 个线程档位中自动选择，并支持显式覆盖。
 - **内存生命周期**：模型按需加载，支持空闲自动卸载、`onTrimMemory` 主动释放和双模型 pivot 的内存权衡。
 - **构建与兼容性**：通过链接裁剪与非 JNI 符号隐藏减小原生库体积，支持 16 KB page size，兼容具备和不具备 i8mm 的 ARM64 设备。
@@ -237,111 +238,53 @@ registry.json  Mozilla 模型下载索引
 
 ## 🚀 快速开始
 
-以下示例适用于 **v0.4.0**。模块、AAR 和入口类已统一为 Foxlet，
-升级时将 `BergamotEngine` 改为 `FoxletEngine`，并更新 AAR 文件名；包名仍为 `io.github.yinvoker.foxlet`。
-旧版本集成请参考对应 tag 的文档；从 v0.3.0 / v0.3.1 升级时需重新编译宿主。
+以下示例适用于 **0.4.0**。本次统一 API 不保留旧接口，宿主需更新调用代码并重新编译。
 
 ```bash
-./gradlew :demo:assembleRelease
+./gradlew :foxlet:packageWithoutPrefixes :demo:assembleRelease
 adb install -r demo/build/outputs/apk/release/demo-release.apk
 ```
 
-打开 demo，下载并校验模型后即可断网翻译。demo 直接消费 AAR、开启 R8，
-不包含评测语料。
-
-自行构建 SDK：
-
-```bash
-./gradlew :foxlet:assembleRelease :foxlet:packageWithoutPrefixes
-```
-
-默认 AAR 和不含 LGPL 分句数据的 `foxlet-no-prefixes-release.aar` 位于
-`foxlet/build/outputs/aar/`。两种版本二选一，宿主另行声明 Kotlin 协程依赖。
-
-### 下载模型并翻译
-
-将默认 AAR 复制到 app 的 `libs/`，添加依赖：
+AAR 位于 `foxlet/build/outputs/aar/`。默认版包含分句前缀数据，无前缀版为 `foxlet-no-prefixes-release.aar`；两者二选一。宿主显式声明协程依赖和网络权限：
 
 ```kotlin
-// app/build.gradle.kts
-android { defaultConfig { minSdk = 28 } }
 dependencies {
     implementation(files("libs/foxlet-release.aar"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
 }
 ```
 
-在 `AndroidManifest.xml` 的 `<manifest>` 下声明模型下载所需的网络权限：
-
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
 ```
 
-下面的函数将英文翻译为简体中文，可从生命周期协程中调用：
+应用长期持有一个 `Foxlet`，模型目录和翻译配置在创建时绑定。默认目录是应用的 `noBackupFilesDir/translation-models`：
 
 ```kotlin
-import android.content.Context
-import io.github.yinvoker.foxlet.FoxletEngine
-import io.github.yinvoker.foxlet.ModelCatalog
-import java.io.File
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import io.github.yinvoker.foxlet.*
 
-suspend fun translateEnglish(context: Context, text: String): String {
-    val model = ModelCatalog.download(
-        root = File(context.filesDir, "translation-models"),
-        from = "en",
-        to = "zh-Hans",
-    )
-    return withContext(Dispatchers.IO) {
-        FoxletEngine().use { engine ->
-            engine.translate(listOf(text), model).single()
-        }
-    }
+val foxlet = Foxlet.create(context) {
+    translation { threading = Threading.Auto(Workload.BATCH) }
+}
+try {
+    val pair = LanguagePair("en", "zh-Hans")
+    val model = foxlet.models.prepare(pair)
+    val text = foxlet.translator.translate("Hello, world!", model)
+    val batch = foxlet.translator.translate(listOf("Good morning.", "Thank you."), model)
+    val updates = foxlet.models.checkUpdates(setOf(pair))
+    val cleanup = foxlet.models.cleanup(keep = setOf(model.id))
+} finally {
+    foxlet.shutdown()
 }
 ```
 
-首次调用会下载并校验模型；之后复用本地模型，可离线调用，待翻译文本不会上传。
-`translate` 支持批量文本，结果顺序与输入一致。连续翻译时应复用一个 engine，
-使用结束后调用 `close()`；同一进程同时只能有一个 engine，上面的函数适用于单次调用。
-下载进度、错误处理、中转翻译、本地模型管理与更新检测见[集成指南](docs/getting-started.md)。
+以上代码运行于协程。`prepare` 优先使用本地最新可用安装，缺失时才下载内置版本；`PreparePolicy.LocalOnly` 保证不联网。下载、准备和查询返回同一种 `InstalledModel`，可直接用于翻译和删除。检查更新只请求索引，安装更新仍由应用显式调用 `download(update.target)`。
 
-模型首次加载前会检查可信 SHA-256；自定义模型需显式提供可信 hash。
-模型文件在引擎使用期间应保持不可变，更新时 `download` 发布到新目录，切换后旧版本由 `ModelCatalog.cleanup` 回收。
+默认 `Threading.Fixed(1)`，可改为固定线程或 `Threading.Auto(Workload.SINGLE/BATCH/PIVOT)`；实际结果从 `translator.threadingInfo` 读取。默认空闲 60 秒卸载，还可选择 `ModelRetention.AfterRequest` 或 `UntilShutdown`。`unloadModels` 释放内存，`models.delete/cleanup` 管理磁盘，两者各自报告结果。
 
-### 分句与前缀表
+模型文件使用期间保持不可变；更新安装到独立目录，后续翻译显式使用新模型。`shutdown` 等待正在执行的 native 批次并完成资源清理，同一进程才能创建下一个客户端。
 
-引擎先按 `.`、`?`、`!` 把段落切成句子再翻译。`ModelFiles.fromDirectory`
-从模型文件名推断源语言(`model.enzh.*.bin` → `en`),加载时自动带上该语言的
-Moses 前缀表，避免将 `Dr. Smith`、`U.S.`、`No. 5` 等缩写中的句号误判为句尾。
-宿主已完成分句时，可使用 `EngineConfig(nonbreakingPrefixes = false)` 关闭前缀表；
-没有表的语言(日、韩、泰等)行为不变。25 张表随 AAR 打包,约 120 KB。
-
-### 空闲卸载
-
-模型在首次使用时加载,空闲超过 `idleUnloadMillis`(默认 60 s)后由引擎线程上的
-定时任务自动卸载，下一次 `translate` 自动重新加载。
-`0` 表示翻完一批立刻卸,负数表示不自动卸(基准或自行管理释放时用);
-`loadedModelCount()` 返回当前常驻模型数。退到后台不必等计时器,直接释放:
-
-```kotlin
-override fun onTrimMemory(level: Int) {
-    if (level >= ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN) engine.releaseAllModels()
-}
-```
-
-### 选择线程数
-
-`EngineConfig()` 默认使用 1 个线程，适合一次一句的交互式翻译。批量任务可按设备能力自动选择线程数：
-
-```kotlin
-val config = EngineConfig.forDevice(context, Workload.BATCH)   // 双模型中转用 Workload.PIVOT
-FoxletEngine(config).use { engine -> /* … */ }
-```
-
-`forDevice` 根据可用设备信息，在 1 / 2 / 4 / 6 个线程中选择配置；双模型中转使用 `Workload.PIVOT`。可通过 `EngineConfig(threads = 4)` 显式指定，并从 `config.tuning` 查看自动选择依据。
-
-更多线程通常能提高批量吞吐，也会增加内存占用。持续翻译可能受到设备温控影响，应用应根据内存预算与交互延迟选择配置。详细用法见[集成指南](docs/getting-started.md)。
+完整配置、下载进度、错误处理、中转和外部模型见[接入指南](docs/getting-started.md)；[统一 API 设计](docs/api-design-review.md)记录本次重构范围。
 
 ## 🔨 构建
 
@@ -388,6 +331,7 @@ adb shell am start -n io.github.yinvoker.foxlet.bench/.MainActivity \
 - [x] 模型更新检测
 - [x] 本地模型管理
 - [x] 下载与更新增强
+- [x] 统一模型管理与翻译 API
 - [ ] HTML 模式验证
 - [ ] SME2 指令集支持
 - [x] 构建优化
@@ -420,7 +364,7 @@ AAR 内附带许可文本及对应源码取得说明。
 
 ### 翻译模型
 
-模型来自 Mozilla Firefox Remote Settings 发布的 [Bergamot 模型索引](registry.json)，模型文件按 Mozilla 对应发布许可（当前索引为 MPL-2.0）分发。模型不内置在 AAR 中，应用需要自行下载或随应用部署，并使用 `registry.json` 中的 SHA-256 校验。索引由 `tools/distribution/fetch_registry.py` 从 Mozilla Remote Settings 刷新（`--check` 只比对不改写）；运行时可用 `ModelCatalog.checkForUpdates` 与上游当前发布比对，是否下载由应用决定。
+模型来自 Mozilla Firefox Remote Settings 发布的 [Bergamot 模型索引](registry.json)，模型文件按 Mozilla 对应发布许可（当前索引为 MPL-2.0）分发。模型不内置在 AAR 中，应用需要自行下载或随应用部署，并使用 `registry.json` 中的 SHA-256 校验。索引由 `tools/distribution/fetch_registry.py` 从 Mozilla Remote Settings 刷新（`--check` 只比对不改写）；运行时可用 `foxlet.models.checkUpdates` 与上游当前发布比对，是否下载由应用决定。
 
 ## 📄 许可
 

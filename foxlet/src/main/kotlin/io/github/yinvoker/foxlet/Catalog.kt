@@ -15,7 +15,7 @@ import kotlinx.coroutines.withContext
  * [checkForUpdates], and each of them says so. Everything else here reads
  * and writes the model root the host passes in.
  */
-object ModelCatalog {
+internal object Catalog {
     data class Asset(val name: String, val size: Long, val sha256: String, val url: String)
 
     /**
@@ -76,6 +76,7 @@ object ModelCatalog {
         val maxBackoffMillis: Long = 30_000,
         val resume: Boolean = true,
         val allowedHosts: Set<String> = setOf(MOZILLA_ATTACHMENT_HOST),
+        val userAgent: String = DEFAULT_USER_AGENT,
     ) {
         init {
             // HttpURLConnection reads a zero timeout as "wait forever".
@@ -105,7 +106,7 @@ object ModelCatalog {
         val attempt: Int,
     )
 
-    private val downloadLock = Mutex()
+    internal val writeLock = Mutex()
 
     /**
      * Download to a fresh directory under [root], check size and SHA-256, then atomically
@@ -149,7 +150,7 @@ object ModelCatalog {
         policy: DownloadPolicy = DownloadPolicy.DEFAULT,
         onProgress: (DownloadProgress) -> Unit = {},
     ): ModelFiles = withContext(Dispatchers.IO) {
-        downloadLock.withLock { ModelDownloader(policy).download(root, model, onProgress) }
+        writeLock.withLock { ModelDownloader(policy).download(root, model, onProgress) }
     }
 
     // ---------------------------------------------------------------- installed
@@ -209,15 +210,15 @@ object ModelCatalog {
      * Remove one published directory and return the bytes freed. The directory is
      * unpublished with a rename before its files go, so a concurrent [installed]
      * never sees a half-deleted model. Throws [IllegalStateException] while a
-     * [FoxletEngine] is loading or holds files from it; call
-     * [FoxletEngine.releaseAllModels] first and stop submitting work using those
+     * [NativeEngine] is loading or holds files from it; call
+     * [NativeEngine.releaseAllModels] first and stop submitting work using those
      * files. A saved [ModelFiles] alone does not reserve its directory after an
      * idle unload; pass such directories to [cleanup]'s `keep` set.
      * [IllegalArgumentException] if the
      * directory is not directly under [root].
      */
     suspend fun delete(root: File, model: InstalledModel): Long =
-        withContext(Dispatchers.IO) { downloadLock.withLock { ModelStore.delete(root, model) } }
+        withContext(Dispatchers.IO) { writeLock.withLock { ModelStore.delete(root, model) } }
 
     /**
      * Remove every installed version of a pair; all-or-nothing with respect to
@@ -225,13 +226,14 @@ object ModelCatalog {
      * Returns the bytes freed.
      */
     suspend fun delete(root: File, from: String, to: String): Long =
-        withContext(Dispatchers.IO) { downloadLock.withLock { ModelStore.delete(root, from, to) } }
+        withContext(Dispatchers.IO) { writeLock.withLock { ModelStore.delete(root, from, to) } }
 
     data class CleanupReport(
         val removedTempDirs: List<File>,
         val removedSuperseded: List<InstalledModel>,
         val bytesFreed: Long,
         val skippedInUse: List<File>,
+        val failures: List<DeleteResult> = emptyList(),
     )
 
     /**
@@ -252,7 +254,7 @@ object ModelCatalog {
     ): CleanupReport = withContext(Dispatchers.IO) {
         // Under the download lock: a temp directory an in-flight download is
         // writing to is only protected by its fresh mtime otherwise.
-        downloadLock.withLock { ModelStore.cleanup(root, staleTempAgeMillis, removeSuperseded, keep) }
+        writeLock.withLock { ModelStore.cleanup(root, staleTempAgeMillis, removeSuperseded, keep) }
     }
 
     // ---------------------------------------------------------------- update detection

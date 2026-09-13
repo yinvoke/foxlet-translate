@@ -4,7 +4,7 @@ import java.io.File
 import java.io.IOException
 
 /**
- * Directories a live [FoxletEngine] has loaded models from, so [ModelStore]
+ * Directories a live [NativeEngine] has loaded models from, so [ModelStore]
  * refuses to delete them. The engine keeps no copy of the files: an idle
  * unload drops the model and the next translation reads the same paths
  * again, so a directory removed in between fails that translation with a

@@ -94,9 +94,6 @@ SET(COMPILE_CUDA OFF CACHE BOOL "Compile GPU version")
 SET(USE_SENTENCEPIECE ON CACHE BOOL "Download and compile SentencePiece")
 SET(USE_STATIC_LIBS ON CACHE BOOL "Link statically against non-system libs")
 
-if (NOT COMPILE_WASM)
-  SET(SSPLIT_COMPILE_LIBRARY_ONLY ON CACHE BOOL "Do not compile ssplit tests")
-endif(NOT COMPILE_WASM)
 
 if (USE_WASM_COMPATIBLE_SOURCE)
   SET(COMPILE_LIBRARY_ONLY ON CACHE BOOL "Build only the Marian library and exclude all executables.")

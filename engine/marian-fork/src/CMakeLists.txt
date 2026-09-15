@@ -140,6 +140,11 @@ endif()
 
 add_library(marian STATIC ${MARIAN_SOURCES})
 
+if(ANDROID)
+  set_property(SOURCE data/sentencepiece_vocab.cpp APPEND PROPERTY
+    COMPILE_DEFINITIONS FOXLET_SENTENCEPIECE_INFERENCE_ONLY)
+endif()
+
 target_compile_options(marian PRIVATE ${ALL_WARNINGS})
 
 # Generate git_revision.h to reflect current git revision information

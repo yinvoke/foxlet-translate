@@ -1,47 +1,39 @@
 From f855a5bf58037137765ab87c303686c127479db2 Mon Sep 17 00:00:00 2001
 From: yinvoker <redacted@example.invalid>
 Date: Sat, 12 Sep 2026 10:11:58 +0800
-Subject: [PATCH] fix: validate native model inputs and preserve upstream
- notices
+Subject: [PATCH] fix: validate native model inputs and preserve upstream notices
+
+Curated excerpt of the original commit. The removed PCRE2 notice and superseded
+ssplit TextProcessor comment cleanup are omitted. All retained model-validation,
+lifecycle and license hunks are unchanged.
 
 ---
- .../ssplit-cpp/cmake/FindPCRE2.cmake          |   1 +
- .../src/3rd_party/ruy/ruy/cpuinfo.cc          |   1 +
- .../sentencepiece/src/trainer_interface.cc    |   1 +
- engine/marian-fork/src/common/binary.cpp      |  21 +-
- .../src/common/binary_validation.h            |  72 ++++
- engine/marian-fork/src/common/io.cpp          |  17 +-
- engine/marian-fork/src/common/lifecycle.h     |   2 +-
- .../src/data/sentencepiece_vocab.cpp          |  15 +-
- engine/marian-fork/src/data/shortlist.cpp     |  52 +--
- .../src/tensors/cpu/integer_common.cpp        |   8 +-
- .../src/tensors/cpu/integer_common.h          |   6 +-
- .../marian-fork/src/tensors/cpu/prod_blas.h   |   2 +-
- .../src/tensors/cpu/ruy_interface.h           |  28 +-
- .../src/tensors/cpu/smmla_gemm.cpp            |   6 +-
- .../marian-fork/src/tensors/cpu/smmla_gemm.h  |   2 +-
- engine/src/translator/LICENSE                 | 373 ++++++++++++++++++
- engine/src/translator/byte_array_util.cpp     | 103 ++---
- engine/src/translator/service.cpp             |  12 +-
- engine/src/translator/service.h               |   8 +-
- engine/src/translator/text_processor.cpp      |  13 +-
- .../translator/threadsafe_batching_pool.cpp   |   2 +-
- .../src/translator/threadsafe_batching_pool.h |  10 +-
- engine/src/translator/translation_model.cpp   |  16 +-
- engine/src/translator/translation_model.h     |   4 +-
- 24 files changed, 589 insertions(+), 186 deletions(-)
+ .../marian-fork/src/3rd_party/ruy/ruy/cpuinfo.cc   |    1
+ .../sentencepiece/src/trainer_interface.cc         |    1
+ engine/marian-fork/src/common/binary.cpp           |   21 +
+ engine/marian-fork/src/common/binary_validation.h  |   72 ++++
+ engine/marian-fork/src/common/io.cpp               |   17 +
+ engine/marian-fork/src/common/lifecycle.h          |    2
+ .../marian-fork/src/data/sentencepiece_vocab.cpp   |   15 -
+ engine/marian-fork/src/data/shortlist.cpp          |   52 ++-
+ .../marian-fork/src/tensors/cpu/integer_common.cpp |    8
+ .../marian-fork/src/tensors/cpu/integer_common.h   |    6
+ engine/marian-fork/src/tensors/cpu/prod_blas.h     |    2
+ engine/marian-fork/src/tensors/cpu/ruy_interface.h |   28 +-
+ engine/marian-fork/src/tensors/cpu/smmla_gemm.cpp  |    6
+ engine/marian-fork/src/tensors/cpu/smmla_gemm.h    |    2
+ engine/src/translator/LICENSE                      |  373 ++++++++++++++++++++
+ engine/src/translator/byte_array_util.cpp          |  103 +-----
+ engine/src/translator/service.cpp                  |   12 -
+ engine/src/translator/service.h                    |    8
+ engine/src/translator/threadsafe_batching_pool.cpp |    2
+ engine/src/translator/threadsafe_batching_pool.h   |   10 -
+ engine/src/translator/translation_model.cpp        |   16 -
+ engine/src/translator/translation_model.h          |    4
+ 22 files changed, 586 insertions(+), 175 deletions(-)
  create mode 100644 engine/marian-fork/src/common/binary_validation.h
  create mode 100644 engine/src/translator/LICENSE
 
-diff --git a/engine/3rd_party/ssplit-cpp/cmake/FindPCRE2.cmake b/engine/3rd_party/ssplit-cpp/cmake/FindPCRE2.cmake
-index f4dab22..5743ffa 100644
---- a/engine/3rd_party/ssplit-cpp/cmake/FindPCRE2.cmake
-+++ b/engine/3rd_party/ssplit-cpp/cmake/FindPCRE2.cmake
-@@ -1,3 +1,4 @@
-+# Modified by Foxlet Translate; original license and copyright retained.
- # Depending on the value of SSPLIT_USE_INTERNAL_PRCRE2 this cmake file
- # either tries to find the Perl Compatible Regular Expresison library (pcre2)
- # on the system (when OFF), or downloads and compiles them locally (when ON).
 diff --git a/engine/marian-fork/src/3rd_party/ruy/ruy/cpuinfo.cc b/engine/marian-fork/src/3rd_party/ruy/ruy/cpuinfo.cc
 index 9f49bb0..faacb0d 100644
 --- a/engine/marian-fork/src/3rd_party/ruy/ruy/cpuinfo.cc
@@ -1280,30 +1272,6 @@ index 053f0b8..0bec720 100644
    /// -- each worker's cached model reference and last batch, the aggregate
    /// queue's reference, and every worker's GEMM weight-packing caches. This is
    /// the counterpart of createCompatibleModel(); simply dropping the handle
-diff --git a/engine/src/translator/text_processor.cpp b/engine/src/translator/text_processor.cpp
-index 79a9e82..c8c1661 100644
---- a/engine/src/translator/text_processor.cpp
-+++ b/engine/src/translator/text_processor.cpp
-@@ -64,17 +64,8 @@ TextProcessor::TextProcessor(Ptr<Options> options, const Vocabs &vocabs, const s
-
- TextProcessor::TextProcessor(Ptr<Options> options, const Vocabs &vocabs, const AlignedMemory &memory)
-     : vocabs_(vocabs) {
--  // This is not the best of the solutions at the moment, but is consistent with what happens among other structures
--  // like model, vocabulary or shortlist. First, we check if the bytearray is empty. If not, we load from ByteArray. In
--  // case empty, the string based loader which reads from file is called. However, ssplit allows for not supplying
--  // ssplit-prefix-file where-in the purely regular expression based splitter is activated.
--  //
--  // For now, we allow not supplying an ssplit-prefix-file.
--  //
--  // The test below used to read `memory.begin() == nullptr && memory.size()`, which no AlignedMemory can satisfy: a
--  // non-empty allocation always has a non-null base. The byte-array branch was therefore dead and every caller silently
--  // fell back to the file path (or, with no path either, to the bare regex splitter).
--
-+  // Prefer the supplied prefix bytes, then the configured file. An empty
-+  // file path selects the regex-only splitter.
-   if (memory.begin() != nullptr && memory.size()) {
-     ssplit_ = loadSplitter(memory);
-   } else {
 diff --git a/engine/src/translator/threadsafe_batching_pool.cpp b/engine/src/translator/threadsafe_batching_pool.cpp
 index 2e3a400..5c8a8a1 100644
 --- a/engine/src/translator/threadsafe_batching_pool.cpp

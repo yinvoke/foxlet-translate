@@ -399,7 +399,11 @@ endif()
 if(USE_SENTENCEPIECE)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DUSE_SENTENCEPIECE -D_USE_INTERNAL_STRING_VIEW")
   LIST(APPEND CUDA_NVCC_FLAGS -DUSE_SENTENCEPIECE; )
-  set(EXT_LIBS ${EXT_LIBS} sentencepiece sentencepiece_train)
+  set(EXT_LIBS ${EXT_LIBS} sentencepiece)
+  # Android ships inference only; host development tools retain vocabulary training.
+  if(NOT ANDROID)
+    list(APPEND EXT_LIBS sentencepiece_train)
+  endif()
 endif()
 
 if(USE_ONNX)

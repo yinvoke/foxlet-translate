@@ -17,76 +17,47 @@ namespace bergamot {
 
 #if !defined(WASM)
 namespace {
-ug::ssplit::SentenceStream::splitmode string2splitmode(const std::string &m) {
-  typedef ug::ssplit::SentenceStream::splitmode splitmode;
-  if (m == "sentence") {
-    return splitmode::one_sentence_per_line;
-  } else if (m == "paragraph") {
-    return splitmode::one_paragraph_per_line;
-  } else if (m == "wrapped_text") {
-    return splitmode::wrapped_text;
-  } else {
-    ABORT("Unknown ssplitmode {}, Please choose one of {sentence,paragraph,wrapped_text}");
-  }
+foxlet::sentence::Mode splitMode(const std::string &mode) {
+  if (mode == "sentence") return foxlet::sentence::Mode::Sentence;
+  if (mode == "paragraph") return foxlet::sentence::Mode::Paragraph;
+  if (mode == "wrapped_text") return foxlet::sentence::Mode::Wrapped;
+  throw std::invalid_argument("Unknown sentence splitting mode: " + mode);
 }
 
-ug::ssplit::SentenceSplitter loadSplitter(const std::string &ssplitPrefixFile) {
-  // Temporarily supports empty, will be removed when mozilla passes ssplitPrefixFile
-  ug::ssplit::SentenceSplitter splitter;
-  if (ssplitPrefixFile.size()) {
-    std::string interpSsplitPrefixFile = marian::cli::interpolateEnvVars(ssplitPrefixFile);
-    LOG(info, "Loading protected prefixes for sentence splitting from {}", interpSsplitPrefixFile);
-    splitter.load(interpSsplitPrefixFile);
-  } else {
-    LOG(warn,
-        "Missing list of protected prefixes for sentence splitting. "
-        "Set with --ssplit-prefix-file.");
+foxlet::sentence::Segmenter makeSplitter(Ptr<Options> options, const std::string& path,
+                                        const AlignedMemory* memory = nullptr) {
+  foxlet::sentence::Segmenter result(options->get<std::string>("ssplit-language", ""),
+                                    options->get<bool>("ssplit-builtin", true));
+  if (memory && memory->size()) {
+    result.setCustomRules(std::string_view(memory->begin(), memory->size()));
+  } else if (!path.empty()) {
+    result.load(marian::cli::interpolateEnvVars(path));
   }
-  return splitter;
-}
-
-ug::ssplit::SentenceSplitter loadSplitter(const AlignedMemory &memory) {
-  // Temporarily supports empty, will be removed when mozilla passes memory
-  ug::ssplit::SentenceSplitter splitter;
-  if (memory.size()) {
-    std::string_view serialized(memory.begin(), memory.size());
-    splitter.loadFromSerialized(serialized);
-  }
-  return splitter;
+  return result;
 }
 
 }  // namespace
 
 TextProcessor::TextProcessor(Ptr<Options> options, const Vocabs &vocabs, const std::string &ssplit_prefix_file)
-    : vocabs_(vocabs), ssplit_(loadSplitter(ssplit_prefix_file)) {
+    : splitter_(makeSplitter(options, ssplit_prefix_file)), vocabs_(vocabs) {
   parseCommonOptions(options);
 }
 
 TextProcessor::TextProcessor(Ptr<Options> options, const Vocabs &vocabs, const AlignedMemory &memory)
-    : vocabs_(vocabs) {
-  // Prefer the supplied prefix bytes, then the configured file. An empty
-  // file path selects the regex-only splitter.
-  if (memory.begin() != nullptr && memory.size()) {
-    ssplit_ = loadSplitter(memory);
-  } else {
-    ssplit_ = loadSplitter(options->get<std::string>("ssplit-prefix-file", ""));
-  }
+    : splitter_(makeSplitter(options, options->get<std::string>("ssplit-prefix-file", ""), &memory)),
+      vocabs_(vocabs) {
   parseCommonOptions(options);
 }
 
 void TextProcessor::parseCommonOptions(Ptr<Options> options) {
   maxLengthBreak_ = options->get<size_t>("max-length-break");
-  ssplitMode_ = string2splitmode(options->get<std::string>("ssplit-mode"));
+  splitMode_ = splitMode(options->get<std::string>("ssplit-mode"));
 }
 
 void TextProcessor::process(std::string &&input, AnnotatedText &source, Segments &segments) const {
   source = std::move(AnnotatedText(std::move(input)));
   std::string_view input_converted(source.text.data(), source.text.size());
-  auto sentenceStream = ug::ssplit::SentenceStream(input_converted, ssplit_, ssplitMode_);
-
-  std::string_view sentenceStringPiece;
-
-  while (sentenceStream >> sentenceStringPiece) {
+  for (auto sentenceStringPiece : splitter_.sentences(input_converted, splitMode_)) {
     marian::string_view sentence(sentenceStringPiece.data(), sentenceStringPiece.size());
 
     std::vector<string_view> wordRanges;

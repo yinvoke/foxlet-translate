@@ -232,7 +232,7 @@ struct AnnotatedText {
 
  private:
   /// The target language that this annotated text will be translated into.
-  /// This remains empty for non-WASM builds that use ssplit for segmentation.
+  /// This remains empty for native builds that use the Foxlet sentence scanner.
   /// This value is populated in WASM builds that utilize a locale-specific segmenter.
   ///
   /// Note: This is not excluded from non-WASM builds using preprocessor directives because

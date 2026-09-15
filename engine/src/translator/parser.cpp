@@ -39,6 +39,9 @@ std::shared_ptr<marian::Options> parseOptionsFromString(const std::string &confi
   configParser.addOption<std::string>("--ssplit-mode", "Bergamot Options", "[paragraph, sentence, wrapped_text]",
                                       "paragraph");
 
+  configParser.addOption<std::string>("--ssplit-language", "Bergamot Options", "Source language for sentence rules.", "");
+  configParser.addOption<bool>("--ssplit-builtin", "Bergamot Options", "Enable built-in abbreviation rules.", true);
+
   configParser.addOption<std::string>("--quality", "Bergamot Options", "File considering Quality Estimation model");
 
   // Parse configs onto defaultConfig. The preliminary merge sets the YAML internal representation with legal values.

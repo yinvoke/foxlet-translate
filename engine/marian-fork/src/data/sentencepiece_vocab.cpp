@@ -137,7 +137,9 @@ public:
   void create(const std::string& vocabPath,
               const std::vector<std::string>& trainPaths,
               size_t maxSize) override {
-
+#ifdef FOXLET_SENTENCEPIECE_INFERENCE_ONLY
+    throw std::runtime_error("SentencePiece training is unavailable in the Android inference library");
+#else
     size_t defaultMaxSize = 32000;
     size_t maxLines = options_->get<size_t>("sentencepiece-max-lines");
     size_t maxBytes = 2048;
@@ -185,6 +187,7 @@ public:
     ABORT_IF(rename((vocabPath + ".model").c_str(), vocabPath.c_str()) != 0,
              "Could not rename {} to {}",
              vocabPath + ".model", vocabPath);
+#endif
   }
 
   void createFake() override {

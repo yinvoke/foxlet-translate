@@ -39,7 +39,7 @@ if(ENABLE_CACHE_STATS)
 endif(ENABLE_CACHE_STATS)
 
 if(NOT COMPILE_WASM)
-  target_link_libraries(bergamot-translator-source marian ssplit)
+  target_link_libraries(bergamot-translator-source marian foxlet_sentence)
 elseif(COMPILE_WASM)
   target_link_libraries(bergamot-translator-source marian)
 endif()

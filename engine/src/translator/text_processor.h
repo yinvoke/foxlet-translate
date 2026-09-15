@@ -12,8 +12,8 @@
 
 #if !defined(WASM)
 // The WASM implementation uses the Intl.Segmenter within the JavaScript environment.
-// Therefore we should only include ssplit for a local, non-WASM build.
-#include "ssplit.h"
+// Native builds use the project-owned UTF-8 sentence scanner.
+#include "sentence/segmenter.h"
 #endif // !defined(WASM)
 
 namespace marian {
@@ -21,38 +21,30 @@ namespace bergamot {
 
 class TextProcessor {
   /// TextProcessor handles loading the sentencepiece vocabulary and also
-  /// contains an instance of sentence-splitter based on ssplit.
+  /// contains an instance of sentence-splitter with Unicode and locale rules.
   ///
   /// Used in Service to convert an incoming blob of text to a vector of
   /// sentences (vector of words). In addition, the ByteRanges of the
   /// source-tokens in unnormalized text are provided as string_views.
 #if !defined(WASM)
  public:
-  // There are two ways to construct text-processor, different in a file-system
-  // based prefix file load and a memory based prefix file store. @jerinphilip
-  // is not doing magic inference inside to determine file-based or memory
-  // based on one being empty or not.
-
-  /// Construct TextProcessor from options, vocabs and prefix-file.
-  /// @param [in] options: expected to contain `max-length-break`, `ssplit-mode`.
-  /// @param [in] vocabs: Vocabularies used to process text into sentences to marian::Words and corresponding ByteRange
-  /// information in AnnotatedText.
-  /// @param [in] ssplit_prefix_file: Path to ssplit-prefix file compatible with moses-tokenizer.
+  /// Configures the native scanner from ssplit-language, ssplit-builtin and
+  /// ssplit-mode, then optionally replaces abbreviations with the UTF-8 file.
+  /// max-length-break controls token wrapping after sentence segmentation.
+  /// @param [in] ssplit_prefix_file: Optional custom table path; empty uses configured built-in rules.
   TextProcessor(Ptr<Options>, const Vocabs &vocabs, const std::string &ssplit_prefix_file);
 
-  /// Construct TextProcessor from options, vocabs and prefix-file supplied as a bytearray. For other parameters, see
-  /// the path based constructor.
-  /// Note: This falls back to string based loads if memory is null, this behaviour will be deprecated in the future.
-  ///
-  /// @param [in] memory: ssplit-prefix-file contents in memory, passed as a bytearray.
+  /// Uses nonempty UTF-8 rule bytes in preference to ssplit-prefix-file.
+  /// Empty memory falls back to the configured file path, then built-in rules.
+  /// @param [in] memory: Custom abbreviation table; limited to 1 MiB by the scanner.
   TextProcessor(Ptr<Options>, const Vocabs &vocabs, const AlignedMemory &memory);
 
  private:
-  /// SentenceSplitter compatible with moses sentence-splitter
-  ug::ssplit::SentenceSplitter ssplit_;
+  /// Project-owned UTF-8 sentence scanner.
+  foxlet::sentence::Segmenter splitter_;
 
   /// Mode of splitting, can be line ('\n') based, paragraph based, also supports a wrapped mode.
-  ug::ssplit::SentenceStream::splitmode ssplitMode_;
+  foxlet::sentence::Mode splitMode_;
 
   void parseCommonOptions(Ptr<Options> options);
 #elif defined(WASM)

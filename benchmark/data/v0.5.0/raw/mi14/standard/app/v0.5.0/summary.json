@@ -1,0 +1,36 @@
+{
+  "suite_id": "android-app-v2",
+  "accepted": false,
+  "errors": [
+    "requires a completed measure run, not prepare/quality/partial data",
+    "post-run model fingerprints missing; model stability not verified",
+    "expected 18 unique runs: all 6 scenarios x three rounds",
+    "jazh/mlkit/Nonet: incomplete process"
+  ],
+  "scenarios": [
+    {
+      "scenario": "enzh/mlkit/Nonet",
+      "successful_processes": 1
+    },
+    {
+      "scenario": "enzh/bergamot/1t",
+      "successful_processes": 1
+    },
+    {
+      "scenario": "enzh/bergamot/2t",
+      "successful_processes": 1
+    },
+    {
+      "scenario": "jazh/mlkit/Nonet",
+      "successful_processes": 1
+    },
+    {
+      "scenario": "jazh/bergamot/1t",
+      "successful_processes": 2
+    },
+    {
+      "scenario": "jazh/bergamot/2t",
+      "successful_processes": 2
+    }
+  ]
+}

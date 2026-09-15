@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Install exact CI-built release demo/test APKs on an attached ARM64 device; no skipped tests."""
+"""Install exact CI-built release sdk-example/test APKs on an attached ARM64 device; no skipped tests."""
 import argparse
 import json
 from pathlib import Path
@@ -30,6 +30,7 @@ for apk in [a.apk, a.test_apk]:
 # Device must be unlocked and able to reach Mozilla for the first pinned model download.
 print('Running DeliveryTest (including model download and live index check)...', flush=True)
 result = adb('shell', 'am', 'instrument', '-w', '-r',
+             '-e', 'class', 'io.github.yinvoker.foxlet.demo.DeliveryTest',
              'io.github.yinvoker.foxlet.demo.test/androidx.test.runner.AndroidJUnitRunner')
 print(result)
 a.output.parent.mkdir(parents=True, exist_ok=True)

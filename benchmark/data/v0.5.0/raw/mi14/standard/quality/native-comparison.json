@@ -1,0 +1,29 @@
+{
+  "metric": "COMET x100",
+  "n": 200,
+  "seed": 20260915,
+  "bootstrap_samples": 2000,
+  "caution": "Approximate paired row bootstrap. Rows within source articles are not independent; not a noninferiority test.",
+  "results": {
+    "enzh": {
+      "v0.3.0": 87.26716721057892,
+      "v0.5.0": 87.26716721057892,
+      "delta": 0.0,
+      "paired_bootstrap_95ci": [
+        0.0,
+        0.0
+      ],
+      "changed_rows": 0
+    },
+    "jazh": {
+      "v0.3.0": 86.71308651566505,
+      "v0.5.0": 86.6837577521801,
+      "delta": -0.029328763484954834,
+      "paired_bootstrap_95ci": [
+        -0.10961945876479148,
+        0.04858525246381755
+      ],
+      "changed_rows": 13
+    }
+  }
+}

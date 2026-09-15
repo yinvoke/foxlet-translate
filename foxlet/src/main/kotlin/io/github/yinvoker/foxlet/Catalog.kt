@@ -178,7 +178,7 @@ internal object Catalog {
         val isCurrentCatalogVersion: Boolean,
         val verified: Boolean?,
     ) {
-        /** Engine handle for this directory, with hashes pinned when [model] is known. */
+        /** File descriptor for this directory, with hashes pinned when [model] is known. */
         fun files(): ModelFiles {
             val resolved = ModelFiles.fromDirectory(directory)
             val known = model ?: return resolved
@@ -198,8 +198,8 @@ internal object Catalog {
     /**
      * The newest installed and verified directory for a pair as a [ModelFiles],
      * or null when nothing usable is installed. Hashes every candidate it tries;
-     * never downloads. This is the offline half of "use what we have now,
-     * update later": pair it with [checkForUpdates] and [download].
+     * never downloads. Remote discovery and installation remain explicit
+     * operations through [checkForUpdates] and [download].
      */
     suspend fun installedFor(root: File, from: String, to: String): ModelFiles? =
         withContext(Dispatchers.IO) { ModelStore.installedFor(root, from, to) }
@@ -319,7 +319,7 @@ internal object Catalog {
     /**
      * Ask [source] what it publishes and compare with what is installed under
      * [root]. This is the one network request outside [download]: a single
-     * HTTPS GET of the index (about 80 KB compressed), carrying no identifier
+     * HTTPS GET of the index, carrying no application identifier
      * beyond [UpdateSource.userAgent]. Nothing is downloaded or deleted; the
      * host decides what to do with the report. Selection uses Firefox's version
      * ordering with conservative filtering:

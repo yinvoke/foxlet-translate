@@ -19,6 +19,8 @@ jobs:
           /tmp/foxlet-native-safety
       - name: Benchmark checker tests (no device timings on shared CI runners)
         run: python3 -B -m unittest discover -s tools/version-bench -p 'test_*.py' -v
+      - name: Sentence evaluation scorer tests (offline)
+        run: python3 -B -m unittest discover -s tools/sentence-tests -p 'test_*.py' -v
       - name: Model registry selection tests (offline fixtures)
         run: python3 -B -m unittest discover -s tools/distribution -p 'test_*.py' -v
       - name: App benchmark evidence checks (synthetic data only)
@@ -39,12 +41,12 @@ jobs:
       - name: Validate pinned model catalog
         run: python3 tools/distribution/sync_catalog.py --check
       - name: Unit tests, final AAR, R8 consumer and device-test APK
-        run: ./gradlew :foxlet:test :foxlet:packageWithoutPrefixes :demo:assembleRelease :demo:assembleReleaseAndroidTest :sample:assembleDebug
+        run: ./gradlew :foxlet:test :foxlet:assembleRelease :sdk-example:assembleRelease :sdk-example:assembleReleaseAndroidTest :benchmark-app:assembleDebug
       - name: Check delivered bytes and hardening
         run: |
           python3 tools/distribution/check_public_api.py
           python3 tools/distribution/check_hardening.py
-          python3 tools/distribution/verify_artifacts.py --aar foxlet/build/outputs/aar/foxlet-release.aar --no-prefixes foxlet/build/outputs/aar/foxlet-no-prefixes-release.aar --apk demo/build/outputs/apk/release/demo-release.apk
+          python3 tools/distribution/verify_artifacts.py --aar foxlet/build/outputs/aar/foxlet-release.aar --apk sdk-example/build/outputs/apk/release/sdk-example-release.apk
       - uses: actions/upload-artifact@v4
         with:
           name: foxlet-release-aar
@@ -73,11 +75,17 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y clang llvm
+      - name: Test sentence rules with sanitizers
+        run: |
+          python3 tools/sentence-tests/generate_unicode.py --check
+          cmake -S tools/sentence-tests -B build/sentence-tests -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DSENTENCE_SANITIZERS=ON
+          cmake --build build/sentence-tests --parallel 2
+          UBSAN_OPTIONS=halt_on_error=1 ctest --test-dir build/sentence-tests --output-on-failure
       - name: Build smoke CLI
         run: |
           cmake -B build-host -DCMAKE_BUILD_TYPE=Release \
             -DBUILD_ARCH=armv8-a \
-            -DSSPLIT_USE_INTERNAL_PCRE2=ON -DCOMPILE_TESTS=OFF -DBUILD_SMMLA_TEST=ON
+            -DCOMPILE_TESTS=OFF -DBUILD_SMMLA_TEST=ON
           cmake --build build-host -j 3 --target smoke --target smmla_test
       - name: SMMLA GEMM test set and disabled-backend probe
         env:
@@ -130,6 +138,7 @@ jobs:
           quiet-translation: true
           gemm-precision: int8shiftAlphaAll
           alignment: soft
+          ssplit-language: en
           EOF
           ) | tee out.txt
           test "$(wc -l < out.txt)" -eq 2

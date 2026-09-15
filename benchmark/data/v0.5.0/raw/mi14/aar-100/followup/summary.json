@@ -1,0 +1,347 @@
+{
+  "protocol": "private-release-aar-paired-100-v1",
+  "versions": [
+    "v0.4.0",
+    "v0.5.0"
+  ],
+  "rows": [
+    {
+      "direction": "en-zh",
+      "workers": 1,
+      "v0.4.0": {
+        "first_ms": 1459.80526,
+        "warm_ms": 1676.659739,
+        "first_peak_pss_mib": 228.837890625,
+        "warm_peak_pss_mib": 199.9482421875,
+        "warm_sentences_per_second": 59.64239354828332,
+        "process_first_ms": [
+          1448.851979,
+          1459.80526,
+          1763.708489
+        ],
+        "process_warm_ms": [
+          1582.192864,
+          1676.659739,
+          1690.3732285
+        ],
+        "warm_range_over_median_percent": 6.452135873705738
+      },
+      "v0.5.0": {
+        "first_ms": 1686.495364,
+        "warm_ms": 1603.2807285,
+        "first_peak_pss_mib": 227.66015625,
+        "warm_peak_pss_mib": 196.849609375,
+        "warm_sentences_per_second": 62.37210877820391,
+        "process_first_ms": [
+          1686.495364,
+          1652.231301,
+          1801.173749
+        ],
+        "process_warm_ms": [
+          1603.2807285,
+          1520.7446085000001,
+          1698.1793485
+        ],
+        "warm_range_over_median_percent": 11.066978904312322
+      },
+      "warm_time_change_percent": -4.376499822424618,
+      "warm_pss_change_percent": -1.549717456177624
+    },
+    {
+      "direction": "en-zh",
+      "workers": 2,
+      "v0.4.0": {
+        "first_ms": 951.471875,
+        "warm_ms": 951.208776,
+        "first_peak_pss_mib": 341.2138671875,
+        "warm_peak_pss_mib": 341.9248046875,
+        "warm_sentences_per_second": 105.12939169938862,
+        "process_first_ms": [
+          951.471875,
+          939.195313,
+          1071.806354
+        ],
+        "process_warm_ms": [
+          900.6229940000001,
+          951.208776,
+          981.3080729999999
+        ],
+        "warm_range_over_median_percent": 8.4823732744871
+      },
+      "v0.5.0": {
+        "first_ms": 1019.83276,
+        "warm_ms": 935.5147135,
+        "first_peak_pss_mib": 340.2509765625,
+        "warm_peak_pss_mib": 341.744140625,
+        "warm_sentences_per_second": 106.89302750340975,
+        "process_first_ms": [
+          1043.563385,
+          1019.83276,
+          946.883697
+        ],
+        "process_warm_ms": [
+          928.825104,
+          935.5147135,
+          961.44901
+        ],
+        "warm_range_over_median_percent": 3.487268081326658
+      },
+      "warm_time_change_percent": -1.6499072439171814,
+      "warm_pss_change_percent": -0.052837366585645196
+    },
+    {
+      "direction": "en-zh",
+      "workers": 4,
+      "v0.4.0": {
+        "first_ms": 744.552396,
+        "warm_ms": 510.713724,
+        "first_peak_pss_mib": 555.2236328125,
+        "warm_peak_pss_mib": 558.228515625,
+        "warm_sentences_per_second": 195.80441116166284,
+        "process_first_ms": [
+          757.950364,
+          744.552396,
+          717.636406
+        ],
+        "process_warm_ms": [
+          503.840729,
+          510.713724,
+          534.6512235
+        ],
+        "warm_range_over_median_percent": 6.032830733172153
+      },
+      "v0.5.0": {
+        "first_ms": 769.39776,
+        "warm_ms": 510.07203100000004,
+        "first_peak_pss_mib": 554.041015625,
+        "warm_peak_pss_mib": 557.3427734375,
+        "warm_sentences_per_second": 196.05074170396924,
+        "process_first_ms": [
+          769.39776,
+          800.319583,
+          741.205573
+        ],
+        "process_warm_ms": [
+          510.166354,
+          492.9813795,
+          510.07203100000004
+        ],
+        "warm_range_over_median_percent": 3.3691269968888
+      },
+      "warm_time_change_percent": -0.12564632001155207,
+      "warm_pss_change_percent": -0.1586701794530021
+    },
+    {
+      "direction": "ja-zh",
+      "workers": 1,
+      "v0.4.0": {
+        "first_ms": 3757.519634,
+        "warm_ms": 3466.8499465,
+        "first_peak_pss_mib": 324.0185546875,
+        "warm_peak_pss_mib": 300.4541015625,
+        "warm_sentences_per_second": 28.84462885420126,
+        "process_first_ms": [
+          3757.519634,
+          3858.61854,
+          3575.233332
+        ],
+        "process_warm_ms": [
+          3336.948827,
+          3482.952238,
+          3466.8499465
+        ],
+        "warm_range_over_median_percent": 4.211414201742397
+      },
+      "v0.5.0": {
+        "first_ms": 3796.761092,
+        "warm_ms": 3492.424504,
+        "first_peak_pss_mib": 323.044921875,
+        "warm_peak_pss_mib": 300.0673828125,
+        "warm_sentences_per_second": 28.63340349532721,
+        "process_first_ms": [
+          3630.701613,
+          3796.761092,
+          3824.077082
+        ],
+        "process_warm_ms": [
+          3470.8233060000002,
+          3492.424504,
+          3546.568436
+        ],
+        "warm_range_over_median_percent": 2.168840870096008
+      },
+      "warm_time_change_percent": 0.7376886191979404,
+      "warm_pss_change_percent": -0.12871142313880535
+    },
+    {
+      "direction": "ja-zh",
+      "workers": 2,
+      "v0.4.0": {
+        "first_ms": 2184.636822,
+        "warm_ms": 1788.448358,
+        "first_peak_pss_mib": 570.75390625,
+        "warm_peak_pss_mib": 514.02734375,
+        "warm_sentences_per_second": 55.91439056805016,
+        "process_first_ms": [
+          2128.10677,
+          2192.551665,
+          2184.636822
+        ],
+        "process_warm_ms": [
+          1754.2449470000001,
+          1788.448358,
+          1840.6203635000002
+        ],
+        "warm_range_over_median_percent": 4.829628773659006
+      },
+      "v0.5.0": {
+        "first_ms": 2194.331718,
+        "warm_ms": 1780.7757539999998,
+        "first_peak_pss_mib": 569.376953125,
+        "warm_peak_pss_mib": 513.2783203125,
+        "warm_sentences_per_second": 56.15530185391328,
+        "process_first_ms": [
+          2332.415259,
+          2176.384062,
+          2194.331718
+        ],
+        "process_warm_ms": [
+          1780.7757539999998,
+          1761.176588,
+          1841.109114
+        ],
+        "warm_range_over_median_percent": 4.488635125475774
+      },
+      "warm_time_change_percent": -0.4290089767300054,
+      "warm_pss_change_percent": -0.14571665235464382
+    },
+    {
+      "direction": "ja-zh",
+      "workers": 4,
+      "v0.4.0": {
+        "first_ms": 1571.897343,
+        "warm_ms": 1021.1952335,
+        "first_peak_pss_mib": 896.6337890625,
+        "warm_peak_pss_mib": 900.041015625,
+        "warm_sentences_per_second": 97.92446803464247,
+        "process_first_ms": [
+          1571.897343,
+          1573.61328,
+          1537.235103
+        ],
+        "process_warm_ms": [
+          988.360052,
+          1078.7606245000002,
+          1021.1952335
+        ],
+        "warm_range_over_median_percent": 8.852427972089647
+      },
+      "v0.5.0": {
+        "first_ms": 1589.293854,
+        "warm_ms": 1035.869244,
+        "first_peak_pss_mib": 898.033203125,
+        "warm_peak_pss_mib": 899.4716796875,
+        "warm_sentences_per_second": 96.53728072266233,
+        "process_first_ms": [
+          1556.47828,
+          1632.195207,
+          1589.293854
+        ],
+        "process_warm_ms": [
+          1020.385885,
+          1037.7246875,
+          1035.869244
+        ],
+        "warm_range_over_median_percent": 1.6738408443373036
+      },
+      "warm_time_change_percent": 1.4369446721472556,
+      "warm_pss_change_percent": -0.06325666582035483
+    },
+    {
+      "direction": "ru-en",
+      "workers": 1,
+      "v0.4.0": {
+        "first_ms": 1878.306822,
+        "warm_ms": 2155.193906,
+        "first_peak_pss_mib": 224.3876953125,
+        "warm_peak_pss_mib": 176.8994140625,
+        "warm_sentences_per_second": 46.399537285996765,
+        "process_first_ms": [
+          2014.777343,
+          1878.306822,
+          1869.798228
+        ],
+        "process_warm_ms": [
+          2108.7844784999998,
+          2155.193906,
+          2230.5265360000003
+        ],
+        "warm_range_over_median_percent": 5.648775136245238
+      },
+      "v0.5.0": {
+        "first_ms": 2085.945624,
+        "warm_ms": 2181.995598,
+        "first_peak_pss_mib": 224.2763671875,
+        "warm_peak_pss_mib": 175.71484375,
+        "warm_sentences_per_second": 45.8296066644952,
+        "process_first_ms": [
+          2085.945624,
+          2068.730051,
+          2125.536509
+        ],
+        "process_warm_ms": [
+          2181.995598,
+          2174.5360665,
+          2218.1798955
+        ],
+        "warm_range_over_median_percent": 2.0001795164024934
+      },
+      "warm_time_change_percent": 1.243586107281791,
+      "warm_pss_change_percent": -0.6696293024924804
+    },
+    {
+      "direction": "ru-en",
+      "workers": 2,
+      "v0.4.0": {
+        "first_ms": 1153.350729,
+        "warm_ms": 1165.9564315,
+        "first_peak_pss_mib": 311.8740234375,
+        "warm_peak_pss_mib": 311.90625,
+        "warm_sentences_per_second": 85.7664980425986,
+        "process_first_ms": [
+          1153.350729,
+          1293.12276,
+          1013.279843
+        ],
+        "process_warm_ms": [
+          1165.9564315,
+          1211.848541,
+          1099.6747129999999
+        ],
+        "warm_range_over_median_percent": 9.620756399592807
+      },
+      "v0.5.0": {
+        "first_ms": 1217.997291,
+        "warm_ms": 1156.7266405,
+        "first_peak_pss_mib": 311.55078125,
+        "warm_peak_pss_mib": 312.0966796875,
+        "warm_sentences_per_second": 86.45084888576145,
+        "process_first_ms": [
+          1217.997291,
+          1190.356458,
+          1282.47
+        ],
+        "process_warm_ms": [
+          1196.7330200000001,
+          1118.4137755,
+          1156.7266405
+        ],
+        "warm_range_over_median_percent": 6.77076517111652
+      },
+      "warm_time_change_percent": -0.7916068517350938,
+      "warm_pss_change_percent": 0.06105350165312995
+    }
+  ],
+  "processes": 48,
+  "note": "Actual full AARs consumed through R8, 100 FLORES sentences per scenario, fresh process, 3 passes (first includes client creation/model load, two resident warm passes), cache disabled, mbw512. App PSS sampled every 100ms, absolute JVM/UI-inclusive KiB. Three independent processes per version/scenario. Version and scenario order alternate across rounds. Foreground/awake/unlocked asserted before/after. No frequency gating or locking, so observational regression evidence, not android-app-v1 or android-native-v1 formal benchmark. No translation speedup claim from package size."
+}

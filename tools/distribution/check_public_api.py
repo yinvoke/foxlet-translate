@@ -58,7 +58,7 @@ def check(aar, snapshot, update=False):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--aar", type=Path, default=ROOT / "foxlet/build/outputs/aar/foxlet-release.aar")
-    parser.add_argument("--snapshot", type=Path, default=ROOT / "api/public-jvm.txt")
+    parser.add_argument("--snapshot", type=Path, default=ROOT / "docs/public-jvm.txt")
     parser.add_argument("--update", action="store_true", help="Record an intentionally changed API after review")
     args = parser.parse_args()
     check(args.aar, args.snapshot, args.update)

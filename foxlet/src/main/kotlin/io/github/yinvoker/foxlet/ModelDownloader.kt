@@ -39,7 +39,7 @@ import kotlinx.coroutines.ensureActive
  *
  * The CDN's fixed-length responses matter for one subtle case: when the peer
  * closes early, OkHttp (Android's `HttpURLConnection`) throws, but the JDK
- * client just returns end-of-stream. The downloader therefore compares the
+ * client returns end-of-stream. The downloader therefore compares the
  * bytes received against the declared `Content-Length` itself and raises an
  * [EOFException], so a dropped connection resumes on both runtimes instead of
  * surfacing as a checksum mismatch on one of them.
@@ -267,7 +267,7 @@ internal class ModelDownloader(
      * whatever was written kept in [part] for the next attempt.
      *
      * A rejected resume (416, or a `Content-Range` that does not describe the
-     * remainder we asked for) discards the partial file and issues one fresh
+     * requested remainder) discards the partial file and issues one fresh
      * request from zero within the same attempt, which cannot recurse: without
      * a `Range` header neither answer is possible, so both are then protocol
      * failures. A 200 to a range request is the CDN ignoring `Range`; its body
@@ -427,7 +427,7 @@ internal class ModelDownloader(
         return millis.coerceIn(0, MAX_RETRY_AFTER_MILLIS)
     }
 
-    /** True when a 206's `Content-Range` is exactly `bytes <have>-<size-1>/<size>`, the remainder we asked for. */
+    /** True when a 206's `Content-Range` is exactly `bytes <have>-<size-1>/<size>`, the requested remainder. */
     private fun coversRemainder(contentRange: String?, have: Long, size: Long): Boolean {
         val match = CONTENT_RANGE.matchEntire(contentRange?.trim() ?: return false) ?: return false
         val (start, end, total) = match.destructured

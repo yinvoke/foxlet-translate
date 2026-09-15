@@ -47,6 +47,20 @@ class ReportValidationTest(unittest.TestCase):
         self.assertTrue(result["accepted"], result["errors"])
         self.assertEqual(result["scenarios"][0]["cold_inputs_per_second"], 200)
 
+    def test_v2_removes_only_four_threads(self):
+        self.report['runs'] = [r for r in self.report['runs'] if r['threads'] != 4]
+        self.assertFalse(self.check()['accepted'], 'v1 must still require four-thread cells')
+        self.report['suite_id'] = 'android-app-v2'
+        result = self.check()
+        self.assertTrue(result['accepted'], result['errors'])
+        self.assertEqual(len(result['scenarios']), 6)
+        self.report['runs'].pop()
+        self.assertFalse(self.check()['accepted'], 'v2 must retain three full rounds')
+
+    def test_unknown_suite_is_rejected(self):
+        self.report['suite_id'] = 'unknown'
+        self.assertFalse(self.check()['accepted'])
+
     def test_quality_mode_never_accepts_timings(self):
         self.report["mode"] = "quality"
         self.assertFalse(self.check()["accepted"])

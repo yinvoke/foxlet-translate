@@ -1,0 +1,26 @@
+enzh_w1            cold_speed     59.07 -> 61.54 inputs/s (1.04x, +4.2%); raw cold_ms: 3385.728 -> 3249.891 ms
+enzh_w1            warm_speed     68.44 -> 68.29 inputs/s (1.00x, -0.2%); raw warm_ms: 2922.185 -> 2928.720 ms
+enzh_w1            peak_rss_mib     204.543 ->   204.285 (-0.1%)
+enzh_w2            cold_speed     105.60 -> 105.40 inputs/s (1.00x, -0.2%); raw cold_ms: 1893.866 -> 1897.617 ms
+enzh_w2            warm_speed     127.07 -> 127.42 inputs/s (1.00x, +0.3%); raw warm_ms: 1573.956 -> 1569.562 ms
+enzh_w2            peak_rss_mib     301.695 ->   300.289 (-0.5%)
+enzh_w4            cold_speed     160.38 -> 159.76 inputs/s (1.00x, -0.4%); raw cold_ms: 1247.007 -> 1251.881 ms
+enzh_w4            warm_speed     212.54 -> 213.54 inputs/s (1.00x, +0.5%); raw warm_ms: 941.012 -> 936.596 ms
+enzh_w4            peak_rss_mib     518.789 ->   517.074 (-0.3%)
+pivot_w1           cold_speed     27.93 -> 27.36 inputs/s (0.98x, -2.1%); raw cold_ms: 7160.812 -> 7310.841 ms
+pivot_w1           warm_speed     30.87 -> 31.21 inputs/s (1.01x, +1.1%); raw warm_ms: 6478.572 -> 6408.533 ms
+pivot_w1           peak_rss_mib     311.129 ->   319.172 (+2.6%)
+enzh_b512p         cold_speed     65.05 -> 64.86 inputs/s (1.00x, -0.3%); raw cold_ms: 3074.577 -> 3083.702 ms
+enzh_b512p         warm_speed     69.86 -> 70.20 inputs/s (1.00x, +0.5%); raw warm_ms: 2862.743 -> 2849.082 ms
+enzh_b512p         peak_rss_mib     205.453 ->   204.379 (-0.5%)
+pivot_b512p        cold_speed     31.49 -> 31.82 inputs/s (1.01x, +1.0%); raw cold_ms: 6350.764 -> 6285.518 ms
+pivot_b512p        warm_speed     33.82 -> 34.55 inputs/s (1.02x, +2.2%); raw warm_ms: 5913.509 -> 5789.017 ms
+pivot_b512p        peak_rss_mib     305.918 ->   305.387 (-0.2%)
+enzh_w2_512p       cold_speed     104.72 -> 106.30 inputs/s (1.02x, +1.5%); raw cold_ms: 1909.928 -> 1881.454 ms
+enzh_w2_512p       warm_speed     122.59 -> 130.65 inputs/s (1.07x, +6.6%); raw warm_ms: 1631.396 -> 1530.767 ms
+enzh_w2_512p       peak_rss_mib     288.715 ->   280.688 (-2.8%)
+pivot_w2_512p      cold_speed     51.12 -> 49.69 inputs/s (0.97x, -2.8%); raw cold_ms: 3912.300 -> 4024.575 ms
+pivot_w2_512p      warm_speed     58.26 -> 58.28 inputs/s (1.00x, +0.0%); raw warm_ms: 3432.609 -> 3431.748 ms
+pivot_w2_512p      peak_rss_mib     432.703 ->   438.008 (+1.2%)
+REGRESSION: pivot_b512p: output hash changed; review correctness first
+FAIL

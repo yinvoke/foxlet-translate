@@ -44,7 +44,7 @@ for tag in names:
         subprocess.run(['tar', '-xf', str(archive.resolve()), '-C', str(dest)], check=True)
     digest = hashlib.sha256()
     native = [dest / 'CMakeLists.txt']
-    for folder in ['engine', 'jni', 'tools/smoke']:
+    for folder in ['engine', 'native', 'jni', 'tools/smoke']:
         native.extend(path for path in (dest / folder).rglob('*') if path.is_file())
     for path in sorted(native):
         digest.update(path.relative_to(dest).as_posix().encode() + b'\0')

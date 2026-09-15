@@ -1,0 +1,89 @@
+{
+  "method": "Only workspace, measurement-directory and device-serial strings are redacted. Numeric samples and corpus/translation text are unchanged. Original hashes identify collection-time scripts; archive hashes identify these snapshots.",
+  "files": {
+    "IsolatedBenchRunner-v0.3.0.kt": {
+      "original_sha256": "c315990b118593d10c8c2688a59d5633ef8ff2439bf7f45408ebff3d37b6644a",
+      "archive_sha256": "c315990b118593d10c8c2688a59d5633ef8ff2439bf7f45408ebff3d37b6644a"
+    },
+    "MetricsSampler-v0.3.0.kt": {
+      "original_sha256": "9ca129f3b55fcc3af2b82a7b36efec97eb6512049c12667fc7edbc93cd128d30",
+      "archive_sha256": "9ca129f3b55fcc3af2b82a7b36efec97eb6512049c12667fc7edbc93cd128d30"
+    },
+    "app-run.py": {
+      "original_sha256": "fae9d236fc78624cd15b0140fd1dd5441f2112971e7047d5a9d1be853faf9da3",
+      "archive_sha256": "fae9d236fc78624cd15b0140fd1dd5441f2112971e7047d5a9d1be853faf9da3"
+    },
+    "app-check.py": {
+      "original_sha256": "64d612ec6b5e3a0d157f043be27248ada7609c0b25f42241f2ff65ec8198611b",
+      "archive_sha256": "64d612ec6b5e3a0d157f043be27248ada7609c0b25f42241f2ff65ec8198611b"
+    },
+    "native-check.py": {
+      "original_sha256": "98584666dcd16a638d45cde824873e0cf6e2a3083ed0f6d08d32f0c9c1e97685",
+      "archive_sha256": "98584666dcd16a638d45cde824873e0cf6e2a3083ed0f6d08d32f0c9c1e97685"
+    },
+    "native-run-pair.py": {
+      "original_sha256": "453fc0e24a9780f78d765449b844e740ceb90185005a9818ca4a375886b6cc83",
+      "archive_sha256": "453fc0e24a9780f78d765449b844e740ceb90185005a9818ca4a375886b6cc83"
+    },
+    "suite.py": {
+      "original_sha256": "1c98c96f0dd0e81b58776e613d125b8c2eb18a96ef301c9c98a337b6428a9b5f",
+      "archive_sha256": "1c98c96f0dd0e81b58776e613d125b8c2eb18a96ef301c9c98a337b6428a9b5f"
+    },
+    "suites/android-native-v1.json": {
+      "original_sha256": "a95a578d08d18d856ff7d57f0b63061c40562bf56f7be93ae720d36ab06b3294",
+      "archive_sha256": "a95a578d08d18d856ff7d57f0b63061c40562bf56f7be93ae720d36ab06b3294"
+    },
+    "bench_device.py": {
+      "original_sha256": "bb2660c5bda90679f237d6753eb302ed56a6783c967860734c778895f43383a7",
+      "archive_sha256": "bb2660c5bda90679f237d6753eb302ed56a6783c967860734c778895f43383a7"
+    },
+    "main.cpp": {
+      "original_sha256": "298e8116a32fb1ed46846ba533c8dacf6051ebd3d8e68e0a4bc15a77673b4a9d",
+      "archive_sha256": "298e8116a32fb1ed46846ba533c8dacf6051ebd3d8e68e0a4bc15a77673b4a9d"
+    },
+    "reference.cpp": {
+      "original_sha256": "cac4cadfbc6b64ff8668600e4631d3ac15ca878b1e209877138c4fc63c95e50d",
+      "archive_sha256": "cac4cadfbc6b64ff8668600e4631d3ac15ca878b1e209877138c4fc63c95e50d"
+    },
+    "reference.cmake": {
+      "original_sha256": "8f0b38cef86284ab16fba0f1a71b53de44258019c6e98e3399a17d02b528f8f3",
+      "archive_sha256": "8f0b38cef86284ab16fba0f1a71b53de44258019c6e98e3399a17d02b528f8f3"
+    },
+    "MetricsSampler.kt": {
+      "original_sha256": "874ab9eaaef73207cf37235fd31006eac7f5ea70cffa71b28a5360c5ad3a08ff",
+      "archive_sha256": "874ab9eaaef73207cf37235fd31006eac7f5ea70cffa71b28a5360c5ad3a08ff"
+    },
+    "IsolatedBenchRunner.kt": {
+      "original_sha256": "b77a0bc84081cc148d84140d6366792eb52a606fa77aea8106b2da2ea1c74857",
+      "archive_sha256": "b77a0bc84081cc148d84140d6366792eb52a606fa77aea8106b2da2ea1c74857"
+    },
+    "app_pair.py": {
+      "original_sha256": "2375e533aa4dea097311392ca6e10ff30a712a8e943cc72889ca3645f6df8e11",
+      "archive_sha256": "0c4081634ede151ca141b7494d69d966b9508971a1e04082aeae72cf53d1d714"
+    },
+    "app_pair_v2.py": {
+      "original_sha256": "982cc6d20a812700c2111aadd681f0c8372d26b3713238dc6253f83e085612db",
+      "archive_sha256": "f5839cff256d8b1da95a0eaee9b89c1d4181e127f7b4e8ead42349c27aab634f"
+    },
+    "app-run-v1.py": {
+      "original_sha256": "1d79750849bd0bf1f6bac90a4a23199a1de2098bc2a8b03f278193ff3e4973c3",
+      "archive_sha256": "1d79750849bd0bf1f6bac90a4a23199a1de2098bc2a8b03f278193ff3e4973c3"
+    },
+    "app-check-v1.py": {
+      "original_sha256": "302555bfdb3688eb1fd366de5501c4948a7d1e58c11e3bd711abbce0e6575100",
+      "archive_sha256": "302555bfdb3688eb1fd366de5501c4948a7d1e58c11e3bd711abbce0e6575100"
+    },
+    "score.py": {
+      "original_sha256": "aaa7d78b94fc50f29fe74396a2fb24b22c3a00ef91b797f0b722c4b0f6a863b7",
+      "archive_sha256": "aaa7d78b94fc50f29fe74396a2fb24b22c3a00ef91b797f0b722c4b0f6a863b7"
+    },
+    "app_pair-initial.py": {
+      "original_sha256": "510597a1baa590a54f8afe59094e3fd685168aaea9f5580e7bf296caa0f5f8dd",
+      "archive_sha256": "cbf922670a712202bf8775727d48623c1d1fe353b471ed571be296e3dbf275e3"
+    },
+    "export_native_quality.py": {
+      "original_sha256": "71179d13baa9932dc663b6c4f4648b006e91a0f38c1de69924fc2a1844108884",
+      "archive_sha256": "de831ebad2c1035d2bab1d4959b3a6d64a5bf6eb2f8745afb31920feb6b9138b"
+    }
+  }
+}

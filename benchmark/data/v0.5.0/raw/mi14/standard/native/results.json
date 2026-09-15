@@ -1,0 +1,3373 @@
+{
+  "measured_at": "2026-09-15T15:07:19+0800",
+  "device": {
+    "model": "23127PN0CC",
+    "android": "16",
+    "soc": "Snapdragon 8 Gen 3",
+    "i8mm": true,
+    "id_sha256": "02bfda251ceb556996e08642bfd07e6d9d367515c21df91ee80213fc91d5a811",
+    "fingerprint": "Xiaomi/houji/houji:16/BP2A.250605.031.A3/OS3.0.305.0.WNCCNXM:user/release-keys"
+  },
+  "versions": {
+    "v0.3.0": "28d9c8d2a260eafdaa946c3f29c078bcb0d9197e",
+    "v0.5.0": "b99f5fd53136e2dd976d492de56ed01a510813aa"
+  },
+  "build_manifests": {
+    "v0.3.0": {
+      "label": "v0.3.0",
+      "commit": "28d9c8d2a260eafdaa946c3f29c078bcb0d9197e",
+      "source_kind": "git-ref",
+      "source_native_sha256": "e3394de29121491ed752eb94191103c764149b98a4da3d9d0e503916b726c398",
+      "dirty_status": "",
+      "harness_sha256": "298e8116a32fb1ed46846ba533c8dacf6051ebd3d8e68e0a4bc15a77673b4a9d",
+      "binary_sha256": "fd38cc4d0858da26e0aa398675853c5454ee82ed214db80e1249ae650043b13a",
+      "build_settings": {
+        "cmake_flags": [
+          "-DANDROID_ABI=arm64-v8a",
+          "-DANDROID_PLATFORM=android-28",
+          "-DCMAKE_BUILD_TYPE=Release",
+          "-DANDROID_STL=c++_static",
+          "-DSSPLIT_USE_INTERNAL_PCRE2=ON",
+          "-DCOMPILE_TESTS=OFF",
+          "-DBUILD_ARCH=armv8-a",
+          "-DBUILD_SMOKE=ON"
+        ],
+        "ndk": "Pkg.Desc = Android NDK\nPkg.Revision = 29.0.13113456-beta1\nPkg.BaseRevision = 29.0.13113456\nPkg.ReleaseName = r29-beta1\n",
+        "cmake": "cmake version 4.4.3"
+      }
+    },
+    "v0.5.0": {
+      "label": "v0.5.0",
+      "commit": "b99f5fd53136e2dd976d492de56ed01a510813aa",
+      "source_kind": "working-tree",
+      "source_native_sha256": "aede8778f69ef1d2246ec8d69f25683761481cb76886ab56ad58a72fcaab4758",
+      "dirty_status": " M .github/workflows/build.yml\n M .github/workflows/release.yml\n M .gitignore\n M CMakeLists.txt\n M CONTRIBUTING.md\n M NOTICE\n M README.md\n D api/README.md\n D api/public-jvm.txt\n M benchmarks/CITATION.md\n M benchmarks/README.md\n M build.gradle.kts\n D demo/build.gradle.kts\n D demo/proguard-rules.pro\n D demo/src/androidTest/kotlin/io/github/yinvoker/foxlet/demo/DeliveryTest.kt\n D demo/src/main/AndroidManifest.xml\n D demo/src/main/kotlin/io/github/yinvoker/foxlet/demo/MainActivity.kt\n D demo/test-rules.pro\n M docs/README.md\n D docs/api-design-review.md\n M docs/architecture.md\n M docs/benchmarking.md\n M docs/getting-started.md\n M docs/releasing.md\n M engine/3rd_party/CMakeLists.txt\n D engine/3rd_party/ssplit-cpp/CMakeLists.txt\n D engine/3rd_party/ssplit-cpp/LICENSE.md\n D engine/3rd_party/ssplit-cpp/README.md\n D engine/3rd_party/ssplit-cpp/cmake/FindPCRE2.cmake\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/README.txt\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.ca\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.cs\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.de\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.el\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.en\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.es\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.fi\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.fr\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.ga\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.hu\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.is\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.it\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.lt\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.lv\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.nl\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.pl\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.pt\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.ro\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.ru\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.sk\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.sl\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.sv\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.ta\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.yue\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.zh\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/132html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/AUTHORS\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/CMakeLists.txt\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/COPYING\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/ChangeLog\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/CheckMan\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/CleanTxt\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/Detrail\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/HACKING\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/INSTALL\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/LICENCE\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/Makefile.am\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/Makefile.in\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/NEWS\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/NON-AUTOTOOLS-BUILD\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/PrepareRelease\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/README\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/RunGrepTest\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/RunGrepTest.bat\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/RunTest\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/RunTest.bat\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/aclocal.m4\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/ar-lib\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/cmake/COPYING-CMAKE-SCRIPTS\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/cmake/FindEditline.cmake\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/cmake/FindPackageHandleStandardArgs.cmake\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/cmake/FindReadline.cmake\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/cmake/pcre2-config-version.cmake.in\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/cmake/pcre2-config.cmake.in\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/compile\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/config-cmake.h.in\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/config.guess\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/config.sub\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/configure\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/configure.ac\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/depcomp\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/NON-AUTOTOOLS-BUILD.txt\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/README.txt\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/index.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2-config.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_callout_enumerate.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_code_copy.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_code_copy_with_tables.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_code_free.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_compile.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_compile_context_copy.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_compile_context_create.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_compile_context_free.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_config.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_convert_context_copy.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_convert_context_create.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_convert_context_free.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_converted_pattern_free.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_dfa_match.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_general_context_copy.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_general_context_create.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_general_context_free.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_get_error_message.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_get_mark.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_get_match_data_size.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_get_ovector_count.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_get_ovector_pointer.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_get_startchar.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_jit_compile.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_jit_free_unused_memory.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_jit_match.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_jit_stack_assign.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_jit_stack_create.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_jit_stack_free.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_maketables.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_maketables_free.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_match.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_match_context_copy.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_match_context_create.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_match_context_free.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_match_data_create.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_match_data_create_from_pattern.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_match_data_free.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_pattern_convert.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_pattern_info.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_serialize_decode.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_serialize_encode.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_serialize_free.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_serialize_get_number_of_codes.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_bsr.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_callout.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_character_tables.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_compile_extra_options.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_compile_recursion_guard.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_depth_limit.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_glob_escape.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_glob_separator.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_heap_limit.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_match_limit.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_max_pattern_length.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_newline.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_offset_limit.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_parens_nest_limit.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_recursion_limit.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_recursion_memory_management.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_substitute_callout.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_substitute.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_substring_copy_byname.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_substring_copy_bynumber.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_substring_free.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_substring_get_byname.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_substring_get_bynumber.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_substring_length_byname.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_substring_length_bynumber.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_substring_list_free.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_substring_list_get.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_substring_nametable_scan.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_substring_number_from_name.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2api.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2build.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2callout.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2compat.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2convert.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2demo.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2grep.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2jit.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2limits.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2matching.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2partial.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2pattern.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2perform.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2posix.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2sample.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2serialize.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2syntax.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2test.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2unicode.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/index.html.src\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2-config.1\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2-config.txt\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2.txt\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_callout_enumerate.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_code_copy.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_code_copy_with_tables.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_code_free.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_compile.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_compile_context_copy.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_compile_context_create.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_compile_context_free.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_config.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_convert_context_copy.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_convert_context_create.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_convert_context_free.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_converted_pattern_free.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_dfa_match.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_general_context_copy.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_general_context_create.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_general_context_free.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_get_error_message.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_get_mark.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_get_match_data_size.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_get_ovector_count.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_get_ovector_pointer.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_get_startchar.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_jit_compile.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_jit_free_unused_memory.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_jit_match.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_jit_stack_assign.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_jit_stack_create.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_jit_stack_free.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_maketables.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_maketables_free.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_match.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_match_context_copy.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_match_context_create.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_match_context_free.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_match_data_create.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_match_data_create_from_pattern.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_match_data_free.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_pattern_convert.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_pattern_info.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_serialize_decode.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_serialize_encode.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_serialize_free.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_serialize_get_number_of_codes.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_bsr.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_callout.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_character_tables.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_compile_extra_options.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_compile_recursion_guard.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_depth_limit.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_glob_escape.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_glob_separator.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_heap_limit.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_match_limit.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_max_pattern_length.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_newline.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_offset_limit.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_parens_nest_limit.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_recursion_limit.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_recursion_memory_management.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_substitute_callout.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_substitute.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_substring_copy_byname.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_substring_copy_bynumber.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_substring_free.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_substring_get_byname.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_substring_get_bynumber.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_substring_length_byname.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_substring_length_bynumber.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_substring_list_free.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_substring_list_get.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_substring_nametable_scan.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_substring_number_from_name.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2api.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2build.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2callout.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2compat.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2convert.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2demo.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2grep.1\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2grep.txt\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2jit.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2limits.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2matching.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2partial.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2pattern.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2perform.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2posix.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2sample.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2serialize.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2syntax.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2test.1\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2test.txt\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2unicode.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/install-sh\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/libpcre2-16.pc.in\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/libpcre2-32.pc.in\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/libpcre2-8.pc.in\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/libpcre2-posix.pc.in\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/ltmain.sh\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/m4/ax_pthread.m4\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/m4/libtool.m4\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/m4/ltoptions.m4\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/m4/ltsugar.m4\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/m4/ltversion.m4\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/m4/lt~obsolete.m4\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/m4/pcre2_visibility.m4\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/missing\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/pcre2-config.in\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/perltest.sh\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/config.h.generic\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/config.h.in\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2.h.generic\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2.h.in\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_auto_possess.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_chartables.c.dist\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_compile.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_config.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_context.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_convert.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_dfa_match.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_dftables.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_error.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_extuni.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_find_bracket.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_fuzzsupport.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_internal.h\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_intmodedep.h\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_jit_compile.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_jit_match.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_jit_misc.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_jit_neon_inc.h\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_jit_simd_inc.h\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_jit_test.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_maketables.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_match.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_match_data.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_newline.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_ord2utf.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_pattern_info.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_printint.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_script_run.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_serialize.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_string_utils.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_study.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_substitute.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_substring.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_tables.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_ucd.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_ucp.h\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_valid_utf.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_xclass.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2demo.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2grep.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2posix.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2posix.h\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2test.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitConfig.h\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitConfigInternal.h\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitExecAllocator.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitLir.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitLir.h\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitNativeARM_32.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitNativeARM_64.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitNativeARM_T2_32.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitNativeMIPS_32.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitNativeMIPS_64.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitNativeMIPS_common.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitNativePPC_32.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitNativePPC_64.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitNativePPC_common.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitNativeS390X.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitNativeSPARC_32.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitNativeSPARC_common.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitNativeX86_32.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitNativeX86_64.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitNativeX86_common.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitProtExecAllocator.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitUtils.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitWXExecAllocator.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/test-driver\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/grepbinary\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/grepfilelist\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/grepinput\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/grepinput3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/grepinput8\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/grepinputM\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/grepinputv\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/grepinputx\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/greplist\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/grepoutput\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/grepoutput8\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/grepoutputC\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/grepoutputCN\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/grepoutputN\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/greppatN4\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testbtables\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput1\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput10\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput11\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput12\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput13\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput14\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput15\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput16\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput17\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput18\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput19\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput2\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput20\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput21\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput22\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput23\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput24\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput25\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput4\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput5\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput6\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput7\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput8\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput9\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinputEBC\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput1\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput10\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput11-16\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput11-32\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput12-16\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput12-32\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput13\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput14-16\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput14-32\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput14-8\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput15\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput16\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput17\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput18\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput19\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput2\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput20\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput21\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput22-16\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput22-32\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput22-8\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput23\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput24\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput25\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput3A\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput3B\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput4\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput5\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput6\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput7\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput8-16-2\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput8-16-3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput8-16-4\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput8-32-2\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput8-32-3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput8-32-4\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput8-8-2\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput8-8-3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput8-8-4\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput9\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutputEBC\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/valgrind-jit.supp\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/wintestinput3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/wintestoutput3\n D engine/3rd_party/ssplit-cpp/src/CMakeLists.txt\n D engine/3rd_party/ssplit-cpp/src/ssplit/regex.cpp\n D engine/3rd_party/ssplit-cpp/src/ssplit/regex.h\n D engine/3rd_party/ssplit-cpp/src/ssplit/ssplit.cpp\n D engine/3rd_party/ssplit-cpp/src/ssplit/ssplit.h\n D engine/3rd_party/ssplit-cpp/src/ssplit/typedefs.h\n M engine/CMakeLists.txt\n M engine/UPSTREAM.md\n M engine/marian-fork/CMakeLists.txt\n M engine/marian-fork/src/CMakeLists.txt\n M engine/marian-fork/src/data/sentencepiece_vocab.cpp\n M engine/src/translator/CMakeLists.txt\n M engine/src/translator/annotation.h\n M engine/src/translator/definitions.h\n M engine/src/translator/parser.cpp\n M engine/src/translator/text_processor.cpp\n M engine/src/translator/text_processor.h\n M foxlet/build.gradle.kts\n M foxlet/src/androidTest/kotlin/io/github/yinvoker/foxlet/NativeSmokeTest.kt\n M foxlet/src/main/kotlin/io/github/yinvoker/foxlet/FoxletConfig.kt\n M foxlet/src/main/kotlin/io/github/yinvoker/foxlet/ModelFiles.kt\n M foxlet/src/main/kotlin/io/github/yinvoker/foxlet/NativeEngine.kt\n M foxlet/src/main/kotlin/io/github/yinvoker/foxlet/PrefixTables.kt\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.ca\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.cs\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.de\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.el\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.en\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.es\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.fi\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.fr\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.ga\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.hu\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.is\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.it\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.lt\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.lv\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.nl\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.pl\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.pt\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.ro\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.ru\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.sk\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.sl\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.sv\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.ta\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.yue\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.zh\n M foxlet/src/test/kotlin/io/github/yinvoker/foxlet/ModelFilesTest.kt\n M gradle.properties\n M licenses/components.json\n D patches/0007-build-wire-the-trimmed-tree-no-wasm-no-src-app-sspli.patch\n D patches/0008-build-pass-CMAKE_POLICY_VERSION_MINIMUM-into-the-pcr.patch\n M patches/0009-perf-restore-ruy-SDOT-kernels-lost-in-bazel_to_cmake.patch\n D patches/0023-patch-ssplit-prefix-bytes-reach-the-splitter-AsyncSe.patch\n M patches/0025-fix-native-model-validation.patch\n D sample/build.gradle.kts\n D sample/src/main/AndroidManifest.xml\n D sample/src/main/assets/bench/NOTICE.txt\n D sample/src/main/assets/bench/eng.txt\n D sample/src/main/assets/bench/jpn.txt\n D sample/src/main/kotlin/io/github/yinvoker/foxlet/bench/BenchRunner.kt\n D sample/src/main/kotlin/io/github/yinvoker/foxlet/bench/ChartView.kt\n D sample/src/main/kotlin/io/github/yinvoker/foxlet/bench/IsolatedBenchRunner.kt\n D sample/src/main/kotlin/io/github/yinvoker/foxlet/bench/MainActivity.kt\n D sample/src/main/kotlin/io/github/yinvoker/foxlet/bench/MetricsSampler.kt\n D sample/src/main/kotlin/io/github/yinvoker/foxlet/bench/RestartActivity.kt\n M settings.gradle.kts\n M tools/app-bench/README.md\n M tools/app-bench/run.py\n M tools/app-bench/score.py\n M tools/distribution/check_hardening.py\n M tools/distribution/check_public_api.py\n M tools/distribution/package_notices.py\n M tools/distribution/run_device_tests.py\n M tools/distribution/verify_artifacts.py\n M tools/regress-hash.sh\n M tools/smmla-test/README.md\n M tools/version-bench/README.md\n M tools/version-bench/build.py\n M tools/version-bench/run-pair.py\n M tools/version-bench/run.py\n M tools/version-bench/test_run_pair.py\n?? .github/actionlint.yaml\n?? AGENTS.md\n?? README.en.md\n?? benchmark-app/\n?? benchmarks/v0.5.0/\n?? docs/public-api.md\n?? docs/public-jvm.txt\n?? foxlet/src/androidTest/kotlin/io/github/yinvoker/foxlet/MultilingualDeviceTest.kt\n?? licenses/Unicode-3.0.txt\n?? native/\n?? patches/0023-patch-AsyncService-memory-bundle.patch\n?? patches/README.md\n?? sdk-example/\n?? tools/sentence-tests/\n?? tools/translation-tests/\n",
+      "harness_sha256": "298e8116a32fb1ed46846ba533c8dacf6051ebd3d8e68e0a4bc15a77673b4a9d",
+      "binary_sha256": "1bc38ffd5889624c51bc1aea9bf1bbcc9e8f83508be07204f5fae59f4189efa7",
+      "build_settings": {
+        "cmake_flags": [
+          "-DANDROID_ABI=arm64-v8a",
+          "-DANDROID_PLATFORM=android-28",
+          "-DCMAKE_BUILD_TYPE=Release",
+          "-DANDROID_STL=c++_static",
+          "-DSSPLIT_USE_INTERNAL_PCRE2=ON",
+          "-DCOMPILE_TESTS=OFF",
+          "-DBUILD_ARCH=armv8-a",
+          "-DBUILD_SMOKE=ON"
+        ],
+        "ndk": "Pkg.Desc = Android NDK\nPkg.Revision = 29.0.13113456-beta1\nPkg.BaseRevision = 29.0.13113456\nPkg.ReleaseName = r29-beta1\n",
+        "cmake": "cmake version 4.4.3"
+      }
+    }
+  },
+  "build_settings": {
+    "cmake_flags": [
+      "-DANDROID_ABI=arm64-v8a",
+      "-DANDROID_PLATFORM=android-28",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DANDROID_STL=c++_static",
+      "-DSSPLIT_USE_INTERNAL_PCRE2=ON",
+      "-DCOMPILE_TESTS=OFF",
+      "-DBUILD_ARCH=armv8-a",
+      "-DBUILD_SMOKE=ON"
+    ],
+    "ndk": "Pkg.Desc = Android NDK\nPkg.Revision = 29.0.13113456-beta1\nPkg.BaseRevision = 29.0.13113456\nPkg.ReleaseName = r29-beta1\n",
+    "cmake": "cmake version 4.4.3"
+  },
+  "suite_id": "android-native-v1",
+  "suite_sha256": "01fd8553d31a4ced2d1a17f19c92ab3b5ee7d6893b40a61744ac9446c2367e35",
+  "report_kind": "full",
+  "corpus_sha256": {
+    "eng": "407119a09c81211b1144f9f10b72e7a4415141fa83509df183c8394b05ad6d68",
+    "jpn": "6aef2063af141a8169381b13258e42afc8514cc34dece4f2534671c51f2a0f63"
+  },
+  "model_files_sha256": {
+    "/data/local/tmp/bergamot/models/model.enzh.intgemm.alphas.bin": "4e5accc141373565ddc8fa1565bceaa8d0c3482a82cab8131c719ebcc6c2157c",
+    "/data/local/tmp/bergamot/models/srcvocab.enzh.spm": "bd9b65504acc6d9726dd281f7defc2adb7c2c22d0688fe2f84697de25197c8c5",
+    "/data/local/tmp/bergamot/models/trgvocab.enzh.spm": "aded6993c36e440284d11cec3f6b8aef9c0e43188a772d80be342a713adf223d",
+    "/data/local/tmp/bergamot/models/lex.50.50.enzh.s2t.bin": "4a5e5827788060f1d718a8132b69440929387514a045796e9b77f935db68c055",
+    "/data/local/tmp/bergamot/models/jaen/model.jaen.intgemm.alphas.bin": "3a603e20bfe1be86071913f9e23ab5129075bc0a8490151020ac4821e4f17302",
+    "/data/local/tmp/bergamot/models/jaen/vocab.jaen.spm": "5cb217758bae05877bb3f0c2f612e4e7c1e4cb03c10db11f4a47098d7ae62919",
+    "/data/local/tmp/bergamot/models/jaen/lex.50.50.jaen.s2t.bin": "525f412f0d210536c2933c78ae395fa0bf2b5ee6cc5dda61ebc2e79410ebaee4",
+    "/data/local/tmp/bergamot/nonbreaking_prefix.en": "af526c47425bb31b4e7b79ec975c1bb752a34ba21951237d51b965e879d9d51a"
+  },
+  "binary_sha256": {
+    "v0.3.0": "fd38cc4d0858da26e0aa398675853c5454ee82ed214db80e1249ae650043b13a",
+    "v0.5.0": "1bc38ffd5889624c51bc1aea9bf1bbcc9e8f83508be07204f5fae59f4189efa7"
+  },
+  "harness_sha256": "298e8116a32fb1ed46846ba533c8dacf6051ebd3d8e68e0a4bc15a77673b4a9d",
+  "config_yaml": {
+    "enzh1024": "models:\n  - /data/local/tmp/bergamot/models/model.enzh.intgemm.alphas.bin\nvocabs:\n  - /data/local/tmp/bergamot/models/srcvocab.enzh.spm\n  - /data/local/tmp/bergamot/models/trgvocab.enzh.spm\nshortlist:\n  - /data/local/tmp/bergamot/models/lex.50.50.enzh.s2t.bin\n  - false\nbeam-size: 1\nnormalize: 1.0\nword-penalty: 0\nmax-length-break: 128\nmini-batch-words: 1024\nworkspace: 128\nmax-length-factor: 2.0\nskip-cost: true\ncpu-threads: 0\nquiet: true\nquiet-translation: true\ngemm-precision: int8shiftAlphaAll\nalignment: soft\n",
+    "jaen1024": "models:\n  - /data/local/tmp/bergamot/models/jaen/model.jaen.intgemm.alphas.bin\nvocabs:\n  - /data/local/tmp/bergamot/models/jaen/vocab.jaen.spm\n  - /data/local/tmp/bergamot/models/jaen/vocab.jaen.spm\nshortlist:\n  - /data/local/tmp/bergamot/models/jaen/lex.50.50.jaen.s2t.bin\n  - false\nbeam-size: 1\nnormalize: 1.0\nword-penalty: 0\nmax-length-break: 128\nmini-batch-words: 1024\nworkspace: 128\nmax-length-factor: 2.0\nskip-cost: true\ncpu-threads: 0\nquiet: true\nquiet-translation: true\ngemm-precision: int8shiftAlphaAll\nalignment: soft\n",
+    "enzh512p": "models:\n  - /data/local/tmp/bergamot/models/model.enzh.intgemm.alphas.bin\nvocabs:\n  - /data/local/tmp/bergamot/models/srcvocab.enzh.spm\n  - /data/local/tmp/bergamot/models/trgvocab.enzh.spm\nshortlist:\n  - /data/local/tmp/bergamot/models/lex.50.50.enzh.s2t.bin\n  - false\nbeam-size: 1\nnormalize: 1.0\nword-penalty: 0\nmax-length-break: 128\nmini-batch-words: 512\nworkspace: 128\nmax-length-factor: 2.0\nskip-cost: true\ncpu-threads: 0\nquiet: true\nquiet-translation: true\ngemm-precision: int8shiftAlphaAll\nalignment: soft\nssplit-prefix-file: /data/local/tmp/bergamot/nonbreaking_prefix.en\n",
+    "jaen512": "models:\n  - /data/local/tmp/bergamot/models/jaen/model.jaen.intgemm.alphas.bin\nvocabs:\n  - /data/local/tmp/bergamot/models/jaen/vocab.jaen.spm\n  - /data/local/tmp/bergamot/models/jaen/vocab.jaen.spm\nshortlist:\n  - /data/local/tmp/bergamot/models/jaen/lex.50.50.jaen.s2t.bin\n  - false\nbeam-size: 1\nnormalize: 1.0\nword-penalty: 0\nmax-length-break: 128\nmini-batch-words: 512\nworkspace: 128\nmax-length-factor: 2.0\nskip-cost: true\ncpu-threads: 0\nquiet: true\nquiet-translation: true\ngemm-precision: int8shiftAlphaAll\nalignment: soft\n"
+  },
+  "collector_files_sha256": {
+    "tools/version-bench/run-pair.py": "453fc0e24a9780f78d765449b844e740ceb90185005a9818ca4a375886b6cc83",
+    "tools/bench_device.py": "bb2660c5bda90679f237d6753eb302ed56a6783c967860734c778895f43383a7"
+  },
+  "scenarios": {
+    "enzh_w1": {
+      "workers": 1,
+      "corpus": "eng",
+      "configs": [
+        "enzh1024"
+      ],
+      "sentences": 200,
+      "stable_hash": false
+    },
+    "enzh_w2": {
+      "workers": 2,
+      "corpus": "eng",
+      "configs": [
+        "enzh1024"
+      ],
+      "sentences": 200,
+      "stable_hash": false
+    },
+    "enzh_w4": {
+      "workers": 4,
+      "corpus": "eng",
+      "configs": [
+        "enzh1024"
+      ],
+      "sentences": 200,
+      "stable_hash": false
+    },
+    "pivot_w1": {
+      "workers": 1,
+      "corpus": "jpn",
+      "configs": [
+        "jaen1024",
+        "enzh1024"
+      ],
+      "sentences": 200,
+      "stable_hash": false
+    },
+    "enzh_b512p": {
+      "workers": 0,
+      "corpus": "eng",
+      "configs": [
+        "enzh512p"
+      ],
+      "sentences": 200,
+      "stable_hash": true
+    },
+    "pivot_b512p": {
+      "workers": 0,
+      "corpus": "jpn",
+      "configs": [
+        "jaen512",
+        "enzh512p"
+      ],
+      "sentences": 200,
+      "stable_hash": true
+    },
+    "enzh_w2_512p": {
+      "workers": 2,
+      "corpus": "eng",
+      "configs": [
+        "enzh512p"
+      ],
+      "sentences": 200,
+      "stable_hash": false
+    },
+    "pivot_w2_512p": {
+      "workers": 2,
+      "corpus": "jpn",
+      "configs": [
+        "jaen512",
+        "enzh512p"
+      ],
+      "sentences": 200,
+      "stable_hash": false
+    }
+  },
+  "protocol": {
+    "rounds": 3,
+    "version_order": [
+      "AB",
+      "BA",
+      "AB"
+    ],
+    "passes_per_process": 3,
+    "cache_size": 0,
+    "affinity": "7c",
+    "cooldown_seconds": 8,
+    "gate_khz": 2630400,
+    "foreground_checks": "awake-unlocked-focused-before-after-v1",
+    "cold_ms": "service + model creation + first translation",
+    "peak_rss_mib": "VmHWM after first translation",
+    "warm_ms": "passes 1 and 2"
+  },
+  "runs": [
+    {
+      "round": 1,
+      "scenario": "enzh_w1",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.3.0 1 /data/local/tmp/foxlet/vb-667f7213ff04/enzh1024.yml < /data/local/tmp/foxlet/vb-667f7213ff04/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31760",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 3153.781,
+          "peak_rss_mib": 205.164,
+          "rss_mib": 184.461,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 2897.685,
+          "peak_rss_mib": 205.164,
+          "rss_mib": 184.672,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 2903.13,
+          "peak_rss_mib": 205.164,
+          "rss_mib": 184.582,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31760",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w1",
+      "version": "v0.5.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.5.0 1 /data/local/tmp/foxlet/vb-667f7213ff04/enzh1024.yml < /data/local/tmp/foxlet/vb-667f7213ff04/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31936",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 0
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 3249.891,
+          "peak_rss_mib": 204.285,
+          "rss_mib": 182.98,
+          "output_bytes": 22586,
+          "output_hash": "173b000830a0d5c9"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 2928.627,
+          "peak_rss_mib": 204.285,
+          "rss_mib": 183.719,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 2928.768,
+          "peak_rss_mib": 204.285,
+          "rss_mib": 183.789,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2380800"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31990",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w2",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.3.0 2 /data/local/tmp/foxlet/vb-667f7213ff04/enzh1024.yml < /data/local/tmp/foxlet/vb-667f7213ff04/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31972",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 33
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1893.866,
+          "peak_rss_mib": 301.863,
+          "rss_mib": 294.742,
+          "output_bytes": 22591,
+          "output_hash": "aa87159c6d3ec623"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1566.891,
+          "peak_rss_mib": 301.863,
+          "rss_mib": 294.129,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1563.267,
+          "peak_rss_mib": 301.863,
+          "rss_mib": 294.012,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2553600"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31940",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w2",
+      "version": "v0.5.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.5.0 2 /data/local/tmp/foxlet/vb-667f7213ff04/enzh1024.yml < /data/local/tmp/foxlet/vb-667f7213ff04/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31917",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 38
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1897.617,
+          "peak_rss_mib": 300.121,
+          "rss_mib": 294.117,
+          "output_bytes": 22586,
+          "output_hash": "173b000830a0d5c9"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1570.813,
+          "peak_rss_mib": 300.121,
+          "rss_mib": 293.555,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1568.31,
+          "peak_rss_mib": 300.121,
+          "rss_mib": 293.598,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31917",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w4",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.3.0 4 /data/local/tmp/foxlet/vb-667f7213ff04/enzh1024.yml < /data/local/tmp/foxlet/vb-667f7213ff04/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31964",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 27
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1205.333,
+          "peak_rss_mib": 522.195,
+          "rss_mib": 516.113,
+          "output_bytes": 22579,
+          "output_hash": "be114020f154244f"
+        },
+        {
+          "pass": 1,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 914.743,
+          "peak_rss_mib": 522.195,
+          "rss_mib": 512.445,
+          "output_bytes": 22581,
+          "output_hash": "efbb4152cf59bba2"
+        },
+        {
+          "pass": 2,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 967.28,
+          "peak_rss_mib": 522.195,
+          "rss_mib": 516.68,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31964",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w4",
+      "version": "v0.5.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.5.0 4 /data/local/tmp/foxlet/vb-667f7213ff04/enzh1024.yml < /data/local/tmp/foxlet/vb-667f7213ff04/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31917",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 38
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1251.881,
+          "peak_rss_mib": 520.391,
+          "rss_mib": 516.086,
+          "output_bytes": 22591,
+          "output_hash": "aa87159c6d3ec623"
+        },
+        {
+          "pass": 1,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 935.374,
+          "peak_rss_mib": 522.395,
+          "rss_mib": 514.477,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 2,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 937.817,
+          "peak_rss_mib": 522.395,
+          "rss_mib": 512.02,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31917",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "pivot_w1",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.3.0 1 /data/local/tmp/foxlet/vb-667f7213ff04/jaen1024.yml /data/local/tmp/foxlet/vb-667f7213ff04/enzh1024.yml < /data/local/tmp/foxlet/vb-667f7213ff04/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31941",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 33
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 6951.838,
+          "peak_rss_mib": 309.637,
+          "rss_mib": 307.258,
+          "output_bytes": 22686,
+          "output_hash": "f9077e4684862ab4"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 6430.579,
+          "peak_rss_mib": 309.637,
+          "rss_mib": 307.281,
+          "output_bytes": 22686,
+          "output_hash": "f9077e4684862ab4"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 6432.506,
+          "peak_rss_mib": 309.637,
+          "rss_mib": 307.281,
+          "output_bytes": 22686,
+          "output_hash": "f9077e4684862ab4"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2169600"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "32088",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "pivot_w1",
+      "version": "v0.5.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.5.0 1 /data/local/tmp/foxlet/vb-667f7213ff04/jaen1024.yml /data/local/tmp/foxlet/vb-667f7213ff04/enzh1024.yml < /data/local/tmp/foxlet/vb-667f7213ff04/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31952",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 60
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 7310.841,
+          "peak_rss_mib": 321.254,
+          "rss_mib": 305.855,
+          "output_bytes": 22573,
+          "output_hash": "22d3bc3651f112ea"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 6430.027,
+          "peak_rss_mib": 321.254,
+          "rss_mib": 306.406,
+          "output_bytes": 22576,
+          "output_hash": "dbf70d6dfff6d47"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 6440.715,
+          "peak_rss_mib": 321.254,
+          "rss_mib": 306.434,
+          "output_bytes": 22576,
+          "output_hash": "dbf70d6dfff6d47"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2169600"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "32090",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_b512p",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.3.0 0 /data/local/tmp/foxlet/vb-667f7213ff04/enzh512p.yml < /data/local/tmp/foxlet/vb-667f7213ff04/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.8,
+        "board_temp": "31969",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 54
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 3052.115,
+          "peak_rss_mib": 205.613,
+          "rss_mib": 161.398,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 2846.623,
+          "peak_rss_mib": 205.613,
+          "rss_mib": 161.539,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 2839.164,
+          "peak_rss_mib": 205.613,
+          "rss_mib": 161.547,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2169600"
+        },
+        "battery_temp_c": 30.8,
+        "board_temp": "32041",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_b512p",
+      "version": "v0.5.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.5.0 0 /data/local/tmp/foxlet/vb-667f7213ff04/enzh512p.yml < /data/local/tmp/foxlet/vb-667f7213ff04/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31986",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 22
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 3092.395,
+          "peak_rss_mib": 204.496,
+          "rss_mib": 160.281,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 2850.704,
+          "peak_rss_mib": 204.496,
+          "rss_mib": 160.426,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 2850.585,
+          "peak_rss_mib": 204.496,
+          "rss_mib": 160.434,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2169600"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "32071",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "pivot_b512p",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.3.0 0 /data/local/tmp/foxlet/vb-667f7213ff04/jaen512.yml /data/local/tmp/foxlet/vb-667f7213ff04/enzh512p.yml < /data/local/tmp/foxlet/vb-667f7213ff04/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31973",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 27
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 6340.313,
+          "peak_rss_mib": 306.387,
+          "rss_mib": 262.695,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 5907.238,
+          "peak_rss_mib": 306.387,
+          "rss_mib": 262.785,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 5919.78,
+          "peak_rss_mib": 306.387,
+          "rss_mib": 262.723,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2169600"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "32112",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "pivot_b512p",
+      "version": "v0.5.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.5.0 0 /data/local/tmp/foxlet/vb-667f7213ff04/jaen512.yml /data/local/tmp/foxlet/vb-667f7213ff04/enzh512p.yml < /data/local/tmp/foxlet/vb-667f7213ff04/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.8,
+        "board_temp": "31904",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 60
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 6285.518,
+          "peak_rss_mib": 305.586,
+          "rss_mib": 262.371,
+          "output_bytes": 22554,
+          "output_hash": "1fb8aa37ed4e6f7b"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 5789.278,
+          "peak_rss_mib": 305.586,
+          "rss_mib": 262.543,
+          "output_bytes": 22554,
+          "output_hash": "1fb8aa37ed4e6f7b"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 5788.756,
+          "peak_rss_mib": 305.586,
+          "rss_mib": 262.559,
+          "output_bytes": 22554,
+          "output_hash": "1fb8aa37ed4e6f7b"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2169600"
+        },
+        "battery_temp_c": 30.8,
+        "board_temp": "32147",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w2_512p",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.3.0 2 /data/local/tmp/foxlet/vb-667f7213ff04/enzh512p.yml < /data/local/tmp/foxlet/vb-667f7213ff04/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31887",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 49
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1936.323,
+          "peak_rss_mib": 284.91,
+          "rss_mib": 246.332,
+          "output_bytes": 22557,
+          "output_hash": "c1743d7c39b36647"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1734.508,
+          "peak_rss_mib": 284.91,
+          "rss_mib": 247.289,
+          "output_bytes": 22557,
+          "output_hash": "f8b489dfa93bff41"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1533.334,
+          "peak_rss_mib": 284.91,
+          "rss_mib": 247.805,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2496000"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31887",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w2_512p",
+      "version": "v0.5.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.5.0 2 /data/local/tmp/foxlet/vb-667f7213ff04/enzh512p.yml < /data/local/tmp/foxlet/vb-667f7213ff04/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31950",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 27
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1881.454,
+          "peak_rss_mib": 280.039,
+          "rss_mib": 246.426,
+          "output_bytes": 22546,
+          "output_hash": "a5c23b09382ea79f"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1531.027,
+          "peak_rss_mib": 280.039,
+          "rss_mib": 247.051,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1530.506,
+          "peak_rss_mib": 280.039,
+          "rss_mib": 247.512,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2380800"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31950",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "pivot_w2_512p",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.3.0 2 /data/local/tmp/foxlet/vb-667f7213ff04/jaen512.yml /data/local/tmp/foxlet/vb-667f7213ff04/enzh512p.yml < /data/local/tmp/foxlet/vb-667f7213ff04/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31969",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 49
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3958.286,
+          "peak_rss_mib": 432.73,
+          "rss_mib": 428.27,
+          "output_bytes": 22639,
+          "output_hash": "5d7103a69c0763de"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3424.934,
+          "peak_rss_mib": 432.73,
+          "rss_mib": 428.891,
+          "output_bytes": 22653,
+          "output_hash": "6956e0cc6c3f0e14"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3440.284,
+          "peak_rss_mib": 432.73,
+          "rss_mib": 429.18,
+          "output_bytes": 22636,
+          "output_hash": "d455d9e42919b0f9"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2169600"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31828",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "pivot_w2_512p",
+      "version": "v0.5.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.5.0 2 /data/local/tmp/foxlet/vb-667f7213ff04/jaen512.yml /data/local/tmp/foxlet/vb-667f7213ff04/enzh512p.yml < /data/local/tmp/foxlet/vb-667f7213ff04/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.8,
+        "board_temp": "32025",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 60
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 4045.603,
+          "peak_rss_mib": 438.008,
+          "rss_mib": 428.023,
+          "output_bytes": 22484,
+          "output_hash": "8b3e8fea199ede36"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3398.959,
+          "peak_rss_mib": 438.008,
+          "rss_mib": 428.34,
+          "output_bytes": 22541,
+          "output_hash": "f3bcc627fc164142"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3403.137,
+          "peak_rss_mib": 438.008,
+          "rss_mib": 428.684,
+          "output_bytes": 22541,
+          "output_hash": "f3bcc627fc164142"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2169600"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31973",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "enzh_w1",
+      "version": "v0.5.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.5.0 1 /data/local/tmp/foxlet/vb-667f7213ff04/enzh1024.yml < /data/local/tmp/foxlet/vb-667f7213ff04/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31993",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 65
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 3255.225,
+          "peak_rss_mib": 204.297,
+          "rss_mib": 183.078,
+          "output_bytes": 22574,
+          "output_hash": "38468d4625f59182"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 2929.116,
+          "peak_rss_mib": 204.297,
+          "rss_mib": 183.84,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 2928.323,
+          "peak_rss_mib": 204.297,
+          "rss_mib": 183.801,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2169600"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "32028",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "enzh_w1",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.3.0 1 /data/local/tmp/foxlet/vb-667f7213ff04/enzh1024.yml < /data/local/tmp/foxlet/vb-667f7213ff04/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31980",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 33
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 3408.306,
+          "peak_rss_mib": 204.379,
+          "rss_mib": 183.438,
+          "output_bytes": 22591,
+          "output_hash": "aa87159c6d3ec623"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 2920.074,
+          "peak_rss_mib": 204.379,
+          "rss_mib": 183.945,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 2926.104,
+          "peak_rss_mib": 204.379,
+          "rss_mib": 183.852,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2438400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31959",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "enzh_w2",
+      "version": "v0.5.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.5.0 2 /data/local/tmp/foxlet/vb-667f7213ff04/enzh1024.yml < /data/local/tmp/foxlet/vb-667f7213ff04/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31936",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 33
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1908.252,
+          "peak_rss_mib": 300.289,
+          "rss_mib": 294.285,
+          "output_bytes": 22574,
+          "output_hash": "38468d4625f59182"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1573.079,
+          "peak_rss_mib": 300.289,
+          "rss_mib": 293.867,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1559.056,
+          "peak_rss_mib": 300.289,
+          "rss_mib": 293.973,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31891",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "enzh_w2",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.3.0 2 /data/local/tmp/foxlet/vb-667f7213ff04/enzh1024.yml < /data/local/tmp/foxlet/vb-667f7213ff04/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31922",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 33
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1815.46,
+          "peak_rss_mib": 301.695,
+          "rss_mib": 294.594,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1621.325,
+          "peak_rss_mib": 301.695,
+          "rss_mib": 294.035,
+          "output_bytes": 22590,
+          "output_hash": "27b9258f63c4ea00"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1566.432,
+          "peak_rss_mib": 301.695,
+          "rss_mib": 295.051,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2496000"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31922",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "enzh_w4",
+      "version": "v0.5.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.5.0 4 /data/local/tmp/foxlet/vb-667f7213ff04/enzh1024.yml < /data/local/tmp/foxlet/vb-667f7213ff04/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31959",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 27
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1333.311,
+          "peak_rss_mib": 517.074,
+          "rss_mib": 512.555,
+          "output_bytes": 22658,
+          "output_hash": "588dc8d5927785e"
+        },
+        {
+          "pass": 1,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 947.115,
+          "peak_rss_mib": 517.711,
+          "rss_mib": 511.969,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 2,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 896.639,
+          "peak_rss_mib": 517.711,
+          "rss_mib": 512.828,
+          "output_bytes": 22612,
+          "output_hash": "d52e73755b4f1aaa"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2496000"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31959",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "enzh_w4",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.3.0 4 /data/local/tmp/foxlet/vb-667f7213ff04/enzh1024.yml < /data/local/tmp/foxlet/vb-667f7213ff04/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31985",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 27
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1247.007,
+          "peak_rss_mib": 518.789,
+          "rss_mib": 514.043,
+          "output_bytes": 22565,
+          "output_hash": "4110d5eae850ea77"
+        },
+        {
+          "pass": 1,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 946.041,
+          "peak_rss_mib": 521.738,
+          "rss_mib": 515.766,
+          "output_bytes": 22563,
+          "output_hash": "62bb14266672dd62"
+        },
+        {
+          "pass": 2,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 923.573,
+          "peak_rss_mib": 521.738,
+          "rss_mib": 514.902,
+          "output_bytes": 22557,
+          "output_hash": "70db56e20450f863"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2496000"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31985",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "pivot_w1",
+      "version": "v0.5.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.5.0 1 /data/local/tmp/foxlet/vb-667f7213ff04/jaen1024.yml /data/local/tmp/foxlet/vb-667f7213ff04/enzh1024.yml < /data/local/tmp/foxlet/vb-667f7213ff04/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "32039",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 33
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 6960.378,
+          "peak_rss_mib": 307.754,
+          "rss_mib": 306.301,
+          "output_bytes": 22576,
+          "output_hash": "dbf70d6dfff6d47"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 6413.723,
+          "peak_rss_mib": 307.754,
+          "rss_mib": 306.293,
+          "output_bytes": 22576,
+          "output_hash": "dbf70d6dfff6d47"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 6403.343,
+          "peak_rss_mib": 307.754,
+          "rss_mib": 306.336,
+          "output_bytes": 22576,
+          "output_hash": "dbf70d6dfff6d47"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2169600"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "32064",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "pivot_w1",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.3.0 1 /data/local/tmp/foxlet/vb-667f7213ff04/jaen1024.yml /data/local/tmp/foxlet/vb-667f7213ff04/enzh1024.yml < /data/local/tmp/foxlet/vb-667f7213ff04/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31934",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 54
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 7160.812,
+          "peak_rss_mib": 311.129,
+          "rss_mib": 307.488,
+          "output_bytes": 22659,
+          "output_hash": "d1734015cc5ed4e8"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 6465.057,
+          "peak_rss_mib": 311.129,
+          "rss_mib": 307.73,
+          "output_bytes": 22686,
+          "output_hash": "f9077e4684862ab4"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 6492.087,
+          "peak_rss_mib": 311.129,
+          "rss_mib": 307.711,
+          "output_bytes": 22686,
+          "output_hash": "f9077e4684862ab4"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2169600"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "32193",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "enzh_b512p",
+      "version": "v0.5.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.5.0 0 /data/local/tmp/foxlet/vb-667f7213ff04/enzh512p.yml < /data/local/tmp/foxlet/vb-667f7213ff04/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.8,
+        "board_temp": "31958",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 60
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 3077.255,
+          "peak_rss_mib": 204.379,
+          "rss_mib": 160.297,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 2836.158,
+          "peak_rss_mib": 204.379,
+          "rss_mib": 160.445,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 2835.125,
+          "peak_rss_mib": 204.379,
+          "rss_mib": 160.453,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31986",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "enzh_b512p",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.3.0 0 /data/local/tmp/foxlet/vb-667f7213ff04/enzh512p.yml < /data/local/tmp/foxlet/vb-667f7213ff04/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31971",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 27
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 3121.117,
+          "peak_rss_mib": 205.453,
+          "rss_mib": 161.273,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 2928.474,
+          "peak_rss_mib": 205.453,
+          "rss_mib": 159.891,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 2896.873,
+          "peak_rss_mib": 205.453,
+          "rss_mib": 159.895,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2553600"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31913",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "pivot_b512p",
+      "version": "v0.5.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.5.0 0 /data/local/tmp/foxlet/vb-667f7213ff04/jaen512.yml /data/local/tmp/foxlet/vb-667f7213ff04/enzh512p.yml < /data/local/tmp/foxlet/vb-667f7213ff04/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31970",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 86
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 6310.439,
+          "peak_rss_mib": 305.387,
+          "rss_mib": 262.148,
+          "output_bytes": 22554,
+          "output_hash": "1fb8aa37ed4e6f7b"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 5755.445,
+          "peak_rss_mib": 305.387,
+          "rss_mib": 262.312,
+          "output_bytes": 22554,
+          "output_hash": "1fb8aa37ed4e6f7b"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 5776.996,
+          "peak_rss_mib": 305.387,
+          "rss_mib": 262.312,
+          "output_bytes": 22554,
+          "output_hash": "1fb8aa37ed4e6f7b"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2169600"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "32186",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "pivot_b512p",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.3.0 0 /data/local/tmp/foxlet/vb-667f7213ff04/jaen512.yml /data/local/tmp/foxlet/vb-667f7213ff04/enzh512p.yml < /data/local/tmp/foxlet/vb-667f7213ff04/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.8,
+        "board_temp": "31993",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 49
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 6350.764,
+          "peak_rss_mib": 305.91,
+          "rss_mib": 262.234,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 5900.977,
+          "peak_rss_mib": 305.91,
+          "rss_mib": 262.328,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 5891.33,
+          "peak_rss_mib": 305.91,
+          "rss_mib": 262.262,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2169600"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "32145",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "enzh_w2_512p",
+      "version": "v0.5.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.5.0 2 /data/local/tmp/foxlet/vb-667f7213ff04/enzh512p.yml < /data/local/tmp/foxlet/vb-667f7213ff04/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31986",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 60
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1805.436,
+          "peak_rss_mib": 285.781,
+          "rss_mib": 247.391,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1545.425,
+          "peak_rss_mib": 285.781,
+          "rss_mib": 247.238,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1535.571,
+          "peak_rss_mib": 285.781,
+          "rss_mib": 247.375,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2380800"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "32016",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "enzh_w2_512p",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.3.0 2 /data/local/tmp/foxlet/vb-667f7213ff04/enzh512p.yml < /data/local/tmp/foxlet/vb-667f7213ff04/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31952",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 43
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1909.928,
+          "peak_rss_mib": 289.059,
+          "rss_mib": 246.203,
+          "output_bytes": 22538,
+          "output_hash": "8eb038714ab6bdfe"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1729.105,
+          "peak_rss_mib": 289.059,
+          "rss_mib": 246.973,
+          "output_bytes": 22557,
+          "output_hash": "c1743d7c39b36647"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1520.977,
+          "peak_rss_mib": 289.059,
+          "rss_mib": 247.492,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2496000"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31952",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "pivot_w2_512p",
+      "version": "v0.5.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.5.0 2 /data/local/tmp/foxlet/vb-667f7213ff04/jaen512.yml /data/local/tmp/foxlet/vb-667f7213ff04/enzh512p.yml < /data/local/tmp/foxlet/vb-667f7213ff04/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31957",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 33
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 4024.575,
+          "peak_rss_mib": 437.461,
+          "rss_mib": 427.508,
+          "output_bytes": 22498,
+          "output_hash": "42b31ca1266dba9d"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3429.146,
+          "peak_rss_mib": 437.461,
+          "rss_mib": 428.109,
+          "output_bytes": 22541,
+          "output_hash": "97c7c877b7270d25"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3468.455,
+          "peak_rss_mib": 437.461,
+          "rss_mib": 428.215,
+          "output_bytes": 22544,
+          "output_hash": "2216e3145c008c27"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2169600"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "32211",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "scenario": "pivot_w2_512p",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.3.0 2 /data/local/tmp/foxlet/vb-667f7213ff04/jaen512.yml /data/local/tmp/foxlet/vb-667f7213ff04/enzh512p.yml < /data/local/tmp/foxlet/vb-667f7213ff04/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.8,
+        "board_temp": "31967",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 76
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3886.354,
+          "peak_rss_mib": 431.465,
+          "rss_mib": 428.363,
+          "output_bytes": 22599,
+          "output_hash": "c8dac10d19285b6d"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3429.387,
+          "peak_rss_mib": 431.465,
+          "rss_mib": 428.75,
+          "output_bytes": 22656,
+          "output_hash": "54aef96268594cca"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3444.099,
+          "peak_rss_mib": 431.465,
+          "rss_mib": 429.137,
+          "output_bytes": 22633,
+          "output_hash": "b29f5a13d98223bb"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2246400"
+        },
+        "battery_temp_c": 30.8,
+        "board_temp": "31938",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "enzh_w1",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.3.0 1 /data/local/tmp/foxlet/vb-667f7213ff04/enzh1024.yml < /data/local/tmp/foxlet/vb-667f7213ff04/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31973",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 76
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 3385.728,
+          "peak_rss_mib": 204.543,
+          "rss_mib": 183.277,
+          "output_bytes": 22584,
+          "output_hash": "fb3640ab016508c2"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 2918.642,
+          "peak_rss_mib": 204.543,
+          "rss_mib": 183.891,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 2925.728,
+          "peak_rss_mib": 204.543,
+          "rss_mib": 183.73,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2304000"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "32067",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "enzh_w1",
+      "version": "v0.5.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.5.0 1 /data/local/tmp/foxlet/vb-667f7213ff04/enzh1024.yml < /data/local/tmp/foxlet/vb-667f7213ff04/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31995",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 54
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 3225.948,
+          "peak_rss_mib": 204.152,
+          "rss_mib": 183.766,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 2933.183,
+          "peak_rss_mib": 204.152,
+          "rss_mib": 183.664,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 2924.431,
+          "peak_rss_mib": 204.152,
+          "rss_mib": 183.688,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2438400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31979",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "enzh_w2",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.3.0 2 /data/local/tmp/foxlet/vb-667f7213ff04/enzh1024.yml < /data/local/tmp/foxlet/vb-667f7213ff04/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31959",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 27
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1940.64,
+          "peak_rss_mib": 300.34,
+          "rss_mib": 295.117,
+          "output_bytes": 22579,
+          "output_hash": "be114020f154244f"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1573.447,
+          "peak_rss_mib": 300.34,
+          "rss_mib": 293.336,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1574.465,
+          "peak_rss_mib": 300.34,
+          "rss_mib": 293.422,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31959",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "enzh_w2",
+      "version": "v0.5.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.5.0 2 /data/local/tmp/foxlet/vb-667f7213ff04/enzh1024.yml < /data/local/tmp/foxlet/vb-667f7213ff04/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31975",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 38
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1859.336,
+          "peak_rss_mib": 300.777,
+          "rss_mib": 293.602,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1570.514,
+          "peak_rss_mib": 300.777,
+          "rss_mib": 293.93,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1571.024,
+          "peak_rss_mib": 300.777,
+          "rss_mib": 293.988,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2496000"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "32155",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "enzh_w4",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.3.0 4 /data/local/tmp/foxlet/vb-667f7213ff04/enzh1024.yml < /data/local/tmp/foxlet/vb-667f7213ff04/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31947",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 33
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1299.343,
+          "peak_rss_mib": 517.281,
+          "rss_mib": 512.137,
+          "output_bytes": 22556,
+          "output_hash": "de48f74fd890398e"
+        },
+        {
+          "pass": 1,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1019.382,
+          "peak_rss_mib": 518.91,
+          "rss_mib": 513.746,
+          "output_bytes": 22627,
+          "output_hash": "382889c689c2f71"
+        },
+        {
+          "pass": 2,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 908.273,
+          "peak_rss_mib": 518.91,
+          "rss_mib": 512.617,
+          "output_bytes": 22581,
+          "output_hash": "efbb4152cf59bba2"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2496000"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31947",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "enzh_w4",
+      "version": "v0.5.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.5.0 4 /data/local/tmp/foxlet/vb-667f7213ff04/enzh1024.yml < /data/local/tmp/foxlet/vb-667f7213ff04/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31929",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 49
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1228.103,
+          "peak_rss_mib": 516.355,
+          "rss_mib": 512.035,
+          "output_bytes": 22615,
+          "output_hash": "aa01630d2e50281d"
+        },
+        {
+          "pass": 1,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 969.712,
+          "peak_rss_mib": 518.426,
+          "rss_mib": 513.047,
+          "output_bytes": 22570,
+          "output_hash": "233a9ad56f36937c"
+        },
+        {
+          "pass": 2,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 976.168,
+          "peak_rss_mib": 518.426,
+          "rss_mib": 511.812,
+          "output_bytes": 22593,
+          "output_hash": "fda80358a1407e6c"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31929",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "pivot_w1",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.3.0 1 /data/local/tmp/foxlet/vb-667f7213ff04/jaen1024.yml /data/local/tmp/foxlet/vb-667f7213ff04/enzh1024.yml < /data/local/tmp/foxlet/vb-667f7213ff04/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31989",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 33
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 7199.811,
+          "peak_rss_mib": 313.961,
+          "rss_mib": 305.477,
+          "output_bytes": 22659,
+          "output_hash": "d1734015cc5ed4e8"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 6515.518,
+          "peak_rss_mib": 313.961,
+          "rss_mib": 305.945,
+          "output_bytes": 22689,
+          "output_hash": "546c8c0aa885b852"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 6442.949,
+          "peak_rss_mib": 313.961,
+          "rss_mib": 306.031,
+          "output_bytes": 22686,
+          "output_hash": "f9077e4684862ab4"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2169600"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "32065",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "pivot_w1",
+      "version": "v0.5.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.5.0 1 /data/local/tmp/foxlet/vb-667f7213ff04/jaen1024.yml /data/local/tmp/foxlet/vb-667f7213ff04/enzh1024.yml < /data/local/tmp/foxlet/vb-667f7213ff04/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.8,
+        "board_temp": "31941",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 54
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 7320.94,
+          "peak_rss_mib": 319.172,
+          "rss_mib": 305.879,
+          "output_bytes": 22555,
+          "output_hash": "1099b155cb443d3a"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 6415.684,
+          "peak_rss_mib": 319.172,
+          "rss_mib": 306.602,
+          "output_bytes": 22576,
+          "output_hash": "dbf70d6dfff6d47"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 6399.077,
+          "peak_rss_mib": 319.172,
+          "rss_mib": 306.629,
+          "output_bytes": 22576,
+          "output_hash": "dbf70d6dfff6d47"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2169600"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "32244",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "enzh_b512p",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.3.0 0 /data/local/tmp/foxlet/vb-667f7213ff04/enzh512p.yml < /data/local/tmp/foxlet/vb-667f7213ff04/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31993",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 54
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 3074.577,
+          "peak_rss_mib": 204.543,
+          "rss_mib": 160.137,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 2862.049,
+          "peak_rss_mib": 204.543,
+          "rss_mib": 160.281,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 2863.437,
+          "peak_rss_mib": 204.543,
+          "rss_mib": 160.289,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2169600"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "32036",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "enzh_b512p",
+      "version": "v0.5.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.5.0 0 /data/local/tmp/foxlet/vb-667f7213ff04/enzh512p.yml < /data/local/tmp/foxlet/vb-667f7213ff04/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31971",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 33
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 3083.702,
+          "peak_rss_mib": 204.273,
+          "rss_mib": 160.195,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 2847.098,
+          "peak_rss_mib": 204.273,
+          "rss_mib": 160.352,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 2851.066,
+          "peak_rss_mib": 204.273,
+          "rss_mib": 160.352,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2438400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31936",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "pivot_b512p",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.3.0 0 /data/local/tmp/foxlet/vb-667f7213ff04/jaen512.yml /data/local/tmp/foxlet/vb-667f7213ff04/enzh512p.yml < /data/local/tmp/foxlet/vb-667f7213ff04/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31890",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 27
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 6363.031,
+          "peak_rss_mib": 305.918,
+          "rss_mib": 262.238,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 5905.062,
+          "peak_rss_mib": 305.918,
+          "rss_mib": 262.316,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 5922.04,
+          "peak_rss_mib": 305.918,
+          "rss_mib": 262.266,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2169600"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "32172",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "pivot_b512p",
+      "version": "v0.5.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.5.0 0 /data/local/tmp/foxlet/vb-667f7213ff04/jaen512.yml /data/local/tmp/foxlet/vb-667f7213ff04/enzh512p.yml < /data/local/tmp/foxlet/vb-667f7213ff04/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31935",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 44
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 6284.528,
+          "peak_rss_mib": 305.336,
+          "rss_mib": 262.121,
+          "output_bytes": 22554,
+          "output_hash": "1fb8aa37ed4e6f7b"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 5789.269,
+          "peak_rss_mib": 305.336,
+          "rss_mib": 262.273,
+          "output_bytes": 22554,
+          "output_hash": "1fb8aa37ed4e6f7b"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 5795.797,
+          "peak_rss_mib": 305.336,
+          "rss_mib": 262.293,
+          "output_bytes": 22554,
+          "output_hash": "1fb8aa37ed4e6f7b"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2169600"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "32178",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "enzh_w2_512p",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.3.0 2 /data/local/tmp/foxlet/vb-667f7213ff04/enzh512p.yml < /data/local/tmp/foxlet/vb-667f7213ff04/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31909",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 49
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1867.744,
+          "peak_rss_mib": 288.715,
+          "rss_mib": 246.512,
+          "output_bytes": 22551,
+          "output_hash": "f8b43f555190f7b7"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1735.117,
+          "peak_rss_mib": 288.715,
+          "rss_mib": 246.715,
+          "output_bytes": 22557,
+          "output_hash": "c1743d7c39b36647"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1527.675,
+          "peak_rss_mib": 288.715,
+          "rss_mib": 246.965,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2496000"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31909",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "enzh_w2_512p",
+      "version": "v0.5.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.5.0 2 /data/local/tmp/foxlet/vb-667f7213ff04/enzh512p.yml < /data/local/tmp/foxlet/vb-667f7213ff04/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "32017",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 33
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1918.924,
+          "peak_rss_mib": 280.688,
+          "rss_mib": 246.52,
+          "output_bytes": 22554,
+          "output_hash": "9587298e6e2ed698"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1526.692,
+          "peak_rss_mib": 280.688,
+          "rss_mib": 247.055,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1534.507,
+          "peak_rss_mib": 280.688,
+          "rss_mib": 247.453,
+          "output_bytes": 22566,
+          "output_hash": "7e9f2144813fb4d8"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2380800"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31948",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "pivot_w2_512p",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.3.0 2 /data/local/tmp/foxlet/vb-667f7213ff04/jaen512.yml /data/local/tmp/foxlet/vb-667f7213ff04/enzh512p.yml < /data/local/tmp/foxlet/vb-667f7213ff04/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31960",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 33
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3912.3,
+          "peak_rss_mib": 432.703,
+          "rss_mib": 427.91,
+          "output_bytes": 22633,
+          "output_hash": "b29f5a13d98223bb"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3403.315,
+          "peak_rss_mib": 432.703,
+          "rss_mib": 428.5,
+          "output_bytes": 22657,
+          "output_hash": "7fcf37757f9ca218"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3434.041,
+          "peak_rss_mib": 432.703,
+          "rss_mib": 428.727,
+          "output_bytes": 22636,
+          "output_hash": "d455d9e42919b0f9"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2169600"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31897",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 3,
+      "scenario": "pivot_w2_512p",
+      "version": "v0.5.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-667f7213ff04/v0.5.0 2 /data/local/tmp/foxlet/vb-667f7213ff04/jaen512.yml /data/local/tmp/foxlet/vb-667f7213ff04/enzh512p.yml < /data/local/tmp/foxlet/vb-667f7213ff04/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "32029",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 54
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3913.143,
+          "peak_rss_mib": 455.117,
+          "rss_mib": 427.703,
+          "output_bytes": 22553,
+          "output_hash": "eedc0ad759134193"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3405.141,
+          "peak_rss_mib": 455.117,
+          "rss_mib": 428.488,
+          "output_bytes": 22541,
+          "output_hash": "f3bcc627fc164142"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 3458.355,
+          "peak_rss_mib": 455.117,
+          "rss_mib": 428.633,
+          "output_bytes": 22544,
+          "output_hash": "2216e3145c008c27"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2246400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "32182",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    }
+  ]
+}

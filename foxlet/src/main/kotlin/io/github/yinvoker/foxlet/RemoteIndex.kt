@@ -325,7 +325,7 @@ internal class RemoteIndex(
 
     companion object {
         const val TIMEOUT_MILLIS = 15_000
-        /** Ten times today's ~380 KB index; the body is held as a String and a JSON tree, so the cap bounds heap, not just I/O. */
+        /** Bounds response size and heap use while retaining both the body string and parsed JSON tree. */
         const val MAX_BODY_BYTES = 4 * 1024 * 1024
         /** The one JEXL expression Mozilla uses to publish Android-only files; compared after trimming (upstream has a trailing space). */
         const val ANDROID_FILTER = "env.appinfo.OS == 'Android'"

@@ -1,0 +1,40 @@
+{
+  "complete": true,
+  "foreground_checks_passed": true,
+  "temperature_min_c": 33.9,
+  "temperature_max_c": 36.6,
+  "temperature_span_c": 2.700000000000003,
+  "temperature_span_within_3c": true,
+  "metrics_with_spread_over_10percent": [
+    {
+      "direction": "en-zh",
+      "workers": 1,
+      "version": "v0.4.0",
+      "metric": "first_ms",
+      "range_over_median_percent": 21.56839125240582
+    },
+    {
+      "direction": "en-zh",
+      "workers": 1,
+      "version": "v0.5.0",
+      "metric": "warm_ms",
+      "range_over_median_percent": 11.066978904312322
+    },
+    {
+      "direction": "en-zh",
+      "workers": 2,
+      "version": "v0.4.0",
+      "metric": "first_ms",
+      "range_over_median_percent": 13.937463049026016
+    },
+    {
+      "direction": "ru-en",
+      "workers": 2,
+      "version": "v0.4.0",
+      "metric": "first_ms",
+      "range_over_median_percent": 24.263470769436687
+    }
+  ],
+  "stability_passed": false,
+  "scope": "Observational private AAR protocol. Stability screens borrow the existing project thresholds: temperature span <=3C and per-scenario inter-process range <=10% of median. No frequency gate; this does not certify android-app-v1 or android-native-v1."
+}

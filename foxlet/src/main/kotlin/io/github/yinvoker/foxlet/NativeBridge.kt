@@ -40,24 +40,21 @@ internal object NativeBridge {
     /** Destroy [service] and wait until its workers and native caches are gone. */
     external fun destroyService(service: Long)
     /**
-     * Load a model into [service]. Everything the engine needs comes from
-     * [configYaml] as file paths, except [ssplitPrefix]: the sentence-splitter
-     * prefix table travels as bytes because it ships inside the AAR rather than
-     * on the filesystem. null (or empty) means no table, and the splitter falls
-     * back to its regex.
+     * Loads model, vocabulary and shortlist files from [configYaml].
+     * [ssplitPrefix] optionally supplies an application-owned UTF-8 abbreviation
+     * table. Built-in rules are compiled into the native scanner. Null or empty
+     * bytes leave rule selection to `ssplit-language`, `ssplit-builtin` and any
+     * `ssplit-prefix-file` option; the SDK does not set a prefix-file YAML path.
      */
     external fun loadModel(service: Long, configYaml: String, ssplitPrefix: ByteArray?): Long
 
     /**
-     * Hand a model back to [service] and reclaim what it holds on the model's
-     * behalf: the aggregate queue's reference, the GEMM weight-packing caches,
-     * and under async each worker's cached reference and last batch. Just
-     * dropping the handle frees none of those until the service itself dies.
+     * Releases the model handle and requests removal of service-owned model
+     * references and weight-packing caches. Async release waits for worker
+     * acknowledgements. The handle is consumed regardless of the return value.
      *
-     * Under async this blocks until every worker acknowledges (bounded by one
-     * in-flight batch); under blocking there is nothing in flight to wait for.
-     * Returns true when the model was actually destroyed; false means a
-     * request was still in flight and it dies when that finishes.
+     * Returns true only when native destruction is confirmed. On false,
+     * [NativeEngine] retains file reservations until service destruction.
      */
     external fun releaseModel(service: Long, model: Long): Boolean
     /** Translate [texts] in order; the native result has exactly one item per input. */

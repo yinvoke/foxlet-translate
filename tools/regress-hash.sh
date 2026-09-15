@@ -5,15 +5,10 @@
 # hash -- this is the correctness gate for the whole engine, no COMET needed.
 #   regress-hash.sh <smoke> <enzh-config.yml> <eng.txt> [<jaen-config.yml> <jpn.txt>]
 # Env: EXPECT_ENZH / EXPECT_PIVOT override the built-in table; PLATFORM=host|host-ruy|device
-# The canonical hashes are for a splitter that HAS the source-language
-# nonbreaking-prefix table, which is what the AAR now ships by default. The
-# script appends `ssplit-prefix-file: $SSPLIT_PREFIX` to its own copy of the enzh
-# config; SSPLIT_PREFIX defaults to the en table vendored next to this script.
-# Point it elsewhere when the tables live somewhere else (a device run needs the
-# pushed path), or set it empty to reproduce a pre-prefix-table hash.
-# The jaen config is left alone: ssplit-cpp has no Japanese table, and the second
-# leg of a pivot re-uses the boundaries the first leg found instead of splitting
-# again.
+# Current source uses compiled rules selected by ssplit-language. Set SSPLIT_PREFIX
+# to an external legacy/custom table when investigating historical behavior.
+# An explicitly empty SSPLIT_PREFIX disables abbreviation rules. Pivot reuses
+# the source sentence annotations between translation legs.
 # The pivot hash is only stable on an engine that carries patch 0012 (requests
 # ordered by id, not heap address); without it the ja->zh output differs run to
 # run even in blocking mode, so on such an engine check en->zh only.
@@ -22,18 +17,12 @@ smoke=${1:?smoke}; enzh=${2:?enzh config}; eng=${3:?eng.txt}
 jaen=${4:-}; jpn=${5:-}
 platform=${PLATFORM:-host}
 
-# Canonical FNV-1a hashes cover the complete corpus with source-language prefixes.
-# Host uses batch 1024; device uses batch 512. Corpus size and batch composition
-# affect output, so each combination has a separate entry.
+# Current scanner baseline: Apple Accelerate float GEMM, batch 1024, 200 lines.
+# Other platforms require measurement and explicit EXPECT_* values;
+# old sentence-splitter hashes must not be reused.
 n=$(wc -l < "$eng" | tr -d ' ')
 case "$platform/$n" in
-  host/150)   can_enzh=a548669c86d03fc1; can_pivot=58b6667dd43d6364 ;;
-  host/200)   can_enzh=16537889a77b25db; can_pivot=e9d84f82b99250ee ;;
-  device/150) can_enzh=a61c0d35a4d8f2e8; can_pivot=28028fc1ed7d0099 ;;
-  device/200) can_enzh=88295d89303c20bd; can_pivot=fb3dda796b1186af ;;
-  # Ruy float GEMM uses a different accumulation order from Apple Accelerate.
-  host-ruy/150) can_enzh=19a4e7f9052e5c18; can_pivot=c9bbc00386d027f4 ;;
-  host-ruy/200) can_enzh=54fdd3c3cb2f9f4e; can_pivot=7dcaeab06551bf6d ;;
+  host/200) can_enzh=16537889a77b25db; can_pivot=efda28adbb22939d ;;
   host/*|host-ruy/*|device/*) can_enzh=; can_pivot= ;;
   *) echo "unknown PLATFORM=$platform"; exit 2 ;;
 esac
@@ -43,19 +32,29 @@ if [ -z "$expect_enzh" ] || { [ -n "$jaen" ] && [ -z "$expect_pivot" ]; }; then
 fi
 
 tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
 
-# Hand the splitter its prefix table, unless the caller opted out with an empty
-# SSPLIT_PREFIX. The engine reads the option out of the model config, so the
-# only way in is a config that names it.
-here=$(cd "$(dirname "$0")" && pwd)
-ssplit_prefix=${SSPLIT_PREFIX-$here/../engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.en}
-if [ -n "$ssplit_prefix" ]; then
-  if [ ! -f "$ssplit_prefix" ]; then
-    echo "no ssplit prefix file at $ssplit_prefix; set SSPLIT_PREFIX (empty to skip)"; rm -rf "$tmp"; exit 2
+# Replace any existing top-level splitter settings instead of appending duplicate YAML keys.
+prepare_config() {
+  local input=$1 output=$2 language=$3
+  sed '/^ssplit-language:/d; /^ssplit-builtin:/d; /^ssplit-prefix-file:/d' "$input" > "$output"
+  printf '\nssplit-language: %s\n' "$language" >> "$output"
+  if [ "$language" = en ] && [ "${SSPLIT_PREFIX+x}" = x ]; then
+    printf 'ssplit-builtin: false\n' >> "$output"
+    if [ -n "$SSPLIT_PREFIX" ]; then
+      test -f "$SSPLIT_PREFIX" || { echo "missing prefix file: $SSPLIT_PREFIX"; exit 2; }
+      # JSON strings are valid YAML; preserve spaces, quotes and special characters.
+      python3 -c 'import json, sys; print("ssplit-prefix-file: " + json.dumps(sys.argv[1]))' "$SSPLIT_PREFIX" >> "$output"
+    fi
+  else
+    printf 'ssplit-builtin: true\n' >> "$output"
   fi
-  cp "$enzh" "$tmp/enzh-with-prefixes.yml"
-  echo "ssplit-prefix-file: $ssplit_prefix" >> "$tmp/enzh-with-prefixes.yml"
-  enzh=$tmp/enzh-with-prefixes.yml
+}
+prepare_config "$enzh" "$tmp/enzh.yml" en
+enzh=$tmp/enzh.yml
+if [ -n "$jaen" ]; then
+  prepare_config "$jaen" "$tmp/jaen.yml" ja
+  jaen=$tmp/jaen.yml
 fi
 
 run() { # $1 env-prefix  $2 dump-prefix  $3.. configs
@@ -68,7 +67,10 @@ check() { # name hash_smmla hash_ruy expected dumpA dumpB
   if [ "$hs" != "$hr" ]; then echo "FAIL $name: SMMLA $hs != ruy $hr"; status=1; fi
   if ! cmp -s "$5" "$6"; then echo "FAIL $name: dumps differ"; status=1; fi
   if [ "$hs" != "$exp" ]; then echo "FAIL $name: hash $hs != canonical $exp"; status=1; fi
-  [ $status -eq 0 ] && echo "OK   $name: $hs (SMMLA == ruy == canonical)"
+  if [ "$hs" = "$hr" ] && [ "$hs" = "$exp" ] && cmp -s "$5" "$6"; then
+    echo "OK   $name: $hs (SMMLA == ruy == canonical)"
+  fi
+  return 0
 }
 
 hs=$(run "" enzh-smmla "$enzh" < "$eng")
@@ -80,5 +82,4 @@ if [ -n "$jaen" ]; then
   hr=$(run "BERGAMOT_NO_I8MM=1" pivot-ruy "$jaen" "$enzh" < "$jpn")
   check pivot "$hs" "$hr" "$expect_pivot" "$tmp/pivot-smmla.pass0.txt" "$tmp/pivot-ruy.pass0.txt"
 fi
-rm -rf "$tmp"
 exit $status

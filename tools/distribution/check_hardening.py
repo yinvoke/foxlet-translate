@@ -14,7 +14,9 @@ for config in ['RelWithDebInfo', 'Release']:
         continue
     path = max(files, key=lambda p: p.stat().st_mtime_ns)
     commands = json.loads(path.read_text())
-    for source in ['common/binary.cpp', 'sentencepiece_processor.cc', 'jni/foxlet_jni.cpp']:
+    if any("/ssplit-cpp/" in item["file"] for item in commands):
+        raise SystemExit(f"{path}: retired ssplit-cpp/PCRE2 sources are still compiled")
+    for source in ['common/binary.cpp', 'sentencepiece_processor.cc', 'native/jni/foxlet_jni.cpp', 'native/sentence/segmenter.cpp']:
         matches = [x for x in commands if x['file'].endswith(source)]
         if not matches: raise SystemExit(f'{path}: no compile command for {source}')
         for item in matches:

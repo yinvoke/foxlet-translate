@@ -26,13 +26,12 @@ build-android/
 build-host-*/
 build-*.log
 __pycache__/
+*.pyc
+*.pyo
 
-# Research notes stay local; public documentation is explicitly tracked below.
-docs/*
-!docs/README.md
-!docs/getting-started.md
-!docs/architecture.md
-!docs/api-design-review.md
-!docs/benchmarking.md
-!docs/releasing.md
-!docs/smmla-compatibility.md
+# Editor swap files
+*.swp
+*.swo
+
+# Local process notes, review prompts and execution plans
+/.docs-private/

@@ -1,22 +1,12 @@
 package io.github.yinvoker.foxlet
 
 /**
- * When a resident model has gone unused long enough to drop, and the single
- * timer that wakes up to drop it.
+ * Tracks per-model idle deadlines with one scheduled sweep for the earliest
+ * deadline. [touch] updates usage; [rearm] cancels the previous task and schedules
+ * a replacement. Injected clock and scheduler support deterministic JVM tests.
  *
- * Deliberately free of Android, JNI and any real clock: the clock and the
- * scheduler are constructor parameters, so the whole policy — the deadline
- * arithmetic and the re-arming both — is exercisable from a JVM unit test.
- * [NativeEngine] supplies the real pair (`System.nanoTime` and its own
- * engine thread).
- *
- * Exactly one sweep is armed at a time, for the earliest deadline among the
- * tracked keys. A key used again just moves its deadline; the next [rearm]
- * cancels the outstanding sweep and books the new one.
- *
- * Not thread-safe, and does not try to be. Every method, and the sweep the
- * scheduler runs, must happen on the one thread that owns the models — that
- * confinement is what makes a sweep unable to interleave with a batch.
+ * All methods and scheduled callbacks must run on the model-owning thread.
+ * [NativeEngine] uses its executor to serialize sweeps with translation batches.
  */
 internal class IdleSweeper(
     /**
@@ -36,7 +26,7 @@ internal class IdleSweeper(
     private val onIdle: (String) -> Unit,
 ) {
 
-    /** The only thing the sweeper needs from an executor. */
+    /** Scheduler contract for execution on the model-owning thread. */
     fun interface Scheduler {
         /** Run [task] after [delayMillis], on the thread that owns the models. */
         fun schedule(delayMillis: Long, task: Runnable): Pending
@@ -57,7 +47,7 @@ internal class IdleSweeper(
     /** Keys still being watched. */
     val trackedCount: Int get() = lastUsedAt.size
 
-    /** Record that [key] is in use as of now. Does not arm anything; [rearm] does. */
+    /** Updates the usage timestamp for [key]; scheduling requires a separate [rearm] call. */
     fun touch(key: String) {
         lastUsedAt[key] = nowNanos()
     }

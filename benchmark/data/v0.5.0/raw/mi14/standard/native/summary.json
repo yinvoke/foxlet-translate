@@ -1,0 +1,630 @@
+{
+  "suite_id": "android-native-v1",
+  "rows": [
+    {
+      "scenario": "enzh_w1",
+      "v0.3.0": {
+        "cold_ms": 3385.728,
+        "warm_ms": 2922.185,
+        "peak_rss_mib": 204.543,
+        "process_values": {
+          "cold_ms": [
+            3153.781,
+            3408.306,
+            3385.728
+          ],
+          "warm_ms": [
+            2900.4075000000003,
+            2923.089,
+            2922.185
+          ],
+          "peak_rss_mib": [
+            205.164,
+            204.379,
+            204.543
+          ]
+        },
+        "spread_percent": {
+          "cold_ms": 7.5175855827757,
+          "warm_ms": 0.7761828905425114,
+          "peak_rss_mib": 0.3837823831663741
+        },
+        "cold_inputs_per_second": 59.07149068088163,
+        "warm_inputs_per_second": 68.44193642770735,
+        "output_hashes": [
+          "6f23058f1be6120a",
+          "7b93f1f8ddcefc75",
+          "aa87159c6d3ec623",
+          "fb3640ab016508c2"
+        ]
+      },
+      "v0.5.0": {
+        "cold_ms": 3249.891,
+        "warm_ms": 2928.7195,
+        "peak_rss_mib": 204.285,
+        "process_values": {
+          "cold_ms": [
+            3249.891,
+            3255.225,
+            3225.948
+          ],
+          "warm_ms": [
+            2928.6975,
+            2928.7195,
+            2928.807
+          ],
+          "peak_rss_mib": [
+            204.285,
+            204.297,
+            204.152
+          ]
+        },
+        "spread_percent": {
+          "cold_ms": 0.9008609827221911,
+          "warm_ms": 0.0037388353510662497,
+          "peak_rss_mib": 0.07097926915828878
+        },
+        "cold_inputs_per_second": 61.54052551300951,
+        "warm_inputs_per_second": 68.2892301567289,
+        "output_hashes": [
+          "173b000830a0d5c9",
+          "38468d4625f59182",
+          "6f23058f1be6120a",
+          "7b93f1f8ddcefc75"
+        ]
+      },
+      "change_percent": {
+        "cold_ms": -4.012047039809463,
+        "warm_ms": 0.22361691679342321,
+        "peak_rss_mib": -0.1261348469514978
+      }
+    },
+    {
+      "scenario": "enzh_w2",
+      "v0.3.0": {
+        "cold_ms": 1893.866,
+        "warm_ms": 1573.956,
+        "peak_rss_mib": 301.695,
+        "process_values": {
+          "cold_ms": [
+            1893.866,
+            1815.46,
+            1940.64
+          ],
+          "warm_ms": [
+            1565.0790000000002,
+            1593.8785,
+            1573.956
+          ],
+          "peak_rss_mib": [
+            301.863,
+            301.695,
+            300.34
+          ]
+        },
+        "spread_percent": {
+          "cold_ms": 6.609760141425005,
+          "warm_ms": 1.8297525470851697,
+          "peak_rss_mib": 0.5048144649397652
+        },
+        "cold_inputs_per_second": 105.60409236978751,
+        "warm_inputs_per_second": 127.06835515096992,
+        "output_hashes": [
+          "27b9258f63c4ea00",
+          "6f23058f1be6120a",
+          "aa87159c6d3ec623",
+          "be114020f154244f"
+        ]
+      },
+      "v0.5.0": {
+        "cold_ms": 1897.617,
+        "warm_ms": 1569.5615,
+        "peak_rss_mib": 300.289,
+        "process_values": {
+          "cold_ms": [
+            1897.617,
+            1908.252,
+            1859.336
+          ],
+          "warm_ms": [
+            1569.5615,
+            1566.0675,
+            1570.7689999999998
+          ],
+          "peak_rss_mib": [
+            300.121,
+            300.289,
+            300.777
+          ]
+        },
+        "spread_percent": {
+          "cold_ms": 2.5777593687240334,
+          "warm_ms": 0.29954226068871265,
+          "peak_rss_mib": 0.21845622050757968
+        },
+        "cold_inputs_per_second": 105.39534584692275,
+        "warm_inputs_per_second": 127.42412450866054,
+        "output_hashes": [
+          "173b000830a0d5c9",
+          "38468d4625f59182",
+          "6f23058f1be6120a"
+        ]
+      },
+      "change_percent": {
+        "cold_ms": 0.19806047523953652,
+        "warm_ms": -0.2792009433554621,
+        "peak_rss_mib": -0.4660335769568591
+      }
+    },
+    {
+      "scenario": "enzh_w4",
+      "v0.3.0": {
+        "cold_ms": 1247.007,
+        "warm_ms": 941.0115000000001,
+        "peak_rss_mib": 518.789,
+        "process_values": {
+          "cold_ms": [
+            1205.333,
+            1247.007,
+            1299.343
+          ],
+          "warm_ms": [
+            941.0115000000001,
+            934.807,
+            963.8275
+          ],
+          "peak_rss_mib": [
+            522.195,
+            518.789,
+            517.281
+          ]
+        },
+        "spread_percent": {
+          "cold_ms": 7.538851024894006,
+          "warm_ms": 3.083968686886395,
+          "peak_rss_mib": 0.9472058968097051
+        },
+        "cold_inputs_per_second": 160.38402350588248,
+        "warm_inputs_per_second": 212.53725379551682,
+        "output_hashes": [
+          "382889c689c2f71",
+          "4110d5eae850ea77",
+          "62bb14266672dd62",
+          "6f23058f1be6120a",
+          "70db56e20450f863",
+          "be114020f154244f",
+          "de48f74fd890398e",
+          "efbb4152cf59bba2"
+        ]
+      },
+      "v0.5.0": {
+        "cold_ms": 1251.881,
+        "warm_ms": 936.5955,
+        "peak_rss_mib": 517.074,
+        "process_values": {
+          "cold_ms": [
+            1251.881,
+            1333.311,
+            1228.103
+          ],
+          "warm_ms": [
+            936.5955,
+            921.877,
+            972.94
+          ],
+          "peak_rss_mib": [
+            520.391,
+            517.074,
+            516.355
+          ]
+        },
+        "spread_percent": {
+          "cold_ms": 8.403993670324882,
+          "warm_ms": 5.4519800703719055,
+          "peak_rss_mib": 0.780545917992385
+        },
+        "cold_inputs_per_second": 159.75959376330496,
+        "warm_inputs_per_second": 213.53935610410258,
+        "output_hashes": [
+          "233a9ad56f36937c",
+          "588dc8d5927785e",
+          "6f23058f1be6120a",
+          "aa01630d2e50281d",
+          "aa87159c6d3ec623",
+          "d52e73755b4f1aaa",
+          "fda80358a1407e6c"
+        ]
+      },
+      "change_percent": {
+        "cold_ms": 0.39085586528384564,
+        "warm_ms": -0.4692822563805099,
+        "peak_rss_mib": -0.33057755657888155
+      }
+    },
+    {
+      "scenario": "pivot_w1",
+      "v0.3.0": {
+        "cold_ms": 7160.812,
+        "warm_ms": 6478.572,
+        "peak_rss_mib": 311.129,
+        "process_values": {
+          "cold_ms": [
+            6951.838,
+            7160.812,
+            7199.811
+          ],
+          "warm_ms": [
+            6431.5425,
+            6478.572,
+            6479.2335
+          ],
+          "peak_rss_mib": [
+            309.637,
+            311.129,
+            313.961
+          ]
+        },
+        "spread_percent": {
+          "cold_ms": 3.462917333955981,
+          "warm_ms": 0.7361344444423974,
+          "peak_rss_mib": 1.3897772306663834
+        },
+        "cold_inputs_per_second": 27.9297934368337,
+        "warm_inputs_per_second": 30.871000584696752,
+        "output_hashes": [
+          "546c8c0aa885b852",
+          "d1734015cc5ed4e8",
+          "f9077e4684862ab4"
+        ]
+      },
+      "v0.5.0": {
+        "cold_ms": 7310.841,
+        "warm_ms": 6408.532999999999,
+        "peak_rss_mib": 319.172,
+        "process_values": {
+          "cold_ms": [
+            7310.841,
+            6960.378,
+            7320.94
+          ],
+          "warm_ms": [
+            6435.371,
+            6408.532999999999,
+            6407.3805
+          ],
+          "peak_rss_mib": [
+            321.254,
+            307.754,
+            319.172
+          ]
+        },
+        "spread_percent": {
+          "cold_ms": 4.931881297924546,
+          "warm_ms": 0.43676922628002207,
+          "peak_rss_mib": 4.229694334089456
+        },
+        "cold_inputs_per_second": 27.35663379903899,
+        "warm_inputs_per_second": 31.20839043818609,
+        "output_hashes": [
+          "1099b155cb443d3a",
+          "22d3bc3651f112ea",
+          "dbf70d6dfff6d47"
+        ]
+      },
+      "change_percent": {
+        "cold_ms": 2.0951394897673614,
+        "warm_ms": -1.0810870049758003,
+        "peak_rss_mib": 2.585101356672004
+      }
+    },
+    {
+      "scenario": "enzh_b512p",
+      "v0.3.0": {
+        "cold_ms": 3074.577,
+        "warm_ms": 2862.743,
+        "peak_rss_mib": 205.453,
+        "process_values": {
+          "cold_ms": [
+            3052.115,
+            3121.117,
+            3074.577
+          ],
+          "warm_ms": [
+            2842.8935,
+            2912.6735,
+            2862.743
+          ],
+          "peak_rss_mib": [
+            205.613,
+            205.453,
+            204.543
+          ]
+        },
+        "spread_percent": {
+          "cold_ms": 2.2442762044990383,
+          "warm_ms": 2.4375223343485515,
+          "peak_rss_mib": 0.5208003777019529
+        },
+        "cold_inputs_per_second": 65.04959869276325,
+        "warm_inputs_per_second": 69.86306489964346,
+        "output_hashes": [
+          "d2a66fe859a1e9c7"
+        ]
+      },
+      "v0.5.0": {
+        "cold_ms": 3083.702,
+        "warm_ms": 2849.082,
+        "peak_rss_mib": 204.379,
+        "process_values": {
+          "cold_ms": [
+            3092.395,
+            3077.255,
+            3083.702
+          ],
+          "warm_ms": [
+            2850.6445000000003,
+            2835.6414999999997,
+            2849.082
+          ],
+          "peak_rss_mib": [
+            204.496,
+            204.379,
+            204.273
+          ]
+        },
+        "spread_percent": {
+          "cold_ms": 0.4909683231388724,
+          "warm_ms": 0.5265906702580204,
+          "peak_rss_mib": 0.10911101434101018
+        },
+        "cold_inputs_per_second": 64.85711005797576,
+        "warm_inputs_per_second": 70.19804975778163,
+        "output_hashes": [
+          "d2a66fe859a1e9c7"
+        ]
+      },
+      "change_percent": {
+        "cold_ms": 0.29678879403574054,
+        "warm_ms": -0.47719966479701226,
+        "peak_rss_mib": -0.5227472950017797
+      }
+    },
+    {
+      "scenario": "pivot_b512p",
+      "v0.3.0": {
+        "cold_ms": 6350.764,
+        "warm_ms": 5913.509,
+        "peak_rss_mib": 305.918,
+        "process_values": {
+          "cold_ms": [
+            6340.313,
+            6350.764,
+            6363.031
+          ],
+          "warm_ms": [
+            5913.509,
+            5896.1535,
+            5913.5509999999995
+          ],
+          "peak_rss_mib": [
+            306.387,
+            305.91,
+            305.918
+          ]
+        },
+        "spread_percent": {
+          "cold_ms": 0.3577207403707624,
+          "warm_ms": 0.29419926476816266,
+          "peak_rss_mib": 0.15592413653331136
+        },
+        "cold_inputs_per_second": 31.492274000419478,
+        "warm_inputs_per_second": 33.820866764555525,
+        "output_hashes": [
+          "1b16cdee7e0e3be1"
+        ]
+      },
+      "v0.5.0": {
+        "cold_ms": 6285.518,
+        "warm_ms": 5789.017,
+        "peak_rss_mib": 305.387,
+        "process_values": {
+          "cold_ms": [
+            6285.518,
+            6310.439,
+            6284.528
+          ],
+          "warm_ms": [
+            5789.017,
+            5766.220499999999,
+            5792.532999999999
+          ],
+          "peak_rss_mib": [
+            305.586,
+            305.387,
+            305.336
+          ]
+        },
+        "spread_percent": {
+          "cold_ms": 0.41223332746799957,
+          "warm_ms": 0.4545244900818222,
+          "peak_rss_mib": 0.08186334061371309
+        },
+        "cold_inputs_per_second": 31.81917544425137,
+        "warm_inputs_per_second": 34.54817976868957,
+        "output_hashes": [
+          "1fb8aa37ed4e6f7b"
+        ]
+      },
+      "change_percent": {
+        "cold_ms": -1.0273724547156915,
+        "warm_ms": -2.105213672626527,
+        "peak_rss_mib": -0.17357592557483148
+      }
+    },
+    {
+      "scenario": "enzh_w2_512p",
+      "v0.3.0": {
+        "cold_ms": 1909.928,
+        "warm_ms": 1631.396,
+        "peak_rss_mib": 288.715,
+        "process_values": {
+          "cold_ms": [
+            1936.323,
+            1909.928,
+            1867.744
+          ],
+          "warm_ms": [
+            1633.921,
+            1625.0410000000002,
+            1631.396
+          ],
+          "peak_rss_mib": [
+            284.91,
+            289.059,
+            288.715
+          ]
+        },
+        "spread_percent": {
+          "cold_ms": 3.5906589148910415,
+          "warm_ms": 0.544319098489875,
+          "peak_rss_mib": 1.4370573056474383
+        },
+        "cold_inputs_per_second": 104.71598929383725,
+        "warm_inputs_per_second": 122.59439155177529,
+        "output_hashes": [
+          "7e9f2144813fb4d8",
+          "8eb038714ab6bdfe",
+          "c1743d7c39b36647",
+          "f8b43f555190f7b7",
+          "f8b489dfa93bff41"
+        ]
+      },
+      "v0.5.0": {
+        "cold_ms": 1881.454,
+        "warm_ms": 1530.7665000000002,
+        "peak_rss_mib": 280.688,
+        "process_values": {
+          "cold_ms": [
+            1881.454,
+            1805.436,
+            1918.924
+          ],
+          "warm_ms": [
+            1530.7665000000002,
+            1540.498,
+            1530.5995
+          ],
+          "peak_rss_mib": [
+            280.039,
+            285.781,
+            280.688
+          ]
+        },
+        "spread_percent": {
+          "cold_ms": 6.031930623868565,
+          "warm_ms": 0.6466368319400778,
+          "peak_rss_mib": 2.045687738699203
+        },
+        "cold_inputs_per_second": 106.3007652592091,
+        "warm_inputs_per_second": 130.65349940699642,
+        "output_hashes": [
+          "7e9f2144813fb4d8",
+          "9587298e6e2ed698",
+          "a5c23b09382ea79f"
+        ]
+      },
+      "change_percent": {
+        "cold_ms": -1.4908415395763708,
+        "warm_ms": -6.168306162329673,
+        "peak_rss_mib": -2.780250419964325
+      }
+    },
+    {
+      "scenario": "pivot_w2_512p",
+      "v0.3.0": {
+        "cold_ms": 3912.3,
+        "warm_ms": 3432.6090000000004,
+        "peak_rss_mib": 432.703,
+        "process_values": {
+          "cold_ms": [
+            3958.286,
+            3886.354,
+            3912.3
+          ],
+          "warm_ms": [
+            3432.6090000000004,
+            3436.7430000000004,
+            3418.678
+          ],
+          "peak_rss_mib": [
+            432.73,
+            431.465,
+            432.703
+          ]
+        },
+        "spread_percent": {
+          "cold_ms": 1.8386115584183278,
+          "warm_ms": 0.5262760774676203,
+          "peak_rss_mib": 0.29234833130346755
+        },
+        "cold_inputs_per_second": 51.12082406768397,
+        "warm_inputs_per_second": 58.26471934321677,
+        "output_hashes": [
+          "54aef96268594cca",
+          "5d7103a69c0763de",
+          "6956e0cc6c3f0e14",
+          "7fcf37757f9ca218",
+          "b29f5a13d98223bb",
+          "c8dac10d19285b6d",
+          "d455d9e42919b0f9"
+        ]
+      },
+      "v0.5.0": {
+        "cold_ms": 4024.575,
+        "warm_ms": 3431.748,
+        "peak_rss_mib": 438.008,
+        "process_values": {
+          "cold_ms": [
+            4045.603,
+            4024.575,
+            3913.143
+          ],
+          "warm_ms": [
+            3401.048,
+            3448.8005000000003,
+            3431.748
+          ],
+          "peak_rss_mib": [
+            438.008,
+            437.461,
+            455.117
+          ]
+        },
+        "spread_percent": {
+          "cold_ms": 3.2912792033941485,
+          "warm_ms": 1.3914920326317815,
+          "peak_rss_mib": 4.030976603167067
+        },
+        "cold_inputs_per_second": 49.694688259008714,
+        "warm_inputs_per_second": 58.279337527114464,
+        "output_hashes": [
+          "2216e3145c008c27",
+          "42b31ca1266dba9d",
+          "8b3e8fea199ede36",
+          "97c7c877b7270d25",
+          "eedc0ad759134193",
+          "f3bcc627fc164142"
+        ]
+      },
+      "change_percent": {
+        "cold_ms": 2.869795261099606,
+        "warm_ms": -0.025082961677269644,
+        "peak_rss_mib": 1.226014148272614
+      }
+    }
+  ],
+  "checker": {
+    "exit_code": 1
+  },
+  "note": "All raw medians retained even when the standard checker rejects noise or output differences."
+}

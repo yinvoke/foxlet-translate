@@ -1,11 +1,7 @@
 [
   {
-    "name": "engine/3rd_party/ssplit-cpp",
-    "license_file": "engine/3rd_party/ssplit-cpp/LICENSE.md"
-  },
-  {
-    "name": "engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39",
-    "license_file": "engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/COPYING"
+    "name": "Unicode 17 sentence boundary properties and Unicode reference data",
+    "license_file": "licenses/Unicode-3.0.txt"
   },
   {
     "name": "engine/marian-fork",
@@ -88,11 +84,6 @@
     "license_file": "engine/src/translator/LICENSE"
   },
   {
-    "name": "Moses nonbreaking prefix data (default AAR only)",
-    "license_file": "licenses/LGPL-2.1.txt",
-    "optional_prefixes": true
-  },
-  {
     "name": "LLVM libc++ runtime (Android NDK r29)",
     "license_file": "licenses/libcxx-NDK-r29.txt"
   },
@@ -110,11 +101,6 @@
     "name": "Microsoft ExceptionWithCallStack",
     "license_file": "engine/marian-fork/LICENSE.md",
     "copyright": "Copyright (c) Microsoft. All rights reserved."
-  },
-  {
-    "name": "Moses nonbreaking prefix additional attribution (default AAR only)",
-    "license_file": "engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/README.txt",
-    "optional_prefixes": true
   },
   {
     "name": "Kotlin runtime dependencies (resolved separately; included by demo)",

@@ -1,5 +1,5 @@
 #include "engine/marian-fork/src/common/binary_validation.h"
-#include "jni/utf_codec.h"
+#include "native/jni/utf_codec.h"
 #include <fstream>
 #include <iostream>
 #include <random>

@@ -26,21 +26,15 @@ internal class EngineOptions(
 }
 
 /**
- * Foxlet translation engine with lazy model loading and idle-based unloading.
+ * Serializes native calls, lazy model loading and model release on a dedicated
+ * executor. With one configured thread, BlockingService runs inference on the
+ * executor; larger configurations submit batches to AsyncService workers.
+ * Cancellation takes effect between native calls, not during a native batch.
  *
- * All native work runs on one dedicated thread; [translate] and
- * [translatePivot] suspend until their batch completes. At
- * [EngineOptions.threads] = 1 the translation itself runs on that same thread
- * (no engine workers exist); above that the thread only submits the batch and
- * waits for the workers. Cancellation is cooperative at batch granularity: a
- * single native batch cannot be interrupted (mirror of the engine's own
- * contract).
- *
- * Models load on first use and are dropped again by a timer once they have
- * gone [EngineOptions.idleUnloadMillis] without one — the sweep is posted to
- * the same engine thread, which is what keeps it from ever landing in the
- * middle of a batch. Reloading is invisible to the caller; [loadedModelCount]
- * is there for anyone who wants to watch it happen.
+ * Positive idle retention schedules unloading on the same executor. Zero
+ * releases models in the translation's finally block; negative retention keeps
+ * models until explicit unloading or shutdown. Unconfirmed native releases
+ * retain file reservations until the service is destroyed.
  */
 internal class NativeEngine(
     private val config: EngineOptions = EngineOptions(),
@@ -55,11 +49,9 @@ internal class NativeEngine(
 
 
     private val executor = ScheduledThreadPoolExecutor(1) { r -> Thread(r, "foxlet") }.apply {
-        // A sweep left in the queue by close() would call into a destroyed
-        // service. close() cancels it, this is the belt to that pair of braces.
+        // Prevent delayed sweeps from accessing a destroyed service after close().
         executeExistingDelayedTasksAfterShutdownPolicy = false
-        // Every translation cancels the previous sweep; without this the dead
-        // bookings would sit in the queue until their original deadline.
+        // Remove cancelled sweeps immediately to avoid retaining obsolete tasks.
         removeOnCancelPolicy = true
     }
     private val dispatcher = executor.asCoroutineDispatcher()
@@ -84,28 +76,19 @@ internal class NativeEngine(
         nowNanos = System::nanoTime,
         scheduler = { delayMillis, task ->
             val scheduled = executor.schedule(task, delayMillis, TimeUnit.MILLISECONDS)
-            // false: a sweep already running is on the engine thread and owns
-            // the models; interrupting it mid-release is never what we want.
+            // Model release on the engine thread must complete without interruption.
             IdleSweeper.Pending { scheduled.cancel(false) }
         },
         onIdle = ::unload,
     )
 
     /**
-     * Translate [texts] with the direction in [model].
-     *
-     * One output per input, in order; a line that was translated before is
-     * translated again — the engine keeps no "already seen" state (a document
-     * host that wants to skip unchanged nodes tracks that itself, see the
-     * README). Given the same list, the same model files and the same config,
-     * the result is byte-identical across calls, processes and thread counts
-     * with [EngineOptions.cacheSize] = 0: batches are a function of the list,
-     * not of worker timing. The one exception is a list too short to give
-     * every worker a batch (at the default mini-batch of 512 words, roughly
-     * 15 lines per worker): it is split across the workers instead, so its
-     * output can differ from the 1-thread output, while staying fixed for that
-     * thread count. The list is what fixes the batches: the same line in a
-     * different list can come out differently.
+     * Translates [texts] in input order using [model].
+     * Output regression requires fixed model bytes, input order, submission groups,
+     * thread count, sentence rules, batch size and cache settings. The lexical
+     * shortlist is shared within each inference batch, so changing batch composition
+     * can change a sentence's output. AsyncService may reduce batch size to provide
+     * work for each worker; different thread counts need not produce identical text.
      */
     override suspend fun translate(texts: List<String>, model: ModelFiles, html: Boolean): List<String> =
         withContext(dispatcher) {
@@ -124,10 +107,9 @@ internal class NativeEngine(
         }
 
     /**
-     * Pivot translation (e.g. ja->en->zh) with both models resident — fastest,
-     * but peak memory is the sum of both. For a RAM-capped sequential pivot,
-     * call [translate] twice and let idle-unload reclaim the first model.
-     * Same output contract as [translate].
+     * Translates through [first] and [second] while both models remain resident.
+     * For sequential pivot with lower model residency, use two [translate] calls
+     * and await [unloadModels] between them. Output constraints match [translate].
      */
     override suspend fun translatePivot(
         texts: List<String>,
@@ -156,13 +138,10 @@ internal class NativeEngine(
     }
 
     /**
-     * Release models regardless of idle deadline (hook for onTrimMemory).
-     *
-     * The work runs on the engine thread. The returned future completes when
-     * the release has actually finished, and carries true when every model was
-     * really destroyed — false means something was still holding a reference.
-     * Callers that do not care may ignore it; a caller under memory pressure
-     * that wants to know the RAM is back should wait on it.
+     * Internal future-based release adapter. Completion follows all preceding
+     * executor work; true confirms that every model was destroyed. A false result
+     * retains disk reservations until service destruction. Public callers use
+     * [Translator.unloadModels] and inspect [UnloadReport].
      */
     fun releaseAllModels(): Future<Boolean> = synchronized(lifecycleLock) {
         checkOpen()
@@ -170,13 +149,9 @@ internal class NativeEngine(
     }
 
     /**
-     * How many models are resident right now.
-     *
-     * Counted on the engine thread, so the future queues behind any batch in
-     * flight — waiting on it from the main thread can block for the length of
-     * a translation. Mostly a way to observe idle unloading from outside: it
-     * drops to 0 on its own [EngineOptions.idleUnloadMillis] after the last
-     * translation, and the next [translate] silently loads the model again.
+     * Returns the number of resident handles after preceding executor work.
+     * The count excludes unconfirmed releases; [state] reports both values.
+     * Public callers use [Translator.getState].
      */
     fun loadedModelCount(): Future<Int> = synchronized(lifecycleLock) {
         checkOpen()
@@ -184,13 +159,10 @@ internal class NativeEngine(
     }
 
     /**
-     * Release every model, cancel the pending idle sweep, destroy the native
-     * service and stop the engine thread. Blocks until the native side is
-     * actually gone (bounded by one in-flight batch), so a caller may create
-     * the next engine right after —
-     * marian keeps process-global state (its logger registry among it) and a
-     * second service created while the first is still being torn down fails.
-     * Call it off the main thread when a batch may still be running.
+     * Rejects subsequent translation work, releases models, destroys the native
+     * service and stops the executor. Concurrent calls wait for the same teardown.
+     * The process lease is released after teardown, allowing a replacement engine.
+     * This blocking method runs off the Android main thread through [ClientLifecycle].
      */
     override fun close() {
         val future = synchronized(lifecycleLock) {
@@ -253,11 +225,11 @@ internal class NativeEngine(
                 context.ensureActive()
                 val handle = runtime.loadModel(
                     serviceHandle(),
-                    model.toConfigYaml(config.miniBatchWords),
+                    model.toNativeConfigYaml(config.miniBatchWords, config.nonbreakingPrefixes),
                     if (!config.nonbreakingPrefixes) null else model.nonbreakingPrefixFile?.let {
                         require(it.length() <= 1024 * 1024) { "prefix file exceeds 1 MiB" }
                         it.readBytes()
-                    } ?: PrefixTables.bytesFor(model.sourceLanguage),
+                    },
                 )
                 Loaded(handle, model)
             }

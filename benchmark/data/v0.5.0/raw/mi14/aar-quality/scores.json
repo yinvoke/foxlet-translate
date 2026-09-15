@@ -1,0 +1,550 @@
+{
+  "method": "Actual R8 AAR app output, same Xiaomi 14, fixed 100 single and 25 paragraph row IDs per direction, cache disabled, mbw512; diagnostics excluded from reference metrics. Small subset; full host corpus results reported separately.",
+  "fixture_sha256": "7440fca00a04a7cc459a2fcf0690feebae3c9b8818bd7d96093e59c954220a6d",
+  "results": [
+    {
+      "direction": "en-zh",
+      "shape": "single",
+      "workers": 1,
+      "count": 100,
+      "changed_rows": 0,
+      "v0.4.0": {
+        "chrfpp": 24.40876984263786,
+        "bleu": 38.65116456018508
+      },
+      "v0.5.0": {
+        "chrfpp": 24.40876984263786,
+        "bleu": 38.65116456018508
+      },
+      "chrfpp_delta": 0.0,
+      "bleu_delta": 0.0
+    },
+    {
+      "direction": "en-zh",
+      "shape": "single",
+      "workers": 2,
+      "count": 100,
+      "changed_rows": 0,
+      "v0.4.0": {
+        "chrfpp": 24.40876984263786,
+        "bleu": 38.65116456018508
+      },
+      "v0.5.0": {
+        "chrfpp": 24.40876984263786,
+        "bleu": 38.65116456018508
+      },
+      "chrfpp_delta": 0.0,
+      "bleu_delta": 0.0
+    },
+    {
+      "direction": "en-zh",
+      "shape": "paragraph",
+      "workers": 1,
+      "count": 25,
+      "changed_rows": 0,
+      "v0.4.0": {
+        "chrfpp": 27.32019223599452,
+        "bleu": 40.570637768407444
+      },
+      "v0.5.0": {
+        "chrfpp": 27.32019223599452,
+        "bleu": 40.570637768407444
+      },
+      "chrfpp_delta": 0.0,
+      "bleu_delta": 0.0
+    },
+    {
+      "direction": "en-zh",
+      "shape": "paragraph",
+      "workers": 2,
+      "count": 25,
+      "changed_rows": 0,
+      "v0.4.0": {
+        "chrfpp": 27.32019223599452,
+        "bleu": 40.570637768407444
+      },
+      "v0.5.0": {
+        "chrfpp": 27.32019223599452,
+        "bleu": 40.570637768407444
+      },
+      "chrfpp_delta": 0.0,
+      "bleu_delta": 0.0
+    },
+    {
+      "direction": "zh-en",
+      "shape": "single",
+      "workers": 1,
+      "count": 100,
+      "changed_rows": 0,
+      "v0.4.0": {
+        "chrfpp": 56.044541175023085,
+        "bleu": 30.125609815090556
+      },
+      "v0.5.0": {
+        "chrfpp": 56.044541175023085,
+        "bleu": 30.125609815090556
+      },
+      "chrfpp_delta": 0.0,
+      "bleu_delta": 0.0
+    },
+    {
+      "direction": "zh-en",
+      "shape": "single",
+      "workers": 2,
+      "count": 100,
+      "changed_rows": 0,
+      "v0.4.0": {
+        "chrfpp": 56.044541175023085,
+        "bleu": 30.125609815090556
+      },
+      "v0.5.0": {
+        "chrfpp": 56.044541175023085,
+        "bleu": 30.125609815090556
+      },
+      "chrfpp_delta": 0.0,
+      "bleu_delta": 0.0
+    },
+    {
+      "direction": "zh-en",
+      "shape": "paragraph",
+      "workers": 1,
+      "count": 25,
+      "changed_rows": 0,
+      "v0.4.0": {
+        "chrfpp": 55.67869128694933,
+        "bleu": 27.60839860949494
+      },
+      "v0.5.0": {
+        "chrfpp": 55.67869128694933,
+        "bleu": 27.60839860949494
+      },
+      "chrfpp_delta": 0.0,
+      "bleu_delta": 0.0
+    },
+    {
+      "direction": "zh-en",
+      "shape": "paragraph",
+      "workers": 2,
+      "count": 25,
+      "changed_rows": 0,
+      "v0.4.0": {
+        "chrfpp": 55.67869128694933,
+        "bleu": 27.60839860949494
+      },
+      "v0.5.0": {
+        "chrfpp": 55.67869128694933,
+        "bleu": 27.60839860949494
+      },
+      "chrfpp_delta": 0.0,
+      "bleu_delta": 0.0
+    },
+    {
+      "direction": "ja-en",
+      "shape": "single",
+      "workers": 1,
+      "count": 100,
+      "changed_rows": 2,
+      "v0.4.0": {
+        "chrfpp": 53.45603492663314,
+        "bleu": 26.6527618464452
+      },
+      "v0.5.0": {
+        "chrfpp": 53.4195719393184,
+        "bleu": 26.604208727944012
+      },
+      "chrfpp_delta": -0.036462987314735074,
+      "bleu_delta": -0.04855311850118582
+    },
+    {
+      "direction": "ja-en",
+      "shape": "single",
+      "workers": 2,
+      "count": 100,
+      "changed_rows": 2,
+      "v0.4.0": {
+        "chrfpp": 53.45603492663314,
+        "bleu": 26.6527618464452
+      },
+      "v0.5.0": {
+        "chrfpp": 53.4195719393184,
+        "bleu": 26.604208727944012
+      },
+      "chrfpp_delta": -0.036462987314735074,
+      "bleu_delta": -0.04855311850118582
+    },
+    {
+      "direction": "ja-en",
+      "shape": "paragraph",
+      "workers": 1,
+      "count": 25,
+      "changed_rows": 7,
+      "v0.4.0": {
+        "chrfpp": 54.62063244414299,
+        "bleu": 23.45368611844532
+      },
+      "v0.5.0": {
+        "chrfpp": 54.549391906475044,
+        "bleu": 23.490072796363243
+      },
+      "chrfpp_delta": -0.07124053766794702,
+      "bleu_delta": 0.036386677917924715
+    },
+    {
+      "direction": "ja-en",
+      "shape": "paragraph",
+      "workers": 2,
+      "count": 25,
+      "changed_rows": 7,
+      "v0.4.0": {
+        "chrfpp": 54.62063244414299,
+        "bleu": 23.45368611844532
+      },
+      "v0.5.0": {
+        "chrfpp": 54.549391906475044,
+        "bleu": 23.490072796363243
+      },
+      "chrfpp_delta": -0.07124053766794702,
+      "bleu_delta": 0.036386677917924715
+    },
+    {
+      "direction": "ko-en",
+      "shape": "single",
+      "workers": 1,
+      "count": 100,
+      "changed_rows": 0,
+      "v0.4.0": {
+        "chrfpp": 54.18795745564237,
+        "bleu": 27.31611034700987
+      },
+      "v0.5.0": {
+        "chrfpp": 54.18795745564237,
+        "bleu": 27.31611034700987
+      },
+      "chrfpp_delta": 0.0,
+      "bleu_delta": 0.0
+    },
+    {
+      "direction": "ko-en",
+      "shape": "single",
+      "workers": 2,
+      "count": 100,
+      "changed_rows": 0,
+      "v0.4.0": {
+        "chrfpp": 54.18795745564237,
+        "bleu": 27.31611034700987
+      },
+      "v0.5.0": {
+        "chrfpp": 54.18795745564237,
+        "bleu": 27.31611034700987
+      },
+      "chrfpp_delta": 0.0,
+      "bleu_delta": 0.0
+    },
+    {
+      "direction": "ko-en",
+      "shape": "paragraph",
+      "workers": 1,
+      "count": 25,
+      "changed_rows": 0,
+      "v0.4.0": {
+        "chrfpp": 56.207016166263415,
+        "bleu": 27.206353749152726
+      },
+      "v0.5.0": {
+        "chrfpp": 56.207016166263415,
+        "bleu": 27.206353749152726
+      },
+      "chrfpp_delta": 0.0,
+      "bleu_delta": 0.0
+    },
+    {
+      "direction": "ko-en",
+      "shape": "paragraph",
+      "workers": 2,
+      "count": 25,
+      "changed_rows": 0,
+      "v0.4.0": {
+        "chrfpp": 56.207016166263415,
+        "bleu": 27.206353749152726
+      },
+      "v0.5.0": {
+        "chrfpp": 56.207016166263415,
+        "bleu": 27.206353749152726
+      },
+      "chrfpp_delta": 0.0,
+      "bleu_delta": 0.0
+    },
+    {
+      "direction": "ru-en",
+      "shape": "single",
+      "workers": 1,
+      "count": 100,
+      "changed_rows": 3,
+      "v0.4.0": {
+        "chrfpp": 58.77575514921204,
+        "bleu": 31.419795805422407
+      },
+      "v0.5.0": {
+        "chrfpp": 58.75049994969446,
+        "bleu": 31.391150882502366
+      },
+      "chrfpp_delta": -0.025255199517580706,
+      "bleu_delta": -0.028644922920040727
+    },
+    {
+      "direction": "ru-en",
+      "shape": "single",
+      "workers": 2,
+      "count": 100,
+      "changed_rows": 3,
+      "v0.4.0": {
+        "chrfpp": 58.77575514921204,
+        "bleu": 31.419795805422407
+      },
+      "v0.5.0": {
+        "chrfpp": 58.75049994969446,
+        "bleu": 31.391150882502366
+      },
+      "chrfpp_delta": -0.025255199517580706,
+      "bleu_delta": -0.028644922920040727
+    },
+    {
+      "direction": "ru-en",
+      "shape": "paragraph",
+      "workers": 1,
+      "count": 25,
+      "changed_rows": 1,
+      "v0.4.0": {
+        "chrfpp": 60.027610934481366,
+        "bleu": 30.77987402987776
+      },
+      "v0.5.0": {
+        "chrfpp": 59.892568079570744,
+        "bleu": 30.674859475409534
+      },
+      "chrfpp_delta": -0.13504285491062262,
+      "bleu_delta": -0.1050145544682266
+    },
+    {
+      "direction": "ru-en",
+      "shape": "paragraph",
+      "workers": 2,
+      "count": 25,
+      "changed_rows": 1,
+      "v0.4.0": {
+        "chrfpp": 60.027610934481366,
+        "bleu": 30.77987402987776
+      },
+      "v0.5.0": {
+        "chrfpp": 59.892568079570744,
+        "bleu": 30.674859475409534
+      },
+      "chrfpp_delta": -0.13504285491062262,
+      "bleu_delta": -0.1050145544682266
+    },
+    {
+      "direction": "ja-zh",
+      "shape": "single",
+      "workers": 1,
+      "count": 100,
+      "changed_rows": 8,
+      "v0.4.0": {
+        "chrfpp": 18.904606312656032,
+        "bleu": 29.17486165569144
+      },
+      "v0.5.0": {
+        "chrfpp": 18.93346747474956,
+        "bleu": 29.238972981457977
+      },
+      "chrfpp_delta": 0.02886116209352707,
+      "bleu_delta": 0.064111325766536
+    },
+    {
+      "direction": "ja-zh",
+      "shape": "single",
+      "workers": 2,
+      "count": 100,
+      "changed_rows": 8,
+      "v0.4.0": {
+        "chrfpp": 18.904606312656032,
+        "bleu": 29.17486165569144
+      },
+      "v0.5.0": {
+        "chrfpp": 18.93346747474956,
+        "bleu": 29.238972981457977
+      },
+      "chrfpp_delta": 0.02886116209352707,
+      "bleu_delta": 0.064111325766536
+    },
+    {
+      "direction": "ja-zh",
+      "shape": "paragraph",
+      "workers": 1,
+      "count": 25,
+      "changed_rows": 8,
+      "v0.4.0": {
+        "chrfpp": 21.564838628703356,
+        "bleu": 31.56200936724662
+      },
+      "v0.5.0": {
+        "chrfpp": 21.615552591554284,
+        "bleu": 31.60382340073397
+      },
+      "chrfpp_delta": 0.050713962850927885,
+      "bleu_delta": 0.04181403348734847
+    },
+    {
+      "direction": "ja-zh",
+      "shape": "paragraph",
+      "workers": 2,
+      "count": 25,
+      "changed_rows": 8,
+      "v0.4.0": {
+        "chrfpp": 21.564838628703356,
+        "bleu": 31.56200936724662
+      },
+      "v0.5.0": {
+        "chrfpp": 21.615552591554284,
+        "bleu": 31.60382340073397
+      },
+      "chrfpp_delta": 0.050713962850927885,
+      "bleu_delta": 0.04181403348734847
+    },
+    {
+      "direction": "ko-zh",
+      "shape": "single",
+      "workers": 1,
+      "count": 100,
+      "changed_rows": 0,
+      "v0.4.0": {
+        "chrfpp": 19.520373158814696,
+        "bleu": 30.68178680250069
+      },
+      "v0.5.0": {
+        "chrfpp": 19.520373158814696,
+        "bleu": 30.68178680250069
+      },
+      "chrfpp_delta": 0.0,
+      "bleu_delta": 0.0
+    },
+    {
+      "direction": "ko-zh",
+      "shape": "single",
+      "workers": 2,
+      "count": 100,
+      "changed_rows": 0,
+      "v0.4.0": {
+        "chrfpp": 19.520373158814696,
+        "bleu": 30.68178680250069
+      },
+      "v0.5.0": {
+        "chrfpp": 19.520373158814696,
+        "bleu": 30.68178680250069
+      },
+      "chrfpp_delta": 0.0,
+      "bleu_delta": 0.0
+    },
+    {
+      "direction": "ko-zh",
+      "shape": "paragraph",
+      "workers": 1,
+      "count": 25,
+      "changed_rows": 0,
+      "v0.4.0": {
+        "chrfpp": 21.09194747947808,
+        "bleu": 29.976919420956474
+      },
+      "v0.5.0": {
+        "chrfpp": 21.09194747947808,
+        "bleu": 29.976919420956474
+      },
+      "chrfpp_delta": 0.0,
+      "bleu_delta": 0.0
+    },
+    {
+      "direction": "ko-zh",
+      "shape": "paragraph",
+      "workers": 2,
+      "count": 25,
+      "changed_rows": 0,
+      "v0.4.0": {
+        "chrfpp": 21.09194747947808,
+        "bleu": 29.976919420956474
+      },
+      "v0.5.0": {
+        "chrfpp": 21.09194747947808,
+        "bleu": 29.976919420956474
+      },
+      "chrfpp_delta": 0.0,
+      "bleu_delta": 0.0
+    },
+    {
+      "direction": "ru-zh",
+      "shape": "single",
+      "workers": 1,
+      "count": 100,
+      "changed_rows": 4,
+      "v0.4.0": {
+        "chrfpp": 19.299558999711806,
+        "bleu": 30.045449751595267
+      },
+      "v0.5.0": {
+        "chrfpp": 19.30963097102881,
+        "bleu": 30.069424505216976
+      },
+      "chrfpp_delta": 0.010071971317003658,
+      "bleu_delta": 0.02397475362170809
+    },
+    {
+      "direction": "ru-zh",
+      "shape": "single",
+      "workers": 2,
+      "count": 100,
+      "changed_rows": 4,
+      "v0.4.0": {
+        "chrfpp": 19.299558999711806,
+        "bleu": 30.045449751595267
+      },
+      "v0.5.0": {
+        "chrfpp": 19.30963097102881,
+        "bleu": 30.069424505216976
+      },
+      "chrfpp_delta": 0.010071971317003658,
+      "bleu_delta": 0.02397475362170809
+    },
+    {
+      "direction": "ru-zh",
+      "shape": "paragraph",
+      "workers": 1,
+      "count": 25,
+      "changed_rows": 2,
+      "v0.4.0": {
+        "chrfpp": 21.958522442105664,
+        "bleu": 32.36790779281319
+      },
+      "v0.5.0": {
+        "chrfpp": 21.94752043353592,
+        "bleu": 32.33090250165064
+      },
+      "chrfpp_delta": -0.011002008569743538,
+      "bleu_delta": -0.03700529116255069
+    },
+    {
+      "direction": "ru-zh",
+      "shape": "paragraph",
+      "workers": 2,
+      "count": 25,
+      "changed_rows": 2,
+      "v0.4.0": {
+        "chrfpp": 21.958522442105664,
+        "bleu": 32.36790779281319
+      },
+      "v0.5.0": {
+        "chrfpp": 21.94752043353592,
+        "bleu": 32.33090250165064
+      },
+      "chrfpp_delta": -0.011002008569743538,
+      "bleu_delta": -0.03700529116255069
+    }
+  ]
+}

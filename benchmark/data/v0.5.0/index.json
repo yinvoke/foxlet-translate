@@ -1,0 +1,157 @@
+{
+  "schema_version": 2,
+  "version": "0.5.0",
+  "status": "本地候选版本，尚未发布",
+  "measured_at": "2026-09-15",
+  "compared_with": {
+    "performance": "v0.3.0",
+    "size_and_supplementary_quality": "v0.4.0"
+  },
+  "devices": [
+    "小米 14 / 骁龙 8 Gen 3 / Android 16",
+    "Apple M3 Pro（主机）"
+  ],
+  "measurements": {
+    "mi14-standard-native": {
+      "protocol": "android-native-v1",
+      "processes": 48,
+      "passes": 144,
+      "compared_with": "v0.3.0",
+      "result": "checker exit 1（pivot_b512p 译文哈希变化；耗时/RSS 在阈值内）",
+      "raw": "raw/mi14/standard/native/results.json",
+      "summary": "raw/mi14/standard/native/summary.json",
+      "checker_log": "raw/mi14/standard/native/check.log",
+      "interrupted": "raw/mi14/standard/native/interrupted.json"
+    },
+    "mi14-standard-app": {
+      "protocol": "android-app-v2",
+      "processes": "8/18",
+      "passes": 24,
+      "compared_with": "v0.3.0",
+      "result": "未完成，未通过；仅作参考",
+      "raw": {
+        "v0.3.0": "raw/mi14/standard/app/v0.3.0/results.json",
+        "v0.5.0": "raw/mi14/standard/app/v0.5.0/results.json"
+      },
+      "interrupted_v1": "raw/mi14/standard/app/interrupted-v1",
+      "start_failure": "raw/mi14/standard/app/start-failure"
+    },
+    "mi14-standard-quality": {
+      "protocol": "wmt22-comet-da × 100，FLORES-200 前 200 条",
+      "app_comparison": "raw/mi14/standard/quality/app-comparison.json",
+      "native_comparison": "raw/mi14/standard/quality/native-comparison.json",
+      "native_exports": "raw/mi14/standard/quality/native/manifest.json",
+      "scores": {
+        "v0.3.0": "raw/mi14/standard/quality/v0.3.0-comet.json",
+        "v0.5.0": "raw/mi14/standard/quality/v0.5.0-comet.json",
+        "native": "raw/mi14/standard/quality/native-comet.json"
+      }
+    },
+    "mi14-aar-100": {
+      "protocol": "private-release-aar-paired-100-v1",
+      "processes": 96,
+      "compared_with": "v0.4.0",
+      "result": "完成，稳定性未通过；仅作参考",
+      "initial": "raw/mi14/aar-100/initial",
+      "followup": "raw/mi14/aar-100/followup"
+    },
+    "mi14-aar-quality": {
+      "protocol": "8 语向 × 1,022 输入 × 2 线程 × 2 遍 = 4,088 条 / 版本",
+      "compared_with": "v0.4.0",
+      "result": "两版真机验证完成",
+      "scores": "raw/mi14/aar-quality/scores.json",
+      "selection": "raw/mi14/aar-quality/selection.json"
+    },
+    "host-quality": {
+      "protocol": "主机 BlockingService，8 语向 × 10,120 条输出 / 版本",
+      "compared_with": "v0.4.0",
+      "scores": "raw/host/quality/scores.json",
+      "comet": "raw/host/quality/comet.json",
+      "pre_trim": "raw/host/quality/pre-trim-comparison.json"
+    },
+    "sentence-quality": {
+      "protocol": "UD 2.18，11 个 test 语料集，20,877 句",
+      "compared_with": "ssplit-cpp 冻结基线",
+      "result": "micro F1 94.67% → 96.08%",
+      "current": "raw/sentence-quality/current.json",
+      "baseline": "raw/sentence-quality/ssplit-baseline.json"
+    },
+    "release-size": {
+      "compared_with": "已发布 v0.4.0",
+      "result": "AAR 3,784,263 → 2,809,980 字节（−25.75%）",
+      "artifacts": "raw/artifacts.json",
+      "build_checks": "raw/build-checks.json"
+    }
+  },
+  "app": {
+    "directory": "raw/mi14/standard/app/v0.5.0",
+    "scores": "raw/mi14/standard/quality/v0.5.0-comet.json"
+  },
+  "native": {
+    "report": "raw/mi14/standard/native/results.json",
+    "version": "v0.5.0"
+  },
+  "baseline": {
+    "version": "v0.3.0",
+    "app_directory": "../v0.3.0/raw/mi14/app",
+    "app_scores": "../v0.3.0/raw/mi14/quality/comet.json",
+    "native_report": "../v0.3.0/raw/mi14/native/results.json"
+  },
+  "initial_comparison": {
+    "report": "../v0.3.0/raw/mi14/initial/results.json",
+    "before": "v0.1.0",
+    "after": "v0.3.0",
+    "link": "benchmark/data/v0.3.0/README.md"
+  },
+  "report_link": "benchmark/data/v0.5.0/README.md",
+  "derived_link": "benchmark/data/v0.5.0/derived/summary.json",
+  "device_zh": "小米 14 · 骁龙 8 Gen 3 · Android 16",
+  "device_en": "Xiaomi 14 · Snapdragon 8 Gen 3 · Android 16",
+  "derived": {
+    "summary": "derived/summary.json",
+    "readme_section_zh": "derived/README.md",
+    "readme_section_en": "derived/README.en.md",
+    "note": "由 generate.py 从 raw/ 加工的展示数据，不是原始测量记录"
+  },
+  "collectors": {
+    "collector/IsolatedBenchRunner-v0.3.0.kt": "../shared/collectors/IsolatedBenchRunner-v0.3.0.kt",
+    "collector/MetricsSampler-v0.3.0.kt": "../shared/collectors/MetricsSampler-v0.3.0.kt",
+    "collector/app-run.py": "../shared/collectors/app-run-v2.py",
+    "collector/app-check.py": "../shared/collectors/app-check-v2.py",
+    "collector/native-check.py": "../shared/collectors/native-check.py",
+    "collector/native-run-pair.py": "../shared/collectors/native-run-pair-v0.5.0.py",
+    "collector/suite.py": "../shared/collectors/suite.py",
+    "collector/suites/android-native-v1.json": "../shared/collectors/suites/android-native-v1.json",
+    "collector/bench_device.py": "../shared/collectors/bench_device-v0.5.0.py",
+    "collector/main.cpp": "../shared/collectors/main.cpp",
+    "collector/reference.cpp": "../shared/collectors/reference.cpp",
+    "collector/reference.cmake": "../shared/collectors/reference.cmake",
+    "collector/MetricsSampler.kt": "../shared/collectors/MetricsSampler.kt",
+    "collector/IsolatedBenchRunner.kt": "../shared/collectors/IsolatedBenchRunner.kt",
+    "collector/app_pair.py": "../shared/collectors/app_pair.py",
+    "collector/app_pair_v2.py": "../shared/collectors/app_pair_v2.py",
+    "collector/app-run-v1.py": "../shared/collectors/app-run-v1.py",
+    "collector/app-check-v1.py": "../shared/collectors/app-check-v1.py",
+    "collector/score.py": "../shared/collectors/score.py",
+    "collector/app_pair-initial.py": "../shared/collectors/app_pair-initial.py",
+    "collector/export_native_quality.py": "../shared/collectors/export_native_quality.py",
+    "collector/generate.py": "../shared/collectors/generate.py",
+    "aar-100/ReleaseBenchmarkTest.kt": "../shared/collectors/ReleaseBenchmarkTest.kt"
+  },
+  "corpora": {
+    "zho_Hans.devtest": "../shared/corpora/zho_Hans.devtest",
+    "eng_Latn.devtest": "../shared/corpora/eng_Latn.devtest",
+    "jpn_Jpan.devtest": "../shared/corpora/jpn_Jpan.devtest"
+  },
+  "external": {},
+  "retained_duplicate": {
+    "raw/mi14/standard/app/v0.3.0/source-files.json": {
+      "sha256": "0d33bc68b351add3f2edc7e37f7e6de8853eb2fd0c829f5608df7ffe526ef7af",
+      "also_in": "../v0.3.0/raw/mi14/app/source-files.json",
+      "reason": "冻结的 App 检查器要求该文件与报告同目录；删除会让归档无法独立复核，因此两个版本各留一份"
+    }
+  },
+  "checks": [
+    "python3 -B benchmark/data/v0.5.0/verify.py"
+  ]
+}

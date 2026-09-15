@@ -5,7 +5,7 @@ from pathlib import Path
 import re
 
 
-DEFAULT_SUITE = 'android-native-v1'
+DEFAULT_SUITE = 'android-native-v2'
 
 
 def load_suite(suite_id=DEFAULT_SUITE):

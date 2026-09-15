@@ -1,0 +1,131 @@
+{
+  "complete": true,
+  "foreground_checks_passed": true,
+  "temperature_min_c": 29.9,
+  "temperature_max_c": 34.6,
+  "temperature_span_c": 4.700000000000003,
+  "temperature_span_within_3c": false,
+  "metrics_with_spread_over_10percent": [
+    {
+      "direction": "en-zh",
+      "workers": 1,
+      "version": "v0.4.0",
+      "metric": "first_ms",
+      "range_over_median_percent": 28.586349859710367
+    },
+    {
+      "direction": "en-zh",
+      "workers": 1,
+      "version": "v0.4.0",
+      "metric": "warm_ms",
+      "range_over_median_percent": 36.09710828497248
+    },
+    {
+      "direction": "en-zh",
+      "workers": 1,
+      "version": "v0.4.0",
+      "metric": "warm_peak_pss_kib",
+      "range_over_median_percent": 15.110077943388486
+    },
+    {
+      "direction": "en-zh",
+      "workers": 1,
+      "version": "v0.5.0",
+      "metric": "first_ms",
+      "range_over_median_percent": 13.088601546089764
+    },
+    {
+      "direction": "en-zh",
+      "workers": 1,
+      "version": "v0.5.0",
+      "metric": "warm_peak_pss_kib",
+      "range_over_median_percent": 13.332416948536812
+    },
+    {
+      "direction": "en-zh",
+      "workers": 2,
+      "version": "v0.4.0",
+      "metric": "first_ms",
+      "range_over_median_percent": 29.57531512338137
+    },
+    {
+      "direction": "en-zh",
+      "workers": 2,
+      "version": "v0.4.0",
+      "metric": "warm_ms",
+      "range_over_median_percent": 31.033576193412536
+    },
+    {
+      "direction": "en-zh",
+      "workers": 2,
+      "version": "v0.5.0",
+      "metric": "first_ms",
+      "range_over_median_percent": 13.04179071555102
+    },
+    {
+      "direction": "en-zh",
+      "workers": 2,
+      "version": "v0.5.0",
+      "metric": "warm_ms",
+      "range_over_median_percent": 10.972040185349064
+    },
+    {
+      "direction": "en-zh",
+      "workers": 4,
+      "version": "v0.4.0",
+      "metric": "warm_ms",
+      "range_over_median_percent": 16.54842519430034
+    },
+    {
+      "direction": "ja-zh",
+      "workers": 1,
+      "version": "v0.4.0",
+      "metric": "warm_ms",
+      "range_over_median_percent": 12.709104361561833
+    },
+    {
+      "direction": "ja-zh",
+      "workers": 1,
+      "version": "v0.5.0",
+      "metric": "first_ms",
+      "range_over_median_percent": 13.59427981458526
+    },
+    {
+      "direction": "ja-zh",
+      "workers": 2,
+      "version": "v0.4.0",
+      "metric": "first_ms",
+      "range_over_median_percent": 14.793041556807687
+    },
+    {
+      "direction": "ja-zh",
+      "workers": 2,
+      "version": "v0.5.0",
+      "metric": "warm_ms",
+      "range_over_median_percent": 13.929386395704148
+    },
+    {
+      "direction": "ja-zh",
+      "workers": 4,
+      "version": "v0.4.0",
+      "metric": "warm_ms",
+      "range_over_median_percent": 14.202042472850746
+    },
+    {
+      "direction": "ru-en",
+      "workers": 1,
+      "version": "v0.4.0",
+      "metric": "warm_ms",
+      "range_over_median_percent": 10.975153272775403
+    },
+    {
+      "direction": "ru-en",
+      "workers": 2,
+      "version": "v0.4.0",
+      "metric": "first_ms",
+      "range_over_median_percent": 10.859977239467074
+    }
+  ],
+  "stability_passed": false,
+  "scope": "Observational private AAR protocol. Stability screens borrow the existing project thresholds: temperature span <=3C and per-scenario inter-process range <=10% of median. No frequency gate; this does not certify android-app-v1 or android-native-v1."
+}

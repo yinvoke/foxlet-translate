@@ -1,0 +1,344 @@
+{
+  "collection": "Universal Dependencies 2.18",
+  "release": "https://universaldependencies.org/",
+  "sources": [
+    {
+      "id": "zh_gsd",
+      "language": "zh",
+      "repository": "https://github.com/UniversalDependencies/UD_Chinese-GSD",
+      "version": "r2.18",
+      "files": {
+        "README.md": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Chinese-GSD/r2.18/README.md",
+          "sha256": "f9748d8a752833c4fba6ecac6a15e1c87520c5f7ec39db73f6d84d3834e254f4",
+          "bytes": 3075
+        },
+        "LICENSE.txt": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Chinese-GSD/r2.18/LICENSE.txt",
+          "sha256": "899b1804a12ebc090b96339614eede1b64b686721b650a71430b55b5235f7f79",
+          "bytes": 202
+        },
+        "zh_gsd-ud-test.conllu": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Chinese-GSD/r2.18/zh_gsd-ud-test.conllu",
+          "sha256": "ff01a3d01d62b623756396085e78bdaeefb7c2b7935a890dde5b18e92712d54f",
+          "bytes": 1136344
+        },
+        "zh_gsd-ud-dev.conllu": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Chinese-GSD/r2.18/zh_gsd-ud-dev.conllu",
+          "sha256": "09374c8361400861a536ae94a1d7710e1cdd72285c32b9764d94d2d956b4ae02",
+          "bytes": 1195021
+        }
+      },
+      "metadata": {
+        "License": "CC BY-SA 4.0",
+        "Includes text": "yes",
+        "Genre": "wiki"
+      }
+    },
+    {
+      "id": "zh_pud",
+      "language": "zh",
+      "repository": "https://github.com/UniversalDependencies/UD_Chinese-PUD",
+      "version": "r2.18",
+      "files": {
+        "README.md": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Chinese-PUD/r2.18/README.md",
+          "sha256": "4abc2a54f3b38f8da61c9a751f26d8e3292c99461e9e7fe28b6ad545d3fbd4e7",
+          "bytes": 5743
+        },
+        "LICENSE.txt": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Chinese-PUD/r2.18/LICENSE.txt",
+          "sha256": "b278eb53fe50b8bb7fa0d90fb8536c35fdcaa80f9d63812cb51db539555d2a89",
+          "bytes": 19556
+        },
+        "zh_pud-ud-test.conllu": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Chinese-PUD/r2.18/zh_pud-ud-test.conllu",
+          "sha256": "e12582af2e2bbc2e27155ca7dc12b6fc4a037dbc716e1f805d67e34ffb2596b3",
+          "bytes": 2199911
+        }
+      },
+      "metadata": {
+        "License": "CC BY-SA 3.0",
+        "Includes text": "yes",
+        "Genre": "news wiki"
+      }
+    },
+    {
+      "id": "en_ewt",
+      "language": "en",
+      "repository": "https://github.com/UniversalDependencies/UD_English-EWT",
+      "version": "r2.18",
+      "files": {
+        "README.md": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_English-EWT/r2.18/README.md",
+          "sha256": "c2dc7edaf5937d18cb3ff142410fde7460e32faa69b2bd0a041abc3f957da281",
+          "bytes": 24522
+        },
+        "LICENSE.txt": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_English-EWT/r2.18/LICENSE.txt",
+          "sha256": "b3d1b0f4c6ae151f7eb78738f46ebd5ee140f8a7f76501ba26af123140d35ae7",
+          "bytes": 20014
+        },
+        "en_ewt-ud-test.conllu": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_English-EWT/r2.18/en_ewt-ud-test.conllu",
+          "sha256": "fa024f43dc5da3c5ac02563bc9bd0e974f46cbb1560823976a8f342a37dc494a",
+          "bytes": 1900101
+        },
+        "en_ewt-ud-dev.conllu": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_English-EWT/r2.18/en_ewt-ud-dev.conllu",
+          "sha256": "39239e0a60db3ae68f4b7036189f11b6692741d10ff8240dd91f74f2760d90f8",
+          "bytes": 1898574
+        }
+      },
+      "metadata": {
+        "License": "CC BY-SA 4.0",
+        "Includes text": "yes",
+        "Genre": "blog social reviews email web"
+      }
+    },
+    {
+      "id": "en_gum",
+      "language": "en",
+      "repository": "https://github.com/UniversalDependencies/UD_English-GUM",
+      "version": "r2.18",
+      "files": {
+        "README.md": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_English-GUM/r2.18/README.md",
+          "sha256": "40b253668943368365fd7b246eef488f2071a18676abe4b9138a575c9b742413",
+          "bytes": 43748
+        },
+        "LICENSE.txt": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_English-GUM/r2.18/LICENSE.txt",
+          "sha256": "b6310e2df084d7cf04d592a748a1449439768afe8c68d49a4248237db646915f",
+          "bytes": 1455
+        },
+        "en_gum-ud-test.conllu": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_English-GUM/r2.18/en_gum-ud-test.conllu",
+          "sha256": "cd96a285e7339f401f4803dd0f4f61109c51692e3ef6f9186a1f977544080b69",
+          "bytes": 2950684
+        }
+      },
+      "metadata": {
+        "License": "CC BY-NC-SA 4.0",
+        "Includes text": "yes",
+        "Genre": "academic blog email fiction government legal news nonfiction social spoken web wiki"
+      }
+    },
+    {
+      "id": "ja_gsd",
+      "language": "ja",
+      "repository": "https://github.com/UniversalDependencies/UD_Japanese-GSD",
+      "version": "r2.18",
+      "files": {
+        "README.md": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Japanese-GSD/r2.18/README.md",
+          "sha256": "5256741c40fb99fc673967bcbc35c28d09666fb8cee992ee7c20d553a1c0b380",
+          "bytes": 8905
+        },
+        "LICENSE.txt": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Japanese-GSD/r2.18/LICENSE.txt",
+          "sha256": "899b1804a12ebc090b96339614eede1b64b686721b650a71430b55b5235f7f79",
+          "bytes": 202
+        },
+        "ja_gsd-ud-test.conllu": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Japanese-GSD/r2.18/ja_gsd-ud-test.conllu",
+          "sha256": "5f50ee6ed45c7ebda3787e593eaf5e9a225f25e53f6b4b32df778031862c843f",
+          "bytes": 3111982
+        },
+        "ja_gsd-ud-dev.conllu": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Japanese-GSD/r2.18/ja_gsd-ud-dev.conllu",
+          "sha256": "18d266e29336ef619787a928d89d20f2e64188be70d5b37829e3aadc5bb6b841",
+          "bytes": 2961591
+        }
+      },
+      "metadata": {
+        "License": "CC BY-SA 4.0",
+        "Includes text": "yes",
+        "Genre": "news blog"
+      }
+    },
+    {
+      "id": "ja_pud",
+      "language": "ja",
+      "repository": "https://github.com/UniversalDependencies/UD_Japanese-PUD",
+      "version": "r2.18",
+      "files": {
+        "README.md": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Japanese-PUD/r2.18/README.md",
+          "sha256": "3dd0a9634d25eb76ff67959f91be63115c8bcd122f003ebbebf9b0c276d000b9",
+          "bytes": 5824
+        },
+        "LICENSE.txt": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Japanese-PUD/r2.18/LICENSE.txt",
+          "sha256": "b278eb53fe50b8bb7fa0d90fb8536c35fdcaa80f9d63812cb51db539555d2a89",
+          "bytes": 19556
+        },
+        "ja_pud-ud-test.conllu": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Japanese-PUD/r2.18/ja_pud-ud-test.conllu",
+          "sha256": "7ac51383189bdf5513102f9f8ac7ee1b967d5449f8c2dc1a9108fa21a8f1a688",
+          "bytes": 6995202
+        }
+      },
+      "metadata": {
+        "License": "CC BY-SA 3.0",
+        "Includes text": "yes",
+        "Genre": "news wiki"
+      }
+    },
+    {
+      "id": "ko_gsd",
+      "language": "ko",
+      "repository": "https://github.com/UniversalDependencies/UD_Korean-GSD",
+      "version": "r2.18",
+      "files": {
+        "README.md": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Korean-GSD/r2.18/README.md",
+          "sha256": "6d68b7128f8851fd343b81ea049a743b0351c918022fac9bd7ed302464f98007",
+          "bytes": 4388
+        },
+        "LICENSE.txt": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Korean-GSD/r2.18/LICENSE.txt",
+          "sha256": "899b1804a12ebc090b96339614eede1b64b686721b650a71430b55b5235f7f79",
+          "bytes": 202
+        },
+        "ko_gsd-ud-test.conllu": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Korean-GSD/r2.18/ko_gsd-ud-test.conllu",
+          "sha256": "3d1df99bda4800235e14bcfd915baf706eafa1a3935a75ffd32420a51e57f5aa",
+          "bytes": 1324771
+        },
+        "ko_gsd-ud-dev.conllu": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Korean-GSD/r2.18/ko_gsd-ud-dev.conllu",
+          "sha256": "8f7c4e24bbf6db2b0df8007068eb2d56d5ad8a5539360589d0f15a8c17034566",
+          "bytes": 1358435
+        }
+      },
+      "metadata": {
+        "License": "CC BY-SA 4.0",
+        "Includes text": "yes",
+        "Genre": "news blog"
+      }
+    },
+    {
+      "id": "ko_kaist",
+      "language": "ko",
+      "repository": "https://github.com/UniversalDependencies/UD_Korean-Kaist",
+      "version": "r2.18",
+      "files": {
+        "README.md": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Korean-Kaist/r2.18/README.md",
+          "sha256": "1219e86b630204112ced11c61a7922634d4f03372dce3cfb3488e8187f6ac2fb",
+          "bytes": 1867
+        },
+        "LICENSE.txt": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Korean-Kaist/r2.18/LICENSE.txt",
+          "sha256": "899b1804a12ebc090b96339614eede1b64b686721b650a71430b55b5235f7f79",
+          "bytes": 202
+        },
+        "ko_kaist-ud-test.conllu": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Korean-Kaist/r2.18/ko_kaist-ud-test.conllu",
+          "sha256": "fd94dc89afb01d1f7f340a46d567e0f27ae6903a70d7b6f650b49f7427f83b97",
+          "bytes": 3324246
+        }
+      },
+      "metadata": {
+        "License": "CC BY-SA 4.0",
+        "Includes text": "yes",
+        "Genre": "news fiction academic"
+      }
+    },
+    {
+      "id": "ru_syntagrus",
+      "language": "ru",
+      "repository": "https://github.com/UniversalDependencies/UD_Russian-SynTagRus",
+      "version": "r2.18",
+      "files": {
+        "README.md": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Russian-SynTagRus/r2.18/README.md",
+          "sha256": "15cdbba19238d971c842b0a73944939172e33d802e20c8b4958785aa16027d28",
+          "bytes": 4935
+        },
+        "LICENSE.txt": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Russian-SynTagRus/r2.18/LICENSE.txt",
+          "sha256": "3258892bc0af40c43a686e7f7267782778ffacf334acf25301f8f0fdab6c9cbe",
+          "bytes": 188
+        },
+        "ru_syntagrus-ud-test.conllu": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Russian-SynTagRus/r2.18/ru_syntagrus-ud-test.conllu",
+          "sha256": "97f473474d1aa8c007572cd122f90030bc7dc1707579d56b0b354c19b64af258",
+          "bytes": 15300945
+        },
+        "ru_syntagrus-ud-dev.conllu": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Russian-SynTagRus/r2.18/ru_syntagrus-ud-dev.conllu",
+          "sha256": "0bde121e58b7daebe7510d52b61154decadb6a42579cbd9abe66fb549fe6cc87",
+          "bytes": 14960308
+        }
+      },
+      "metadata": {
+        "License": "CC BY-NC-SA 4.0",
+        "Includes text": "yes",
+        "Genre": "news nonfiction fiction"
+      }
+    },
+    {
+      "id": "ru_taiga",
+      "language": "ru",
+      "repository": "https://github.com/UniversalDependencies/UD_Russian-Taiga",
+      "version": "r2.18",
+      "files": {
+        "README.md": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Russian-Taiga/r2.18/README.md",
+          "sha256": "bc582c4897bde0f83bb98694be5691ec98cdb9fb93a1588f267c66c822e5a2bd",
+          "bytes": 5261
+        },
+        "LICENSE.txt": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Russian-Taiga/r2.18/LICENSE.txt",
+          "sha256": "899b1804a12ebc090b96339614eede1b64b686721b650a71430b55b5235f7f79",
+          "bytes": 202
+        },
+        "ru_taiga-ud-test.conllu": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Russian-Taiga/r2.18/ru_taiga-ud-test.conllu",
+          "sha256": "14183d7f002557e9e26b85e212dc54fe3f7929a7d72491615c50b9b3145e6278",
+          "bytes": 1349305
+        },
+        "ru_taiga-ud-dev.conllu": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Russian-Taiga/r2.18/ru_taiga-ud-dev.conllu",
+          "sha256": "91e8be6f74afd91623500d73954c5595db51a2eb3c7b0e02e38fb3b2508b1b6f",
+          "bytes": 1428581
+        }
+      },
+      "metadata": {
+        "License": "CC BY-SA 4.0",
+        "Includes text": "yes",
+        "Genre": "blog fiction news poetry social wiki"
+      }
+    },
+    {
+      "id": "ru_pud",
+      "language": "ru",
+      "repository": "https://github.com/UniversalDependencies/UD_Russian-PUD",
+      "files": {
+        "README.md": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Russian-PUD/r2.18/README.md",
+          "sha256": "b1ab8aa09579dcddfbfbefe905bc4e6f0d0e8162effc19943b4d1049b6c5a883",
+          "bytes": 5397
+        },
+        "LICENSE.txt": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Russian-PUD/r2.18/LICENSE.txt",
+          "sha256": "b278eb53fe50b8bb7fa0d90fb8536c35fdcaa80f9d63812cb51db539555d2a89",
+          "bytes": 19556
+        },
+        "ru_pud-ud-test.conllu": {
+          "url": "https://raw.githubusercontent.com/UniversalDependencies/UD_Russian-PUD/r2.18/ru_pud-ud-test.conllu",
+          "sha256": "91a755eb4296451472cc9dd54fcb3b77e33d91378a50a2fd29360b8c94bc4c33",
+          "bytes": 1898384
+        }
+      },
+      "metadata": {
+        "License": "CC BY-SA 3.0",
+        "Includes text": "yes",
+        "Genre": "news wiki"
+      },
+      "version": "r2.18"
+    }
+  ]
+}

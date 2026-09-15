@@ -4,8 +4,8 @@ import android.app.ActivityManager
 import android.content.Context
 
 /**
- * What the caller is about to translate. The tier picker treats these as three
- * different problems, not as a size hint.
+ * Workload category used to select an automatic thread ceiling.
+ * Selection occurs during client creation and does not inspect request length.
  */
 enum class Workload {
     /**
@@ -14,7 +14,7 @@ enum class Workload {
      */
     SINGLE,
 
-    /** Bulk translation of many sentences at once — the only case parallelism pays for. */
+    /** Bulk translation; eligible for multiple workers within RAM and fast-core limits. */
     BATCH,
 
     /** Bulk pivot (e.g. ja->en->zh) with both model sets resident. */
@@ -32,10 +32,10 @@ internal object ThreadPlanner {
 
     /** Recommended thread count and the device inputs used to select it. */
     data class Decision(
-        /** 1, 2, 4 or 6. Feed straight to `EngineOptions(threads = ...)`. */
+        /** Selected ceiling: 1, 2, 4 or 6 threads. */
         val threads: Int,
         val workload: Workload,
-        /** `ActivityManager.MemoryInfo.totalMem`, or whatever the caller modelled. */
+        /** Reported device RAM or the explicit input to [recommend]. */
         val totalRamBytes: Long,
         /** `ActivityManager.isLowRamDevice` — a standalone veto down to 1 thread. */
         val isLowRam: Boolean,
@@ -99,7 +99,7 @@ internal object ThreadPlanner {
 
     /**
      * Cores outside the slowest cluster, falling back to the physical core
-     * count when the native probe has no opinion (single-cluster or uniform
+     * count when the native probe cannot determine the topology (single-cluster or uniform
      * SoCs, unreadable sysfs). `availableProcessors()` overstates on a
      * big.LITTLE phone, which is why it is only ever the fallback.
      */
@@ -107,8 +107,7 @@ internal object ThreadPlanner {
         val native = try {
             NativeBridge.fastCoreCount()
         } catch (e: LinkageError) {
-            // No libfoxlet for this ABI, or it failed to load. Tiering can
-            // still answer usefully.
+            // Fall back to the runtime processor count if the native library cannot load.
             0
         }
         return if (native > 0) native else Runtime.getRuntime().availableProcessors()

@@ -1,0 +1,25 @@
+{
+  "dataset": "FLORES-200 devtest",
+  "url": "https://dl.fbaipublicfiles.com/nllb/flores200_dataset.tar.gz",
+  "license": "CC-BY-SA-4.0",
+  "archive_sha256": "b8b0b76783024b85797e5cc75064eb83fc5288b41e9654dabc7be6ae944011f6",
+  "files": {
+    "en.paragraph.txt": "ae5a4a72ca52869396b85c41599d295ada5993823320f1897734a60dcbea4d3e",
+    "ru.single.txt": "cdc706ed862d1d35d8d67cfda0b396766646885434958b18291aa760ff1bb59e",
+    "metadata_devtest.tsv": "8edac47f861fcf6b54dad2068c10ba8f741da8b8676861c6bc27fcd9f5483b36",
+    "zh.paragraph.txt": "5dfff1a51cf191b8be0284a5a386db8443a6b208a17385b5382ee6012b32588e",
+    "zh.single.txt": "b30158b1b76f7cee08530d8127a9769f4512597c7eefe97ae1ccf630d5b6e7fd",
+    "README": "a1b7eb3a097fd332fd541b563d9311c609f07f18b03ac7c0ca48e3cc9b6b937b",
+    "ja.paragraph.txt": "c9761daf68c91a6c9589b7d930249d79f2807313c3009bc2bdcd867dfc6b6807",
+    "ja.single.txt": "36b8e392ae9404a20e8448c731d16d957ac1b94588d97fb691128ae706b63606",
+    "en.single.txt": "612e9fbe87997617c0fa8fa8929654a4f49b728d96738112c2b86ef6a1d78d88",
+    "ko.paragraph.txt": "19e4cc526ebcc3cf6666c0187ab461b10776d35c8401394b114734684036a9d2",
+    "ru.paragraph.txt": "eeb257407527be767de926fe7afcaac1eee5adf78aaa6453f21b258eb6347cc9",
+    "ko.single.txt": "540972696230a56e888f1fbd04b7000135c436351f5e467f99ce67fdccd8df0f"
+  },
+  "single_count": 1012,
+  "paragraph_count": 253,
+  "paragraph_group_size": 4,
+  "paragraph_join": "empty for zh/ja, one ASCII space for en/ko/ru; consecutive groups, synthetic not gold paragraphs",
+  "no_filtering": true
+}

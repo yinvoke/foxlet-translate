@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Run android-app-v1 in fresh app processes; retain raw outputs and failures.
+"""Run versioned app benchmarks in fresh processes; retain outputs and failures.
 
 Install the supplied APK first (adb install -r). prepare downloads ML Kit
 models without measurement. quality exports one run/cell without a frequency
 gate: its timings must NOT be promoted to performance results. measure runs
-three rounds with the fixed Mi 14 frequency gate and eight app scenarios.
+three rounds with the fixed Mi 14 frequency gate. v2 defaults to six scenarios
+(ML Kit and Foxlet 1/2 threads in each direction); v1 retains four threads.
 """
 import argparse
 import hashlib
@@ -24,6 +25,15 @@ PACKAGE = "io.github.yinvoker.foxlet.bench"
 REPO = Path(__file__).resolve().parents[2]
 SCENARIOS = [(direction, engine, threads) for direction in ("enzh", "jazh")
              for engine, threads in (("mlkit", 1), ("bergamot", 1), ("bergamot", 2), ("bergamot", 4))]
+DEFAULT_SUITE = "android-app-v2"
+SUITES = {"android-app-v1": SCENARIOS,
+          "android-app-v2": [s for s in SCENARIOS if s[2] != 4]}
+
+
+def suite_scenarios(suite_id):
+    if suite_id not in SUITES:
+        raise ValueError(f"unsupported app suite: {suite_id}")
+    return SUITES[suite_id]
 
 
 def sha256(data):
@@ -76,6 +86,7 @@ def main():
     parser.add_argument("--adb", required=True)
     parser.add_argument("--serial", required=True)
     parser.add_argument("--apk", type=Path, required=True)
+    parser.add_argument("--suite", choices=tuple(SUITES), default=DEFAULT_SUITE)
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=False)
     adb_cmd = [args.adb, "-s", args.serial]
@@ -117,9 +128,9 @@ def main():
     installed_hash = shell("sha256sum " + shlex.quote(package_paths[0][8:])).split()[0]
     if installed_hash != sha256(args.apk.read_bytes()):
         parser.error("installed APK differs from --apk; install the intended build first")
-    corpus = {d: sha256((REPO / f"sample/src/main/assets/bench/{lang}.txt").read_bytes())
+    corpus = {d: sha256((REPO / f"benchmark/app/src/main/assets/bench/{lang}.txt").read_bytes())
               for d, lang in (("enzh", "eng"), ("jazh", "jpn"))}
-    report = {"suite_id": "android-app-v1", "mode": args.mode, "measured_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+    report = {"suite_id": args.suite, "mode": args.mode, "measured_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
               "status": "running", "apk_sha256": installed_hash, "corpus_sha256": corpus,
               "device": {"model": model, "fingerprint": shell("getprop ro.build.fingerprint"),
                          "id_sha256": sha256(args.serial.encode())},
@@ -140,7 +151,7 @@ def main():
     source_hashes = {}
     for name in sorted(set(paths) - {""}):
         file = REPO / name
-        if file.is_file() and (name.startswith(("engine/", "jni/", "foxlet/src/", "sample/src/", "tools/app-bench/"))
+        if file.is_file() and (name.startswith(("engine/", "native/jni/", "foxlet/src/", "benchmark/app/src/", "tools/app-bench/"))
                                or name.endswith(".gradle.kts") or name in ("CMakeLists.txt", "gradle.properties", "tools/bench_device.py")):
             source_hashes[name] = sha256(file.read_bytes())
     (args.output / "source-files.json").write_text(json.dumps(source_hashes, indent=2) + "\n")
@@ -157,7 +168,7 @@ def main():
             "find files/models no_backup/com.google.mlkit.translate.models -type f -exec sha256sum {} \\;"))
         report["model_files_sha256_before"] = model_files.splitlines()
         save()
-        scenarios = [(d, "mlkit", 1) for d in ("enzh", "jazh")] if args.mode == "prepare" else SCENARIOS
+        scenarios = [(d, "mlkit", 1) for d in ("enzh", "jazh")] if args.mode == "prepare" else suite_scenarios(args.suite)
         for round_index in range(report["protocol"]["rounds"]):
             order = scenarios if round_index % 2 == 0 else list(reversed(scenarios))
             for direction, engine, threads in order:

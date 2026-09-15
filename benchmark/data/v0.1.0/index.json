@@ -1,0 +1,33 @@
+{
+  "schema_version": 2,
+  "version": "0.1.0",
+  "status": "历史起点；本版没有独立原始记录，测量与 v0.2.0 同场次采集",
+  "compared_with": null,
+  "devices": [
+    "小米 10 / 骁龙 865 / Android 13",
+    "小米 14 / 骁龙 8 Gen 3 / Android 16"
+  ],
+  "measurements": {
+    "mi10-native": {
+      "protocol": "android-native-v1",
+      "note": "与 v0.2.0 配对采集，原始样本存放在 v0.2.0 归档中 version = v0.1.0 的条目",
+      "raw": "../v0.2.0/raw/results.json"
+    },
+    "mi14-initial-comparison": {
+      "protocol": "android-native-v1（跳过频率起跑门槛）",
+      "note": "v0.1.0 → v0.3.0 默认参数对照，48 进程；仅作参考",
+      "raw": "../v0.3.0/raw/mi14/initial/results.json"
+    },
+    "mlkit-150": {
+      "protocol": "app PSS / 150 条语料，历史口径",
+      "note": "与 Google ML Kit 的历史质量与 app 性能对比；只保留图表，无原始 JSON",
+      "charts": [
+        "raw/mlkit-mi10.png",
+        "raw/mlkit-mi14.png"
+      ]
+    }
+  },
+  "collectors": {},
+  "corpora": {},
+  "external": {}
+}

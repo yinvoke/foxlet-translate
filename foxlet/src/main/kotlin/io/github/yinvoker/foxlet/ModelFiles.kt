@@ -9,18 +9,18 @@ data class ModelFiles(
     val trgVocab: File,
     val shortlist: File,
     /**
-     * Language the source text is in, used to pick the sentence-splitter prefix
-     * table ([PrefixTables]). [fromDirectory] reads it off the model file
-     * name; set it by hand to override that, or to null to split with the bare
-     * regex. A language with no table behaves like null.
+     * Source language for native sentence-boundary tailoring and compiled abbreviation rules.
+     * [fromDirectory] infers it from the model file name; set it manually to override.
+     * Null uses generic translation rules without locale tailoring. Languages without
+     * abbreviation tables may still have locale-specific punctuation rules.
      *
-     * It says nothing about what the model can translate -- the engine never
-     * sees this value, only the bytes it selects.
+     * Passed to the native scanner as `ssplit-language`. This setting controls
+     * segmentation only; [LocalModel.pair] declares the translation direction.
      */
     val sourceLanguage: String? = null,
     /** Trusted, out-of-band SHA-256 by file name. Empty uses the bundled Mozilla catalog. */
     val expectedSha256: Map<String, String> = emptyMap(),
-    /** Optional app-provided UTF-8 prefix table (also works with the no-prefix AAR). */
+    /** Optional app-provided UTF-8 prefix table; replaces the built-in table for this model. */
     val nonbreakingPrefixFile: File? = null,
 ) {
     companion object {
@@ -56,19 +56,10 @@ data class ModelFiles(
         }
 
         /**
-         * Source language of a Mozilla model file name, or null when the name
-         * does not follow the convention.
-         *
-         * Mozilla names every direction `model.<src><trg>.<...>.bin` with two
-         * ISO 639-1 letters a side: `model.enzh.intgemm.alphas.bin` is en->zh,
-         * `model.jaen.intgemm.alphas.bin` is ja->en. Script variants collapse in
-         * the file name (zh-Hans and zh-Hant are both `zh`), which is what the
-         * prefix tables want anyway.
-         *
-         * Four lowercase letters after `model.` is all this has to go on, so a
-         * name that merely looks like the convention yields a two-letter tag that
-         * is not a real language. Harmless: an unknown tag has no table and the
-         * splitter falls back to the regex.
+         * Extracts the two-letter source tag from `model.<src><trg>.<suffix>.bin`.
+         * Script variants share a filename tag: both zh-Hans and zh-Hant use `zh`.
+         * Matching is syntactic; unrecognized tags use the scanner's generic
+         * translation rules without a language-specific abbreviation table.
          */
         fun sourceLanguageOf(modelFileName: String): String? =
             MODEL_NAME.matchEntire(modelFileName)?.groupValues?.get(1)
@@ -101,6 +92,7 @@ data class ModelFiles(
         gemm-precision: int8shiftAlphaAll
         alignment: soft
         check-bytearray: true
+        ssplit-language: ${yamlString(sourceLanguage.orEmpty())}
     """.trimIndent()
     internal fun files(): List<File> = listOf(model, srcVocab, trgVocab, shortlist).distinct()
 

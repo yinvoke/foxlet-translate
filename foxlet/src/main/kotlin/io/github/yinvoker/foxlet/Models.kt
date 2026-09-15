@@ -85,7 +85,11 @@ class InstalledModel internal constructor(
     override fun toString() = pair.toString() + " " + version + " [" + verificationStatus + "]"
 }
 
-/** Caller-owned files; never deleted by model management. Files must remain immutable while loaded. */
+/**
+ * Caller-owned files, excluded from model deletion and cleanup.
+ * [pair] supplies the native source language, overriding filename inference.
+ * Model files and custom rules must remain immutable while loading or resident.
+ */
 class ExternalModel(override val pair: LanguagePair, files: ModelFiles) : LocalModel {
     val files = files.copy(
         sourceLanguage = pair.source,

@@ -1,0 +1,12 @@
+{
+  "baseline": "v0.3.0 historical benchmark APK, exact SHA-256 match",
+  "candidate": "v0.5.0 uncommitted source snapshot",
+  "source_score_path_base": "standard archive root",
+  "app_protocol": "Incomplete android-app-v2 collection stopped at user request; six scenarios each have existing measured outputs; remaining rounds were not run, paired by scenario with AB/BA/AB version order; each version retains forward/reverse/forward scenario order. Debug APK with Release-optimized native code, as in v0.3.0.",
+  "native_protocol": "android-native-v1, unchanged suite/harness/corpus/model content versus v0.3.0 archive",
+  "app_protocol_transition": "The user requested stopping four-thread retests during round 1. Existing complete ML Kit/1t/2t processes were retained byte-for-byte. During round 2 the user requested using existing data instead of further measurements, and collection stopped. No missing rounds were filled. The interrupted v1 reports and two completed 4t processes are archived separately. Other workload and gate parameters remain unchanged.",
+  "reference_files": "Only the first 200 rows are archived; reference_file_sha256 in COMET describes the original full devtest file, reference_slice_sha256 describes the archived 200 rows.",
+  "interrupted_native": "Initial attempt stopped on a call UI taking focus after 12 completed processes; no samples from it were included in the complete 48-process run.",
+  "app_start_failure": "The first attempt timed out before translation. A later run started after cooling; all interrupted attempts remain separate.",
+  "final_app_status": "Stopped by user request during round 2: 8 complete processes per version, no remaining rounds collected."
+}

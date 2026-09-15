@@ -16,9 +16,20 @@ class ModelManager internal constructor(
     private val lifecycle: ClientLifecycle,
     private val transport: ModelTransport,
 ) {
+    /**
+     * Returns the SDK-pinned descriptors without network access.
+     */
     suspend fun listBundled(): List<ModelDescriptor> = operation { Catalog.models.map(::bundledDescriptor) }
+    /**
+     * Returns the pinned descriptor for [pair], or null when the pair is absent.
+     */
     suspend fun findBundled(pair: LanguagePair): ModelDescriptor? = operation { bundled(pair) }
 
+    /**
+     * Lists local installations, optionally filtered by [pair].
+     * [VerificationMode.Skip] reads metadata; [VerificationMode.Check] hashes files.
+     * Unreadable storage raises an error rather than returning an empty inventory.
+     */
     suspend fun listInstalled(pair: LanguagePair? = null, verification: VerificationMode = VerificationMode.Skip): List<InstalledModel> =
         operation {
             records(pair).map { record ->
@@ -29,8 +40,17 @@ class ModelManager internal constructor(
 
     /** Validates candidates newest first. An unverifiable or damaged version never hides a usable older one. */
     suspend fun findUsable(pair: LanguagePair): InstalledModel? = operation { usable(pair) }
+    /**
+     * Checks a managed installation against its descriptor without downloading or repairing files.
+     */
     suspend fun verify(model: InstalledModel): VerificationReport = operation { requireOwned(model); checked(model) }
 
+    /**
+     * Returns the newest verified local installation for [pair]. If none is usable,
+     * [PreparePolicy.LocalOrBundled] downloads the pinned descriptor;
+     * [PreparePolicy.LocalOnly] throws [ModelNotInstalledException].
+     * This operation does not query the remote index. Progress callbacks run on IO.
+     */
     suspend fun prepare(
         pair: LanguagePair,
         policy: PreparePolicy = PreparePolicy.LocalOrBundled,
@@ -48,6 +68,12 @@ class ModelManager internal constructor(
         downloadExact(descriptor, options ?: config.downloadOptions, progress)
     }
 
+    /**
+     * Downloads the exact descriptor, verifying file sizes and SHA-256 before
+     * publishing a separate installation. Verified existing content is reused.
+     * Non-null [options] replaces the configured download options as a whole.
+     * Progress callbacks run on IO; [DownloadStage.Ready] confirms verification.
+     */
     suspend fun download(
         model: ModelDescriptor,
         options: DownloadOptions? = null,
@@ -58,6 +84,11 @@ class ModelManager internal constructor(
         downloadExact(model, options ?: config.downloadOptions, progress)
     }
 
+    /**
+     * Queries the configured remote index and compares local metadata without
+     * hashing installed files. Null [pairs] includes all local and available pairs.
+     * The report does not install updates, delete withdrawn models or change files.
+     */
     suspend fun checkUpdates(pairs: Set<LanguagePair>? = null, options: UpdateOptions? = null): UpdateReport {
         val selectedPairs = pairs?.toSet()
         return operation {
@@ -107,6 +138,11 @@ class ModelManager internal constructor(
         }
     }
 
+    /**
+     * Deletes an installation owned by this store after validating its identity.
+     * Loading or resident files cause [ModelInUseException]; filesystem failures
+     * are reported in [DeleteReport]. Holding a snapshot alone does not reserve files.
+     */
     suspend fun delete(model: InstalledModel): DeleteReport = operation {
         Catalog.writeLock.withLock {
             requireOwned(model)
@@ -125,6 +161,12 @@ class ModelManager internal constructor(
         }
     }
 
+    /**
+     * Removes stale download directories, deletion remnants and superseded
+     * installations only when a newer usable version is verified. [keep] and
+     * [CleanupOptions.keepDirectories] retain explicit paths; active files are skipped.
+     * Returns removals, skipped paths, failures and actual freed bytes.
+     */
     suspend fun cleanup(options: CleanupOptions = CleanupOptions(), keep: Set<InstallationId> = emptySet()): CleanupReport {
         val retainedIds = keep.toSet()
         val retainedDirectories = options.keepDirectories.toSet()

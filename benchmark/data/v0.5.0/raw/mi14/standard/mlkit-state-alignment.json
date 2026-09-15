@@ -1,0 +1,7 @@
+{
+  "path": "no_backup/com.google.mlkit.translate.models/en_zh/fallback_to_pb_en_zh.pb.bin",
+  "bytes": 14,
+  "sha256": "3c6d1977d9b3cf8cfe68b1f7ae3952057697f7770af3e053f716f96291afaf3d",
+  "method": "Copied the historical model-directory metadata to candidate after prepare, so both app model directories have identical starting bytes. End-of-run hashes will verify stability.",
+  "candidate_file_existed_after_prepare": false
+}

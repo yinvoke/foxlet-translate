@@ -28,25 +28,30 @@ jobs:
           python3 -B -m unittest discover -s tools/distribution -p 'test_*.py' -v
           clang++ -std=c++17 -O1 -g -fsanitize=address,undefined -I . tools/safety-tests/native_safety_test.cpp -o /tmp/foxlet-native-safety
           /tmp/foxlet-native-safety
+      - name: Test sentence rules with sanitizers
+        run: |
+          python3 tools/sentence-tests/generate_unicode.py --check
+          cmake -S tools/sentence-tests -B build/sentence-tests -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DSENTENCE_SANITIZERS=ON
+          cmake --build build/sentence-tests --parallel 2
+          UBSAN_OPTIONS=halt_on_error=1 ctest --test-dir build/sentence-tests --output-on-failure
       - name: Build and test delivered SDK and R8 consumer
-        run: ./gradlew :foxlet:test :foxlet:packageWithoutPrefixes :demo:assembleRelease :demo:assembleReleaseAndroidTest
+        run: ./gradlew :foxlet:test :foxlet:assembleRelease :sdk-example:assembleRelease :sdk-example:assembleReleaseAndroidTest
       - name: Verify package contents and hardening
         run: |
           python3 tools/distribution/check_public_api.py
           python3 tools/distribution/check_hardening.py
-          python3 tools/distribution/verify_artifacts.py --aar foxlet/build/outputs/aar/foxlet-release.aar --no-prefixes foxlet/build/outputs/aar/foxlet-no-prefixes-release.aar --apk demo/build/outputs/apk/release/demo-release.apk
+          python3 tools/distribution/verify_artifacts.py --aar foxlet/build/outputs/aar/foxlet-release.aar --apk sdk-example/build/outputs/apk/release/sdk-example-release.apk
       - name: Prepare versioned release files
         run: |
           mkdir -p release-files device-files
           cp foxlet/build/outputs/aar/foxlet-release.aar "release-files/foxlet-${GITHUB_REF_NAME}.aar"
-          cp foxlet/build/outputs/aar/foxlet-no-prefixes-release.aar "release-files/foxlet-${GITHUB_REF_NAME}-no-prefixes.aar"
-          cp demo/build/outputs/apk/release/demo-release.apk "release-files/foxlet-demo-${GITHUB_REF_NAME}.apk"
+          cp sdk-example/build/outputs/apk/release/sdk-example-release.apk "release-files/foxlet-sdk-example-${GITHUB_REF_NAME}.apk"
           cp foxlet/build/generated/distributionResources/io/github/yinvoker/foxlet/licenses/*.txt release-files/
-          cp demo/build/outputs/apk/release/demo-release.apk device-files/
-          cp demo/build/outputs/apk/androidTest/release/demo-release-androidTest.apk device-files/
+          cp sdk-example/build/outputs/apk/release/sdk-example-release.apk device-files/
+          cp sdk-example/build/outputs/apk/androidTest/release/sdk-example-release-androidTest.apk device-files/
           cp tools/distribution/run_device_tests.py device-files/
           cd release-files
-          sha256sum *.aar *.apk *.txt > SHA256SUMS
+          sha256sum -- *.aar *.apk *.txt > SHA256SUMS
       - uses: actions/upload-artifact@v4
         with:
           name: release-files
@@ -70,7 +75,7 @@ jobs:
       - name: Test exact release APK on Android
         env:
           DEVICE_SERIAL: ${{ vars.FOXLET_ANDROID_SERIAL }}
-        run: python3 device-files/run_device_tests.py --serial "$DEVICE_SERIAL" --apk device-files/demo-release.apk --test-apk device-files/demo-release-androidTest.apk --output device-result.json
+        run: python3 device-files/run_device_tests.py --serial "$DEVICE_SERIAL" --apk device-files/sdk-example-release.apk --test-apk device-files/sdk-example-release-androidTest.apk --output device-result.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:

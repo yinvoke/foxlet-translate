@@ -28,9 +28,18 @@ class Foxlet private constructor(
     suspend fun shutdown() = lifecycle.shutdown()
 
     companion object {
+        /**
+         * Builds the same validated configuration as the [FoxletConfig] overload.
+         */
         suspend fun create(context: Context, configure: FoxletConfigBuilder.() -> Unit): Foxlet =
             create(context, FoxletConfigBuilder().apply(configure).build())
 
+        /**
+         * Creates a client using application-private storage unless a model root is set.
+         * Auto threading probes the device; fixed threading uses the explicit count.
+         * No model scan or download occurs. Another client may be created only after
+         * the preceding client completes [shutdown].
+         */
         suspend fun create(context: Context, config: FoxletConfig = FoxletConfig()): Foxlet {
             var created: Foxlet? = null
             return try { withContext(Dispatchers.IO) {
@@ -77,7 +86,7 @@ class Foxlet private constructor(
     }
 }
 
-/** Translation operations accept the same InstalledModel that prepare/download return. */
+/** Translates managed [InstalledModel] snapshots or application-owned [ExternalModel] files. */
 class Translator internal constructor(
     val threadingInfo: ThreadingInfo,
     private val lifecycle: ClientLifecycle,
@@ -97,6 +106,11 @@ class Translator internal constructor(
     suspend fun translatePivot(text: String, first: LocalModel, second: LocalModel, format: TextFormat = TextFormat.Plain): String =
         translatePivot(listOf(text), first, second, format).single()
 
+    /**
+     * Translates in order through two explicitly connected model directions.
+     * Both models remain resident during inference. Empty input still validates
+     * the direction connection, but does not load models.
+     */
     suspend fun translatePivot(texts: List<String>, first: LocalModel, second: LocalModel, format: TextFormat = TextFormat.Plain): List<String> {
         val input = texts.toList()
         return lifecycle.run {
@@ -107,6 +121,9 @@ class Translator internal constructor(
         }
     }
 
+    /**
+     * Returns resident handle and unconfirmed-release counts after queued native work.
+     */
     suspend fun getState(): TranslatorState = lifecycle.run { control { backend.state() } }
     /** Stop submitting uses of a model before deleting; this is not a barrier against later translations. */
     suspend fun unloadModels(): UnloadReport = lifecycle.run { control { backend.unloadModels() } }

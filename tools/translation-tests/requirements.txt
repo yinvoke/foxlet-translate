@@ -1,0 +1,6 @@
+sacrebleu==2.5.1
+unbabel-comet==2.2.7
+torch==2.8.0
+transformers==4.57.6
+pytorch-lightning==2.6.6
+setuptools==80.10.2

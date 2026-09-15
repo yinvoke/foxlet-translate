@@ -19,7 +19,7 @@ ROOT = SCRIPT.resolve().parents[2]
 
 
 class RunnerTest(unittest.TestCase):
-    def run_fake_device(self, directory, mode='success', scenarios=None, skip_frequency_gate=False):
+    def run_fake_device(self, directory, mode='success', scenarios=None, skip_frequency_gate=False, paired=True):
         root = Path(directory)
         for version in ('old', 'new'):
             (root / version).mkdir()
@@ -57,7 +57,7 @@ class RunnerTest(unittest.TestCase):
                 return 'a' * 64 + '  file'
             if shell.startswith('cat ') and shell.endswith('.txt'):
                 lang = 'jpn' if shell.endswith('/jpn.txt') else 'eng'
-                return (ROOT / f'sample/src/main/assets/bench/{lang}.txt').read_text()
+                return (ROOT / f'benchmark/app/src/main/assets/bench/{lang}.txt').read_text()
             if shell.startswith('cat ') and shell.endswith('.yml'):
                 ja = 'jaen' in shell
                 lang = 'ja' if ja else 'en'
@@ -86,7 +86,9 @@ class RunnerTest(unittest.TestCase):
             return subprocess.CompletedProcess(command, 134 if mode == 'crash' else 0, stdout, '')
 
         argv = [str(SCRIPT), 'mi14' if skip_frequency_gate else 'mi10', str(output), str(root), '--adb', 'fake-adb',
-                '--serial', 'fake-device', '--baseline', 'old', '--candidate', 'new']
+                '--serial', 'fake-device', '--candidate', 'new']
+        if paired:
+            argv += ['--baseline', 'old']
         if scenarios:
             argv += ['--scenarios', *scenarios]
         if skip_frequency_gate:
@@ -104,9 +106,20 @@ class RunnerTest(unittest.TestCase):
     def test_complete_report_passes_checker(self):
         with tempfile.TemporaryDirectory() as temp:
             raw = self.run_fake_device(temp)
-        self.assertEqual(len(raw['runs']), 48)
+        self.assertEqual(raw['suite_id'], 'android-native-v2')
+        self.assertEqual(len(raw['runs']), 42)
+        self.assertTrue(all(s['workers'] != 4 for s in raw['scenarios'].values()))
         self.assertEqual(raw['report_kind'], 'full')
         self.assertEqual(check.compare(raw, raw, 'old', 'new')[1], [])
+
+    def test_default_collects_only_current_version(self):
+        with tempfile.TemporaryDirectory() as temp:
+            raw = self.run_fake_device(temp, paired=False)
+        self.assertEqual(raw['collection_mode'], 'current-version-only')
+        self.assertEqual(set(raw['versions']), {'new'})
+        self.assertEqual(len(raw['runs']), 21)
+        self.assertEqual({r['version'] for r in raw['runs']}, {'new'})
+        self.assertEqual(check.compare(raw, raw, 'new', 'new')[1], [])
 
     def test_subset_is_explicitly_exploratory(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -119,7 +132,9 @@ class RunnerTest(unittest.TestCase):
     def test_frequency_bypass_keeps_all_rows_and_conditions_but_is_exploratory(self):
         with tempfile.TemporaryDirectory() as temp:
             raw = self.run_fake_device(temp, skip_frequency_gate=True)
-        self.assertEqual(len(raw['runs']), 48)
+        self.assertEqual(raw['suite_id'], 'android-native-v2')
+        self.assertEqual(len(raw['runs']), 42)
+        self.assertTrue(all(s['workers'] != 4 for s in raw['scenarios'].values()))
         self.assertEqual(raw['report_kind'], 'exploratory')
         self.assertIsNone(raw['protocol']['gate_khz'])
         self.assertEqual(raw['protocol']['reference_gate_khz'], 2630400)

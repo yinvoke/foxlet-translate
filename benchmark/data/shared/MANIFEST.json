@@ -1,0 +1,334 @@
+{
+  "purpose": "跨版本共用的采集程序与语料，只保存一份；各版本 index.json 的 collectors/corpora 记录别名。",
+  "collectors": {
+    "bench_device.py": {
+      "sha256": "d5437e32b1ef59a1b93a36aa49884c4e47014386571b7c2d70dad95feed369df",
+      "bytes": 1145,
+      "archived_from": [
+        "v0.3.0/mi14/performance/collector/bench_device.py",
+        "v0.3.0/mi14/initial-comparison/collector/tools/bench_device.py"
+      ],
+      "used_by": [
+        "v0.3.0: app/bench_device.py",
+        "v0.3.0: initial/tools/bench_device.py",
+        "v0.3.0: native/bench_device.py"
+      ]
+    },
+    "bench_device-v0.5.0.py": {
+      "sha256": "bb2660c5bda90679f237d6753eb302ed56a6783c967860734c778895f43383a7",
+      "bytes": 1143,
+      "archived_from": [
+        "v0.5.0/mi14/standard/collector/bench_device.py"
+      ],
+      "used_by": [
+        "v0.5.0: collector/bench_device.py"
+      ]
+    },
+    "main.cpp": {
+      "sha256": "298e8116a32fb1ed46846ba533c8dacf6051ebd3d8e68e0a4bc15a77673b4a9d",
+      "bytes": 4346,
+      "archived_from": [
+        "v0.3.0/mi14/initial-comparison/collector/tools/version-bench/main.cpp",
+        "v0.5.0/mi14/standard/collector/main.cpp"
+      ],
+      "used_by": [
+        "v0.3.0: initial/tools/version-bench/main.cpp",
+        "v0.5.0: collector/main.cpp"
+      ]
+    },
+    "suite.py": {
+      "sha256": "1c98c96f0dd0e81b58776e613d125b8c2eb18a96ef301c9c98a337b6428a9b5f",
+      "bytes": 934,
+      "archived_from": [
+        "v0.3.0/mi14/initial-comparison/collector/tools/version-bench/suite.py",
+        "v0.5.0/mi14/standard/collector/suite.py"
+      ],
+      "used_by": [
+        "v0.3.0: initial/tools/version-bench/suite.py",
+        "v0.5.0: collector/suite.py"
+      ]
+    },
+    "native-check.py": {
+      "sha256": "98584666dcd16a638d45cde824873e0cf6e2a3083ed0f6d08d32f0c9c1e97685",
+      "bytes": 11868,
+      "archived_from": [
+        "v0.3.0/mi14/initial-comparison/collector/tools/version-bench/check.py",
+        "v0.5.0/mi14/standard/collector/native-check.py"
+      ],
+      "used_by": [
+        "v0.3.0: initial/tools/version-bench/check.py",
+        "v0.5.0: collector/native-check.py"
+      ]
+    },
+    "native-run-pair-initial.py": {
+      "sha256": "6fdaf76d7ffe98c62a4199b6dea3105b93ddbd12c716b2fcc38d12a27cc07ebf",
+      "bytes": 12618,
+      "archived_from": [
+        "v0.3.0/mi14/initial-comparison/collector/tools/version-bench/run-pair.py"
+      ],
+      "used_by": [
+        "v0.3.0: initial/tools/version-bench/run-pair.py"
+      ]
+    },
+    "native-run-pair-v0.3.0.py": {
+      "sha256": "6dd896abf872d5928aec0c6ebe1e44dc802d7c9ce47ff041f9e24186e664e705",
+      "bytes": 12182,
+      "archived_from": [
+        "v0.3.0/mi14/performance/collector/run-pair.py"
+      ],
+      "used_by": [
+        "v0.3.0: native/run-pair.py"
+      ]
+    },
+    "native-run-pair-v0.5.0.py": {
+      "sha256": "453fc0e24a9780f78d765449b844e740ceb90185005a9818ca4a375886b6cc83",
+      "bytes": 12643,
+      "archived_from": [
+        "v0.5.0/mi14/standard/collector/native-run-pair.py"
+      ],
+      "used_by": [
+        "v0.5.0: collector/native-run-pair.py"
+      ]
+    },
+    "suites/android-native-v1.json": {
+      "sha256": "a95a578d08d18d856ff7d57f0b63061c40562bf56f7be93ae720d36ab06b3294",
+      "bytes": 1668,
+      "archived_from": [
+        "v0.3.0/mi14/initial-comparison/collector/tools/version-bench/suites/android-native-v1.json",
+        "v0.5.0/mi14/standard/collector/suites/android-native-v1.json"
+      ],
+      "used_by": [
+        "v0.3.0: initial/tools/version-bench/suites/android-native-v1.json",
+        "v0.5.0: collector/suites/android-native-v1.json"
+      ]
+    },
+    "reference.cpp": {
+      "sha256": "cac4cadfbc6b64ff8668600e4631d3ac15ca878b1e209877138c4fc63c95e50d",
+      "bytes": 2984,
+      "archived_from": [
+        "v0.3.0/mi14/quality/quality-reference/harness/reference.cpp",
+        "v0.5.0/mi14/standard/collector/reference.cpp"
+      ],
+      "used_by": [
+        "v0.3.0: quality/reference.cpp",
+        "v0.5.0: collector/reference.cpp"
+      ]
+    },
+    "reference.cmake": {
+      "sha256": "8f0b38cef86284ab16fba0f1a71b53de44258019c6e98e3399a17d02b528f8f3",
+      "bytes": 588,
+      "archived_from": [
+        "v0.3.0/mi14/quality/quality-reference/harness/reference.cmake",
+        "v0.5.0/mi14/standard/collector/reference.cmake"
+      ],
+      "used_by": [
+        "v0.3.0: quality/reference.cmake",
+        "v0.5.0: collector/reference.cmake"
+      ]
+    },
+    "export_native_quality.py": {
+      "sha256": "de831ebad2c1035d2bab1d4959b3a6d64a5bf6eb2f8745afb31920feb6b9138b",
+      "bytes": 2500,
+      "archived_from": [
+        "v0.5.0/mi14/standard/collector/export_native_quality.py"
+      ],
+      "used_by": [
+        "v0.5.0: collector/export_native_quality.py"
+      ]
+    },
+    "app-check-v1.py": {
+      "sha256": "302555bfdb3688eb1fd366de5501c4948a7d1e58c11e3bd711abbce0e6575100",
+      "bytes": 6039,
+      "archived_from": [
+        "v0.3.0/mi14/performance/collector/app-check.py",
+        "v0.5.0/mi14/standard/collector/app-check-v1.py"
+      ],
+      "used_by": [
+        "v0.3.0: app/check.py",
+        "v0.5.0: collector/app-check-v1.py"
+      ]
+    },
+    "app-check-v2.py": {
+      "sha256": "64d612ec6b5e3a0d157f043be27248ada7609c0b25f42241f2ff65ec8198611b",
+      "bytes": 6205,
+      "archived_from": [
+        "v0.5.0/mi14/standard/collector/app-check.py"
+      ],
+      "used_by": [
+        "v0.5.0: collector/app-check.py"
+      ]
+    },
+    "app-run-v0.3.0.py": {
+      "sha256": "a5ebdd79828977867d43f89dc2f6d1676d845f793aebe0b20bfa241db8ccbbba",
+      "bytes": 12450,
+      "archived_from": [
+        "v0.3.0/mi14/performance/collector/app-run.py"
+      ],
+      "used_by": [
+        "v0.3.0: app/run.py"
+      ]
+    },
+    "app-run-v1.py": {
+      "sha256": "1d79750849bd0bf1f6bac90a4a23199a1de2098bc2a8b03f278193ff3e4973c3",
+      "bytes": 12460,
+      "archived_from": [
+        "v0.5.0/mi14/standard/collector/app-run-v1.py"
+      ],
+      "used_by": [
+        "v0.5.0: collector/app-run-v1.py"
+      ]
+    },
+    "app-run-v2.py": {
+      "sha256": "fae9d236fc78624cd15b0140fd1dd5441f2112971e7047d5a9d1be853faf9da3",
+      "bytes": 12928,
+      "archived_from": [
+        "v0.5.0/mi14/standard/collector/app-run.py"
+      ],
+      "used_by": [
+        "v0.5.0: collector/app-run.py"
+      ]
+    },
+    "app_pair.py": {
+      "sha256": "0c4081634ede151ca141b7494d69d966b9508971a1e04082aeae72cf53d1d714",
+      "bytes": 7699,
+      "archived_from": [
+        "v0.5.0/mi14/standard/collector/app_pair.py"
+      ],
+      "used_by": [
+        "v0.5.0: collector/app_pair.py"
+      ]
+    },
+    "app_pair_v2.py": {
+      "sha256": "f5839cff256d8b1da95a0eaee9b89c1d4181e127f7b4e8ead42349c27aab634f",
+      "bytes": 6523,
+      "archived_from": [
+        "v0.5.0/mi14/standard/collector/app_pair_v2.py"
+      ],
+      "used_by": [
+        "v0.5.0: collector/app_pair_v2.py"
+      ]
+    },
+    "app_pair-initial.py": {
+      "sha256": "cbf922670a712202bf8775727d48623c1d1fe353b471ed571be296e3dbf275e3",
+      "bytes": 7691,
+      "archived_from": [
+        "v0.5.0/mi14/standard/collector/app_pair-initial.py"
+      ],
+      "used_by": [
+        "v0.5.0: collector/app_pair-initial.py"
+      ]
+    },
+    "IsolatedBenchRunner.kt": {
+      "sha256": "b77a0bc84081cc148d84140d6366792eb52a606fa77aea8106b2da2ea1c74857",
+      "bytes": 7784,
+      "archived_from": [
+        "v0.5.0/mi14/standard/collector/IsolatedBenchRunner.kt"
+      ],
+      "used_by": [
+        "v0.5.0: collector/IsolatedBenchRunner.kt"
+      ]
+    },
+    "IsolatedBenchRunner-v0.3.0.kt": {
+      "sha256": "c315990b118593d10c8c2688a59d5633ef8ff2439bf7f45408ebff3d37b6644a",
+      "bytes": 7745,
+      "archived_from": [
+        "v0.5.0/mi14/standard/collector/IsolatedBenchRunner-v0.3.0.kt"
+      ],
+      "used_by": [
+        "v0.5.0: collector/IsolatedBenchRunner-v0.3.0.kt"
+      ]
+    },
+    "MetricsSampler.kt": {
+      "sha256": "874ab9eaaef73207cf37235fd31006eac7f5ea70cffa71b28a5360c5ad3a08ff",
+      "bytes": 2909,
+      "archived_from": [
+        "v0.5.0/mi14/standard/collector/MetricsSampler.kt"
+      ],
+      "used_by": [
+        "v0.5.0: collector/MetricsSampler.kt"
+      ]
+    },
+    "MetricsSampler-v0.3.0.kt": {
+      "sha256": "9ca129f3b55fcc3af2b82a7b36efec97eb6512049c12667fc7edbc93cd128d30",
+      "bytes": 2911,
+      "archived_from": [
+        "v0.5.0/mi14/standard/collector/MetricsSampler-v0.3.0.kt"
+      ],
+      "used_by": [
+        "v0.5.0: collector/MetricsSampler-v0.3.0.kt"
+      ]
+    },
+    "ReleaseBenchmarkTest.kt": {
+      "sha256": "02dcac05150e0797834edce8beba0fbddfc290dba60cec518482dc53819ead7c",
+      "bytes": 6125,
+      "archived_from": [
+        "v0.5.0/mi14/performance/collector/ReleaseBenchmarkTest.kt"
+      ],
+      "used_by": [
+        "v0.5.0: aar-100/ReleaseBenchmarkTest.kt"
+      ]
+    },
+    "score.py": {
+      "sha256": "aaa7d78b94fc50f29fe74396a2fb24b22c3a00ef91b797f0b722c4b0f6a863b7",
+      "bytes": 7003,
+      "archived_from": [
+        "v0.5.0/mi14/standard/collector/score.py"
+      ],
+      "used_by": [
+        "v0.5.0: collector/score.py"
+      ]
+    },
+    "generate.py": {
+      "sha256": "5d9df155379a0cf28de66d372f56c81a51ebaeec16bc567e2f9f7cace726c3bf",
+      "bytes": 15672,
+      "archived_from": [
+        "v0.5.0/mi14/standard/collector/generate.py"
+      ],
+      "used_by": [
+        "v0.5.0: collector/generate.py"
+      ]
+    }
+  },
+  "corpora": {
+    "eng_Latn.devtest": {
+      "sha256": "407119a09c81211b1144f9f10b72e7a4415141fa83509df183c8394b05ad6d68",
+      "bytes": 26980,
+      "archived_from": [
+        "v0.5.0/mi14/standard/quality/references/eng_Latn.devtest",
+        "v0.3.0/mi14/quality/quality-reference/inputs/eng.txt"
+      ],
+      "used_by": [
+        "v0.3.0: eng",
+        "v0.5.0: eng_Latn.devtest"
+      ]
+    },
+    "jpn_Jpan.devtest": {
+      "sha256": "6aef2063af141a8169381b13258e42afc8514cc34dece4f2534671c51f2a0f63",
+      "bytes": 34268,
+      "archived_from": [
+        "v0.5.0/mi14/standard/quality/references/jpn_Jpan.devtest",
+        "v0.3.0/mi14/quality/quality-reference/inputs/jpn.txt"
+      ],
+      "used_by": [
+        "v0.3.0: jpn",
+        "v0.5.0: jpn_Jpan.devtest"
+      ]
+    },
+    "zho_Hans.devtest": {
+      "sha256": "ea5eeca64733c07eb9dd2b45803dd623f570dbd3f77224f3e4cd79a6562b938e",
+      "bytes": 24991,
+      "archived_from": [
+        "v0.5.0/mi14/standard/quality/references/zho_Hans.devtest"
+      ],
+      "used_by": [
+        "v0.5.0: zho_Hans.devtest"
+      ]
+    }
+  },
+  "layout": {
+    "collectors/": "采集程序、测试入口与测试清单",
+    "corpora/": "FLORES-200 devtest 切片与中文参考译文",
+    "archive.py": "供各版本 checks/ 按 index.json 解析共享文件与去重后的存档"
+  },
+  "how_to_read": "archived_from 列出这份字节最初所在的位置；used_by 列出现在引用它的版本及其记录里的名字。各版本报告中的 sha256 不变，改名只发生在存储层。"
+}

@@ -131,7 +131,7 @@ class NativeSmokeTest {
      * 再翻一次必须逐句相同。这是 smoke 二进制那道门在 AAR 侧的镜像:
      * threads=1 走 BlockingService,与 smoke --workers 0 是同一条执行路径。
      * 语料:
-     *   adb push sample/src/main/assets/bench/eng.txt /data/local/tmp/eng200.txt
+     *   adb push benchmark-app/src/main/assets/bench/eng.txt /data/local/tmp/eng200.txt
      *   adb shell run-as io.github.yinvoker.foxlet.test sh -c \
      *     'mkdir -p files/bench && cp /data/local/tmp/eng200.txt files/bench/'
      * 没有语料或模型时跳过(Assume),不算失败。
@@ -203,7 +203,7 @@ class NativeSmokeTest {
      *
      * 不断言任何具体译文:只要求(1)开/关两条路都能把整批翻完、每行一条输出、
      * 没有空行;(2)两批结果至少有一行不同 —— 这就是「字节确实喂给了 ssplit」的
-     * 证据。语料里每行都带缩写/小数/编号,关掉前缀表时正则会在 `Dr.`、`U.S.`、
+     * 证据。语料覆盖缩写、小数和编号；小数由基础规则处理。关掉前缀表时可能在 `Dr.`、`U.S.`、
      * `No. 5` 这些地方切断句子,开着时不会。
      *
      * 顺带压一遍 close() 的同步语义:两个 engine 先后建同一个 service。

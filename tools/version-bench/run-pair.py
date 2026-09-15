@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Paired native benchmark with source/input fingerprints and retained failures.
+"""Collect the current native version with fingerprints and retained failures.
 
 Prepare model/config files using the device layouts below. Build binaries and
-manifests with build.py, then choose labels with --baseline and --candidate.
+manifests with build.py, then choose --candidate. Only an explicit --baseline
+also measures an older version; normal version updates reuse archived data.
 This measures the native harness, not JNI, the AAR API or app PSS.
 """
 import argparse
@@ -23,7 +24,7 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('device', choices=['mi10', 'mi14'])
 parser.add_argument('output', type=Path)
 parser.add_argument('build_root', type=Path)
-parser.add_argument('--baseline', default='v0.2.0')
+parser.add_argument('--baseline', help='Explicit paired rerun only; omit to measure the candidate alone')
 parser.add_argument('--candidate', default='main')
 parser.add_argument('--adb', default=shutil.which('adb') or 'adb')
 parser.add_argument('--serial', default=os.environ.get('ANDROID_SERIAL'))
@@ -34,9 +35,9 @@ parser.add_argument('--skip-frequency-gate', action='store_true',
 args = parser.parse_args()
 suite, suite_scenarios, suite_digest = load_suite(args.suite)
 dev, out, SP = args.device, args.output, args.build_root
-versions = [args.baseline, args.candidate]
-if len(set(versions)) != 2 or any(not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._-]*', v) for v in versions):
-    parser.error('choose two different simple version labels')
+versions = [args.baseline, args.candidate] if args.baseline else [args.candidate]
+if len(set(versions)) != len(versions) or any(not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._-]*', v) for v in versions):
+    parser.error('choose distinct simple version labels')
 if out.exists():
     parser.error('output already exists; preserve it and choose a new run filename')
 out.parent.mkdir(parents=True, exist_ok=True)
@@ -81,9 +82,9 @@ for v in versions:
     manifests[v] = json.loads((SP / v / 'build-manifest.json').read_text())
     if manifests[v]['binary_sha256'] != binaries[v]:
         parser.error(f'{v}: binary does not match build manifest')
-if manifests[versions[0]]['build_settings'] != manifests[versions[1]]['build_settings']:
+if any(manifests[versions[0]]['build_settings'] != manifests[v]['build_settings'] for v in versions):
     parser.error('toolchain/build settings differ')
-if manifests[versions[0]]['harness_sha256'] != manifests[versions[1]]['harness_sha256']:
+if any(manifests[versions[0]]['harness_sha256'] != manifests[v]['harness_sha256'] for v in versions):
     parser.error('measurement harnesses differ')
 selected = args.scenarios if args.scenarios is not None else list(suite_scenarios)
 if set(selected) - set(suite_scenarios):
@@ -115,7 +116,7 @@ assert 'ssplit-prefix-file' in configs['enzh512p'] and 'mini-batch-words: 512' i
 corpus_hashes, model_hashes = {}, {}
 for lang, src in [('eng', 'eng200.txt'), ('jpn', 'jpn200.txt')]:
     shell(f"cp {L['base']}/{src} {remote}/{lang}.txt")
-    assert shell(f'cat {remote}/{lang}.txt').splitlines() == (repo / f'sample/src/main/assets/bench/{lang}.txt').read_text().splitlines()
+    assert shell(f'cat {remote}/{lang}.txt').splitlines() == (repo / f'benchmark/app/src/main/assets/bench/{lang}.txt').read_text().splitlines()
     corpus_hashes[lang] = shell(f'sha256sum {remote}/{lang}.txt').split()[0]
 for config in configs.values():
     # These controlled YAML templates contain plain absolute paths. Reject
@@ -130,6 +131,7 @@ if len(model_hashes) < 8:
 report = {'measured_at': time.strftime('%Y-%m-%dT%H:%M:%S%z'), 'device': {'model': device_model, 'android': shell('getprop ro.build.version.release'), 'soc': L['soc'], 'i8mm': L['i8mm'],
   'id_sha256': hashlib.sha256(serial.encode()).hexdigest(), 'fingerprint': shell('getprop ro.build.fingerprint')},
   'versions': {v: manifests[v]['commit'] for v in versions},
+  'collection_mode': 'paired' if args.baseline else 'current-version-only',
   'build_manifests': manifests, 'build_settings': manifests[versions[0]]['build_settings'],
   'suite_id': suite['id'], 'suite_sha256': suite_digest,
   'report_kind': 'full' if args.scenarios is None and not args.skip_frequency_gate else 'exploratory',
@@ -146,7 +148,8 @@ if args.skip_frequency_gate:
     report['protocol']['reference_gate_khz'] = L.get('gate_khz')
 out.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n')
 for r in range(suite['protocol']['rounds']):
-    order = [versions['AB'.index(letter)] for letter in suite['protocol']['version_order'][r]]
+    order = ([versions['AB'.index(letter)] for letter in ['AB', 'BA', 'AB'][r]]
+             if args.baseline else versions)
     for name, workers, corpus, cfgs in scenarios:
         for v in order:
             waited = gate(); before = conditions(); before['gate_wait_s'] = waited

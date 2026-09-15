@@ -20,20 +20,21 @@ https://github.com/yinvoke/foxlet-translate 的对应 Release tag 中提供。
 主要组件（完整许可文本随 AAR 提供）：
 - Bergamot translator — MPL-2.0，engine/src/translator/LICENSE。
 - Marian — MIT，engine/marian-fork/LICENSE.md。
-- SentencePiece、ruy、ssplit-cpp 的 C++ 核心 — Apache-2.0。
-- cpuinfo、simd_utils、PCRE2、CLI11、protobuf-lite、half_float 等 — 各自 BSD 条款。
+- SentencePiece、ruy — Apache-2.0。
+- cpuinfo、simd_utils、CLI11、protobuf-lite、half_float 等 — 各自 BSD 条款。
 - spdlog、yaml-cpp、cnpy、mio、pathie-cpp、faiss、phf、zstr 等 — 各自目录许可。
 - libc++ — Android NDK r29 随附的 Apache-2.0 with LLVM exceptions / 相应历史许可，
   见 licenses/libcxx-NDK-r29.txt。
 - Kotlin 标准库和 kotlinx.coroutines — Apache-2.0，由宿主 Gradle 解析；
   AAR 不内嵌其类，demo APK 包含。当前版本声明见 licenses/kotlin-runtime.txt。
 
-默认 AAR 内的 25 张 nonbreaking_prefixes 数据来自 Moses，经 ssplit-cpp 引入，
-采用 LGPL-2.1。原文位于 engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/，
-本项目未修改其内容；许可证全文见 licenses/LGPL-2.1.txt，额外出处说明见
-该目录 README.txt。这些原文资源可取得、修改和替换。
-名称含 no-prefixes 的 AAR 不包含这些数据表；可由宿主自行提供前缀文件。
-仅关闭运行时 nonbreakingPrefixes 选项不会从默认 AAR 删除这些资源。
+当前 SDK 使用 native/sentence/ 下的自有 UTF-8 分句代码和常用缩写规则，按 MIT 发布。
+不再编译或打包 ssplit-cpp、PCRE2 和 Moses nonbreaking_prefixes 数据。
+Unicode 17.0.0 的句界、字符类别数据及其派生索引按 Unicode-3.0 发布，
+原始数据位于 tools/sentence-tests/data/，生成的索引位于 native/sentence/unicode_data.h，
+许可全文见 licenses/Unicode-3.0.txt。该许可应随 SDK 保留。
+宿主自供规则的许可由其来源决定。历史版本、Git 历史和历史补丁中的第三方材料
+仍保留原有许可，不因本次替换改变；历史 v0.4.0 发行附件保持原有内容和许可。
 
 模型
 ----
@@ -46,11 +47,11 @@ https://github.com/mozilla/translations/issues/1434
 评测数据（不属于 SDK 或演示 app 的发行内容）
 ----------------------------------------
 FLORES-200 仅用于评测，不打包进 AAR，也不打包进 demo APK。
-仓库 sample/src/main/assets/bench/ 保存 devtest 英文、日文前 200 句，
-benchmarks/ 中部分评测记录包含源文、参考文本或译文；数据保持 CC-BY-SA 4.0，
+仓库 benchmark/app/src/main/assets/bench/ 保存 devtest 英文、日文前 200 句，
+benchmark/data/ 中部分评测记录包含源文、参考文本或译文；数据保持 CC-BY-SA 4.0，
 不适用项目代码的 MIT。sample 是内部评测 app，构建它会包含评测数据，
 不是对外发布的 demo。源码仓库和源码归档仍包含这些评测材料。
-原始出处、许可、截取说明与 NLLB 2022 BibTeX 见 benchmarks/CITATION.md。
+原始出处、许可、截取说明与 NLLB 2022 BibTeX 见 benchmark/data/CITATION.md。
 
 Foxlet Translate 是独立项目，未获 Mozilla/Firefox 官方认证或背书。
 感谢 Mozilla、Bergamot 项目（EU Horizon 2020，grant 825303）及各组件作者。

@@ -14,6 +14,10 @@ data class NetworkOptions(
     init { connectTimeout.timeoutMillis(); readTimeout.timeoutMillis() }
 }
 
+/**
+ * Asset download policy. [maxRetries] counts retries after the initial attempt.
+ * A non-null [networkOptions] replaces the model-level network options.
+ */
 data class DownloadOptions(
     val maxRetries: Int = 3,
     val resume: Boolean = true,
@@ -24,6 +28,9 @@ data class DownloadOptions(
     init { validateRetry(maxRetries, initialBackoff, maxBackoff) }
 }
 
+/**
+ * Remote index retry policy; the default performs one attempt without retries.
+ */
 data class UpdateOptions(
     val maxRetries: Int = 0,
     val initialBackoff: Duration = 1.seconds,
@@ -69,6 +76,10 @@ class ModelSource(
     }
 }
 
+/**
+ * Client-wide thread configuration, resolved once during [Foxlet.create].
+ * Automatic ceilings are resource limits rather than throughput guarantees.
+ */
 sealed interface Threading {
     data class Fixed(val threads: Int = 1) : Threading {
         init { require(threads in 1..64) { "threads must be in 1..64" } }
@@ -76,6 +87,11 @@ sealed interface Threading {
     data class Auto(val workload: Workload) : Threading
 }
 
+/**
+ * Controls native model residency independently of disk installation lifetime.
+ * Idle uses a timer, AfterRequest releases in the request finally block, and
+ * UntilShutdown retains models until explicit unloading or client shutdown.
+ */
 sealed interface ModelRetention {
     data class Idle(val duration: Duration = 60.seconds) : ModelRetention {
         init { require(duration.isFinite() && duration.inWholeMilliseconds > 0) { "Idle retention must be finite and at least 1 ms" } }
@@ -84,11 +100,17 @@ sealed interface ModelRetention {
     data object UntilShutdown : ModelRetention
 }
 
+/**
+ * Immutable inference settings shared by all requests of a client.
+ * Batch composition, sentence rules and caching can affect output; comparisons
+ * require fixed settings and model files.
+ */
 data class TranslationConfig(
     val threading: Threading = Threading.Fixed(1),
     val retention: ModelRetention = ModelRetention.Idle(),
     val miniBatchWords: Int = 512,
     val cacheSize: Int = 0,
+    /** Enable built-in language-specific abbreviation rules or a model's custom replacement table. */
     val nonbreakingPrefixes: Boolean = true,
 ) {
     init {
@@ -152,6 +174,11 @@ class TranslationConfigBuilder {
     fun build() = TranslationConfig(threading, retention, miniBatchWords, cacheSize, nonbreakingPrefixes)
 }
 
+/**
+ * Disk cleanup policy. Defaults retain downloads modified within seven days
+ * and remove superseded installations only after validating a newer version.
+ * Deletion remnants may be removed independently of download age.
+ */
 data class CleanupOptions(
     val staleTempAge: Duration = 7.days,
     val removeSuperseded: Boolean = true,

@@ -27,7 +27,7 @@ def report():
                                'peak_rss_mib': 200, 'output_bytes': 500,
                                'output_hash': 'abc'} for p in range(3)]}
                  for r in range(1, 4)]}
-    suite, scenarios, digest = load_suite()
+    suite, scenarios, digest = load_suite('android-native-v1')
     result.update(suite_id=suite['id'], suite_sha256=digest,
                   report_kind='full', scenarios=scenarios, protocol=suite['protocol'])
     template = result['runs']
@@ -200,10 +200,18 @@ class CheckTest(unittest.TestCase):
             self.compare()
 
     def test_existing_suite_scenarios_have_stable_order(self):
-        suite, scenarios, _ = load_suite()
+        suite, scenarios, _ = load_suite('android-native-v1')
         self.assertEqual(list(scenarios), ['enzh_w1', 'enzh_w2', 'enzh_w4', 'pivot_w1',
                                          'enzh_b512p', 'pivot_b512p', 'enzh_w2_512p', 'pivot_w2_512p'])
         self.assertEqual(list(suite['metrics']), ['cold_ms', 'warm_ms', 'peak_rss_mib'])
+
+    def test_default_v2_only_removes_four_threads(self):
+        old, previous, _ = load_suite('android-native-v1')
+        new, current, _ = load_suite()
+        self.assertEqual(new['id'], 'android-native-v2')
+        self.assertEqual(current, {k: v for k, v in previous.items() if v['workers'] != 4})
+        self.assertEqual({k: v for k, v in old['protocol'].items() if k != 'version_order'}, new['protocol'])
+        self.assertEqual(old['metrics'], new['metrics'])
 
     def test_v1_definition_is_frozen(self):
         # Adding dimensions belongs in a new suite file. Do not refresh this

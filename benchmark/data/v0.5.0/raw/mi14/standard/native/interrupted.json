@@ -1,0 +1,1019 @@
+{
+  "measured_at": "2026-09-15T14:50:32+0800",
+  "device": {
+    "model": "23127PN0CC",
+    "android": "16",
+    "soc": "Snapdragon 8 Gen 3",
+    "i8mm": true,
+    "id_sha256": "02bfda251ceb556996e08642bfd07e6d9d367515c21df91ee80213fc91d5a811",
+    "fingerprint": "Xiaomi/houji/houji:16/BP2A.250605.031.A3/OS3.0.305.0.WNCCNXM:user/release-keys"
+  },
+  "versions": {
+    "v0.3.0": "28d9c8d2a260eafdaa946c3f29c078bcb0d9197e",
+    "v0.5.0": "b99f5fd53136e2dd976d492de56ed01a510813aa"
+  },
+  "build_manifests": {
+    "v0.3.0": {
+      "label": "v0.3.0",
+      "commit": "28d9c8d2a260eafdaa946c3f29c078bcb0d9197e",
+      "source_kind": "git-ref",
+      "source_native_sha256": "e3394de29121491ed752eb94191103c764149b98a4da3d9d0e503916b726c398",
+      "dirty_status": "",
+      "harness_sha256": "298e8116a32fb1ed46846ba533c8dacf6051ebd3d8e68e0a4bc15a77673b4a9d",
+      "binary_sha256": "fd38cc4d0858da26e0aa398675853c5454ee82ed214db80e1249ae650043b13a",
+      "build_settings": {
+        "cmake_flags": [
+          "-DANDROID_ABI=arm64-v8a",
+          "-DANDROID_PLATFORM=android-28",
+          "-DCMAKE_BUILD_TYPE=Release",
+          "-DANDROID_STL=c++_static",
+          "-DSSPLIT_USE_INTERNAL_PCRE2=ON",
+          "-DCOMPILE_TESTS=OFF",
+          "-DBUILD_ARCH=armv8-a",
+          "-DBUILD_SMOKE=ON"
+        ],
+        "ndk": "Pkg.Desc = Android NDK\nPkg.Revision = 29.0.13113456-beta1\nPkg.BaseRevision = 29.0.13113456\nPkg.ReleaseName = r29-beta1\n",
+        "cmake": "cmake version 4.4.3"
+      }
+    },
+    "v0.5.0": {
+      "label": "v0.5.0",
+      "commit": "b99f5fd53136e2dd976d492de56ed01a510813aa",
+      "source_kind": "working-tree",
+      "source_native_sha256": "aede8778f69ef1d2246ec8d69f25683761481cb76886ab56ad58a72fcaab4758",
+      "dirty_status": " M .github/workflows/build.yml\n M .github/workflows/release.yml\n M .gitignore\n M CMakeLists.txt\n M CONTRIBUTING.md\n M NOTICE\n M README.md\n D api/README.md\n D api/public-jvm.txt\n M benchmarks/CITATION.md\n M benchmarks/README.md\n M build.gradle.kts\n D demo/build.gradle.kts\n D demo/proguard-rules.pro\n D demo/src/androidTest/kotlin/io/github/yinvoker/foxlet/demo/DeliveryTest.kt\n D demo/src/main/AndroidManifest.xml\n D demo/src/main/kotlin/io/github/yinvoker/foxlet/demo/MainActivity.kt\n D demo/test-rules.pro\n M docs/README.md\n D docs/api-design-review.md\n M docs/architecture.md\n M docs/benchmarking.md\n M docs/getting-started.md\n M docs/releasing.md\n M engine/3rd_party/CMakeLists.txt\n D engine/3rd_party/ssplit-cpp/CMakeLists.txt\n D engine/3rd_party/ssplit-cpp/LICENSE.md\n D engine/3rd_party/ssplit-cpp/README.md\n D engine/3rd_party/ssplit-cpp/cmake/FindPCRE2.cmake\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/README.txt\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.ca\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.cs\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.de\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.el\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.en\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.es\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.fi\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.fr\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.ga\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.hu\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.is\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.it\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.lt\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.lv\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.nl\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.pl\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.pt\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.ro\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.ru\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.sk\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.sl\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.sv\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.ta\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.yue\n D engine/3rd_party/ssplit-cpp/nonbreaking_prefixes/nonbreaking_prefix.zh\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/132html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/AUTHORS\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/CMakeLists.txt\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/COPYING\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/ChangeLog\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/CheckMan\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/CleanTxt\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/Detrail\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/HACKING\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/INSTALL\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/LICENCE\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/Makefile.am\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/Makefile.in\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/NEWS\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/NON-AUTOTOOLS-BUILD\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/PrepareRelease\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/README\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/RunGrepTest\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/RunGrepTest.bat\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/RunTest\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/RunTest.bat\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/aclocal.m4\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/ar-lib\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/cmake/COPYING-CMAKE-SCRIPTS\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/cmake/FindEditline.cmake\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/cmake/FindPackageHandleStandardArgs.cmake\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/cmake/FindReadline.cmake\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/cmake/pcre2-config-version.cmake.in\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/cmake/pcre2-config.cmake.in\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/compile\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/config-cmake.h.in\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/config.guess\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/config.sub\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/configure\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/configure.ac\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/depcomp\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/NON-AUTOTOOLS-BUILD.txt\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/README.txt\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/index.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2-config.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_callout_enumerate.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_code_copy.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_code_copy_with_tables.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_code_free.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_compile.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_compile_context_copy.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_compile_context_create.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_compile_context_free.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_config.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_convert_context_copy.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_convert_context_create.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_convert_context_free.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_converted_pattern_free.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_dfa_match.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_general_context_copy.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_general_context_create.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_general_context_free.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_get_error_message.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_get_mark.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_get_match_data_size.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_get_ovector_count.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_get_ovector_pointer.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_get_startchar.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_jit_compile.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_jit_free_unused_memory.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_jit_match.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_jit_stack_assign.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_jit_stack_create.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_jit_stack_free.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_maketables.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_maketables_free.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_match.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_match_context_copy.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_match_context_create.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_match_context_free.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_match_data_create.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_match_data_create_from_pattern.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_match_data_free.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_pattern_convert.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_pattern_info.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_serialize_decode.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_serialize_encode.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_serialize_free.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_serialize_get_number_of_codes.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_bsr.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_callout.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_character_tables.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_compile_extra_options.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_compile_recursion_guard.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_depth_limit.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_glob_escape.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_glob_separator.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_heap_limit.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_match_limit.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_max_pattern_length.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_newline.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_offset_limit.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_parens_nest_limit.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_recursion_limit.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_recursion_memory_management.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_set_substitute_callout.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_substitute.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_substring_copy_byname.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_substring_copy_bynumber.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_substring_free.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_substring_get_byname.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_substring_get_bynumber.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_substring_length_byname.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_substring_length_bynumber.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_substring_list_free.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_substring_list_get.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_substring_nametable_scan.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2_substring_number_from_name.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2api.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2build.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2callout.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2compat.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2convert.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2demo.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2grep.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2jit.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2limits.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2matching.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2partial.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2pattern.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2perform.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2posix.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2sample.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2serialize.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2syntax.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2test.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/html/pcre2unicode.html\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/index.html.src\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2-config.1\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2-config.txt\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2.txt\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_callout_enumerate.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_code_copy.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_code_copy_with_tables.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_code_free.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_compile.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_compile_context_copy.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_compile_context_create.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_compile_context_free.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_config.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_convert_context_copy.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_convert_context_create.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_convert_context_free.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_converted_pattern_free.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_dfa_match.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_general_context_copy.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_general_context_create.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_general_context_free.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_get_error_message.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_get_mark.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_get_match_data_size.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_get_ovector_count.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_get_ovector_pointer.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_get_startchar.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_jit_compile.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_jit_free_unused_memory.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_jit_match.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_jit_stack_assign.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_jit_stack_create.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_jit_stack_free.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_maketables.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_maketables_free.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_match.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_match_context_copy.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_match_context_create.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_match_context_free.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_match_data_create.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_match_data_create_from_pattern.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_match_data_free.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_pattern_convert.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_pattern_info.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_serialize_decode.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_serialize_encode.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_serialize_free.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_serialize_get_number_of_codes.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_bsr.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_callout.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_character_tables.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_compile_extra_options.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_compile_recursion_guard.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_depth_limit.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_glob_escape.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_glob_separator.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_heap_limit.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_match_limit.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_max_pattern_length.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_newline.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_offset_limit.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_parens_nest_limit.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_recursion_limit.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_recursion_memory_management.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_set_substitute_callout.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_substitute.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_substring_copy_byname.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_substring_copy_bynumber.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_substring_free.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_substring_get_byname.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_substring_get_bynumber.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_substring_length_byname.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_substring_length_bynumber.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_substring_list_free.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_substring_list_get.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_substring_nametable_scan.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2_substring_number_from_name.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2api.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2build.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2callout.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2compat.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2convert.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2demo.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2grep.1\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2grep.txt\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2jit.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2limits.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2matching.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2partial.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2pattern.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2perform.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2posix.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2sample.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2serialize.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2syntax.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2test.1\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2test.txt\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/doc/pcre2unicode.3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/install-sh\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/libpcre2-16.pc.in\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/libpcre2-32.pc.in\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/libpcre2-8.pc.in\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/libpcre2-posix.pc.in\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/ltmain.sh\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/m4/ax_pthread.m4\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/m4/libtool.m4\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/m4/ltoptions.m4\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/m4/ltsugar.m4\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/m4/ltversion.m4\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/m4/lt~obsolete.m4\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/m4/pcre2_visibility.m4\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/missing\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/pcre2-config.in\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/perltest.sh\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/config.h.generic\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/config.h.in\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2.h.generic\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2.h.in\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_auto_possess.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_chartables.c.dist\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_compile.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_config.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_context.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_convert.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_dfa_match.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_dftables.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_error.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_extuni.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_find_bracket.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_fuzzsupport.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_internal.h\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_intmodedep.h\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_jit_compile.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_jit_match.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_jit_misc.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_jit_neon_inc.h\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_jit_simd_inc.h\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_jit_test.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_maketables.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_match.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_match_data.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_newline.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_ord2utf.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_pattern_info.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_printint.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_script_run.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_serialize.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_string_utils.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_study.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_substitute.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_substring.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_tables.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_ucd.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_ucp.h\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_valid_utf.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2_xclass.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2demo.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2grep.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2posix.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2posix.h\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/pcre2test.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitConfig.h\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitConfigInternal.h\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitExecAllocator.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitLir.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitLir.h\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitNativeARM_32.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitNativeARM_64.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitNativeARM_T2_32.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitNativeMIPS_32.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitNativeMIPS_64.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitNativeMIPS_common.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitNativePPC_32.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitNativePPC_64.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitNativePPC_common.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitNativeS390X.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitNativeSPARC_32.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitNativeSPARC_common.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitNativeX86_32.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitNativeX86_64.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitNativeX86_common.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitProtExecAllocator.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitUtils.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/src/sljit/sljitWXExecAllocator.c\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/test-driver\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/grepbinary\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/grepfilelist\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/grepinput\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/grepinput3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/grepinput8\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/grepinputM\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/grepinputv\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/grepinputx\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/greplist\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/grepoutput\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/grepoutput8\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/grepoutputC\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/grepoutputCN\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/grepoutputN\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/greppatN4\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testbtables\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput1\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput10\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput11\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput12\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput13\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput14\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput15\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput16\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput17\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput18\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput19\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput2\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput20\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput21\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput22\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput23\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput24\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput25\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput4\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput5\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput6\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput7\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput8\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinput9\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testinputEBC\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput1\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput10\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput11-16\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput11-32\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput12-16\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput12-32\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput13\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput14-16\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput14-32\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput14-8\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput15\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput16\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput17\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput18\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput19\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput2\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput20\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput21\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput22-16\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput22-32\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput22-8\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput23\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput24\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput25\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput3A\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput3B\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput4\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput5\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput6\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput7\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput8-16-2\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput8-16-3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput8-16-4\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput8-32-2\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput8-32-3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput8-32-4\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput8-8-2\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput8-8-3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput8-8-4\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutput9\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/testoutputEBC\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/valgrind-jit.supp\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/wintestinput3\n D engine/3rd_party/ssplit-cpp/src/3rd-party/pcre2-10.39/testdata/wintestoutput3\n D engine/3rd_party/ssplit-cpp/src/CMakeLists.txt\n D engine/3rd_party/ssplit-cpp/src/ssplit/regex.cpp\n D engine/3rd_party/ssplit-cpp/src/ssplit/regex.h\n D engine/3rd_party/ssplit-cpp/src/ssplit/ssplit.cpp\n D engine/3rd_party/ssplit-cpp/src/ssplit/ssplit.h\n D engine/3rd_party/ssplit-cpp/src/ssplit/typedefs.h\n M engine/CMakeLists.txt\n M engine/UPSTREAM.md\n M engine/marian-fork/CMakeLists.txt\n M engine/marian-fork/src/CMakeLists.txt\n M engine/marian-fork/src/data/sentencepiece_vocab.cpp\n M engine/src/translator/CMakeLists.txt\n M engine/src/translator/annotation.h\n M engine/src/translator/definitions.h\n M engine/src/translator/parser.cpp\n M engine/src/translator/text_processor.cpp\n M engine/src/translator/text_processor.h\n M foxlet/build.gradle.kts\n M foxlet/src/androidTest/kotlin/io/github/yinvoker/foxlet/NativeSmokeTest.kt\n M foxlet/src/main/kotlin/io/github/yinvoker/foxlet/FoxletConfig.kt\n M foxlet/src/main/kotlin/io/github/yinvoker/foxlet/ModelFiles.kt\n M foxlet/src/main/kotlin/io/github/yinvoker/foxlet/NativeEngine.kt\n M foxlet/src/main/kotlin/io/github/yinvoker/foxlet/PrefixTables.kt\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.ca\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.cs\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.de\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.el\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.en\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.es\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.fi\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.fr\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.ga\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.hu\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.is\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.it\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.lt\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.lv\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.nl\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.pl\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.pt\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.ro\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.ru\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.sk\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.sl\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.sv\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.ta\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.yue\n D foxlet/src/main/resources/io/github/yinvoker/foxlet/nonbreaking_prefixes/nonbreaking_prefix.zh\n M foxlet/src/test/kotlin/io/github/yinvoker/foxlet/ModelFilesTest.kt\n M gradle.properties\n M licenses/components.json\n D patches/0007-build-wire-the-trimmed-tree-no-wasm-no-src-app-sspli.patch\n D patches/0008-build-pass-CMAKE_POLICY_VERSION_MINIMUM-into-the-pcr.patch\n M patches/0009-perf-restore-ruy-SDOT-kernels-lost-in-bazel_to_cmake.patch\n D patches/0023-patch-ssplit-prefix-bytes-reach-the-splitter-AsyncSe.patch\n M patches/0025-fix-native-model-validation.patch\n D sample/build.gradle.kts\n D sample/src/main/AndroidManifest.xml\n D sample/src/main/assets/bench/NOTICE.txt\n D sample/src/main/assets/bench/eng.txt\n D sample/src/main/assets/bench/jpn.txt\n D sample/src/main/kotlin/io/github/yinvoker/foxlet/bench/BenchRunner.kt\n D sample/src/main/kotlin/io/github/yinvoker/foxlet/bench/ChartView.kt\n D sample/src/main/kotlin/io/github/yinvoker/foxlet/bench/IsolatedBenchRunner.kt\n D sample/src/main/kotlin/io/github/yinvoker/foxlet/bench/MainActivity.kt\n D sample/src/main/kotlin/io/github/yinvoker/foxlet/bench/MetricsSampler.kt\n D sample/src/main/kotlin/io/github/yinvoker/foxlet/bench/RestartActivity.kt\n M settings.gradle.kts\n M tools/app-bench/README.md\n M tools/app-bench/run.py\n M tools/app-bench/score.py\n M tools/distribution/check_hardening.py\n M tools/distribution/check_public_api.py\n M tools/distribution/package_notices.py\n M tools/distribution/run_device_tests.py\n M tools/distribution/verify_artifacts.py\n M tools/regress-hash.sh\n M tools/smmla-test/README.md\n M tools/version-bench/README.md\n M tools/version-bench/build.py\n M tools/version-bench/run-pair.py\n M tools/version-bench/run.py\n M tools/version-bench/test_run_pair.py\n?? .github/actionlint.yaml\n?? AGENTS.md\n?? README.en.md\n?? benchmark-app/\n?? benchmarks/v0.5.0/\n?? docs/public-api.md\n?? docs/public-jvm.txt\n?? foxlet/src/androidTest/kotlin/io/github/yinvoker/foxlet/MultilingualDeviceTest.kt\n?? licenses/Unicode-3.0.txt\n?? native/\n?? patches/0023-patch-AsyncService-memory-bundle.patch\n?? patches/README.md\n?? sdk-example/\n?? tools/sentence-tests/\n?? tools/translation-tests/\n",
+      "harness_sha256": "298e8116a32fb1ed46846ba533c8dacf6051ebd3d8e68e0a4bc15a77673b4a9d",
+      "binary_sha256": "1bc38ffd5889624c51bc1aea9bf1bbcc9e8f83508be07204f5fae59f4189efa7",
+      "build_settings": {
+        "cmake_flags": [
+          "-DANDROID_ABI=arm64-v8a",
+          "-DANDROID_PLATFORM=android-28",
+          "-DCMAKE_BUILD_TYPE=Release",
+          "-DANDROID_STL=c++_static",
+          "-DSSPLIT_USE_INTERNAL_PCRE2=ON",
+          "-DCOMPILE_TESTS=OFF",
+          "-DBUILD_ARCH=armv8-a",
+          "-DBUILD_SMOKE=ON"
+        ],
+        "ndk": "Pkg.Desc = Android NDK\nPkg.Revision = 29.0.13113456-beta1\nPkg.BaseRevision = 29.0.13113456\nPkg.ReleaseName = r29-beta1\n",
+        "cmake": "cmake version 4.4.3"
+      }
+    }
+  },
+  "build_settings": {
+    "cmake_flags": [
+      "-DANDROID_ABI=arm64-v8a",
+      "-DANDROID_PLATFORM=android-28",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DANDROID_STL=c++_static",
+      "-DSSPLIT_USE_INTERNAL_PCRE2=ON",
+      "-DCOMPILE_TESTS=OFF",
+      "-DBUILD_ARCH=armv8-a",
+      "-DBUILD_SMOKE=ON"
+    ],
+    "ndk": "Pkg.Desc = Android NDK\nPkg.Revision = 29.0.13113456-beta1\nPkg.BaseRevision = 29.0.13113456\nPkg.ReleaseName = r29-beta1\n",
+    "cmake": "cmake version 4.4.3"
+  },
+  "suite_id": "android-native-v1",
+  "suite_sha256": "01fd8553d31a4ced2d1a17f19c92ab3b5ee7d6893b40a61744ac9446c2367e35",
+  "report_kind": "full",
+  "corpus_sha256": {
+    "eng": "407119a09c81211b1144f9f10b72e7a4415141fa83509df183c8394b05ad6d68",
+    "jpn": "6aef2063af141a8169381b13258e42afc8514cc34dece4f2534671c51f2a0f63"
+  },
+  "model_files_sha256": {
+    "/data/local/tmp/bergamot/models/model.enzh.intgemm.alphas.bin": "4e5accc141373565ddc8fa1565bceaa8d0c3482a82cab8131c719ebcc6c2157c",
+    "/data/local/tmp/bergamot/models/srcvocab.enzh.spm": "bd9b65504acc6d9726dd281f7defc2adb7c2c22d0688fe2f84697de25197c8c5",
+    "/data/local/tmp/bergamot/models/trgvocab.enzh.spm": "aded6993c36e440284d11cec3f6b8aef9c0e43188a772d80be342a713adf223d",
+    "/data/local/tmp/bergamot/models/lex.50.50.enzh.s2t.bin": "4a5e5827788060f1d718a8132b69440929387514a045796e9b77f935db68c055",
+    "/data/local/tmp/bergamot/models/jaen/model.jaen.intgemm.alphas.bin": "3a603e20bfe1be86071913f9e23ab5129075bc0a8490151020ac4821e4f17302",
+    "/data/local/tmp/bergamot/models/jaen/vocab.jaen.spm": "5cb217758bae05877bb3f0c2f612e4e7c1e4cb03c10db11f4a47098d7ae62919",
+    "/data/local/tmp/bergamot/models/jaen/lex.50.50.jaen.s2t.bin": "525f412f0d210536c2933c78ae395fa0bf2b5ee6cc5dda61ebc2e79410ebaee4",
+    "/data/local/tmp/bergamot/nonbreaking_prefix.en": "af526c47425bb31b4e7b79ec975c1bb752a34ba21951237d51b965e879d9d51a"
+  },
+  "binary_sha256": {
+    "v0.3.0": "fd38cc4d0858da26e0aa398675853c5454ee82ed214db80e1249ae650043b13a",
+    "v0.5.0": "1bc38ffd5889624c51bc1aea9bf1bbcc9e8f83508be07204f5fae59f4189efa7"
+  },
+  "harness_sha256": "298e8116a32fb1ed46846ba533c8dacf6051ebd3d8e68e0a4bc15a77673b4a9d",
+  "config_yaml": {
+    "enzh1024": "models:\n  - /data/local/tmp/bergamot/models/model.enzh.intgemm.alphas.bin\nvocabs:\n  - /data/local/tmp/bergamot/models/srcvocab.enzh.spm\n  - /data/local/tmp/bergamot/models/trgvocab.enzh.spm\nshortlist:\n  - /data/local/tmp/bergamot/models/lex.50.50.enzh.s2t.bin\n  - false\nbeam-size: 1\nnormalize: 1.0\nword-penalty: 0\nmax-length-break: 128\nmini-batch-words: 1024\nworkspace: 128\nmax-length-factor: 2.0\nskip-cost: true\ncpu-threads: 0\nquiet: true\nquiet-translation: true\ngemm-precision: int8shiftAlphaAll\nalignment: soft\n",
+    "jaen1024": "models:\n  - /data/local/tmp/bergamot/models/jaen/model.jaen.intgemm.alphas.bin\nvocabs:\n  - /data/local/tmp/bergamot/models/jaen/vocab.jaen.spm\n  - /data/local/tmp/bergamot/models/jaen/vocab.jaen.spm\nshortlist:\n  - /data/local/tmp/bergamot/models/jaen/lex.50.50.jaen.s2t.bin\n  - false\nbeam-size: 1\nnormalize: 1.0\nword-penalty: 0\nmax-length-break: 128\nmini-batch-words: 1024\nworkspace: 128\nmax-length-factor: 2.0\nskip-cost: true\ncpu-threads: 0\nquiet: true\nquiet-translation: true\ngemm-precision: int8shiftAlphaAll\nalignment: soft\n",
+    "enzh512p": "models:\n  - /data/local/tmp/bergamot/models/model.enzh.intgemm.alphas.bin\nvocabs:\n  - /data/local/tmp/bergamot/models/srcvocab.enzh.spm\n  - /data/local/tmp/bergamot/models/trgvocab.enzh.spm\nshortlist:\n  - /data/local/tmp/bergamot/models/lex.50.50.enzh.s2t.bin\n  - false\nbeam-size: 1\nnormalize: 1.0\nword-penalty: 0\nmax-length-break: 128\nmini-batch-words: 512\nworkspace: 128\nmax-length-factor: 2.0\nskip-cost: true\ncpu-threads: 0\nquiet: true\nquiet-translation: true\ngemm-precision: int8shiftAlphaAll\nalignment: soft\nssplit-prefix-file: /data/local/tmp/bergamot/nonbreaking_prefix.en\n",
+    "jaen512": "models:\n  - /data/local/tmp/bergamot/models/jaen/model.jaen.intgemm.alphas.bin\nvocabs:\n  - /data/local/tmp/bergamot/models/jaen/vocab.jaen.spm\n  - /data/local/tmp/bergamot/models/jaen/vocab.jaen.spm\nshortlist:\n  - /data/local/tmp/bergamot/models/jaen/lex.50.50.jaen.s2t.bin\n  - false\nbeam-size: 1\nnormalize: 1.0\nword-penalty: 0\nmax-length-break: 128\nmini-batch-words: 512\nworkspace: 128\nmax-length-factor: 2.0\nskip-cost: true\ncpu-threads: 0\nquiet: true\nquiet-translation: true\ngemm-precision: int8shiftAlphaAll\nalignment: soft\n"
+  },
+  "collector_files_sha256": {
+    "tools/version-bench/run-pair.py": "453fc0e24a9780f78d765449b844e740ceb90185005a9818ca4a375886b6cc83",
+    "tools/bench_device.py": "bb2660c5bda90679f237d6753eb302ed56a6783c967860734c778895f43383a7"
+  },
+  "scenarios": {
+    "enzh_w1": {
+      "workers": 1,
+      "corpus": "eng",
+      "configs": [
+        "enzh1024"
+      ],
+      "sentences": 200,
+      "stable_hash": false
+    },
+    "enzh_w2": {
+      "workers": 2,
+      "corpus": "eng",
+      "configs": [
+        "enzh1024"
+      ],
+      "sentences": 200,
+      "stable_hash": false
+    },
+    "enzh_w4": {
+      "workers": 4,
+      "corpus": "eng",
+      "configs": [
+        "enzh1024"
+      ],
+      "sentences": 200,
+      "stable_hash": false
+    },
+    "pivot_w1": {
+      "workers": 1,
+      "corpus": "jpn",
+      "configs": [
+        "jaen1024",
+        "enzh1024"
+      ],
+      "sentences": 200,
+      "stable_hash": false
+    },
+    "enzh_b512p": {
+      "workers": 0,
+      "corpus": "eng",
+      "configs": [
+        "enzh512p"
+      ],
+      "sentences": 200,
+      "stable_hash": true
+    },
+    "pivot_b512p": {
+      "workers": 0,
+      "corpus": "jpn",
+      "configs": [
+        "jaen512",
+        "enzh512p"
+      ],
+      "sentences": 200,
+      "stable_hash": true
+    },
+    "enzh_w2_512p": {
+      "workers": 2,
+      "corpus": "eng",
+      "configs": [
+        "enzh512p"
+      ],
+      "sentences": 200,
+      "stable_hash": false
+    },
+    "pivot_w2_512p": {
+      "workers": 2,
+      "corpus": "jpn",
+      "configs": [
+        "jaen512",
+        "enzh512p"
+      ],
+      "sentences": 200,
+      "stable_hash": false
+    }
+  },
+  "protocol": {
+    "rounds": 3,
+    "version_order": [
+      "AB",
+      "BA",
+      "AB"
+    ],
+    "passes_per_process": 3,
+    "cache_size": 0,
+    "affinity": "7c",
+    "cooldown_seconds": 8,
+    "gate_khz": 2630400,
+    "foreground_checks": "awake-unlocked-focused-before-after-v1",
+    "cold_ms": "service + model creation + first translation",
+    "peak_rss_mib": "VmHWM after first translation",
+    "warm_ms": "passes 1 and 2"
+  },
+  "runs": [
+    {
+      "round": 1,
+      "scenario": "enzh_w1",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-42268f09e6a3/v0.3.0 1 /data/local/tmp/foxlet/vb-42268f09e6a3/enzh1024.yml < /data/local/tmp/foxlet/vb-42268f09e6a3/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.8,
+        "board_temp": "31956",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 70
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 3373.446,
+          "peak_rss_mib": 204.977,
+          "rss_mib": 183.855,
+          "output_bytes": 22591,
+          "output_hash": "b1a05933822b3d63"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 2888.922,
+          "peak_rss_mib": 204.977,
+          "rss_mib": 184.477,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 2880.414,
+          "peak_rss_mib": 204.977,
+          "rss_mib": 184.395,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2169600"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "32000",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w1",
+      "version": "v0.5.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-42268f09e6a3/v0.5.0 1 /data/local/tmp/foxlet/vb-42268f09e6a3/enzh1024.yml < /data/local/tmp/foxlet/vb-42268f09e6a3/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "32009",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 27
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 3172.721,
+          "peak_rss_mib": 204.355,
+          "rss_mib": 183.836,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 2908.585,
+          "peak_rss_mib": 204.355,
+          "rss_mib": 184.02,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 2910.858,
+          "peak_rss_mib": 204.355,
+          "rss_mib": 183.926,
+          "output_bytes": 22584,
+          "output_hash": "7b93f1f8ddcefc75"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2169600"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31992",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w2",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-42268f09e6a3/v0.3.0 2 /data/local/tmp/foxlet/vb-42268f09e6a3/enzh1024.yml < /data/local/tmp/foxlet/vb-42268f09e6a3/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31964",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 38
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1890.092,
+          "peak_rss_mib": 303.992,
+          "rss_mib": 296.832,
+          "output_bytes": 22579,
+          "output_hash": "be114020f154244f"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1559.211,
+          "peak_rss_mib": 303.992,
+          "rss_mib": 294.172,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1551.716,
+          "peak_rss_mib": 303.992,
+          "rss_mib": 294.445,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31956",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w2",
+      "version": "v0.5.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-42268f09e6a3/v0.5.0 2 /data/local/tmp/foxlet/vb-42268f09e6a3/enzh1024.yml < /data/local/tmp/foxlet/vb-42268f09e6a3/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31947",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 43
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1906.222,
+          "peak_rss_mib": 301.156,
+          "rss_mib": 294.395,
+          "output_bytes": 22602,
+          "output_hash": "16926a3c936afec5"
+        },
+        {
+          "pass": 1,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1559.586,
+          "peak_rss_mib": 301.156,
+          "rss_mib": 293.812,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 2,
+          "workers": 2,
+          "sentences": 200,
+          "elapsed_ms": 1556.654,
+          "peak_rss_mib": 301.156,
+          "rss_mib": 294.43,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2496000"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31947",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w4",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-42268f09e6a3/v0.3.0 4 /data/local/tmp/foxlet/vb-42268f09e6a3/enzh1024.yml < /data/local/tmp/foxlet/vb-42268f09e6a3/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31999",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 38
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1231.619,
+          "peak_rss_mib": 518.289,
+          "rss_mib": 514.43,
+          "output_bytes": 22565,
+          "output_hash": "4110d5eae850ea77"
+        },
+        {
+          "pass": 1,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1016.705,
+          "peak_rss_mib": 520.25,
+          "rss_mib": 515.031,
+          "output_bytes": 22563,
+          "output_hash": "62bb14266672dd62"
+        },
+        {
+          "pass": 2,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 917.622,
+          "peak_rss_mib": 520.25,
+          "rss_mib": 512.762,
+          "output_bytes": 22587,
+          "output_hash": "8343675c098aab6a"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2438400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31999",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w4",
+      "version": "v0.5.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-42268f09e6a3/v0.5.0 4 /data/local/tmp/foxlet/vb-42268f09e6a3/enzh1024.yml < /data/local/tmp/foxlet/vb-42268f09e6a3/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31937",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 43
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 1350.489,
+          "peak_rss_mib": 512.215,
+          "rss_mib": 507.98,
+          "output_bytes": 22636,
+          "output_hash": "cda56a313383b800"
+        },
+        {
+          "pass": 1,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 902.001,
+          "peak_rss_mib": 515.484,
+          "rss_mib": 510.793,
+          "output_bytes": 22581,
+          "output_hash": "6f23058f1be6120a"
+        },
+        {
+          "pass": 2,
+          "workers": 4,
+          "sentences": 200,
+          "elapsed_ms": 916.801,
+          "peak_rss_mib": 515.484,
+          "rss_mib": 510.734,
+          "output_bytes": 22591,
+          "output_hash": "aa87159c6d3ec623"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31937",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "pivot_w1",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-42268f09e6a3/v0.3.0 1 /data/local/tmp/foxlet/vb-42268f09e6a3/jaen1024.yml /data/local/tmp/foxlet/vb-42268f09e6a3/enzh1024.yml < /data/local/tmp/foxlet/vb-42268f09e6a3/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31969",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 33
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 7078.917,
+          "peak_rss_mib": 314.598,
+          "rss_mib": 306.105,
+          "output_bytes": 22659,
+          "output_hash": "d1734015cc5ed4e8"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 6386.292,
+          "peak_rss_mib": 314.598,
+          "rss_mib": 306.621,
+          "output_bytes": 22686,
+          "output_hash": "f9077e4684862ab4"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 6392.13,
+          "peak_rss_mib": 314.598,
+          "rss_mib": 306.598,
+          "output_bytes": 22686,
+          "output_hash": "f9077e4684862ab4"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2169600"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "32077",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "pivot_w1",
+      "version": "v0.5.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-42268f09e6a3/v0.5.0 1 /data/local/tmp/foxlet/vb-42268f09e6a3/jaen1024.yml /data/local/tmp/foxlet/vb-42268f09e6a3/enzh1024.yml < /data/local/tmp/foxlet/vb-42268f09e6a3/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "31988",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 49
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 7238.932,
+          "peak_rss_mib": 319.152,
+          "rss_mib": 305.953,
+          "output_bytes": 22555,
+          "output_hash": "1099b155cb443d3a"
+        },
+        {
+          "pass": 1,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 6395.825,
+          "peak_rss_mib": 319.152,
+          "rss_mib": 306.57,
+          "output_bytes": 22576,
+          "output_hash": "dbf70d6dfff6d47"
+        },
+        {
+          "pass": 2,
+          "workers": 1,
+          "sentences": 200,
+          "elapsed_ms": 6391.96,
+          "peak_rss_mib": 319.152,
+          "rss_mib": 306.621,
+          "output_bytes": 22576,
+          "output_hash": "dbf70d6dfff6d47"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2169600"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "32147",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_b512p",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-42268f09e6a3/v0.3.0 0 /data/local/tmp/foxlet/vb-42268f09e6a3/enzh512p.yml < /data/local/tmp/foxlet/vb-42268f09e6a3/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.8,
+        "board_temp": "31913",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 60
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 3037.637,
+          "peak_rss_mib": 205.023,
+          "rss_mib": 160.809,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 2836.674,
+          "peak_rss_mib": 205.023,
+          "rss_mib": 160.957,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 2835.094,
+          "peak_rss_mib": 205.023,
+          "rss_mib": 160.961,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2553600"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31950",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_b512p",
+      "version": "v0.5.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-42268f09e6a3/v0.5.0 0 /data/local/tmp/foxlet/vb-42268f09e6a3/enzh512p.yml < /data/local/tmp/foxlet/vb-42268f09e6a3/eng.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31909",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 22
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 3074.81,
+          "peak_rss_mib": 204.262,
+          "rss_mib": 160.074,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 2834.416,
+          "peak_rss_mib": 204.262,
+          "rss_mib": 160.219,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 2835.064,
+          "peak_rss_mib": 204.262,
+          "rss_mib": 160.223,
+          "output_bytes": 22576,
+          "output_hash": "d2a66fe859a1e9c7"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2246400"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "32001",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "pivot_b512p",
+      "version": "v0.3.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-42268f09e6a3/v0.3.0 0 /data/local/tmp/foxlet/vb-42268f09e6a3/jaen512.yml /data/local/tmp/foxlet/vb-42268f09e6a3/enzh512p.yml < /data/local/tmp/foxlet/vb-42268f09e6a3/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "31994",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 16
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 6368.2,
+          "peak_rss_mib": 306.402,
+          "rss_mib": 262.691,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 5849.629,
+          "peak_rss_mib": 306.402,
+          "rss_mib": 262.781,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 5859.925,
+          "peak_rss_mib": 306.402,
+          "rss_mib": 262.715,
+          "output_bytes": 22668,
+          "output_hash": "1b16cdee7e0e3be1"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2169600"
+        },
+        "battery_temp_c": 30.6,
+        "board_temp": "32122",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "pivot_b512p",
+      "version": "v0.5.0",
+      "command": "taskset 7c /data/local/tmp/foxlet/vb-42268f09e6a3/v0.5.0 0 /data/local/tmp/foxlet/vb-42268f09e6a3/jaen512.yml /data/local/tmp/foxlet/vb-42268f09e6a3/enzh512p.yml < /data/local/tmp/foxlet/vb-42268f09e6a3/jpn.txt",
+      "before": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2630400"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "32033",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        },
+        "gate_wait_s": 44
+      },
+      "returncode": 0,
+      "samples": [
+        {
+          "pass": 0,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 6251.301,
+          "peak_rss_mib": 306.195,
+          "rss_mib": 262.949,
+          "output_bytes": 22554,
+          "output_hash": "1fb8aa37ed4e6f7b"
+        },
+        {
+          "pass": 1,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 5742.947,
+          "peak_rss_mib": 306.195,
+          "rss_mib": 263.141,
+          "output_bytes": 22554,
+          "output_hash": "1fb8aa37ed4e6f7b"
+        },
+        {
+          "pass": 2,
+          "workers": 0,
+          "sentences": 200,
+          "elapsed_ms": 5758.497,
+          "peak_rss_mib": 306.195,
+          "rss_mib": 263.141,
+          "output_bytes": 22554,
+          "output_hash": "1fb8aa37ed4e6f7b"
+        }
+      ],
+      "after": {
+        "max_freq_khz": {
+          "2": "2630400",
+          "7": "2169600"
+        },
+        "battery_temp_c": 30.7,
+        "board_temp": "32029",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "io.github.yinvoker.foxlet.bench"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "scenario": "enzh_w2_512p",
+      "version": "v0.3.0",
+      "before": {
+        "max_freq_khz": {
+          "2": "1286400",
+          "7": "1248000"
+        },
+        "battery_temp_c": 30.8,
+        "board_temp": "32176",
+        "foreground": {
+          "wakefulness": "Awake",
+          "lockscreen": false,
+          "focused_package": "com.android.incallui"
+        },
+        "gate_wait_s": -2
+      },
+      "returncode": 2,
+      "samples": [],
+      "error": "device not awake/unlocked with benchmark app foreground"
+    }
+  ]
+}

@@ -11,7 +11,7 @@ import hashlib
 import importlib.metadata
 import json
 from pathlib import Path
-from run import SCENARIOS, validate_result
+from run import suite_scenarios, validate_result
 
 
 def sha256(path):
@@ -38,7 +38,7 @@ def main():
     sources = {}
     for direction, code, asset in (("enzh", "eng_Latn", "eng"), ("jazh", "jpn_Jpan", "jpn")):
         sources[direction] = (args.flores_devtest / f"{code}.devtest").read_text().splitlines()[:200]
-        if sources[direction] != (root / f"sample/src/main/assets/bench/{asset}.txt").read_text().splitlines():
+        if sources[direction] != (root / f"benchmark/app/src/main/assets/bench/{asset}.txt").read_text().splitlines():
             parser.error(f"{direction}: input corpus differs from original FLORES rows")
     ref_path = args.flores_devtest / "zho_Hans.devtest"
     references = ref_path.read_text().splitlines()[:200]
@@ -48,9 +48,13 @@ def main():
     if report["status"] != "complete" and not args.completed_quality_only:
         parser.error("app export is incomplete; do not silently omit failed cells")
     complete_runs = [r for r in report["runs"] if r.get("status") == "complete"]
-    expected = {(d, e, None if e == "mlkit" else t) for d, e, t in SCENARIOS}
+    try:
+        scenarios = suite_scenarios(report["suite_id"])
+    except ValueError as error:
+        parser.error(str(error))
+    expected = {(d, e, None if e == "mlkit" else t) for d, e, t in scenarios}
     if {(r["direction"], r["engine"], r["threads"]) for r in complete_runs} != expected:
-        parser.error("quality scoring requires complete exports for all eight app scenarios")
+        parser.error(f"quality scoring requires complete exports for all {len(scenarios)} app scenarios")
     jobs = []
     for run in complete_runs:
         raw_path = args.app_results / run["result_file"]
@@ -80,7 +84,7 @@ def main():
     # defaults were incompatible with the macOS environment.
     model = load_from_checkpoint(str(args.checkpoint), local_files_only=True)
     expected_runs = {(r, d, e, None if e == "mlkit" else t)
-                     for r in range(1, report["protocol"]["rounds"] + 1) for d, e, t in SCENARIOS}
+                     for r in range(1, report["protocol"]["rounds"] + 1) for d, e, t in scenarios}
     completed_keys = {(r["round"], r["direction"], r["engine"], r["threads"]) for r in complete_runs}
     results = {"status": "running", "metric": "wmt22-comet-da x 100", "checkpoint_sha256": sha256(args.checkpoint),
                "source_report_sha256": sha256(args.app_results / "results.json"),

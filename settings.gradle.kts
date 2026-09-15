@@ -13,5 +13,7 @@ dependencyResolutionManagement {
 }
 rootProject.name = "foxlet-translate"
 include(":foxlet")
-include(":sample")
-include(":demo")
+include(":benchmark-app")
+// Directory lives under benchmark/; the module path stays :benchmark-app
+project(":benchmark-app").projectDir = file("benchmark/app")
+include(":sdk-example")

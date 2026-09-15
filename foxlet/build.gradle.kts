@@ -1,6 +1,8 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     id("com.android.library")
+    id("com.vanniktech.maven.publish")
+    id("org.jetbrains.dokka")
 }
 
 android {
@@ -16,12 +18,10 @@ android {
         externalNativeBuild {
             cmake {
                 arguments += listOf(
-                    "-DSSPLIT_USE_INTERNAL_PCRE2=ON",
                     "-DCOMPILE_TESTS=OFF",
                     "-DANDROID_STL=c++_shared",
                     "-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON",
-                    // BUILD_ARCH=native runs *host* SSE probing — poison when
-                    // cross-compiling; the explicit arch skips it entirely.
+                    // An explicit target architecture disables host SSE probing during cross-compilation.
                     "-DBUILD_ARCH=armv8-a",
                 )
                 targets += "foxlet"
@@ -31,14 +31,9 @@ android {
 
     buildTypes {
         debug {
-            // The engine is only useful optimised: a Debug CMake build compiles
-            // marian at -O0 -g, which is ~20x slower on device and, because the
-            // float loops are no longer vectorised, produces different output
-            // bytes than the release .so. The debug *variant* (debuggable
-            // Kotlin, debug signing, androidTest) therefore still builds the
-            // native library as Release, so instrumentation tests measure and
-            // hash the same engine the AAR ships. AGP passes its own
-            // -DCMAKE_BUILD_TYPE=Debug first; CMake keeps the last definition.
+            // Keep native optimization aligned with the release AAR for instrumentation
+            // and output regression. Kotlin remains debuggable. AGP supplies Debug first;
+            // the final CMAKE_BUILD_TYPE definition selects the native Release build.
             externalNativeBuild {
                 cmake { arguments += "-DCMAKE_BUILD_TYPE=Release" }
             }
@@ -90,9 +85,66 @@ androidComponents {
 }
 tasks.named("preBuild") { dependsOn(generateDistributionResources) }
 
-tasks.register<Exec>("packageWithoutPrefixes") {
-    dependsOn("assembleRelease")
-    commandLine("python3", rootProject.file("tools/distribution/package_notices.py"),
-        "--without-prefixes", layout.buildDirectory.file("outputs/aar/foxlet-release.aar").get().asFile,
-        "--output", layout.buildDirectory.file("outputs/aar/foxlet-no-prefixes-release.aar").get().asFile)
+dokka {
+    moduleName.set("Foxlet Translate")
+    dokkaSourceSets.configureEach {
+        jdkVersion.set(17)
+    }
+}
+
+// Keep the Maven group aligned with the GitHub owner; the Kotlin package stays
+// io.github.yinvoker.foxlet for API compatibility.
+mavenPublishing {
+    coordinates("io.github.yinvoke", "foxlet-translate", project.version.toString())
+    configure(com.vanniktech.maven.publish.AndroidSingleVariantLibrary(
+        variant = "release",
+        sourcesJar = com.vanniktech.maven.publish.SourcesJar.Sources(),
+        javadocJar = com.vanniktech.maven.publish.JavadocJar.Dokka("dokkaGeneratePublicationHtml"),
+    ))
+    pom {
+        name.set("Foxlet Translate")
+        description.set("Offline translation SDK for Android, powered by Mozilla models and optimized for ARM. See NOTICE for bundled third-party licenses.")
+        url.set("https://github.com/yinvoke/foxlet-translate")
+        inceptionYear.set("2026")
+        licenses {
+            license {
+                name.set("MIT License (original code)")
+                url.set("https://opensource.org/license/mit")
+                distribution.set("repo")
+            }
+            license {
+                name.set("Mozilla Public License 2.0 (Bergamot components)")
+                url.set("https://www.mozilla.org/MPL/2.0/")
+                distribution.set("repo")
+            }
+
+        }
+        developers {
+            developer {
+                id.set("yinvoke")
+                name.set("yinvoke")
+                url.set("https://github.com/yinvoke")
+            }
+        }
+        scm {
+            url.set("https://github.com/yinvoke/foxlet-translate")
+            connection.set("scm:git:https://github.com/yinvoke/foxlet-translate.git")
+            developerConnection.set("scm:git:ssh://git@github.com/yinvoke/foxlet-translate.git")
+        }
+    }
+    // Local previews need no credentials. Central tasks are enabled explicitly
+    // for release preparation; uploading still requires a separate invocation.
+    if (providers.gradleProperty("foxlet.publishToCentral").orNull == "true") {
+        publishToMavenCentral(automaticRelease = false)
+        signAllPublications()
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "LocalPreview"
+            url = rootProject.layout.buildDirectory.dir("maven-repository").get().asFile.toURI()
+        }
+    }
 }

@@ -1,0 +1,79 @@
+{
+  "schema_version": 2,
+  "version": "0.3.0",
+  "status": "已发布；小米 14 原生回归通过，App 与 ML Kit 对照波动超限仅作参考",
+  "compared_with": "v0.2.0",
+  "devices": [
+    "小米 10 / 骁龙 865 / Android 13",
+    "小米 14 / 骁龙 8 Gen 3 / Android 16"
+  ],
+  "measurements": {
+    "mi14-native": {
+      "protocol": "android-native-v1",
+      "processes": 48,
+      "passes": 144,
+      "result": "checker exit 0",
+      "compared_with": "v0.2.0",
+      "raw": "raw/mi14/native/results.json"
+    },
+    "mi14-app": {
+      "protocol": "android-app-v1",
+      "processes": 24,
+      "passes": 72,
+      "result": "checker exit 2（六项指标极差超中位数 10%）",
+      "raw": "raw/mi14/app/results.json",
+      "summary": "raw/mi14/app/summary.json",
+      "source_fingerprint": "raw/mi14/app/source-files.json"
+    },
+    "mi14-quality": {
+      "protocol": "wmt22-comet-da × 100，FLORES-200 前 200 条",
+      "compared_with": "v0.2.0",
+      "scores": "raw/mi14/quality/comet.json",
+      "app_scores": "raw/mi14/quality/app-scores.json",
+      "native_exports": "raw/mi14/quality/native/manifest.json",
+      "app_exports": "raw/mi14/quality/app/results.json"
+    },
+    "mi14-initial-comparison": {
+      "protocol": "android-native-v1（跳过频率起跑门槛）",
+      "processes": 48,
+      "result": "探索性，不作为严格基线",
+      "compared_with": "v0.1.0",
+      "raw": "raw/mi14/initial/results.json"
+    },
+    "mi10-history": {
+      "protocol": "android-native-v1",
+      "note": "历史趋势参考，缺部分指纹",
+      "raw": "raw/mi10/results.json",
+      "summary": "raw/mi10/summary.json"
+    },
+    "mi14-history": {
+      "protocol": "android-native-v1",
+      "note": "历史趋势参考，缺部分指纹",
+      "raw": "raw/mi14/history/results.json",
+      "summary": "raw/mi14/history/summary.json"
+    }
+  },
+  "collectors": {
+    "native/run-pair.py": "../shared/collectors/native-run-pair-v0.3.0.py",
+    "native/bench_device.py": "../shared/collectors/bench_device.py",
+    "initial/tools/version-bench/run-pair.py": "../shared/collectors/native-run-pair-initial.py",
+    "initial/tools/version-bench/check.py": "../shared/collectors/native-check.py",
+    "initial/tools/version-bench/suite.py": "../shared/collectors/suite.py",
+    "initial/tools/version-bench/main.cpp": "../shared/collectors/main.cpp",
+    "initial/tools/version-bench/suites/android-native-v1.json": "../shared/collectors/suites/android-native-v1.json",
+    "initial/tools/bench_device.py": "../shared/collectors/bench_device.py",
+    "app/run.py": "../shared/collectors/app-run-v0.3.0.py",
+    "app/check.py": "../shared/collectors/app-check-v1.py",
+    "app/bench_device.py": "../shared/collectors/bench_device.py",
+    "quality/reference.cpp": "../shared/collectors/reference.cpp",
+    "quality/reference.cmake": "../shared/collectors/reference.cmake"
+  },
+  "corpora": {
+    "eng": "../shared/corpora/eng_Latn.devtest",
+    "jpn": "../shared/corpora/jpn_Jpan.devtest"
+  },
+  "external": {},
+  "checks": [
+    "python3 -B benchmark/data/v0.3.0/verify.py"
+  ]
+}

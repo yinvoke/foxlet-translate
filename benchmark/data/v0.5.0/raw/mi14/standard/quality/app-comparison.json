@@ -1,0 +1,20 @@
+{
+  "metric": "COMET x100",
+  "scope": "Existing actual App outputs with each version default rules, not the native fixed-prefix configuration.",
+  "results": {
+    "enzh": {
+      "input_count": 200,
+      "v0.3.0": 87.26716721057892,
+      "v0.5.0": 87.26716721057892,
+      "delta": 0.0,
+      "changed_rows": 0
+    },
+    "jazh": {
+      "input_count": 200,
+      "v0.3.0": 86.71308651566505,
+      "v0.5.0": 86.76398074626923,
+      "delta": 0.05089423060417175,
+      "changed_rows": 21
+    }
+  }
+}

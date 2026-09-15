@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the historical pair; see benchmarks/v0.2.0/README.md."""
+"""Run the historical pair; see benchmark/data/v0.2.0/README.md."""
 import argparse
 import hashlib
 import json
@@ -47,7 +47,7 @@ for lang, source in [('enzh', '/data/local/tmp/bg/config-mbw1024.yml'), ('jaen',
     adb('push', str(local), remote + '/' + lang + '.yml')
 for lang, source in [('eng', 'eng200.txt'), ('jpn', 'jpn200.txt')]:
     shell(f'cp /data/local/tmp/bg/{source} {remote}/{lang}.txt')
-    expected = (repo / f'sample/src/main/assets/bench/{lang}.txt').read_text().splitlines()
+    expected = (repo / f'benchmark/app/src/main/assets/bench/{lang}.txt').read_text().splitlines()
     actual = shell(f'cat {remote}/{lang}.txt').splitlines()
     assert expected == actual and len(actual) == 200, lang
 
@@ -60,7 +60,7 @@ report = {
     'model_files_sha256': {path: shell('sha256sum ' + path).split()[0] for path in sorted({line.strip()[2:] for content in configs.values() for line in content.splitlines() if line.strip().startswith('- /')})},
     'harness_sha256': hashlib.sha256((repo / 'tools/version-bench/main.cpp').read_bytes()).hexdigest(),
     'config_yaml': configs,
-    'corpus_sha256': {lang: hashlib.sha256((repo / f'sample/src/main/assets/bench/{lang}.txt').read_bytes()).hexdigest() for lang in ['eng', 'jpn']},
+    'corpus_sha256': {lang: hashlib.sha256((repo / f'benchmark/app/src/main/assets/bench/{lang}.txt').read_bytes()).hexdigest() for lang in ['eng', 'jpn']},
     'protocol': {'affinity': 'f0', 'rounds': 3, 'version_order': ['AB', 'BA', 'AB'], 'passes_per_process': 3, 'cache_size': 0, 'cooldown_seconds': 4, 'cold_ms': 'service + model creation + first translation; OS page cache not flushed', 'peak_rss_mib': 'VmHWM immediately after first translation, KiB / 1024', 'warm_ms': 'passes 1 and 2; reported separately'},
     'runs': [],
 }

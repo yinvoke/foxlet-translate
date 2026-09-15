@@ -1,0 +1,634 @@
+[
+  {
+    "key": "en-zh.single.legacy",
+    "command": [
+      "${WORKSPACE}/build/release-0.5.0-quality/legacy/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/en.legacy.yml"
+    ],
+    "elapsed_seconds": 6.8798652910627425,
+    "output_sha256": "2bb59e8b5a3f062b6071c229d833e9ed06836fd4ce824d90672085396bb10b4d",
+    "count": 1012,
+    "config_sha256": [
+      "39f1f53428d7bdece7e895e60de9815ec491765dd94210d476a32af9a1334d3c"
+    ]
+  },
+  {
+    "key": "en-zh.single.current",
+    "command": [
+      "${WORKSPACE}/build-host-audit/tools/smoke/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/en.current.yml"
+    ],
+    "elapsed_seconds": 7.493676917045377,
+    "output_sha256": "c83f915b526d96e740763dd878ace16221e27cf986deecae18a608ce79623495",
+    "count": 1012,
+    "config_sha256": [
+      "fc7b7749b6824ce72bfd0439e6773150f2437d461c45d52786ceee551310e918"
+    ]
+  },
+  {
+    "key": "en-zh.paragraph.legacy",
+    "command": [
+      "${WORKSPACE}/build/release-0.5.0-quality/legacy/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/en.legacy.yml"
+    ],
+    "elapsed_seconds": 6.984914915985428,
+    "output_sha256": "b9806207a2f06ec600a0ce1793f01ff75db511915fbb8019285da2280288aedf",
+    "count": 253,
+    "config_sha256": [
+      "39f1f53428d7bdece7e895e60de9815ec491765dd94210d476a32af9a1334d3c"
+    ]
+  },
+  {
+    "key": "en-zh.paragraph.current",
+    "command": [
+      "${WORKSPACE}/build-host-audit/tools/smoke/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/en.current.yml"
+    ],
+    "elapsed_seconds": 6.904321541078389,
+    "output_sha256": "c3371be87bd7ac2a7fc6f7e13567489319bc5cf0d6236d0cd69f7202e1192319",
+    "count": 253,
+    "config_sha256": [
+      "fc7b7749b6824ce72bfd0439e6773150f2437d461c45d52786ceee551310e918"
+    ]
+  },
+  {
+    "key": "zh-en.single.legacy",
+    "command": [
+      "${WORKSPACE}/build/release-0.5.0-quality/legacy/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/zh.legacy.yml"
+    ],
+    "elapsed_seconds": 7.271046790992841,
+    "output_sha256": "c11982e2fb5192e97e9da9081d8fb1ae97a52e06ebe190305881c4f1b724d225",
+    "count": 1012,
+    "config_sha256": [
+      "0479c0ca926636b91d855e9e93cc95747407bf6b9a5413136c7671c361774611"
+    ]
+  },
+  {
+    "key": "zh-en.single.current",
+    "command": [
+      "${WORKSPACE}/build-host-audit/tools/smoke/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/zh.current.yml"
+    ],
+    "elapsed_seconds": 7.16162995796185,
+    "output_sha256": "e6493bf85c025360992bd004d470d9a65698441d40bf8749754f36e49ab067c2",
+    "count": 1012,
+    "config_sha256": [
+      "c756533c673c871fb851b279b610c8989b63ccc1b960c53680e9c1db5f050f4d"
+    ]
+  },
+  {
+    "key": "zh-en.paragraph.legacy",
+    "command": [
+      "${WORKSPACE}/build/release-0.5.0-quality/legacy/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/zh.legacy.yml"
+    ],
+    "elapsed_seconds": 7.259840250015259,
+    "output_sha256": "326202bc072e1ee23fa1de611a8f5d9cb80727fa01949920908f2776b9d62dcc",
+    "count": 253,
+    "config_sha256": [
+      "0479c0ca926636b91d855e9e93cc95747407bf6b9a5413136c7671c361774611"
+    ]
+  },
+  {
+    "key": "zh-en.paragraph.current",
+    "command": [
+      "${WORKSPACE}/build-host-audit/tools/smoke/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/zh.current.yml"
+    ],
+    "elapsed_seconds": 7.298104916000739,
+    "output_sha256": "9ea56931f6595cb40b63906719d9654ec485643679e44ae604214b4d4aafe176",
+    "count": 253,
+    "config_sha256": [
+      "c756533c673c871fb851b279b610c8989b63ccc1b960c53680e9c1db5f050f4d"
+    ]
+  },
+  {
+    "key": "ja-en.single.legacy",
+    "command": [
+      "${WORKSPACE}/build/release-0.5.0-quality/legacy/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/ja.legacy.yml"
+    ],
+    "elapsed_seconds": 7.532577792066149,
+    "output_sha256": "1cb8d155e37c7403c2d26e37a3355b2f4580fb5e29cdf8d4352da9e4d9cd7c3a",
+    "count": 1012,
+    "config_sha256": [
+      "274090b9626467cf685ae1737403b9c914451ee106e053660f57ada946298aec"
+    ]
+  },
+  {
+    "key": "ja-en.single.current",
+    "command": [
+      "${WORKSPACE}/build-host-audit/tools/smoke/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/ja.current.yml"
+    ],
+    "elapsed_seconds": 7.292232917039655,
+    "output_sha256": "179434807af55576bec6ca6648a6c988054316e1596f65d7afd1bf9a912972b3",
+    "count": 1012,
+    "config_sha256": [
+      "6fdd96433eb7f7f17c813a93799fada563e958e9ed02e67b97cd6082542aeb0c"
+    ]
+  },
+  {
+    "key": "ja-en.paragraph.legacy",
+    "command": [
+      "${WORKSPACE}/build/release-0.5.0-quality/legacy/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/ja.legacy.yml"
+    ],
+    "elapsed_seconds": 7.363698708009906,
+    "output_sha256": "d2dd88f3afd5a78ce8afdeb1fda92d090fabd4d58f613ea43b24ec6c03015b52",
+    "count": 253,
+    "config_sha256": [
+      "274090b9626467cf685ae1737403b9c914451ee106e053660f57ada946298aec"
+    ]
+  },
+  {
+    "key": "ja-en.paragraph.current",
+    "command": [
+      "${WORKSPACE}/build-host-audit/tools/smoke/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/ja.current.yml"
+    ],
+    "elapsed_seconds": 7.265368915977888,
+    "output_sha256": "c63e13962230bba88e2ece998871a44b0631a69fd16d97d5eabd8d2e548c720a",
+    "count": 253,
+    "config_sha256": [
+      "6fdd96433eb7f7f17c813a93799fada563e958e9ed02e67b97cd6082542aeb0c"
+    ]
+  },
+  {
+    "key": "ko-en.single.legacy",
+    "command": [
+      "${WORKSPACE}/build/release-0.5.0-quality/legacy/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/ko.legacy.yml"
+    ],
+    "elapsed_seconds": 7.27566779195331,
+    "output_sha256": "3c68023cd40417aba850dbc604968ea203d59270bc42a34617bd03557e48817a",
+    "count": 1012,
+    "config_sha256": [
+      "82cfed9f978f02e2d982c29079d770fe076ad185470307edc1c45d337bfb6ad6"
+    ]
+  },
+  {
+    "key": "ko-en.single.current",
+    "command": [
+      "${WORKSPACE}/build-host-audit/tools/smoke/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/ko.current.yml"
+    ],
+    "elapsed_seconds": 7.147387958015315,
+    "output_sha256": "7eee555b6e86850aa1b2413a875a0eb1a9b518048b5c79807b61c15fce5682b8",
+    "count": 1012,
+    "config_sha256": [
+      "a0a7125c519a0f68dd3792293d4441144cdb3b065da2ec4d6ac82f4236a67b7f"
+    ]
+  },
+  {
+    "key": "ko-en.paragraph.legacy",
+    "command": [
+      "${WORKSPACE}/build/release-0.5.0-quality/legacy/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/ko.legacy.yml"
+    ],
+    "elapsed_seconds": 7.210869459086098,
+    "output_sha256": "064511384ca89a18aae4a583fc6b7a1750e50c7d8633f7ced5f47023885cee37",
+    "count": 253,
+    "config_sha256": [
+      "82cfed9f978f02e2d982c29079d770fe076ad185470307edc1c45d337bfb6ad6"
+    ]
+  },
+  {
+    "key": "ko-en.paragraph.current",
+    "command": [
+      "${WORKSPACE}/build-host-audit/tools/smoke/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/ko.current.yml"
+    ],
+    "elapsed_seconds": 10.47109887492843,
+    "output_sha256": "23bca35b60b9f23c8b57758950153210f371677c0daceaa99d4b7d4a3b6dc600",
+    "count": 253,
+    "config_sha256": [
+      "a0a7125c519a0f68dd3792293d4441144cdb3b065da2ec4d6ac82f4236a67b7f"
+    ]
+  },
+  {
+    "key": "ru-en.single.legacy",
+    "command": [
+      "${WORKSPACE}/build/release-0.5.0-quality/legacy/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/ru.legacy.yml"
+    ],
+    "elapsed_seconds": 8.59285920788534,
+    "output_sha256": "1f29f8aa01be75fcb907fca6b823c3d6d30c2b8bbf896eec92b30da5b69d87e2",
+    "count": 1012,
+    "config_sha256": [
+      "fb8bac7c7b1c0e602f2e5012a9589a3bfa5cc53aa94e4ad8858f578f7ae2ab38"
+    ]
+  },
+  {
+    "key": "ru-en.single.current",
+    "command": [
+      "${WORKSPACE}/build-host-audit/tools/smoke/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/ru.current.yml"
+    ],
+    "elapsed_seconds": 8.456707249977626,
+    "output_sha256": "add1a1239467eb53b1d19aa41f5c9b131716ebe830cb41ad87b1644612e2f1b7",
+    "count": 1012,
+    "config_sha256": [
+      "b3d9288d7a994b50b6d453ce7f8affcdc20e00779713f29f08e5061a42fdbb69"
+    ]
+  },
+  {
+    "key": "ru-en.paragraph.legacy",
+    "command": [
+      "${WORKSPACE}/build/release-0.5.0-quality/legacy/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/ru.legacy.yml"
+    ],
+    "elapsed_seconds": 8.393128833035007,
+    "output_sha256": "109ca87070b39083fad46c18d54db4451d87aefe5c8ea23140953351605dd38c",
+    "count": 253,
+    "config_sha256": [
+      "fb8bac7c7b1c0e602f2e5012a9589a3bfa5cc53aa94e4ad8858f578f7ae2ab38"
+    ]
+  },
+  {
+    "key": "ru-en.paragraph.current",
+    "command": [
+      "${WORKSPACE}/build-host-audit/tools/smoke/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/ru.current.yml"
+    ],
+    "elapsed_seconds": 8.530542084015906,
+    "output_sha256": "d6ba19d577376ac3e605c8c1a84fff2c686da015cec2451c047ba0b6fc4d8199",
+    "count": 253,
+    "config_sha256": [
+      "b3d9288d7a994b50b6d453ce7f8affcdc20e00779713f29f08e5061a42fdbb69"
+    ]
+  },
+  {
+    "key": "ja-zh.single.legacy",
+    "command": [
+      "${WORKSPACE}/build/release-0.5.0-quality/legacy/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/ja.legacy.yml",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/en.legacy.yml"
+    ],
+    "elapsed_seconds": 15.642797708977014,
+    "output_sha256": "9a53e2ff9b773d2080624862c22a1b9dfeb75fc21a0274cb673add65aaa66d50",
+    "count": 1012,
+    "config_sha256": [
+      "274090b9626467cf685ae1737403b9c914451ee106e053660f57ada946298aec",
+      "39f1f53428d7bdece7e895e60de9815ec491765dd94210d476a32af9a1334d3c"
+    ]
+  },
+  {
+    "key": "ja-zh.single.current",
+    "command": [
+      "${WORKSPACE}/build-host-audit/tools/smoke/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/ja.current.yml",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/en.current.yml"
+    ],
+    "elapsed_seconds": 14.057125000050291,
+    "output_sha256": "139fd7d5bddb3a3ff4a91034368db48fbf71850784cfd1b5c0390ebde1583d4f",
+    "count": 1012,
+    "config_sha256": [
+      "6fdd96433eb7f7f17c813a93799fada563e958e9ed02e67b97cd6082542aeb0c",
+      "fc7b7749b6824ce72bfd0439e6773150f2437d461c45d52786ceee551310e918"
+    ]
+  },
+  {
+    "key": "ja-zh.paragraph.legacy",
+    "command": [
+      "${WORKSPACE}/build/release-0.5.0-quality/legacy/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/ja.legacy.yml",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/en.legacy.yml"
+    ],
+    "elapsed_seconds": 13.940554542001337,
+    "output_sha256": "8a1d909fcd7b5f5d69884f9bc61fd6174b9760d5ceebddda2360fdd17d785e57",
+    "count": 253,
+    "config_sha256": [
+      "274090b9626467cf685ae1737403b9c914451ee106e053660f57ada946298aec",
+      "39f1f53428d7bdece7e895e60de9815ec491765dd94210d476a32af9a1334d3c"
+    ]
+  },
+  {
+    "key": "ja-zh.paragraph.current",
+    "command": [
+      "${WORKSPACE}/build-host-audit/tools/smoke/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/ja.current.yml",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/en.current.yml"
+    ],
+    "elapsed_seconds": 14.117069999920204,
+    "output_sha256": "123b82395ac5be640434f474605c3263f75db37ca0cb24f43cc3d8ab49ed0b04",
+    "count": 253,
+    "config_sha256": [
+      "6fdd96433eb7f7f17c813a93799fada563e958e9ed02e67b97cd6082542aeb0c",
+      "fc7b7749b6824ce72bfd0439e6773150f2437d461c45d52786ceee551310e918"
+    ]
+  },
+  {
+    "key": "ko-zh.single.legacy",
+    "command": [
+      "${WORKSPACE}/build/release-0.5.0-quality/legacy/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/ko.legacy.yml",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/en.legacy.yml"
+    ],
+    "elapsed_seconds": 13.863794417004101,
+    "output_sha256": "c4253c62cd9cbd3411a4f4050d3fab75ed20ce96b718842a67f4bef151c02df2",
+    "count": 1012,
+    "config_sha256": [
+      "82cfed9f978f02e2d982c29079d770fe076ad185470307edc1c45d337bfb6ad6",
+      "39f1f53428d7bdece7e895e60de9815ec491765dd94210d476a32af9a1334d3c"
+    ]
+  },
+  {
+    "key": "ko-zh.single.current",
+    "command": [
+      "${WORKSPACE}/build-host-audit/tools/smoke/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/ko.current.yml",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/en.current.yml"
+    ],
+    "elapsed_seconds": 13.937419792055152,
+    "output_sha256": "8abd72187c0a5be6640bf1baf33e96c962d464632b16c1191f50be9bf5e657d0",
+    "count": 1012,
+    "config_sha256": [
+      "a0a7125c519a0f68dd3792293d4441144cdb3b065da2ec4d6ac82f4236a67b7f",
+      "fc7b7749b6824ce72bfd0439e6773150f2437d461c45d52786ceee551310e918"
+    ]
+  },
+  {
+    "key": "ko-zh.paragraph.legacy",
+    "command": [
+      "${WORKSPACE}/build/release-0.5.0-quality/legacy/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/ko.legacy.yml",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/en.legacy.yml"
+    ],
+    "elapsed_seconds": 14.208503041998483,
+    "output_sha256": "32f6b33f81cad227d0151eae04b4ccd4d8e3b56962991aace3bb693c25f54126",
+    "count": 253,
+    "config_sha256": [
+      "82cfed9f978f02e2d982c29079d770fe076ad185470307edc1c45d337bfb6ad6",
+      "39f1f53428d7bdece7e895e60de9815ec491765dd94210d476a32af9a1334d3c"
+    ]
+  },
+  {
+    "key": "ko-zh.paragraph.current",
+    "command": [
+      "${WORKSPACE}/build-host-audit/tools/smoke/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/ko.current.yml",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/en.current.yml"
+    ],
+    "elapsed_seconds": 14.210961208096705,
+    "output_sha256": "879206a8732205f1f70d8744bd753d2df3455b1cd892e6ed71fa2107bc355b07",
+    "count": 253,
+    "config_sha256": [
+      "a0a7125c519a0f68dd3792293d4441144cdb3b065da2ec4d6ac82f4236a67b7f",
+      "fc7b7749b6824ce72bfd0439e6773150f2437d461c45d52786ceee551310e918"
+    ]
+  },
+  {
+    "key": "ru-zh.single.legacy",
+    "command": [
+      "${WORKSPACE}/build/release-0.5.0-quality/legacy/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/ru.legacy.yml",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/en.legacy.yml"
+    ],
+    "elapsed_seconds": 15.742352166911587,
+    "output_sha256": "6d2c86b85e83f3da5c18c860c74aafb1a2093ac7c2b8947be487f3f89d0e2a49",
+    "count": 1012,
+    "config_sha256": [
+      "fb8bac7c7b1c0e602f2e5012a9589a3bfa5cc53aa94e4ad8858f578f7ae2ab38",
+      "39f1f53428d7bdece7e895e60de9815ec491765dd94210d476a32af9a1334d3c"
+    ]
+  },
+  {
+    "key": "ru-zh.single.current",
+    "command": [
+      "${WORKSPACE}/build-host-audit/tools/smoke/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/ru.current.yml",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/en.current.yml"
+    ],
+    "elapsed_seconds": 15.428217000095174,
+    "output_sha256": "f5cd0d91c9c8502ac215278df960dc8deafdaa21abf84a0b1cddeb78384910b2",
+    "count": 1012,
+    "config_sha256": [
+      "b3d9288d7a994b50b6d453ce7f8affcdc20e00779713f29f08e5061a42fdbb69",
+      "fc7b7749b6824ce72bfd0439e6773150f2437d461c45d52786ceee551310e918"
+    ]
+  },
+  {
+    "key": "ru-zh.paragraph.legacy",
+    "command": [
+      "${WORKSPACE}/build/release-0.5.0-quality/legacy/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/ru.legacy.yml",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/en.legacy.yml"
+    ],
+    "elapsed_seconds": 16.37418216606602,
+    "output_sha256": "e7373e3576e78b7259c93115c640bdd8236538d88b43f1b01a7ba66d7648f34a",
+    "count": 253,
+    "config_sha256": [
+      "fb8bac7c7b1c0e602f2e5012a9589a3bfa5cc53aa94e4ad8858f578f7ae2ab38",
+      "39f1f53428d7bdece7e895e60de9815ec491765dd94210d476a32af9a1334d3c"
+    ]
+  },
+  {
+    "key": "ru-zh.paragraph.current",
+    "command": [
+      "${WORKSPACE}/build-host-audit/tools/smoke/smoke",
+      "--workers",
+      "0",
+      "--cache-size",
+      "0",
+      "--bench",
+      "--sentence-stats",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/ru.current.yml",
+      "${WORKSPACE}/build/release-0.5.0-quality/configs/en.current.yml"
+    ],
+    "elapsed_seconds": 15.724769708001986,
+    "output_sha256": "bbd2ea2d8773a9cceef9ac4b996c8368763a246c28f897b1465065868247cd79",
+    "count": 253,
+    "config_sha256": [
+      "b3d9288d7a994b50b6d453ce7f8affcdc20e00779713f29f08e5061a42fdbb69",
+      "fc7b7749b6824ce72bfd0439e6773150f2437d461c45d52786ceee551310e918"
+    ]
+  }
+]

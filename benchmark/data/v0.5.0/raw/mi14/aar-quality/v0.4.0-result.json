@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "variant": "v0.4.0",
+  "row_translations": 4088,
+  "elapsed_seconds": 112.84534616698511,
+  "command": [
+    "${ANDROID_SDK_ROOT}/platform-tools/adb",
+    "-s",
+    "${DEVICE_SERIAL}",
+    "shell",
+    "am",
+    "instrument",
+    "-w",
+    "-r",
+    "-e",
+    "class",
+    "io.github.yinvoker.foxlet.demo.OfflineTranslationTest",
+    "-e",
+    "validationAsset",
+    "size-validation",
+    "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+  ],
+  "candidate_matches_pre_trim": false
+}

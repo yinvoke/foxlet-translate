@@ -1,0 +1,30 @@
+{
+  "date": "2026-09-15",
+  "candidate": {
+    "version": "0.5.0",
+    "published": false,
+    "uncommitted": true,
+    "base_commit": "b99f5fd53136e2dd976d492de56ed01a510813aa",
+    "aar_bytes": 2809980,
+    "aar_sha256": "21354cd87699d83a03192acb4ac074d38a5ab27277d49cd0a1468fe1da208ddd"
+  },
+  "baseline": {
+    "version": "0.4.0",
+    "release": "https://github.com/yinvoke/foxlet-translate/releases/tag/v0.4.0",
+    "aar_bytes": 3784263,
+    "aar_sha256": "f72a8e49a7bb70810fe446ea4a0e75351b9cef2334e5438ff6f4895cd974392d"
+  },
+  "device": {
+    "model": "Xiaomi 14 (23127PN0CC / houji)",
+    "soc": "SM8650 / Snapdragon 8 Gen 3",
+    "android": 16,
+    "api": 36
+  },
+  "build": {
+    "abi": "arm64-v8a",
+    "ndk": "29.0.13113456",
+    "cmake": "3.31.6",
+    "type": "RelWithDebInfo; stripped release AAR"
+  },
+  "archive_note": "Local candidate snapshot, not a released tag. Absolute workspace and SDK paths and device serial are replaced by placeholders. Hashes describe original artifacts; archive file hashes are in manifest.json."
+}

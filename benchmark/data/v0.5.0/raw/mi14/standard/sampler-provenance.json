@@ -1,0 +1,6 @@
+{
+  "baseline_sha256": "9ca129f3b55fcc3af2b82a7b36efec97eb6512049c12667fc7edbc93cd128d30",
+  "candidate_sha256": "874ab9eaaef73207cf37235fd31006eac7f5ea70cffa71b28a5360c5ad3a08ff",
+  "identical_after_package_rename": true,
+  "normalization": "io.github.yinvoker.bergamot.bench -> io.github.yinvoker.foxlet.bench"
+}

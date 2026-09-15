@@ -1,6 +1,8 @@
 # Foxlet Translate 文档
 
-这里按使用、开发和验证组织文档。[根 README](../README.md) 介绍项目定位、性能、接入方式和限制；[benchmarks/](../benchmarks/README.md) 按版本保存性能证据。
+本索引按接入、开发和验证用途组织文档。[根 README](../README.md) 介绍项目定位、性能、接入方式和限制；[benchmark/data/](../benchmark/data/README.md) 按版本保存性能证据。
+
+[English README](../README.en.md) 提供英文项目介绍与发行 AAR 接入步骤。
 
 ## 使用者
 
@@ -11,21 +13,26 @@
 
 ## 开发者
 
+- [分句设计与规则配置](sentence-segmentation.md)：Unicode 句界、语言规则、自定义缩写及原生适配。
 - [代码结构与运行时架构](architecture.md)：Android、JNI、Bergamot/Marian 引擎、工具和模型之间的边界。
-- [Kotlin API 审查与统一设计](api-design-review.md)：统一客户端的设计推导、行为契约和破坏性迁移对照。
-- [公开 API 快照](../api/README.md)：新入口的 JVM 签名检查、旧入口移除门禁及更新方法。
+- [公开 API 与签名快照](public-api.md)：客户端职责、行为契约、JVM 签名检查及更新方法。
 - [构建与测试](benchmarking.md)：本地构建、单元测试、主机 smoke 和真机验证入口。
-- [推送与发布准备](releasing.md)：当前提交状态、分支推送检查、CI 触发条件和 0.4.0 发布待办。
+- [发布指南](releasing.md)：发行构建、CI 门禁、版本管理与发布方法。
 - [贡献指南](../CONTRIBUTING.md)：改动范围、上游 vendor 规则、验证要求和文档约定。
 - [上游来源与升级](../engine/UPSTREAM.md)：引擎 vendor 来源、裁剪范围和 re-vendor 流程。
 
 ## 性能与质量
 
-- [版本基准](../benchmarks/README.md)：各版本、设备的性能结果与回归规则。
-- [v0.3.0 测试结果](../benchmarks/v0.3.0/README.md)：小米 10 / 14 性能、翻译质量及 ML Kit 对比。
+- [版本基准](../benchmark/data/README.md)：各版本、设备的性能结果与回归规则。
+- [v0.5.0 版本结果](../benchmark/data/v0.5.0/README.md)：当前归档的性能、翻译质量、体积与未完成项；历史版本由基准索引保留。
+- [基准数据生成](../tools/benchmark-report/README.md)：从版本归档生成 README 与版本对比，不触发设备采集。
 - [App 评测工具](../tools/app-bench/README.md)：AAR 与 ML Kit 的性能测量和质量评分。
 - [版本回归工具](../tools/version-bench/README.md)：按固定协议构建、测量和检查版本差异。
 
+## 文档存放约定
+
+API 说明、签名快照和其他对外文档统一放在 `docs/`。过程文档、执行计划、发布准备记录、实验结果、质量回测、设计审查稿和审查提示词统一放在 `.docs-private/`，该目录由 Git 忽略。公开文档不得链接到私有文件；可复用的使用和维护方法才放在 `docs/`。
+
 ## 阅读约定
 
-历史文档中的“main”指测量时记录的提交，不会随分支移动自动更新，也不代表已发布版本。性能数字必须结合设备、温度、线程数、模型版本和计时口径阅读；未经标注的数字不要直接当作跨设备承诺。
+历史文档中的“main”指测量时记录的提交，不会随分支移动自动更新，也不代表已发布版本。性能数字必须结合设备、温度、线程数、模型版本和计时口径阅读；单一设备的结果不构成跨设备性能承诺。

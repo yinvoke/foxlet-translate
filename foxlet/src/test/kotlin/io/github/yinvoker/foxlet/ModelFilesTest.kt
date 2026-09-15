@@ -110,8 +110,7 @@ class ModelFilesTest {
         assertEquals("en", ModelFiles.sourceLanguageOf("model.enzh.intgemm.alphas.bin"))
         assertEquals("ja", ModelFiles.sourceLanguageOf("model.jaen.intgemm.alphas.bin"))
         assertEquals("de", ModelFiles.sourceLanguageOf("model.deen.intgemm.alphas.bin"))
-        // Both zh-Hans and zh-Hant ship as `zh` in the file name, and both want
-        // the same prefix table.
+        // Both zh-Hans and zh-Hant ship as `zh` in the file name.
         assertEquals("zh", ModelFiles.sourceLanguageOf("model.zhen.intgemm.alphas.bin"))
     }
 
@@ -132,45 +131,22 @@ class ModelFilesTest {
     }
 
     @Test
-    fun `every advertised prefix table is on the classpath and parses as one`() {
-        assertEquals(25, PrefixTables.languages.size)
-        for (language in PrefixTables.languages) {
-            val bytes = PrefixTables.bytesFor(language)
-            assertNotNull("no table for $language", bytes)
-            assertTrue("empty table for $language", bytes!!.isNotEmpty())
-            // A prefix table is a line-oriented text file; anything else means we
-            // packaged the wrong bytes.
-            val text = String(bytes, Charsets.UTF_8)
-            assertTrue("$language has no prefix lines", text.lines().any { it.isNotBlank() && !it.startsWith("#") })
+    fun `native sentence options retain source locale when abbreviation rules are disabled`() {
+        val files = ModelFiles.fromDirectory(dir("model.enzh.a.bin", "srcvocab.enzh.spm", "trgvocab.enzh.spm", "lex.bin"))
+        for (tag in listOf("en-GB", "de", "fr", "zh-Hans", "zh-Hant", "ja-JP", "ko-KR", "ru-RU", "ar", "el", "tr-TR")) {
+            val model = files.copy(sourceLanguage = tag)
+            assertTrue(model.toNativeConfigYaml().contains("ssplit-language: \"$tag\""))
+            assertTrue(model.toNativeConfigYaml().contains("ssplit-builtin: true"))
+            assertTrue(model.toNativeConfigYaml(nonbreakingPrefixes = false).contains("ssplit-builtin: false"))
         }
     }
 
     @Test
-    fun `english table protects the abbreviations that break sentence splitting`() {
-        val text = String(PrefixTables.bytesFor("en")!!, Charsets.UTF_8).lines().map { it.trim() }
-        for (prefix in listOf("Dr", "Mr", "Mrs", "Prof", "St", "e.g", "i.e")) {
-            assertTrue("en table is missing $prefix", text.any { it == prefix || it.startsWith("$prefix ") })
-        }
-        // NUMERIC_ONLY entries only suppress the break in front of a digit.
-        assertTrue(text.any { it.startsWith("No ") && it.contains("NUMERIC_ONLY") })
-    }
-
-    @Test
-    fun `language tags resolve on their primary subtag`() {
-        val zh = PrefixTables.bytesFor("zh")!!
-        assertArrayEquals(zh, PrefixTables.bytesFor("zh-Hans"))
-        assertArrayEquals(zh, PrefixTables.bytesFor("zh-Hant"))
-        assertArrayEquals(zh, PrefixTables.bytesFor("ZH"))
-        assertArrayEquals(PrefixTables.bytesFor("en"), PrefixTables.bytesFor("en_GB"))
-    }
-
-    @Test
-    fun `a language without a table is not an error`() {
-        // Japanese ends sentences with a character the regex already handles, so
-        // ssplit-cpp ships no ja table; nor one for ko, th or ar.
-        for (language in listOf("ja", "ko", "th", "ar", "xx", "", "  ", null)) {
-            assertNull("unexpected table for $language", PrefixTables.bytesFor(language))
-        }
+    fun `custom rules replace builtins and unknown language has no implicit English fallback`() {
+        val files = ModelFiles.fromDirectory(dir("model.enzh.a.bin", "srcvocab.enzh.spm", "trgvocab.enzh.spm", "lex.bin"))
+        assertTrue(files.copy(nonbreakingPrefixFile = File("custom.txt")).toNativeConfigYaml().contains("ssplit-builtin: false"))
+        assertTrue(files.copy(sourceLanguage = null).toNativeConfigYaml().contains("ssplit-language: \"\""))
+        assertEquals(setOf("en", "de", "fr", "es", "pt", "it", "ru", "tr", "zh", "ja", "ko"), PrefixTables.languages)
     }
 
     @Test

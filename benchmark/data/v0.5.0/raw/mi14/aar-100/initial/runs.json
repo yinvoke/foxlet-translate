@@ -1,0 +1,2882 @@
+[
+  {
+    "repeat": 0,
+    "variant": "v0.4.0",
+    "direction": "en-zh",
+    "workers": 1,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3828000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4398\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h4m9s115ms\n The last voltage value sent via the battery changed broadcast: 4368\n  temperature: 299\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "3148800\n3052800\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3828000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4398\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h4m9s115ms\n The last voltage value sent via the battery changed broadcast: 4368\n  temperature: 299\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2630400\n2630400\n"
+    },
+    "result": {
+      "direction": "en-zh",
+      "workers": 1,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 1264.707656,
+          "peak_pss_kib": 234609,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 1037.699114,
+          "peak_pss_kib": 233334,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 1031.973124,
+          "peak_pss_kib": 202302,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "en-zh",
+      "-e",
+      "workers",
+      "1",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 0,
+    "variant": "v0.4.0",
+    "direction": "en-zh",
+    "workers": 2,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3828000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4398\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h4m9s115ms\n The last voltage value sent via the battery changed broadcast: 4368\n  temperature: 299\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2630400\n2630400\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3828000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4398\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h4m9s115ms\n The last voltage value sent via the battery changed broadcast: 4368\n  temperature: 299\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2630400\n2630400\n"
+    },
+    "result": {
+      "direction": "en-zh",
+      "workers": 2,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 859.235989,
+          "peak_pss_kib": 347496,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 641.455833,
+          "peak_pss_kib": 347331,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 633.052864,
+          "peak_pss_kib": 295746,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "en-zh",
+      "-e",
+      "workers",
+      "2",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 0,
+    "variant": "v0.4.0",
+    "direction": "en-zh",
+    "workers": 4,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3828000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4398\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h4m9s115ms\n The last voltage value sent via the battery changed broadcast: 4368\n  temperature: 299\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2630400\n2630400\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3826000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4392\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h4m9s115ms\n The last voltage value sent via the battery changed broadcast: 4368\n  temperature: 300\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2630400\n2630400\n"
+    },
+    "result": {
+      "direction": "en-zh",
+      "workers": 4,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 683.64776,
+          "peak_pss_kib": 566858,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 421.512083,
+          "peak_pss_kib": 572751,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 432.775833,
+          "peak_pss_kib": 572347,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "en-zh",
+      "-e",
+      "workers",
+      "4",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 0,
+    "variant": "v0.4.0",
+    "direction": "ja-zh",
+    "workers": 1,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3826000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4392\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h4m9s115ms\n The last voltage value sent via the battery changed broadcast: 4368\n  temperature: 300\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2630400\n2496000\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3824000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4385\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h4m9s115ms\n The last voltage value sent via the battery changed broadcast: 4368\n  temperature: 303\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2630400\n2169600\n"
+    },
+    "result": {
+      "direction": "ja-zh",
+      "workers": 1,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 3448.03453,
+          "peak_pss_kib": 331990,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 2978.933696,
+          "peak_pss_kib": 308518,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 2976.65229,
+          "peak_pss_kib": 307814,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "ja-zh",
+      "-e",
+      "workers",
+      "1",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 0,
+    "variant": "v0.4.0",
+    "direction": "ja-zh",
+    "workers": 2,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3824000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4385\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h4m9s115ms\n The last voltage value sent via the battery changed broadcast: 4368\n  temperature: 303\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2630400\n2169600\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3824000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4385\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h4m9s115ms\n The last voltage value sent via the battery changed broadcast: 4368\n  temperature: 303\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2630400\n2169600\n"
+    },
+    "result": {
+      "direction": "ja-zh",
+      "workers": 2,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 1939.251562,
+          "peak_pss_kib": 588710,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 1560.769635,
+          "peak_pss_kib": 529271,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 1673.622447,
+          "peak_pss_kib": 478591,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "ja-zh",
+      "-e",
+      "workers",
+      "2",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 0,
+    "variant": "v0.4.0",
+    "direction": "ja-zh",
+    "workers": 4,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3824000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4385\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h4m9s115ms\n The last voltage value sent via the battery changed broadcast: 4368\n  temperature: 303\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2630400\n2169600\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3824000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4385\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h4m9s115ms\n The last voltage value sent via the battery changed broadcast: 4368\n  temperature: 303\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2630400\n2169600\n"
+    },
+    "result": {
+      "direction": "ja-zh",
+      "workers": 4,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 1506.730521,
+          "peak_pss_kib": 919676,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 903.587656,
+          "peak_pss_kib": 923241,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 896.390833,
+          "peak_pss_kib": 818729,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "ja-zh",
+      "-e",
+      "workers",
+      "4",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 0,
+    "variant": "v0.4.0",
+    "direction": "ru-en",
+    "workers": 1,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3824000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4385\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h4m9s115ms\n The last voltage value sent via the battery changed broadcast: 4368\n  temperature: 303\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2630400\n2169600\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3824000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4385\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h4m9s115ms\n The last voltage value sent via the battery changed broadcast: 4368\n  temperature: 303\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2630400\n2169600\n"
+    },
+    "result": {
+      "direction": "ru-en",
+      "workers": 1,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 1845.48677,
+          "peak_pss_kib": 229153,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 1895.371614,
+          "peak_pss_kib": 180010,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 1902.352499,
+          "peak_pss_kib": 180394,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "ru-en",
+      "-e",
+      "workers",
+      "1",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 0,
+    "variant": "v0.4.0",
+    "direction": "ru-en",
+    "workers": 2,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3824000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4385\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h4m9s115ms\n The last voltage value sent via the battery changed broadcast: 4368\n  temperature: 303\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2630400\n2169600\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3820000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4360\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h4m9s115ms\n The last voltage value sent via the battery changed broadcast: 4368\n  temperature: 310\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2630400\n2169600\n"
+    },
+    "result": {
+      "direction": "ru-en",
+      "workers": 2,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 1098.782708,
+          "peak_pss_kib": 318794,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 1051.966198,
+          "peak_pss_kib": 318899,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 1046.859739,
+          "peak_pss_kib": 255870,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "ru-en",
+      "-e",
+      "workers",
+      "2",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 0,
+    "variant": "v0.5.0",
+    "direction": "en-zh",
+    "workers": 1,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3820000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4360\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h4m9s115ms\n The last voltage value sent via the battery changed broadcast: 4368\n  temperature: 310\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "3148800\n3052800\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3820000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4360\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h4m9s115ms\n The last voltage value sent via the battery changed broadcast: 4368\n  temperature: 310\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2630400\n2169600\n"
+    },
+    "result": {
+      "direction": "en-zh",
+      "workers": 1,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 1369.329843,
+          "peak_pss_kib": 233248,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 1452.532759,
+          "peak_pss_kib": 228241,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 1449.379427,
+          "peak_pss_kib": 200869,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "en-zh",
+      "-e",
+      "workers",
+      "1",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 0,
+    "variant": "v0.5.0",
+    "direction": "en-zh",
+    "workers": 2,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3820000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4360\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h4m9s115ms\n The last voltage value sent via the battery changed broadcast: 4368\n  temperature: 310\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2630400\n2169600\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3818000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4344\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h10m0s742ms\n The last voltage value sent via the battery changed broadcast: 4344\n  temperature: 313\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2630400\n2169600\n"
+    },
+    "result": {
+      "direction": "en-zh",
+      "workers": 2,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 904.439479,
+          "peak_pss_kib": 348831,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 812.264323,
+          "peak_pss_kib": 348291,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 818.434896,
+          "peak_pss_kib": 290737,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "en-zh",
+      "-e",
+      "workers",
+      "2",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 0,
+    "variant": "v0.5.0",
+    "direction": "en-zh",
+    "workers": 4,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3818000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4344\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h10m0s742ms\n The last voltage value sent via the battery changed broadcast: 4344\n  temperature: 313\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2630400\n2169600\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3818000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4344\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h10m0s742ms\n The last voltage value sent via the battery changed broadcast: 4344\n  temperature: 313\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2630400\n2169600\n"
+    },
+    "result": {
+      "direction": "en-zh",
+      "workers": 4,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 692.068698,
+          "peak_pss_kib": 565065,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 446.9575,
+          "peak_pss_kib": 573546,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 443.856771,
+          "peak_pss_kib": 573962,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "en-zh",
+      "-e",
+      "workers",
+      "4",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 0,
+    "variant": "v0.5.0",
+    "direction": "ja-zh",
+    "workers": 1,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3818000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4344\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h10m0s742ms\n The last voltage value sent via the battery changed broadcast: 4344\n  temperature: 313\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2630400\n2169600\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3818000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4344\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h10m0s742ms\n The last voltage value sent via the battery changed broadcast: 4344\n  temperature: 313\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2515200\n2035200\n"
+    },
+    "result": {
+      "direction": "ja-zh",
+      "workers": 1,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 3189.479113,
+          "peak_pss_kib": 330821,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 3030.976926,
+          "peak_pss_kib": 307221,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 3047.847707,
+          "peak_pss_kib": 306517,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "ja-zh",
+      "-e",
+      "workers",
+      "1",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 0,
+    "variant": "v0.5.0",
+    "direction": "ja-zh",
+    "workers": 2,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3818000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4344\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h10m0s742ms\n The last voltage value sent via the battery changed broadcast: 4344\n  temperature: 313\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3818000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4344\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h10m0s742ms\n The last voltage value sent via the battery changed broadcast: 4344\n  temperature: 313\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2515200\n2035200\n"
+    },
+    "result": {
+      "direction": "ja-zh",
+      "workers": 2,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 2256.460052,
+          "peak_pss_kib": 579707,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 1587.899531,
+          "peak_pss_kib": 526256,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 1584.698437,
+          "peak_pss_kib": 478178,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "ja-zh",
+      "-e",
+      "workers",
+      "2",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 0,
+    "variant": "v0.5.0",
+    "direction": "ja-zh",
+    "workers": 4,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3818000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4344\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h10m0s742ms\n The last voltage value sent via the battery changed broadcast: 4344\n  temperature: 313\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2380800\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3818000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4344\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h10m0s742ms\n The last voltage value sent via the battery changed broadcast: 4344\n  temperature: 313\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "ja-zh",
+      "workers": 4,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 1563.015625,
+          "peak_pss_kib": 915951,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 978.195052,
+          "peak_pss_kib": 922180,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 950.892552,
+          "peak_pss_kib": 818313,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "ja-zh",
+      "-e",
+      "workers",
+      "4",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 0,
+    "variant": "v0.5.0",
+    "direction": "ru-en",
+    "workers": 1,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3818000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4344\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h10m0s742ms\n The last voltage value sent via the battery changed broadcast: 4344\n  temperature: 313\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3818000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4344\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h10m0s742ms\n The last voltage value sent via the battery changed broadcast: 4344\n  temperature: 313\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "ru-en",
+      "workers": 1,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 2043.327447,
+          "peak_pss_kib": 229509,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 2054.477238,
+          "peak_pss_kib": 179426,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 2048.062395,
+          "peak_pss_kib": 179820,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "ru-en",
+      "-e",
+      "workers",
+      "1",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 0,
+    "variant": "v0.5.0",
+    "direction": "ru-en",
+    "workers": 2,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3818000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4344\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h10m0s742ms\n The last voltage value sent via the battery changed broadcast: 4344\n  temperature: 313\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3813000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4387\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h10m0s742ms\n The last voltage value sent via the battery changed broadcast: 4344\n  temperature: 320\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "ru-en",
+      "workers": 2,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 1160.021719,
+          "peak_pss_kib": 318537,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 1132.517864,
+          "peak_pss_kib": 318642,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 1123.971249,
+          "peak_pss_kib": 255430,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "ru-en",
+      "-e",
+      "workers",
+      "2",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 1,
+    "variant": "v0.5.0",
+    "direction": "ru-en",
+    "workers": 2,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3812000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4386\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h10m0s742ms\n The last voltage value sent via the battery changed broadcast: 4344\n  temperature: 321\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "3148800\n3052800\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3812000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4386\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h10m0s742ms\n The last voltage value sent via the battery changed broadcast: 4344\n  temperature: 321\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "ru-en",
+      "workers": 2,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 1275.794531,
+          "peak_pss_kib": 318395,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 1041.208698,
+          "peak_pss_kib": 318368,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 1161.334375,
+          "peak_pss_kib": 255812,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "ru-en",
+      "-e",
+      "workers",
+      "2",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 1,
+    "variant": "v0.5.0",
+    "direction": "ru-en",
+    "workers": 1,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3812000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4386\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h10m0s742ms\n The last voltage value sent via the battery changed broadcast: 4344\n  temperature: 321\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3812000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4386\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h10m0s742ms\n The last voltage value sent via the battery changed broadcast: 4344\n  temperature: 321\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "ru-en",
+      "workers": 1,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 2074.739166,
+          "peak_pss_kib": 229918,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 1781.286561,
+          "peak_pss_kib": 180071,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 2114.911665,
+          "peak_pss_kib": 181283,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "ru-en",
+      "-e",
+      "workers",
+      "1",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 1,
+    "variant": "v0.5.0",
+    "direction": "ja-zh",
+    "workers": 4,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3812000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4386\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h10m0s742ms\n The last voltage value sent via the battery changed broadcast: 4344\n  temperature: 321\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3812000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4386\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h10m0s742ms\n The last voltage value sent via the battery changed broadcast: 4344\n  temperature: 321\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "ja-zh",
+      "workers": 4,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 1533.21427,
+          "peak_pss_kib": 918730,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 1073.408697,
+          "peak_pss_kib": 920059,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 1027.295364,
+          "peak_pss_kib": 820534,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "ja-zh",
+      "-e",
+      "workers",
+      "4",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 1,
+    "variant": "v0.5.0",
+    "direction": "ja-zh",
+    "workers": 2,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3812000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4386\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h10m0s742ms\n The last voltage value sent via the battery changed broadcast: 4344\n  temperature: 321\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3812000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4386\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h10m0s742ms\n The last voltage value sent via the battery changed broadcast: 4344\n  temperature: 321\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "ja-zh",
+      "workers": 2,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 2099.111353,
+          "peak_pss_kib": 583594,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 1844.09052,
+          "peak_pss_kib": 526454,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 1629.935207,
+          "peak_pss_kib": 478507,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "ja-zh",
+      "-e",
+      "workers",
+      "2",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 1,
+    "variant": "v0.5.0",
+    "direction": "ja-zh",
+    "workers": 1,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3812000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4386\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h10m0s742ms\n The last voltage value sent via the battery changed broadcast: 4344\n  temperature: 321\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3812000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4386\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h10m0s742ms\n The last voltage value sent via the battery changed broadcast: 4344\n  temperature: 321\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "ja-zh",
+      "workers": 1,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 3685.831666,
+          "peak_pss_kib": 331010,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 3325.154321,
+          "peak_pss_kib": 306749,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 3321.383384,
+          "peak_pss_kib": 306903,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "ja-zh",
+      "-e",
+      "workers",
+      "1",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 1,
+    "variant": "v0.5.0",
+    "direction": "en-zh",
+    "workers": 4,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3812000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4386\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h10m0s742ms\n The last voltage value sent via the battery changed broadcast: 4344\n  temperature: 321\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3812000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4386\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h10m0s742ms\n The last voltage value sent via the battery changed broadcast: 4344\n  temperature: 321\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "en-zh",
+      "workers": 4,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 690.680833,
+          "peak_pss_kib": 565655,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 455.397709,
+          "peak_pss_kib": 570075,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 494.038802,
+          "peak_pss_kib": 570235,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "en-zh",
+      "-e",
+      "workers",
+      "4",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 1,
+    "variant": "v0.5.0",
+    "direction": "en-zh",
+    "workers": 2,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3812000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4386\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h10m0s742ms\n The last voltage value sent via the battery changed broadcast: 4344\n  temperature: 321\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3807000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4386\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h12m0s754ms\n The last voltage value sent via the battery changed broadcast: 4386\n  temperature: 327\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "en-zh",
+      "workers": 2,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 871.357031,
+          "peak_pss_kib": 348363,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 897.428594,
+          "peak_pss_kib": 349375,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 798.682292,
+          "peak_pss_kib": 294059,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "en-zh",
+      "-e",
+      "workers",
+      "2",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 1,
+    "variant": "v0.5.0",
+    "direction": "en-zh",
+    "workers": 1,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3807000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4386\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h12m0s754ms\n The last voltage value sent via the battery changed broadcast: 4386\n  temperature: 327\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3807000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4386\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h12m0s754ms\n The last voltage value sent via the battery changed broadcast: 4386\n  temperature: 327\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "en-zh",
+      "workers": 1,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 1572.91276,
+          "peak_pss_kib": 233245,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 1567.163645,
+          "peak_pss_kib": 200862,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 1576.384322,
+          "peak_pss_kib": 201083,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "en-zh",
+      "-e",
+      "workers",
+      "1",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 1,
+    "variant": "v0.4.0",
+    "direction": "ru-en",
+    "workers": 2,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3807000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4386\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h12m0s754ms\n The last voltage value sent via the battery changed broadcast: 4386\n  temperature: 327\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "3148800\n3052800\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3807000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4386\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h12m0s754ms\n The last voltage value sent via the battery changed broadcast: 4386\n  temperature: 327\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "ru-en",
+      "workers": 2,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 1156.900364,
+          "peak_pss_kib": 319621,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 1167.467551,
+          "peak_pss_kib": 320729,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 1158.918958,
+          "peak_pss_kib": 255961,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "ru-en",
+      "-e",
+      "workers",
+      "2",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 1,
+    "variant": "v0.4.0",
+    "direction": "ru-en",
+    "workers": 1,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3807000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4386\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h12m0s754ms\n The last voltage value sent via the battery changed broadcast: 4386\n  temperature: 327\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3804000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4385\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h12m0s754ms\n The last voltage value sent via the battery changed broadcast: 4386\n  temperature: 330\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "ru-en",
+      "workers": 1,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 1870.808073,
+          "peak_pss_kib": 230575,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 2125.20677,
+          "peak_pss_kib": 180589,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 2126.521718,
+          "peak_pss_kib": 182122,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "ru-en",
+      "-e",
+      "workers",
+      "1",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 1,
+    "variant": "v0.4.0",
+    "direction": "ja-zh",
+    "workers": 4,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3804000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4385\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h12m0s754ms\n The last voltage value sent via the battery changed broadcast: 4386\n  temperature: 330\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3804000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4385\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h12m0s754ms\n The last voltage value sent via the battery changed broadcast: 4386\n  temperature: 330\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "ja-zh",
+      "workers": 4,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 1546.005573,
+          "peak_pss_kib": 917292,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 977.861302,
+          "peak_pss_kib": 920968,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 976.139114,
+          "peak_pss_kib": 820220,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "ja-zh",
+      "-e",
+      "workers",
+      "4",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 1,
+    "variant": "v0.4.0",
+    "direction": "ja-zh",
+    "workers": 2,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3804000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4385\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h12m0s754ms\n The last voltage value sent via the battery changed broadcast: 4386\n  temperature: 330\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3804000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4385\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h12m0s754ms\n The last voltage value sent via the battery changed broadcast: 4386\n  temperature: 330\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "ja-zh",
+      "workers": 2,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 2137.076353,
+          "peak_pss_kib": 584012,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 1839.176614,
+          "peak_pss_kib": 525341,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 1671.74677,
+          "peak_pss_kib": 478720,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "ja-zh",
+      "-e",
+      "workers",
+      "2",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 1,
+    "variant": "v0.4.0",
+    "direction": "ja-zh",
+    "workers": 1,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3804000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4385\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h12m0s754ms\n The last voltage value sent via the battery changed broadcast: 4386\n  temperature: 330\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3801000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4376\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h12m0s754ms\n The last voltage value sent via the battery changed broadcast: 4386\n  temperature: 333\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "ja-zh",
+      "workers": 1,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 3732.870624,
+          "peak_pss_kib": 331479,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 3402.761092,
+          "peak_pss_kib": 306950,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 3393.521457,
+          "peak_pss_kib": 307078,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "ja-zh",
+      "-e",
+      "workers",
+      "1",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 1,
+    "variant": "v0.4.0",
+    "direction": "en-zh",
+    "workers": 4,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3801000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4376\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h12m0s754ms\n The last voltage value sent via the battery changed broadcast: 4386\n  temperature: 333\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3801000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4376\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h12m0s754ms\n The last voltage value sent via the battery changed broadcast: 4386\n  temperature: 333\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "en-zh",
+      "workers": 4,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 737.618854,
+          "peak_pss_kib": 569792,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 515.827344,
+          "peak_pss_kib": 571144,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 463.153333,
+          "peak_pss_kib": 572553,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "en-zh",
+      "-e",
+      "workers",
+      "4",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 1,
+    "variant": "v0.4.0",
+    "direction": "en-zh",
+    "workers": 2,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3801000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4376\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h12m0s754ms\n The last voltage value sent via the battery changed broadcast: 4386\n  temperature: 333\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3801000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4376\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h12m0s754ms\n The last voltage value sent via the battery changed broadcast: 4386\n  temperature: 333\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "en-zh",
+      "workers": 2,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 1061.850833,
+          "peak_pss_kib": 346722,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 910.402708,
+          "peak_pss_kib": 347623,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 926.381406,
+          "peak_pss_kib": 295243,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "en-zh",
+      "-e",
+      "workers",
+      "2",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 1,
+    "variant": "v0.4.0",
+    "direction": "en-zh",
+    "workers": 1,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3801000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4376\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h12m0s754ms\n The last voltage value sent via the battery changed broadcast: 4386\n  temperature: 333\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3801000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4376\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h12m0s754ms\n The last voltage value sent via the battery changed broadcast: 4386\n  temperature: 333\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "en-zh",
+      "workers": 1,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 1407.937603,
+          "peak_pss_kib": 233983,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 1588.033489,
+          "peak_pss_kib": 204764,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 1582.753021,
+          "peak_pss_kib": 201753,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "en-zh",
+      "-e",
+      "workers",
+      "1",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 2,
+    "variant": "v0.4.0",
+    "direction": "en-zh",
+    "workers": 1,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3801000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4376\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h12m0s754ms\n The last voltage value sent via the battery changed broadcast: 4386\n  temperature: 333\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "3148800\n3052800\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3801000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4376\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h12m0s754ms\n The last voltage value sent via the battery changed broadcast: 4386\n  temperature: 333\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "en-zh",
+      "workers": 1,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 1667.185625,
+          "peak_pss_kib": 233800,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 1603.892083,
+          "peak_pss_kib": 201384,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 1610.342395,
+          "peak_pss_kib": 202394,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "en-zh",
+      "-e",
+      "workers",
+      "1",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 2,
+    "variant": "v0.4.0",
+    "direction": "en-zh",
+    "workers": 2,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3801000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4376\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h12m0s754ms\n The last voltage value sent via the battery changed broadcast: 4386\n  temperature: 333\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3801000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4376\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h12m0s754ms\n The last voltage value sent via the battery changed broadcast: 4386\n  temperature: 333\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "en-zh",
+      "workers": 2,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 1173.281719,
+          "peak_pss_kib": 344048,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 909.012083,
+          "peak_pss_kib": 345168,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 902.817187,
+          "peak_pss_kib": 289456,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "en-zh",
+      "-e",
+      "workers",
+      "2",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 2,
+    "variant": "v0.4.0",
+    "direction": "en-zh",
+    "workers": 4,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3801000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4376\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h12m0s754ms\n The last voltage value sent via the battery changed broadcast: 4386\n  temperature: 333\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3801000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4376\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h12m0s754ms\n The last voltage value sent via the battery changed broadcast: 4386\n  temperature: 333\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "en-zh",
+      "workers": 4,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 691.100312,
+          "peak_pss_kib": 564760,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 507.9575,
+          "peak_pss_kib": 568467,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 508.336301,
+          "peak_pss_kib": 569859,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "en-zh",
+      "-e",
+      "workers",
+      "4",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 2,
+    "variant": "v0.4.0",
+    "direction": "ja-zh",
+    "workers": 1,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3796000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4380\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h14m0s757ms\n The last voltage value sent via the battery changed broadcast: 4380\n  temperature: 337\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3796000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4380\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h14m0s757ms\n The last voltage value sent via the battery changed broadcast: 4380\n  temperature: 337\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "ja-zh",
+      "workers": 1,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 3622.821978,
+          "peak_pss_kib": 329388,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 3309.901301,
+          "peak_pss_kib": 306098,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 3305.014582,
+          "peak_pss_kib": 305447,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "ja-zh",
+      "-e",
+      "workers",
+      "1",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 2,
+    "variant": "v0.4.0",
+    "direction": "ja-zh",
+    "workers": 2,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3796000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4380\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h14m0s757ms\n The last voltage value sent via the battery changed broadcast: 4380\n  temperature: 337\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3796000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4380\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h14m0s757ms\n The last voltage value sent via the battery changed broadcast: 4380\n  temperature: 337\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "ja-zh",
+      "workers": 2,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 2255.390155,
+          "peak_pss_kib": 580141,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 1665.159739,
+          "peak_pss_kib": 526793,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 1859.032031,
+          "peak_pss_kib": 478944,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "ja-zh",
+      "-e",
+      "workers",
+      "2",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 2,
+    "variant": "v0.4.0",
+    "direction": "ja-zh",
+    "workers": 4,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3796000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4380\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h14m0s757ms\n The last voltage value sent via the battery changed broadcast: 4380\n  temperature: 337\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3796000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4380\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h14m0s757ms\n The last voltage value sent via the battery changed broadcast: 4380\n  temperature: 337\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "ja-zh",
+      "workers": 4,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 1524.487291,
+          "peak_pss_kib": 920152,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 1061.453177,
+          "peak_pss_kib": 921928,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 1016.033281,
+          "peak_pss_kib": 817120,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "ja-zh",
+      "-e",
+      "workers",
+      "4",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 2,
+    "variant": "v0.4.0",
+    "direction": "ru-en",
+    "workers": 1,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3796000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4380\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h14m0s757ms\n The last voltage value sent via the battery changed broadcast: 4380\n  temperature: 337\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3793000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4381\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h14m0s757ms\n The last voltage value sent via the battery changed broadcast: 4380\n  temperature: 340\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "ru-en",
+      "workers": 1,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 1855.610885,
+          "peak_pss_kib": 229220,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 2070.734582,
+          "peak_pss_kib": 180119,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 2065.92177,
+          "peak_pss_kib": 180528,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "ru-en",
+      "-e",
+      "workers",
+      "1",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 2,
+    "variant": "v0.4.0",
+    "direction": "ru-en",
+    "workers": 2,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3793000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4381\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h14m0s757ms\n The last voltage value sent via the battery changed broadcast: 4380\n  temperature: 340\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3793000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4381\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h14m0s757ms\n The last voltage value sent via the battery changed broadcast: 4380\n  temperature: 340\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "ru-en",
+      "workers": 2,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 1037.572812,
+          "peak_pss_kib": 318929,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 1145.172864,
+          "peak_pss_kib": 318909,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 1148.518489,
+          "peak_pss_kib": 255089,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "ru-en",
+      "-e",
+      "workers",
+      "2",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 2,
+    "variant": "v0.5.0",
+    "direction": "en-zh",
+    "workers": 1,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3793000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4381\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h14m0s757ms\n The last voltage value sent via the battery changed broadcast: 4380\n  temperature: 340\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "3148800\n3052800\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3792000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4378\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h14m0s757ms\n The last voltage value sent via the battery changed broadcast: 4380\n  temperature: 342\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "en-zh",
+      "workers": 1,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 1555.421458,
+          "peak_pss_kib": 233600,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 1340.746719,
+          "peak_pss_kib": 203699,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 1584.391406,
+          "peak_pss_kib": 201315,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "en-zh",
+      "-e",
+      "workers",
+      "1",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 2,
+    "variant": "v0.5.0",
+    "direction": "en-zh",
+    "workers": 2,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3792000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4378\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h14m0s757ms\n The last voltage value sent via the battery changed broadcast: 4380\n  temperature: 342\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3792000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4378\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h14m0s757ms\n The last voltage value sent via the battery changed broadcast: 4380\n  temperature: 342\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "en-zh",
+      "workers": 2,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 989.312135,
+          "peak_pss_kib": 348589,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 908.435208,
+          "peak_pss_kib": 348540,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 908.361979,
+          "peak_pss_kib": 290961,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "en-zh",
+      "-e",
+      "workers",
+      "2",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 2,
+    "variant": "v0.5.0",
+    "direction": "en-zh",
+    "workers": 4,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3792000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4378\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h14m0s757ms\n The last voltage value sent via the battery changed broadcast: 4380\n  temperature: 342\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3792000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4378\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h14m0s757ms\n The last voltage value sent via the battery changed broadcast: 4380\n  temperature: 342\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "en-zh",
+      "workers": 4,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 706.969687,
+          "peak_pss_kib": 569219,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 448.343958,
+          "peak_pss_kib": 573823,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 521.324323,
+          "peak_pss_kib": 574632,
+          "output_sha256": "7f3cfd852c92d5de99533333fc934a17fc5352c2115b0355e65dd4951a9a0187"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "en-zh",
+      "-e",
+      "workers",
+      "4",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 2,
+    "variant": "v0.5.0",
+    "direction": "ja-zh",
+    "workers": 1,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3792000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4378\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h14m0s757ms\n The last voltage value sent via the battery changed broadcast: 4380\n  temperature: 342\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3792000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4378\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h14m0s757ms\n The last voltage value sent via the battery changed broadcast: 4380\n  temperature: 342\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "ja-zh",
+      "workers": 1,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 3651.186821,
+          "peak_pss_kib": 331149,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 3304.350623,
+          "peak_pss_kib": 307490,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 3301.464425,
+          "peak_pss_kib": 306942,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "ja-zh",
+      "-e",
+      "workers",
+      "1",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 2,
+    "variant": "v0.5.0",
+    "direction": "ja-zh",
+    "workers": 2,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3792000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4378\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h14m0s757ms\n The last voltage value sent via the battery changed broadcast: 4380\n  temperature: 342\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3792000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4378\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h14m0s757ms\n The last voltage value sent via the battery changed broadcast: 4380\n  temperature: 342\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "result": {
+      "direction": "ja-zh",
+      "workers": 2,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 2098.798906,
+          "peak_pss_kib": 583706,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 1859.233488,
+          "peak_pss_kib": 526026,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 1797.274947,
+          "peak_pss_kib": 477993,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "ja-zh",
+      "-e",
+      "workers",
+      "2",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 2,
+    "variant": "v0.5.0",
+    "direction": "ja-zh",
+    "workers": 4,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3792000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4378\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h14m0s757ms\n The last voltage value sent via the battery changed broadcast: 4380\n  temperature: 342\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2323200\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3792000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4378\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h14m0s757ms\n The last voltage value sent via the battery changed broadcast: 4380\n  temperature: 342\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2188800\n1824000\n"
+    },
+    "result": {
+      "direction": "ja-zh",
+      "workers": 4,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 1505.236406,
+          "peak_pss_kib": 917156,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 1021.027499,
+          "peak_pss_kib": 919073,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 1066.666302,
+          "peak_pss_kib": 820249,
+          "output_sha256": "99ae2fe8050e18b113c9a76a7bae24565f7756ca625dd52348ae4a5ca4fff370"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "ja-zh",
+      "-e",
+      "workers",
+      "4",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 2,
+    "variant": "v0.5.0",
+    "direction": "ru-en",
+    "workers": 1,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3792000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4378\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h14m0s757ms\n The last voltage value sent via the battery changed broadcast: 4380\n  temperature: 342\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2246400\n1939200\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3792000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4378\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h14m0s757ms\n The last voltage value sent via the battery changed broadcast: 4380\n  temperature: 342\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2246400\n1939200\n"
+    },
+    "result": {
+      "direction": "ru-en",
+      "workers": 1,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 1910.718801,
+          "peak_pss_kib": 229694,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 2147.345676,
+          "peak_pss_kib": 179646,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 2143.186874,
+          "peak_pss_kib": 180055,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "ru-en",
+      "-e",
+      "workers",
+      "1",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  },
+  {
+    "repeat": 2,
+    "variant": "v0.5.0",
+    "direction": "ru-en",
+    "workers": 2,
+    "before": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3792000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4378\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h14m0s757ms\n The last voltage value sent via the battery changed broadcast: 4380\n  temperature: 342\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2188800\n1824000\n"
+    },
+    "after": {
+      "battery": "Current Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Dock powered: false\n  Max charging current: 1200000\n Time when the latest updated value of the Max charging current was sent via battery changed broadcast: +8d13h25m0s663ms\n  Max charging voltage: 5000000\n  Charge counter: 3786000\n  status: 5\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4381\n Time when the latest updated value of the voltage was sent via battery changed broadcast: +8d15h14m0s757ms\n The last voltage value sent via the battery changed broadcast: 4380\n  temperature: 346\n  technology: Li-poly\n  Charging state: 0\n  Charging policy: 0\n  Capacity level: -1\nMiuiBatteryService first usage time:\n  mSetBatteryUsageTimeCount=0\n  mNtpTime=-1\n  mParseNtpTime=\n",
+      "frequency_limits": "2188800\n1824000\n"
+    },
+    "result": {
+      "direction": "ru-en",
+      "workers": 2,
+      "count": 100,
+      "samples": [
+        {
+          "iteration": 0,
+          "elapsed_ms": 1209.877968,
+          "peak_pss_kib": 319161,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        },
+        {
+          "iteration": 1,
+          "elapsed_ms": 1182.965573,
+          "peak_pss_kib": 319149,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        },
+        {
+          "iteration": 2,
+          "elapsed_ms": 1192.283177,
+          "peak_pss_kib": 254304,
+          "output_sha256": "1951baf389e37d1584ac96a1180944da58cf3cea7fa8193b44e1e20736f766c0"
+        }
+      ],
+      "foreground_before_after_passed": true
+    },
+    "command": [
+      "${ANDROID_SDK_ROOT}/platform-tools/adb",
+      "-s",
+      "${DEVICE_SERIAL}",
+      "shell",
+      "am",
+      "instrument",
+      "-w",
+      "-r",
+      "-e",
+      "class",
+      "io.github.yinvoker.foxlet.demo.ReleaseBenchmarkTest",
+      "-e",
+      "direction",
+      "ru-en",
+      "-e",
+      "workers",
+      "2",
+      "io.github.yinvoker.foxlet.sizevalidation.test/androidx.test.runner.AndroidJUnitRunner"
+    ]
+  }
+]

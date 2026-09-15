@@ -1,0 +1,15 @@
+{
+  "version": "0.5.0",
+  "aar_bytes": 2809980,
+  "aar_sha256": "21354cd87699d83a03192acb4ac074d38a5ab27277d49cd0a1468fe1da208ddd",
+  "saved_vs_published_v0.4.0_bytes": 974283,
+  "saved_vs_published_v0.4.0_percent": 25.74564717092866,
+  "android_training_symbols_absent": true,
+  "host_training_symbols_present": true,
+  "kotlin_tests": {
+    "tests": 151,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

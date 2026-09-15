@@ -1,0 +1,764 @@
+{
+  "version": "0.5.0",
+  "generator_sha256": "5d9df155379a0cf28de66d372f56c81a51ebaeec16bc567e2f9f7cace726c3bf",
+  "app": {
+    "suite_id": "android-app-v2",
+    "source_status": "failed",
+    "complete": false,
+    "rows": [
+      {
+        "direction": "enzh",
+        "engine": "mlkit",
+        "threads": null,
+        "completed_processes": 1,
+        "planned_processes": 3,
+        "process_values": {
+          "cold_ms": [
+            12229.256193
+          ],
+          "warm_ms": [
+            13697.3335105
+          ],
+          "cold_pss_mib": [
+            181
+          ],
+          "warm_pss_mib": [
+            191
+          ]
+        },
+        "output_hashes": [
+          "ad71cada0aec467ecf8f735dc7d7944a9b0289bf8eca11849c2e9b79c35c1158"
+        ],
+        "comet_x100": [
+          72.69342935085297
+        ],
+        "unscored_output_hashes": [],
+        "cold_ms": 12229.256193,
+        "warm_ms": 13697.3335105,
+        "cold_pss_mib": 181,
+        "warm_pss_mib": 191,
+        "spread_percent": {
+          "cold_ms": 0.0,
+          "warm_ms": 0.0,
+          "cold_pss_mib": 0.0,
+          "warm_pss_mib": 0.0
+        },
+        "cold_inputs_per_second": 16.354224397922057,
+        "warm_inputs_per_second": 14.60138207532769
+      },
+      {
+        "direction": "enzh",
+        "engine": "bergamot",
+        "threads": 1,
+        "completed_processes": 1,
+        "planned_processes": 3,
+        "process_values": {
+          "cold_ms": [
+            2266.57151
+          ],
+          "warm_ms": [
+            1972.255025
+          ],
+          "cold_pss_mib": [
+            256.9
+          ],
+          "warm_pss_mib": [
+            227.3
+          ]
+        },
+        "output_hashes": [
+          "1dbd1ffbc8a44ee34c7c7527340027cc9ddc2ad881977d89f74cbabb633b56c5"
+        ],
+        "comet_x100": [
+          87.26716721057892
+        ],
+        "unscored_output_hashes": [],
+        "cold_ms": 2266.57151,
+        "warm_ms": 1972.255025,
+        "cold_pss_mib": 256.9,
+        "warm_pss_mib": 227.3,
+        "spread_percent": {
+          "cold_ms": 0.0,
+          "warm_ms": 0.0,
+          "cold_pss_mib": 0.0,
+          "warm_pss_mib": 0.0
+        },
+        "cold_inputs_per_second": 88.23899846866071,
+        "warm_inputs_per_second": 101.40676406693399
+      },
+      {
+        "direction": "enzh",
+        "engine": "bergamot",
+        "threads": 2,
+        "completed_processes": 1,
+        "planned_processes": 3,
+        "process_values": {
+          "cold_ms": [
+            1520.914583
+          ],
+          "warm_ms": [
+            1228.2395569999999
+          ],
+          "cold_pss_mib": [
+            371.6
+          ],
+          "warm_pss_mib": [
+            320.7
+          ]
+        },
+        "output_hashes": [
+          "1dbd1ffbc8a44ee34c7c7527340027cc9ddc2ad881977d89f74cbabb633b56c5"
+        ],
+        "comet_x100": [
+          87.26716721057892
+        ],
+        "unscored_output_hashes": [],
+        "cold_ms": 1520.914583,
+        "warm_ms": 1228.2395569999999,
+        "cold_pss_mib": 371.6,
+        "warm_pss_mib": 320.7,
+        "spread_percent": {
+          "cold_ms": 0.0,
+          "warm_ms": 0.0,
+          "cold_pss_mib": 0.0,
+          "warm_pss_mib": 0.0
+        },
+        "cold_inputs_per_second": 131.49982401082679,
+        "warm_inputs_per_second": 162.83468388569415
+      },
+      {
+        "direction": "jazh",
+        "engine": "mlkit",
+        "threads": null,
+        "completed_processes": 1,
+        "planned_processes": 3,
+        "process_values": {
+          "cold_ms": [
+            26300.789521
+          ],
+          "warm_ms": [
+            28904.669338
+          ],
+          "cold_pss_mib": [
+            233.3
+          ],
+          "warm_pss_mib": [
+            239.4
+          ]
+        },
+        "output_hashes": [
+          "eb54c5dac9701e29f5100a8f1d2df7ef83a145d93dfe8e842657c9c3e9f18fd4"
+        ],
+        "comet_x100": [
+          68.92763012647629
+        ],
+        "unscored_output_hashes": [],
+        "cold_ms": 26300.789521,
+        "warm_ms": 28904.669338,
+        "cold_pss_mib": 233.3,
+        "warm_pss_mib": 239.4,
+        "spread_percent": {
+          "cold_ms": 0.0,
+          "warm_ms": 0.0,
+          "cold_pss_mib": 0.0,
+          "warm_pss_mib": 0.0
+        },
+        "cold_inputs_per_second": 7.604334456967878,
+        "warm_inputs_per_second": 6.919297282431344
+      },
+      {
+        "direction": "jazh",
+        "engine": "bergamot",
+        "threads": 1,
+        "completed_processes": 2,
+        "planned_processes": 3,
+        "process_values": {
+          "cold_ms": [
+            4756.172342,
+            4805.765675
+          ],
+          "warm_ms": [
+            5154.6195815,
+            5828.0886955
+          ],
+          "cold_pss_mib": [
+            355,
+            355.3
+          ],
+          "warm_pss_mib": [
+            331.7,
+            332
+          ]
+        },
+        "output_hashes": [
+          "c8caa754d588edddac947a60e899c529f82b60bdd2ab5a5090c6488864c27a77"
+        ],
+        "comet_x100": [
+          86.76398074626923
+        ],
+        "unscored_output_hashes": [],
+        "cold_ms": 4780.9690085,
+        "warm_ms": 5491.3541385,
+        "cold_pss_mib": 355.15,
+        "warm_pss_mib": 331.85,
+        "spread_percent": {
+          "cold_ms": 1.0373071423769678,
+          "warm_ms": 12.264171951291456,
+          "cold_pss_mib": 0.08447135013374951,
+          "warm_pss_mib": 0.09040229019135493
+        },
+        "cold_inputs_per_second": 41.83252383448283,
+        "warm_inputs_per_second": 36.42088908413241
+      },
+      {
+        "direction": "jazh",
+        "engine": "bergamot",
+        "threads": 2,
+        "completed_processes": 2,
+        "planned_processes": 3,
+        "process_values": {
+          "cold_ms": [
+            3112.673957,
+            3174.152603
+          ],
+          "warm_ms": [
+            3064.8298165,
+            3040.1787225
+          ],
+          "cold_pss_mib": [
+            547.3,
+            547.4
+          ],
+          "warm_pss_mib": [
+            501.6,
+            501.8
+          ]
+        },
+        "output_hashes": [
+          "c8caa754d588edddac947a60e899c529f82b60bdd2ab5a5090c6488864c27a77"
+        ],
+        "comet_x100": [
+          86.76398074626923
+        ],
+        "unscored_output_hashes": [],
+        "cold_ms": 3143.4132799999998,
+        "warm_ms": 3052.5042695,
+        "cold_pss_mib": 547.3499999999999,
+        "warm_pss_mib": 501.70000000000005,
+        "spread_percent": {
+          "cold_ms": 1.955792653519617,
+          "warm_ms": 0.807569517471572,
+          "cold_pss_mib": 0.01826984561980867,
+          "warm_pss_mib": 0.039864460833164965
+        },
+        "cold_inputs_per_second": 63.625105000510786,
+        "warm_inputs_per_second": 65.51997387795954
+      }
+    ]
+  },
+  "native": {
+    "suite_id": "android-native-v1",
+    "version": "v0.5.0",
+    "rows": [
+      {
+        "scenario": "enzh_w1",
+        "completed_processes": 3,
+        "cold_ms": 3249.891,
+        "warm_ms": 2928.7195,
+        "peak_rss_mib": 204.285
+      },
+      {
+        "scenario": "enzh_w2",
+        "completed_processes": 3,
+        "cold_ms": 1897.617,
+        "warm_ms": 1569.5615,
+        "peak_rss_mib": 300.289
+      },
+      {
+        "scenario": "enzh_w4",
+        "completed_processes": 3,
+        "cold_ms": 1251.881,
+        "warm_ms": 936.5955,
+        "peak_rss_mib": 517.074
+      },
+      {
+        "scenario": "pivot_w1",
+        "completed_processes": 3,
+        "cold_ms": 7310.841,
+        "warm_ms": 6408.532999999999,
+        "peak_rss_mib": 319.172
+      },
+      {
+        "scenario": "enzh_b512p",
+        "completed_processes": 3,
+        "cold_ms": 3083.702,
+        "warm_ms": 2849.082,
+        "peak_rss_mib": 204.379
+      },
+      {
+        "scenario": "pivot_b512p",
+        "completed_processes": 3,
+        "cold_ms": 6285.518,
+        "warm_ms": 5789.017,
+        "peak_rss_mib": 305.387
+      },
+      {
+        "scenario": "enzh_w2_512p",
+        "completed_processes": 3,
+        "cold_ms": 1881.454,
+        "warm_ms": 1530.7665000000002,
+        "peak_rss_mib": 280.688
+      },
+      {
+        "scenario": "pivot_w2_512p",
+        "completed_processes": 3,
+        "cold_ms": 4024.575,
+        "warm_ms": 3431.748,
+        "peak_rss_mib": 438.008
+      }
+    ]
+  },
+  "baseline": {
+    "version": "v0.3.0",
+    "app": {
+      "suite_id": "android-app-v1",
+      "source_status": "complete",
+      "complete": true,
+      "rows": [
+        {
+          "direction": "enzh",
+          "engine": "mlkit",
+          "threads": null,
+          "completed_processes": 3,
+          "planned_processes": 3,
+          "process_values": {
+            "cold_ms": [
+              9206.706767,
+              13868.735672,
+              13879.288797
+            ],
+            "warm_ms": [
+              13545.909370000001,
+              13715.515437,
+              13727.81562
+            ],
+            "cold_pss_mib": [
+              179.5,
+              189.7,
+              185.9
+            ],
+            "warm_pss_mib": [
+              190.3,
+              189.6,
+              189.3
+            ]
+          },
+          "output_hashes": [
+            "ad71cada0aec467ecf8f735dc7d7944a9b0289bf8eca11849c2e9b79c35c1158"
+          ],
+          "comet_x100": [
+            72.69342935085297
+          ],
+          "unscored_output_hashes": [],
+          "cold_ms": 13868.735672,
+          "warm_ms": 13715.515437,
+          "cold_pss_mib": 185.9,
+          "warm_pss_mib": 189.6,
+          "spread_percent": {
+            "cold_ms": 33.69147801579068,
+            "warm_ms": 1.3262808155884123,
+            "cold_pss_mib": 5.48682087143625,
+            "warm_pss_mib": 0.5274261603375527
+          },
+          "cold_inputs_per_second": 14.420925218423903,
+          "warm_inputs_per_second": 14.582025802724486
+        },
+        {
+          "direction": "enzh",
+          "engine": "bergamot",
+          "threads": 1,
+          "completed_processes": 3,
+          "planned_processes": 3,
+          "process_values": {
+            "cold_ms": [
+              3052.386665,
+              3052.60927,
+              3053.151041
+            ],
+            "warm_ms": [
+              2305.7402335,
+              2436.9072385,
+              2311.839244
+            ],
+            "cold_pss_mib": [
+              261.1,
+              263.1,
+              263
+            ],
+            "warm_pss_mib": [
+              230.7,
+              232.5,
+              232.1
+            ]
+          },
+          "output_hashes": [
+            "1dbd1ffbc8a44ee34c7c7527340027cc9ddc2ad881977d89f74cbabb633b56c5"
+          ],
+          "comet_x100": [
+            87.26716721057892
+          ],
+          "unscored_output_hashes": [],
+          "cold_ms": 3052.60927,
+          "warm_ms": 2311.839244,
+          "cold_pss_mib": 263,
+          "warm_pss_mib": 232.1,
+          "spread_percent": {
+            "cold_ms": 0.025040086443820695,
+            "warm_ms": 5.673707864438337,
+            "cold_pss_mib": 0.7604562737642585,
+            "warm_pss_mib": 0.7755277897458042
+          },
+          "cold_inputs_per_second": 65.51772018958718,
+          "warm_inputs_per_second": 86.51120553432392
+        },
+        {
+          "direction": "enzh",
+          "engine": "bergamot",
+          "threads": 2,
+          "completed_processes": 3,
+          "planned_processes": 3,
+          "process_values": {
+            "cold_ms": [
+              1753.999271,
+              1738.852083,
+              1746.962447
+            ],
+            "warm_ms": [
+              1507.8301555,
+              1509.5011195000002,
+              1395.4020825
+            ],
+            "cold_pss_mib": [
+              376.4,
+              376.6,
+              376.5
+            ],
+            "warm_pss_mib": [
+              320.3,
+              320.4,
+              319.8
+            ]
+          },
+          "output_hashes": [
+            "1dbd1ffbc8a44ee34c7c7527340027cc9ddc2ad881977d89f74cbabb633b56c5"
+          ],
+          "comet_x100": [
+            87.26716721057892
+          ],
+          "unscored_output_hashes": [],
+          "cold_ms": 1746.962447,
+          "warm_ms": 1507.8301555,
+          "cold_pss_mib": 376.5,
+          "warm_pss_mib": 320.3,
+          "spread_percent": {
+            "cold_ms": 0.8670585922445941,
+            "warm_ms": 7.5671014128354965,
+            "cold_pss_mib": 0.05312084993361101,
+            "warm_pss_mib": 0.18732438339056068
+          },
+          "cold_inputs_per_second": 114.48443001362352,
+          "warm_inputs_per_second": 132.64093390789066
+        },
+        {
+          "direction": "jazh",
+          "engine": "mlkit",
+          "threads": null,
+          "completed_processes": 3,
+          "planned_processes": 3,
+          "process_values": {
+            "cold_ms": [
+              29319.076811,
+              29256.115614,
+              31810.718269
+            ],
+            "warm_ms": [
+              29045.139806500003,
+              29027.5733225,
+              31252.566134
+            ],
+            "cold_pss_mib": [
+              236.9,
+              235.7,
+              237.2
+            ],
+            "warm_pss_mib": [
+              238.1,
+              239.1,
+              237.3
+            ]
+          },
+          "output_hashes": [
+            "eb54c5dac9701e29f5100a8f1d2df7ef83a145d93dfe8e842657c9c3e9f18fd4"
+          ],
+          "comet_x100": [
+            68.92763012647629
+          ],
+          "unscored_output_hashes": [],
+          "cold_ms": 29319.076811,
+          "warm_ms": 29045.139806500003,
+          "cold_pss_mib": 236.9,
+          "warm_pss_mib": 238.1,
+          "spread_percent": {
+            "cold_ms": 8.713107412855376,
+            "warm_ms": 7.660465146055416,
+            "cold_pss_mib": 0.6331785563528916,
+            "warm_pss_mib": 0.7559848803023869
+          },
+          "cold_inputs_per_second": 6.821497187283999,
+          "warm_inputs_per_second": 6.885833613899219
+        },
+        {
+          "direction": "jazh",
+          "engine": "bergamot",
+          "threads": 1,
+          "completed_processes": 3,
+          "planned_processes": 3,
+          "process_values": {
+            "cold_ms": [
+              4400.944425,
+              4525.78229,
+              6257.647237
+            ],
+            "warm_ms": [
+              5029.4226805,
+              5279.461482000001,
+              4934.137967000001
+            ],
+            "cold_pss_mib": [
+              353.2,
+              352.1,
+              358.1
+            ],
+            "warm_pss_mib": [
+              329.7,
+              329.6,
+              335.6
+            ]
+          },
+          "output_hashes": [
+            "16bb8ed762796f64ca7f8effec9d8bf2828e89be504e4db9d398d7799c33922b"
+          ],
+          "comet_x100": [
+            86.71308651566505
+          ],
+          "unscored_output_hashes": [],
+          "cold_ms": 4525.78229,
+          "warm_ms": 5029.4226805,
+          "cold_pss_mib": 353.2,
+          "warm_pss_mib": 329.7,
+          "spread_percent": {
+            "cold_ms": 41.02501386561395,
+            "warm_ms": 6.866066682740408,
+            "cold_pss_mib": 1.6987542468856172,
+            "warm_pss_mib": 1.8198362147406735
+          },
+          "cold_inputs_per_second": 44.19125516530315,
+          "warm_inputs_per_second": 39.76599556355383
+        },
+        {
+          "direction": "jazh",
+          "engine": "bergamot",
+          "threads": 2,
+          "completed_processes": 3,
+          "planned_processes": 3,
+          "process_values": {
+            "cold_ms": [
+              2998.113072,
+              3716.354634,
+              4088.354061
+            ],
+            "warm_ms": [
+              3229.7452590000003,
+              3246.3717175,
+              3161.6624730000003
+            ],
+            "cold_pss_mib": [
+              543.9,
+              550.7,
+              550.4
+            ],
+            "warm_pss_mib": [
+              498.4,
+              505.8,
+              505
+            ]
+          },
+          "output_hashes": [
+            "16bb8ed762796f64ca7f8effec9d8bf2828e89be504e4db9d398d7799c33922b"
+          ],
+          "comet_x100": [
+            86.71308651566505
+          ],
+          "unscored_output_hashes": [],
+          "cold_ms": 3716.354634,
+          "warm_ms": 3229.7452590000003,
+          "cold_pss_mib": 550.4,
+          "warm_pss_mib": 505,
+          "spread_percent": {
+            "cold_ms": 29.33630119756757,
+            "warm_ms": 2.6227840806933385,
+            "cold_pss_mib": 1.2354651162790822,
+            "warm_pss_mib": 1.4653465346534722
+          },
+          "cold_inputs_per_second": 53.81617732878611,
+          "warm_inputs_per_second": 61.92438844601768
+        }
+      ]
+    },
+    "native": {
+      "suite_id": "android-native-v1",
+      "version": "v0.3.0",
+      "rows": [
+        {
+          "scenario": "enzh_w1",
+          "completed_processes": 3,
+          "cold_ms": 3169.449,
+          "warm_ms": 2912.7690000000002,
+          "peak_rss_mib": 207.242
+        },
+        {
+          "scenario": "enzh_w2",
+          "completed_processes": 3,
+          "cold_ms": 1922.556,
+          "warm_ms": 1593.1975,
+          "peak_rss_mib": 305.699
+        },
+        {
+          "scenario": "enzh_w4",
+          "completed_processes": 3,
+          "cold_ms": 1244.756,
+          "warm_ms": 951.434,
+          "peak_rss_mib": 521.051
+        },
+        {
+          "scenario": "pivot_w1",
+          "completed_processes": 3,
+          "cold_ms": 7138.382,
+          "warm_ms": 6437.3465,
+          "peak_rss_mib": 317.301
+        },
+        {
+          "scenario": "enzh_b512p",
+          "completed_processes": 3,
+          "cold_ms": 3058.92,
+          "warm_ms": 2841.518,
+          "peak_rss_mib": 207.258
+        },
+        {
+          "scenario": "pivot_b512p",
+          "completed_processes": 3,
+          "cold_ms": 6330.064,
+          "warm_ms": 5881.6355,
+          "peak_rss_mib": 308.859
+        },
+        {
+          "scenario": "enzh_w2_512p",
+          "completed_processes": 3,
+          "cold_ms": 1912.684,
+          "warm_ms": 1525.551,
+          "peak_rss_mib": 289.34
+        },
+        {
+          "scenario": "pivot_w2_512p",
+          "completed_processes": 3,
+          "cold_ms": 3987.781,
+          "warm_ms": 3433.741,
+          "peak_rss_mib": 438.516
+        }
+      ]
+    },
+    "comparison_scope": "Archived historical measurements; not a new paired run. Different dates/conditions and incomplete cells are descriptive references, not regression acceptance."
+  },
+  "initial_comparison": {
+    "before": "v0.1.0",
+    "after": "v0.3.0",
+    "rows": [
+      {
+        "direction": "enzh",
+        "cold_speed_gain_percent": 102.4053534448889,
+        "peak_rss_reduction_percent": 40.57998461944607
+      },
+      {
+        "direction": "jazh",
+        "cold_speed_gain_percent": 111.92008728593596,
+        "peak_rss_reduction_percent": 41.840522954686435
+      }
+    ]
+  },
+  "thread_estimates": {
+    "formula": "p=2*(1-T2/T1); Tn=T1*(1-p+p/n); inputs/s=200000/Tn",
+    "assumptions": "Constant parallel fraction; no additional scheduling, bandwidth or thermal cost. Not a performance guarantee.",
+    "rows": [
+      {
+        "direction": "enzh",
+        "kind": "estimate, not measurement",
+        "parallel_fraction": 0.7544820102562548,
+        "estimated_inputs_per_second": {
+          "4": 233.58160094920933,
+          "6": 273.1385032292722
+        }
+      },
+      {
+        "direction": "jazh",
+        "kind": "estimate, not measurement",
+        "parallel_fraction": 0.8882508057169987,
+        "estimated_inputs_per_second": {
+          "4": 109.10602513556786,
+          "6": 140.19303883519927
+        }
+      }
+    ]
+  },
+  "sources": {
+    "index.json": "4c83b2e25b5eaf143511a47335ac6be40cdff16b7d30544ea8a16b379aa6f9df",
+    "raw/mi14/standard/native/results.json": "1824bdad85a21447d209dfcc4b96c0cc967f1417210469cce3b280cad888d806",
+    "raw/mi14/standard/quality/v0.5.0-comet.json": "f4f2b0ba9ee24a61abfa135a89263244991856f90bf1e05fd429b911f1023d3e",
+    "raw/mi14/standard/app/v0.5.0/results.json": "e03481076bb4cd8ec66445ef6e3354169428293d2f8b525de3d3ad76a3641747",
+    "raw/mi14/standard/app/v0.5.0/measure_1_enzh_mlkit_1_3c5c824b54.json": "1660026429c31892174dce53c7e0ed4cd4be47c47eaf3c09c3c18412fb95d661",
+    "raw/mi14/standard/app/v0.5.0/measure_1_enzh_bergamot_1_b618eb9c23.json": "bea7e10ff6bf0dacb22846d87f47fa43253f1f797fda29f93c124405ea18baf6",
+    "raw/mi14/standard/app/v0.5.0/measure_1_enzh_bergamot_2_96f1ee01e7.json": "2133dfb7d40b4fd51ccd87f4d4f3d3ef66908b86b68771d56443c7cd2fddee33",
+    "raw/mi14/standard/app/v0.5.0/measure_1_jazh_mlkit_1_b35e9ddf7b.json": "e3e8d2b0583b815afce14b63e903ddc4a4fce42ca078a4ee2efc1389efbdcddf",
+    "raw/mi14/standard/app/v0.5.0/measure_1_jazh_bergamot_1_a8290b9f08.json": "79211c36facfdb28632c6413e7d40d5d7aa0f858c15c4a437201db09abbb195b",
+    "raw/mi14/standard/app/v0.5.0/measure_1_jazh_bergamot_2_1e9caa77a4.json": "a0815fad4b810646b485021f5b0a7ea3db5a3cf8888eac6081a72ed6d9654da5",
+    "raw/mi14/standard/app/v0.5.0/measure_2_jazh_bergamot_2_25cbfa9bb3.json": "88c0832dc75cfc50d369276cea779e17aff94fc71be74107e52ff9588f2d9e8d",
+    "raw/mi14/standard/app/v0.5.0/measure_2_jazh_bergamot_1_4afad16040.json": "a0c1e8b4a2bebc3600300e96a375cd33af601ef210e6ed5b5ea5dd01aac57d38",
+    "../v0.3.0/raw/mi14/native/results.json": "b7cb74bd6b1c2a368643805678451b7a28d6274660a11886459e6a4b3ff823ec",
+    "../v0.3.0/raw/mi14/quality/comet.json": "c8098b1cb534f349ebc723ba9507badd03345805bee50e76afc78cb4a9a06f66",
+    "../v0.3.0/raw/mi14/app/results.json": "9b1d9a005a54deca4e1016faa2df4cc76d59c4049db5c20f48b85735f23b1815",
+    "../v0.3.0/raw/mi14/app/measure_1_enzh_mlkit_1_959e1d29f6.json": "2671c5620079f65cf619be22021b5fb9d3fa415ba368f9fcd18b88ce930650f9",
+    "../v0.3.0/raw/mi14/app/measure_1_enzh_bergamot_1_2a1026691a.json": "83514c93131a87e9efd674853482f9b54cb3fbb05958fe6ce44e57fdae768b24",
+    "../v0.3.0/raw/mi14/app/measure_1_enzh_bergamot_2_864687f4d7.json": "507adc99a23eefc679c97e0f4c7572d9d7294d2b24d4835de31d7f4e1a8a654d",
+    "../v0.3.0/raw/mi14/app/measure_1_enzh_bergamot_4_f02d1456db.json": "98259b2b3942e19bc4f9e8c356eb48fb75bda6e43887ba1ebfdac18b148c4317",
+    "../v0.3.0/raw/mi14/app/measure_1_jazh_mlkit_1_78ca4cbf18.json": "7db7f77f810209968afd828f13b96db50b3119d3b5b57eee70af2bbad7804cbf",
+    "../v0.3.0/raw/mi14/app/measure_1_jazh_bergamot_1_95811aff8b.json": "937c1646770de81e3ad3fc7add071d5418169e43cc4b26bb6e0edd9e65f795c6",
+    "../v0.3.0/raw/mi14/app/measure_1_jazh_bergamot_2_5356475275.json": "4eda7350408b7af84823d0c95d7e97954168d50a660ed22b43de486f243a1bcb",
+    "../v0.3.0/raw/mi14/app/measure_1_jazh_bergamot_4_066486c719.json": "954dde6e0a5ffb104fdf0868f3741c746b83fa440aeb77e3f401a15b192a4b50",
+    "../v0.3.0/raw/mi14/app/measure_2_jazh_bergamot_4_0112a7fe50.json": "74c287d3f5626747ec5661435102f9e7e02f1280a2f65e790f81268d1d929c21",
+    "../v0.3.0/raw/mi14/app/measure_2_jazh_bergamot_2_2cd830194f.json": "f367d8e7123c3edf231567cbdb3cbbef46cb264e688eefcfe9e878bb63ec094b",
+    "../v0.3.0/raw/mi14/app/measure_2_jazh_bergamot_1_a4b20e1e31.json": "c8004a36ec9bff124b0dd8560ae80b322c8006525d66d4678aee8035642c7f96",
+    "../v0.3.0/raw/mi14/app/measure_2_jazh_mlkit_1_e573e7e541.json": "13927cca966b0028fad914242bf8c4b9932386d4c708f0706a9e0a8bdcd0a16f",
+    "../v0.3.0/raw/mi14/app/measure_2_enzh_bergamot_4_821d907450.json": "a0a751e08ad045ca2f010d69041edc27dcd1f4fd3cf285b3e9bdceef19ebdb2e",
+    "../v0.3.0/raw/mi14/app/measure_2_enzh_bergamot_2_a0fb096667.json": "fef3f92cccec230ef4a596eb3dcb3d68dbfd236cc963205bf7e4741fde590245",
+    "../v0.3.0/raw/mi14/app/measure_2_enzh_bergamot_1_4c779fdf94.json": "0a3c097a7a7751eab8da4b5a93eeaa021b1efbf555a889e3c776f2f3420a3784",
+    "../v0.3.0/raw/mi14/app/measure_2_enzh_mlkit_1_94de26e831.json": "ebe6fffd53e905811f38d4850d24e611c65e3459b1a64be3d70b102b7492e623",
+    "../v0.3.0/raw/mi14/app/measure_3_enzh_mlkit_1_1867628cf7.json": "9b565d5f6b655162bbc14881400a147ba0362b83aa5f47f54d0efb0e527a7196",
+    "../v0.3.0/raw/mi14/app/measure_3_enzh_bergamot_1_098915857c.json": "96cdd8e085ab66762b7d66db703a8ca31f256ad5e1af72874cc93f313d8d8c5b",
+    "../v0.3.0/raw/mi14/app/measure_3_enzh_bergamot_2_a4494aacd0.json": "73252446bace4ba26d82ba6ff1ff5cbdd40b083f7feb52ccfacc143d06dcbbae",
+    "../v0.3.0/raw/mi14/app/measure_3_enzh_bergamot_4_9f800acddc.json": "6641af819d0b5ca5350ec3af955c9a09d0f04affe29ebccf7668de3d30b012d6",
+    "../v0.3.0/raw/mi14/app/measure_3_jazh_mlkit_1_71cac7ffae.json": "c072d2f1be093a6b2739917b970dc74c474006d7aa85340cf7d66e67d8a7c2fa",
+    "../v0.3.0/raw/mi14/app/measure_3_jazh_bergamot_1_5021651294.json": "4d4a6d4fd8e8d149142435873e229c8b940826d75b3168bf7a94fefd573beb27",
+    "../v0.3.0/raw/mi14/app/measure_3_jazh_bergamot_2_c169c91c91.json": "3b225194db79d522a299c4ac5603529cc5682b74eda9d7160afd3d009046e2ef",
+    "../v0.3.0/raw/mi14/app/measure_3_jazh_bergamot_4_4c383fdc4d.json": "e745a732052ead0b4d1ae84a49644edc078454ce9cd93481b5cbfe479f012132",
+    "../v0.3.0/raw/mi14/initial/results.json": "de34157dfdc118bd9d4eaf505d0be307db06ce8229cff05583f54d68bf3c6526"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "schema_version": 2,
+  "version": "0.2.0",
+  "status": "历史归档，缺少后续协议要求的部分设备与构建指纹",
+  "compared_with": "v0.1.0",
+  "devices": [
+    "小米 10 / 骁龙 865 / Android 13"
+  ],
+  "measurements": {
+    "mi10-native": {
+      "protocol": "android-native-v1",
+      "processes": 48,
+      "note": "v0.1.0 / v0.2.0 配对采集；英→中 2 worker 的 v0.1.0 有一轮 SIGABRT",
+      "raw": "raw/results.json",
+      "summary": "raw/summary.json",
+      "chart": "raw/comparison.png"
+    }
+  },
+  "collectors": {},
+  "corpora": {},
+  "external": {}
+}

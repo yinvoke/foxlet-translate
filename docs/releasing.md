@@ -56,4 +56,44 @@ python3 tools/distribution/sync_catalog.py --check
 
 输出为 `build/maven-repository/`，无需发布凭据。消费工程添加该目录为 Maven 仓库后，通过上述坐标接入，验证编译、协程依赖解析以及 APK 中的原生库。核对 Maven 中的 AAR 与已通过验收的发行 AAR 的 SHA-256 一致。
 
-当前 Release CI 只发布 GitHub 附件，尚未接入 Maven Central。Gradle 的 Central 上传目标仅在 `-Pfoxlet.publishToCentral=true` 时开启；该配置采用上传后手动发布方式，本地预览和普通构建不会触发远端上传。接入 Central 的发布工作流应复用已验收的构件，并在坐标可下载后更新用户接入说明。
+## Maven Central 发布
+
+[Maven Central 工作流](../.github/workflows/maven-central.yml) 在 GitHub `release` 工作流成功后运行，也可为已发布且通过设备验收的版本手动触发：
+
+```bash
+gh workflow run maven-central.yml -f tag=v0.5.0
+```
+
+工作流检出指定 tag，下载对应 GitHub Release，校验 `SHA256SUMS`、`SOURCE.txt` 和 `device-result.json`，确认 AAR 的原生库与已验收 APK 一致。随后复用这个 AAR，仅生成 Maven 元数据、源码包和 Dokka 文档，签名后上传并发布至 Central，最后下载 Central AAR 与 GitHub 附件逐字节比较。不会移动 tag、替换 GitHub 附件或重新采集性能基准。
+
+### 首次配置
+
+发布账号须在 [Central Portal](https://central.sonatype.com/publishing) 完成 `io.github.yinvoke` 命名空间验证，并准备 [Portal 用户 token](https://central.sonatype.org/publish/generate-portal-token/) 和已向公共 keyserver 分发公钥的 [GPG 签名密钥](https://central.sonatype.org/publish/requirements/gpg/)。GitHub 仓库需配置以下 Actions secrets：
+
+| Secret | 内容 |
+|---|---|
+| `MAVEN_CENTRAL_USERNAME` | Portal 用户 token 的 username |
+| `MAVEN_CENTRAL_PASSWORD` | Portal 用户 token 的 password |
+| `MAVEN_SIGNING_KEY` | ASCII-armored GPG 私钥 |
+| `MAVEN_SIGNING_PASSWORD` | 私钥口令；无口令时可省略 |
+
+工作流缺少必要凭据时会停止，不能据此宣称 Maven 已发布。密钥与 token 不写入仓库或日志。Central 不允许覆盖已发布坐标；若发布成功而下载验证暂未通过，先检查 Central 状态与同步进度，再决定是否重试。
+
+Gradle 的 Central 上传目标仅在 `-Pfoxlet.publishToCentral=true` 时开启。`publishToMavenCentral` 只上传待发布部署；本工作流使用 `publishAndReleaseToMavenCentral` 完成正式发布，并等待 `PUBLISHED`。本地预览和普通构建不会触发上传。任务及签名参数见 [Gradle Maven Publish Plugin 文档](https://vanniktech.github.io/gradle-maven-publish-plugin/central/)。
+
+### 本地准备已验收版本
+
+[准备脚本](../tools/distribution/prepare_maven_release.py) 要求独立、干净的 tag checkout。`--assets` 指向已下载的完整 Release 附件目录，并放在 checkout 外或被 Git 忽略的目录。执行顺序如下：
+
+```bash
+python3 tools/distribution/prepare_maven_release.py \
+  --source /path/to/tag-checkout --assets /path/to/release-assets --tag v0.5.0
+/path/to/tag-checkout/gradlew -p /path/to/tag-checkout \
+  :foxlet:publishAllPublicationsToLocalPreviewRepository \
+  -x :foxlet:bundleReleaseAar -x :foxlet:generateDistributionResources
+python3 tools/distribution/prepare_maven_release.py \
+  --source /path/to/tag-checkout --assets /path/to/release-assets --tag v0.5.0 \
+  --verify-repository
+```
+
+这里跳过 AAR 打包及源码标识重写，是为了保留已经验收的发行字节；仅适用于先通过准备脚本的发行版本。正式坐标可从 Central 下载后，再同步中英文 README 和 Release 公告中的 Maven 接入示例。
